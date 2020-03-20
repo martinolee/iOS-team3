@@ -39,7 +39,6 @@ class LogOutTableViewCell: UITableViewCell {
       self.addSubview($0)
     }
     
-    
     constraints()
   }
   private func constraints() {
