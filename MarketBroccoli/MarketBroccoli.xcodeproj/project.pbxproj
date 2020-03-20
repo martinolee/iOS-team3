@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		6465B54BFF3CD0B2CF359F2B /* Pods_MarketBroccoli.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA3DAD3F9ADB459218F3993B /* Pods_MarketBroccoli.framework */; };
+		7C65ECBA242471380075606A /* EventMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECB9242471380075606A /* EventMark.swift */; };
+		7C65ECBC242472370075606A /* EmptyExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECBB242472370075606A /* EmptyExtension.swift */; };
+		7C65ECBE242472400075606A /* EmptyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECBD242472400075606A /* EmptyManager.swift */; };
+		7C65ECC0242472480075606A /* EmptyTC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECBF242472480075606A /* EmptyTC.swift */; };
+		7C65ECC2242472C60075606A /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECC1242472C60075606A /* Constant.swift */; };
+		7C65ECC5242472EC0075606A /* EmptyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECC4242472EC0075606A /* EmptyModel.swift */; };
+		7C65ECC8242472FE0075606A /* EmptyViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECC7242472FE0075606A /* EmptyViews.swift */; };
 		7CD9D45A242460D60091AE5B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD9D459242460D60091AE5B /* AppDelegate.swift */; };
 		7CD9D45E242460D70091AE5B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD9D45D242460D70091AE5B /* ViewController.swift */; };
 		7CD9D463242460DB0091AE5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7CD9D462242460DB0091AE5B /* Assets.xcassets */; };
@@ -16,6 +23,13 @@
 
 /* Begin PBXFileReference section */
 		05E73C0F0431AD204CF10586 /* Pods-MarketBroccoli.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MarketBroccoli.debug.xcconfig"; path = "Target Support Files/Pods-MarketBroccoli/Pods-MarketBroccoli.debug.xcconfig"; sourceTree = "<group>"; };
+		7C65ECB9242471380075606A /* EventMark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMark.swift; sourceTree = "<group>"; };
+		7C65ECBB242472370075606A /* EmptyExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyExtension.swift; sourceTree = "<group>"; };
+		7C65ECBD242472400075606A /* EmptyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyManager.swift; sourceTree = "<group>"; };
+		7C65ECBF242472480075606A /* EmptyTC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyTC.swift; sourceTree = "<group>"; };
+		7C65ECC1242472C60075606A /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
+		7C65ECC4242472EC0075606A /* EmptyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyModel.swift; sourceTree = "<group>"; };
+		7C65ECC7242472FE0075606A /* EmptyViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyViews.swift; sourceTree = "<group>"; };
 		7CD9D456242460D60091AE5B /* MarketBroccoli.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarketBroccoli.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7CD9D459242460D60091AE5B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7CD9D45D242460D70091AE5B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -58,6 +72,12 @@
 		7C65ECAD2424677C0075606A /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				7C65ECC6242472F70075606A /* Views */,
+				7C65ECC3242472E20075606A /* Models */,
+				7C65ECB7242470E70075606A /* Utils */,
+				7C65ECB5242470C90075606A /* Extensions */,
+				7C65ECB4242470B60075606A /* CustomUI */,
+				7C65ECB3242470AB0075606A /* ViewControllers */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -79,10 +99,77 @@
 			path = Resource;
 			sourceTree = "<group>";
 		};
+		7C65ECB3242470AB0075606A /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				7CD9D45D242460D70091AE5B /* ViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		7C65ECB4242470B60075606A /* CustomUI */ = {
+			isa = PBXGroup;
+			children = (
+				7C65ECB9242471380075606A /* EventMark.swift */,
+			);
+			path = CustomUI;
+			sourceTree = "<group>";
+		};
+		7C65ECB5242470C90075606A /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				7C65ECBB242472370075606A /* EmptyExtension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		7C65ECB6242470CF0075606A /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				7C65ECBD242472400075606A /* EmptyManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		7C65ECB7242470E70075606A /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				7C65ECB8242470F30075606A /* TypeConverter */,
+				7C65ECB6242470CF0075606A /* Managers */,
+				7C65ECC1242472C60075606A /* Constant.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		7C65ECB8242470F30075606A /* TypeConverter */ = {
+			isa = PBXGroup;
+			children = (
+				7C65ECBF242472480075606A /* EmptyTC.swift */,
+			);
+			path = TypeConverter;
+			sourceTree = "<group>";
+		};
+		7C65ECC3242472E20075606A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				7C65ECC4242472EC0075606A /* EmptyModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		7C65ECC6242472F70075606A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7C65ECC7242472FE0075606A /* EmptyViews.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		7CD9D44D242460D60091AE5B = {
 			isa = PBXGroup;
 			children = (
 				7CD9D458242460D60091AE5B /* MarketBroccoli */,
+				7CD9D464242460DB0091AE5B /* LaunchScreen.storyboard */,
 				7CD9D457242460D60091AE5B /* Products */,
 				01CA253AFF170369DD1B042E /* Pods */,
 				235946B95410817910E90EF2 /* Frameworks */,
@@ -103,8 +190,6 @@
 				7C65ECAF242467910075606A /* Resource */,
 				7C65ECAE242467850075606A /* Application */,
 				7C65ECAD2424677C0075606A /* Source */,
-				7CD9D45D242460D70091AE5B /* ViewController.swift */,
-				7CD9D464242460DB0091AE5B /* LaunchScreen.storyboard */,
 			);
 			path = MarketBroccoli;
 			sourceTree = "<group>";
@@ -223,8 +308,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C65ECC2242472C60075606A /* Constant.swift in Sources */,
 				7CD9D45E242460D70091AE5B /* ViewController.swift in Sources */,
+				7C65ECBC242472370075606A /* EmptyExtension.swift in Sources */,
+				7C65ECC8242472FE0075606A /* EmptyViews.swift in Sources */,
+				7C65ECC5242472EC0075606A /* EmptyModel.swift in Sources */,
+				7C65ECBE242472400075606A /* EmptyManager.swift in Sources */,
+				7C65ECBA242471380075606A /* EventMark.swift in Sources */,
 				7CD9D45A242460D60091AE5B /* AppDelegate.swift in Sources */,
+				7C65ECC0242472480075606A /* EmptyTC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
