@@ -42,6 +42,13 @@ class LogOutViewController: UIViewController {
           $0.height.equalTo(guide.snp.height).multipliedBy(0.35)
         }
       }
+    @objc func didTapSingUpInButton() {
+        let loginVC = UINavigationController(rootViewController: LoginViewController())
+        loginVC.modalPresentationStyle = .fullScreen
+        loginVC.navigationBar.tintColor = .black
+        self.present(loginVC, animated: true, completion: nil)
+    }
+    
     }
     extension LogOutViewController: UITableViewDataSource {
       func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -50,8 +57,7 @@ class LogOutViewController: UIViewController {
       
       func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: LogOutTableViewCell.identifier, for: indexPath) as! LogOutTableViewCell
+        cell.logInButton.addTarget(self, action: #selector(didTapSingUpInButton), for: .touchUpInside)
         return cell
       }
-      
-      
 }
