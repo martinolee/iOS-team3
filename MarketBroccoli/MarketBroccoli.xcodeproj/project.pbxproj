@@ -21,6 +21,9 @@
 		7CD9D45E242460D70091AE5B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD9D45D242460D70091AE5B /* ViewController.swift */; };
 		7CD9D463242460DB0091AE5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7CD9D462242460DB0091AE5B /* Assets.xcassets */; };
 		7CD9D466242460DB0091AE5B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CD9D464242460DB0091AE5B /* LaunchScreen.storyboard */; };
+		FAAFEB5F2424A74900452977 /* LogOutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAFEB5E2424A74900452977 /* LogOutViewController.swift */; };
+		FAAFEB612424A77900452977 /* LogOutTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAFEB602424A77900452977 /* LogOutTableViewCell.swift */; };
+		FAAFEB632424A79200452977 /* TypeConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAFEB622424A79200452977 /* TypeConverter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +45,9 @@
 		7CD9D467242460DB0091AE5B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BA3DAD3F9ADB459218F3993B /* Pods_MarketBroccoli.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MarketBroccoli.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1C8D23965CC57B3A3E2F2A7 /* Pods-MarketBroccoli.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MarketBroccoli.release.xcconfig"; path = "Target Support Files/Pods-MarketBroccoli/Pods-MarketBroccoli.release.xcconfig"; sourceTree = "<group>"; };
+		FAAFEB5E2424A74900452977 /* LogOutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogOutViewController.swift; sourceTree = "<group>"; };
+		FAAFEB602424A77900452977 /* LogOutTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogOutTableViewCell.swift; sourceTree = "<group>"; };
+		FAAFEB622424A79200452977 /* TypeConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeConverter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +113,7 @@
 			isa = PBXGroup;
 			children = (
 				7CD9D45D242460D70091AE5B /* ViewController.swift */,
+				FAAFEB5E2424A74900452977 /* LogOutViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -165,6 +172,7 @@
 			isa = PBXGroup;
 			children = (
 				7C65ECC7242472FE0075606A /* EmptyViews.swift */,
+				FAAFEB602424A77900452977 /* LogOutTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -174,6 +182,7 @@
 			children = (
 				7C65ECCA24249B2C0075606A /* EmptyTemp.swift */,
 				723851E024249C6400E8B206 /* UserInfoTableViewCell.swift */,
+				FAAFEB622424A79200452977 /* TypeConverter.swift */,
 			);
 			path = TEMP;
 			sourceTree = "<group>";
@@ -327,7 +336,10 @@
 				7CD9D45E242460D70091AE5B /* ViewController.swift in Sources */,
 				7C65ECBC242472370075606A /* EmptyExtension.swift in Sources */,
 				723851E124249C6400E8B206 /* UserInfoTableViewCell.swift in Sources */,
+				FAAFEB612424A77900452977 /* LogOutTableViewCell.swift in Sources */,
 				7C65ECC8242472FE0075606A /* EmptyViews.swift in Sources */,
+				FAAFEB5F2424A74900452977 /* LogOutViewController.swift in Sources */,
+				FAAFEB632424A79200452977 /* TypeConverter.swift in Sources */,
 				7C65ECC5242472EC0075606A /* EmptyModel.swift in Sources */,
 				7C65ECBE242472400075606A /* EmptyManager.swift in Sources */,
 				7C65ECBA242471380075606A /* EventMark.swift in Sources */,
