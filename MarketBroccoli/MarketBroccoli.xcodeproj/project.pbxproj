@@ -3,15 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		6465B54BFF3CD0B2CF359F2B /* Pods_MarketBroccoli.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA3DAD3F9ADB459218F3993B /* Pods_MarketBroccoli.framework */; };
 		7CD9D45A242460D60091AE5B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD9D459242460D60091AE5B /* AppDelegate.swift */; };
-		7CD9D45C242460D70091AE5B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD9D45B242460D70091AE5B /* SceneDelegate.swift */; };
 		7CD9D45E242460D70091AE5B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD9D45D242460D70091AE5B /* ViewController.swift */; };
-		7CD9D461242460D70091AE5B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CD9D45F242460D70091AE5B /* Main.storyboard */; };
 		7CD9D463242460DB0091AE5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7CD9D462242460DB0091AE5B /* Assets.xcassets */; };
 		7CD9D466242460DB0091AE5B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CD9D464242460DB0091AE5B /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -20,9 +18,7 @@
 		05E73C0F0431AD204CF10586 /* Pods-MarketBroccoli.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MarketBroccoli.debug.xcconfig"; path = "Target Support Files/Pods-MarketBroccoli/Pods-MarketBroccoli.debug.xcconfig"; sourceTree = "<group>"; };
 		7CD9D456242460D60091AE5B /* MarketBroccoli.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarketBroccoli.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7CD9D459242460D60091AE5B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		7CD9D45B242460D70091AE5B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		7CD9D45D242460D70091AE5B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		7CD9D460242460D70091AE5B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		7CD9D462242460DB0091AE5B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7CD9D465242460DB0091AE5B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7CD9D467242460DB0091AE5B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -48,7 +44,6 @@
 				05E73C0F0431AD204CF10586 /* Pods-MarketBroccoli.debug.xcconfig */,
 				D1C8D23965CC57B3A3E2F2A7 /* Pods-MarketBroccoli.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -58,6 +53,30 @@
 				BA3DAD3F9ADB459218F3993B /* Pods_MarketBroccoli.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7C65ECAD2424677C0075606A /* Source */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		7C65ECAE242467850075606A /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				7CD9D459242460D60091AE5B /* AppDelegate.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		7C65ECAF242467910075606A /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				7CD9D462242460DB0091AE5B /* Assets.xcassets */,
+				7CD9D467242460DB0091AE5B /* Info.plist */,
+			);
+			path = Resource;
 			sourceTree = "<group>";
 		};
 		7CD9D44D242460D60091AE5B = {
@@ -81,13 +100,11 @@
 		7CD9D458242460D60091AE5B /* MarketBroccoli */ = {
 			isa = PBXGroup;
 			children = (
-				7CD9D459242460D60091AE5B /* AppDelegate.swift */,
-				7CD9D45B242460D70091AE5B /* SceneDelegate.swift */,
+				7C65ECAF242467910075606A /* Resource */,
+				7C65ECAE242467850075606A /* Application */,
+				7C65ECAD2424677C0075606A /* Source */,
 				7CD9D45D242460D70091AE5B /* ViewController.swift */,
-				7CD9D45F242460D70091AE5B /* Main.storyboard */,
-				7CD9D462242460DB0091AE5B /* Assets.xcassets */,
 				7CD9D464242460DB0091AE5B /* LaunchScreen.storyboard */,
-				7CD9D467242460DB0091AE5B /* Info.plist */,
 			);
 			path = MarketBroccoli;
 			sourceTree = "<group>";
@@ -154,7 +171,6 @@
 			files = (
 				7CD9D466242460DB0091AE5B /* LaunchScreen.storyboard in Resources */,
 				7CD9D463242460DB0091AE5B /* Assets.xcassets in Resources */,
-				7CD9D461242460D70091AE5B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -209,21 +225,12 @@
 			files = (
 				7CD9D45E242460D70091AE5B /* ViewController.swift in Sources */,
 				7CD9D45A242460D60091AE5B /* AppDelegate.swift in Sources */,
-				7CD9D45C242460D70091AE5B /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		7CD9D45F242460D70091AE5B /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				7CD9D460242460D70091AE5B /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		7CD9D464242460DB0091AE5B /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -355,7 +362,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = MarketBroccoli/Info.plist;
+				INFOPLIST_FILE = MarketBroccoli/Resource/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -373,7 +380,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = MarketBroccoli/Info.plist;
+				INFOPLIST_FILE = MarketBroccoli/Resource/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
