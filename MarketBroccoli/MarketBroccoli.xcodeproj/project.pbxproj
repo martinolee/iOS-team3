@@ -17,6 +17,13 @@
 		7C65ECC5242472EC0075606A /* EmptyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECC4242472EC0075606A /* EmptyModel.swift */; };
 		7C65ECC8242472FE0075606A /* EmptyViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECC7242472FE0075606A /* EmptyViews.swift */; };
 		7C65ECCB24249B2C0075606A /* EmptyTemp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECCA24249B2C0075606A /* EmptyTemp.swift */; };
+		7C65ECCF2424B95F0075606A /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECCE2424B95F0075606A /* HomeViewController.swift */; };
+		7C65ECD12424D82C0075606A /* HomeRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECD02424D82C0075606A /* HomeRootView.swift */; };
+		7C65ECD42424EFE60075606A /* RecommendationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECD32424EFE60075606A /* RecommendationView.swift */; };
+		7C65ECD62424F0060075606A /* NewProductView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECD52424F0060075606A /* NewProductView.swift */; };
+		7C65ECD82424F03D0075606A /* BestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECD72424F03D0075606A /* BestView.swift */; };
+		7C65ECDA2424F0830075606A /* ShoppingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECD92424F0830075606A /* ShoppingView.swift */; };
+		7C65ECDC2424F08C0075606A /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECDB2424F08C0075606A /* EventView.swift */; };
 		7CD9D45A242460D60091AE5B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD9D459242460D60091AE5B /* AppDelegate.swift */; };
 		7CD9D45E242460D70091AE5B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD9D45D242460D70091AE5B /* ViewController.swift */; };
 		7CD9D463242460DB0091AE5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7CD9D462242460DB0091AE5B /* Assets.xcassets */; };
@@ -37,6 +44,13 @@
 		7C65ECC4242472EC0075606A /* EmptyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyModel.swift; sourceTree = "<group>"; };
 		7C65ECC7242472FE0075606A /* EmptyViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyViews.swift; sourceTree = "<group>"; };
 		7C65ECCA24249B2C0075606A /* EmptyTemp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyTemp.swift; sourceTree = "<group>"; };
+		7C65ECCE2424B95F0075606A /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		7C65ECD02424D82C0075606A /* HomeRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRootView.swift; sourceTree = "<group>"; };
+		7C65ECD32424EFE60075606A /* RecommendationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationView.swift; sourceTree = "<group>"; };
+		7C65ECD52424F0060075606A /* NewProductView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewProductView.swift; sourceTree = "<group>"; };
+		7C65ECD72424F03D0075606A /* BestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BestView.swift; sourceTree = "<group>"; };
+		7C65ECD92424F0830075606A /* ShoppingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingView.swift; sourceTree = "<group>"; };
+		7C65ECDB2424F08C0075606A /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		7CD9D456242460D60091AE5B /* MarketBroccoli.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarketBroccoli.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7CD9D459242460D60091AE5B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7CD9D45D242460D70091AE5B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -114,6 +128,7 @@
 			children = (
 				7CD9D45D242460D70091AE5B /* ViewController.swift */,
 				FAAFEB5E2424A74900452977 /* LogOutViewController.swift */,
+				7C65ECCE2424B95F0075606A /* HomeViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -171,8 +186,10 @@
 		7C65ECC6242472F70075606A /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7C65ECD22424EF350075606A /* HomeViews */,
 				7C65ECC7242472FE0075606A /* EmptyViews.swift */,
 				FAAFEB602424A77900452977 /* LogOutTableViewCell.swift */,
+				7C65ECD02424D82C0075606A /* HomeRootView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -185,6 +202,18 @@
 				FAAFEB622424A79200452977 /* TypeConverter.swift */,
 			);
 			path = TEMP;
+			sourceTree = "<group>";
+		};
+		7C65ECD22424EF350075606A /* HomeViews */ = {
+			isa = PBXGroup;
+			children = (
+				7C65ECD32424EFE60075606A /* RecommendationView.swift */,
+				7C65ECD52424F0060075606A /* NewProductView.swift */,
+				7C65ECD72424F03D0075606A /* BestView.swift */,
+				7C65ECD92424F0830075606A /* ShoppingView.swift */,
+				7C65ECDB2424F08C0075606A /* EventView.swift */,
+			);
+			path = HomeViews;
 			sourceTree = "<group>";
 		};
 		7CD9D44D242460D60091AE5B = {
@@ -331,18 +360,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C65ECDA2424F0830075606A /* ShoppingView.swift in Sources */,
 				7C65ECC2242472C60075606A /* Constant.swift in Sources */,
+				7C65ECD42424EFE60075606A /* RecommendationView.swift in Sources */,
 				7C65ECCB24249B2C0075606A /* EmptyTemp.swift in Sources */,
 				7CD9D45E242460D70091AE5B /* ViewController.swift in Sources */,
 				7C65ECBC242472370075606A /* EmptyExtension.swift in Sources */,
 				723851E124249C6400E8B206 /* UserInfoTableViewCell.swift in Sources */,
+				7C65ECD12424D82C0075606A /* HomeRootView.swift in Sources */,
+				7C65ECCF2424B95F0075606A /* HomeViewController.swift in Sources */,
+				7C65ECD62424F0060075606A /* NewProductView.swift in Sources */,
 				FAAFEB612424A77900452977 /* LogOutTableViewCell.swift in Sources */,
 				7C65ECC8242472FE0075606A /* EmptyViews.swift in Sources */,
 				FAAFEB5F2424A74900452977 /* LogOutViewController.swift in Sources */,
 				FAAFEB632424A79200452977 /* TypeConverter.swift in Sources */,
 				7C65ECC5242472EC0075606A /* EmptyModel.swift in Sources */,
+				7C65ECDC2424F08C0075606A /* EventView.swift in Sources */,
 				7C65ECBE242472400075606A /* EmptyManager.swift in Sources */,
 				7C65ECBA242471380075606A /* EventMark.swift in Sources */,
+				7C65ECD82424F03D0075606A /* BestView.swift in Sources */,
 				7CD9D45A242460D60091AE5B /* AppDelegate.swift in Sources */,
 				7C65ECC0242472480075606A /* EmptyTC.swift in Sources */,
 			);
