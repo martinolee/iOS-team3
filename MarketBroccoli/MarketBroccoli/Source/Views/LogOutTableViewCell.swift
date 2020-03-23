@@ -21,10 +21,12 @@ class LogOutTableViewCell: UITableViewCell {
     $0.setTitleColor(.gray, for: .normal)
   }
   
-  private let logInButton = UIButton().then {
+  let logInButton = UIButton().then {
     $0.setTitle("로그인/회원가입", for: .normal)
     $0.setTitleColor(.white, for: .normal)
-    $0.backgroundColor = .purple
+    $0.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+    $0.backgroundColor = #colorLiteral(red: 0.3176470588, green: 0.1529411765, blue: 0.4470588235, alpha: 1)
+    $0.layer.cornerRadius = 4
   }
   
   static let identifier = "LogOutTableViewCell"
@@ -67,5 +69,7 @@ class LogOutTableViewCell: UITableViewCell {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+    
+    
   
 }
