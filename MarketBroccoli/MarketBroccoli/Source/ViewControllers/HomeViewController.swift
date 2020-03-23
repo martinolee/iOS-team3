@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  HomeViewController.swift
 //  MarketBroccoli
 //
 //  Created by Hongdonghyun on 2020/03/20.
@@ -8,13 +8,17 @@
 
 import UIKit
 
-class LogInViewController: UIViewController {
-
+class HomeViewController: UIViewController {
+    let rootView = HomeRootView()
+    
+    override func loadView() {
+        view = rootView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+
         // Do any additional setup after loading the view.
     }
 
-
 }
-
