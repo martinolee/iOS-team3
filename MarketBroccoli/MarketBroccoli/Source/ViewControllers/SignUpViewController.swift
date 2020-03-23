@@ -9,7 +9,6 @@
 import UIKit
 
 class SignUpViewController: UIViewController {
-    
     private let signupTableView = UITableView()
     
     override func viewDidLoad() {
@@ -39,7 +38,8 @@ extension SignUpViewController: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard indexPath.row == 0 else { return UITableViewCell() }
-    let cell = tableView.dequeueReusableCell(withIdentifier: SignupTableViewCell.identifier, for: indexPath) as! SignupTableViewCell
+    let cell = tableView.dequeueReusableCell(withIdentifier: SignupTableViewCell.identifier, for: indexPath)
+      as! SignupTableViewCell
     return cell
   }
 }

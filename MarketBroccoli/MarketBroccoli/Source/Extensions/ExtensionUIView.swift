@@ -9,7 +9,6 @@
 import UIKit
 
 extension UIView {
-    
     func shadow() {
         self.layer.shadowRadius = 5.0
         self.layer.shadowOpacity = 0.3
@@ -20,11 +19,9 @@ extension UIView {
     func addSubviews(_ views: [UIView]) {
         views.forEach { addSubview($0) }
     }
-    
 }
 
 extension UITextField {
-    
     func textFeildStyle(placeholder: String) {
         self.placeholder = placeholder
         self.borderStyle = .roundedRect
@@ -33,7 +30,6 @@ extension UITextField {
 }
 
 extension UIButton {
-    
     func roundPurpleBtnStyle(title: String) {
         self.setTitle(title, for: .normal)
         self.setTitleColor(.white, for: .normal)
