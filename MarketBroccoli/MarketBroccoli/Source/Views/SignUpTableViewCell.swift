@@ -359,9 +359,6 @@ class SignupTableViewCell: UITableViewCell {
       $0.leading.equalTo(self.snp.leading).offset(50)
       $0.width.equalTo(self.snp.width).multipliedBy(0.4)
     }
-    
-    
-    
   }
 
   required init?(coder: NSCoder) {

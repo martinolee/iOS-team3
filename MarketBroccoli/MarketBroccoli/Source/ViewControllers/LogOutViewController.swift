@@ -33,8 +33,6 @@ class LogOutViewController: UIViewController {
   
   private func constraints() {
     
-    let guide = view.safeAreaLayoutGuide
-    
     myCurlyTableView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
