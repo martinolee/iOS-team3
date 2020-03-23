@@ -34,11 +34,12 @@ class LoginViewController: UIViewController {
         view.backgroundColor = .white
         idTextField.textFeildStyle(placeholder: "아이디를 입력해주세요")
         pwTextField.textFeildStyle(placeholder: "비밀번호를 입력해주세요")
+        pwTextField.isSecureTextEntry = true
         logInbtn.roundPurpleBtnStyle(title: "로그인") // addTarget 필요
         idFindBtn = self.tinyGrayBtn(title: "아이디 찾기 |")
         pwFindBtn = self.tinyGrayBtn(title: "비밀번호 찾기")
         signUpBtn.roundLineBtnStyle(title: "회원가입") // addTarget 필요
-        [idTextField, pwTextField, logInbtn, idFindBtn, pwFindBtn,  signUpBtn].forEach {
+        [idTextField, pwTextField, logInbtn, idFindBtn, pwFindBtn, signUpBtn].forEach {
           view.addSubview($0)
         }
         setLayout()
@@ -89,8 +90,16 @@ class LoginViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    @objc private func didtapFindButton() {
-        
+    @objc private func didtapFindButton(_ sender: UIButton) {
+        switch sender.title(for: .normal) {
+        case "아이디 찾기 |":
+            navigationController?.pushViewController(IDFindViewController(), animated: true)
+        case "비밀번호 찾기":
+            navigationController?.pushViewController(PWFindViewController(), animated: true)
+        default:
+           self.dismiss(animated: true, completion: nil)
+
+        }
     }
     
     private func tinyGrayBtn(title: String) -> UIButton {
@@ -98,7 +107,7 @@ class LoginViewController: UIViewController {
         button.setTitle(title, for: .normal)
         button.setTitleColor(.darkGray, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-        button.addTarget(self, action: #selector(didtapFindButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didtapFindButton(_:)), for: .touchUpInside)
         return button
     }
     
