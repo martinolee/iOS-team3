@@ -9,7 +9,6 @@
 import UIKit
 
 class SignupTableViewCell: UITableViewCell {
-  
   private let idLabel = UILabel().then {
     $0.text = "아이디"
   }
@@ -19,8 +18,8 @@ class SignupTableViewCell: UITableViewCell {
     $0.backgroundColor = .purple
     $0.setTitleColor(.white, for: .normal)
   }
-//  private let idExplanationLabel = UILabel()
-//  private let checkingIdLabel = UILabel()
+  //  private let idExplanationLabel = UILabel()
+  //  private let checkingIdLabel = UILabel()
   
   private let secretNumberLabel = UILabel().then {
     $0.text = "비밀번호"
@@ -50,7 +49,7 @@ class SignupTableViewCell: UITableViewCell {
     $0.backgroundColor = .gray
   }
   private var checkingReceivingNumberTexField = UITextField()
-
+  
   private let checkingReceivingButton = UIButton().then {
     $0.setTitle("인증번호 확인", for: .normal)
     $0.setTitleColor(.gray, for: .normal)
@@ -102,11 +101,11 @@ class SignupTableViewCell: UITableViewCell {
   private let noChoice = UILabel().then {
     $0.text = "선택안함"
   }
-
+  
   private let additionalConditionLabel = UILabel().then {
     $0.text = "추가입력 사항"
   }
- 
+  
   private let additionalExplanationLabel = UILabel().then {
     $0.text = "추천인 아이디와 참여 이벤트명 중 하나마나 선택 가능합니다."
     $0.font = .systemFont(ofSize: 12)
@@ -118,34 +117,34 @@ class SignupTableViewCell: UITableViewCell {
   private let eventName = UILabel().then {
     $0.text = "참여 이벤트명"
   }
-
+  
   static let identifier = "SignupTableViewCell"
   
-//  private let signUpInfos = ["아이디", "비밀번호", "비밀번호 확인", "이름", "이메일", "휴대폰"]
-//  private var infoLabels = [UILabel]()
-//  private var infoTextfields = [UITextField]()
-//  private var infoInputForm = [UIStackView]()
+  //  private let signUpInfos = ["아이디", "비밀번호", "비밀번호 확인", "이름", "이메일", "휴대폰"]
+  //  private var infoLabels = [UILabel]()
+  //  private var infoTextfields = [UITextField]()
+  //  private var infoInputForm = [UIStackView]()
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
-//    signUpInfos.forEach {
-//      let label = UILabel()
-//      label.text = $0
-//      infoLabels.append(label)
-//
-//      let textField = textFieldStyle(placeholder: "abc")
-//      infoTextfields.append(textField)
-//
-//      let stackView = UIStackView()
-//      stackView.axis = .vertical
-//      stackView.alignment = .leading
-//      stackView.distribution = .fillProportionally
-//      stackView.spacing = 4
-//      stackView.addArrangedSubview(label)
-//      stackView.addArrangedSubview(textField)
-//      infoInputForm.append(stackView)
-//    }
+    //    signUpInfos.forEach {
+    //      let label = UILabel()
+    //      label.text = $0
+    //      infoLabels.append(label)
+    //
+    //      let textField = textFieldStyle(placeholder: "abc")
+    //      infoTextfields.append(textField)
+    //
+    //      let stackView = UIStackView()
+    //      stackView.axis = .vertical
+    //      stackView.alignment = .leading
+    //      stackView.distribution = .fillProportionally
+    //      stackView.spacing = 4
+    //      stackView.addArrangedSubview(label)
+    //      stackView.addArrangedSubview(textField)
+    //      infoInputForm.append(stackView)
+    //    }
     setupUI()
     constraints()
   }
@@ -161,10 +160,16 @@ class SignupTableViewCell: UITableViewCell {
   }
   
   private func constraints() {
-    [idLabel, idTextFeild, checkIDButton, secretNumberLabel, secretTextFeild, checkSecretNumberLabel, checkSecretNumberTextFeild, nameLabel, nameTextFeild, emailLabel, emailTextFeild, cellphoneLabel, cellphoneTextField, receivingCellphoneNumberButton, checkingReceivingNumberTexField, checkingReceivingButton, addressLabel, addressCheckingLabel, searchingAddressButton, birthdayLabel, birthdayYearTextField, firstSlashLabel, birthdayMonthTextField, secondSlashLabel, birthdayDayTextField, genderLabel, maleLabel, femaleLabel, noChoice, additionalConditionLabel, additionalExplanationLabel, recoIDLabel, eventName].forEach {
-      self.addSubview($0)
+    [idLabel, idTextFeild, checkIDButton, secretNumberLabel, secretTextFeild, checkSecretNumberLabel,
+     checkSecretNumberTextFeild, nameLabel, nameTextFeild, emailLabel, emailTextFeild, cellphoneLabel,
+     cellphoneTextField, receivingCellphoneNumberButton, checkingReceivingNumberTexField, checkingReceivingButton,
+     addressLabel, addressCheckingLabel, searchingAddressButton, birthdayLabel, birthdayYearTextField,
+     firstSlashLabel, birthdayMonthTextField, secondSlashLabel, birthdayDayTextField, genderLabel,
+     maleLabel, femaleLabel, noChoice, additionalConditionLabel, additionalExplanationLabel, recoIDLabel, eventName]
+      .forEach {
+        self.addSubview($0)
     }
-
+    
     idLabel.snp.makeConstraints {
       $0.top.equalTo(self.snp.top).offset(10)
       $0.leading.equalTo(self.snp.leading).offset(10)
@@ -360,7 +365,7 @@ class SignupTableViewCell: UITableViewCell {
       $0.width.equalTo(self.snp.width).multipliedBy(0.4)
     }
   }
-
+  
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -368,10 +373,10 @@ class SignupTableViewCell: UITableViewCell {
 
 extension SignupTableViewCell {
   func textFieldStyle(placeholder: String) -> UITextField {
-      let textField = UITextField()
-      textField.placeholder = placeholder
-      textField.borderStyle = .roundedRect
-      textField.clearButtonMode = .whileEditing
-      return textField
+    let textField = UITextField()
+    textField.placeholder = placeholder
+    textField.borderStyle = .roundedRect
+    textField.clearButtonMode = .whileEditing
+    return textField
   }
 }

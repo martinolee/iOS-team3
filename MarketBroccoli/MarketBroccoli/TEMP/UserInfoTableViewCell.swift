@@ -13,15 +13,12 @@ import UIKit
 
 protocol UserInfoTableViewCellDelgate: class {
   func whenLeftButtonDidTouchUpInside(_ button: UIButton)
-  
   func whenRightButtonDidTouchUpInside(_ button: UIButton)
 }
 
 final class UserInfoTableViewCell: UITableViewCell {
   // MARK: - Properties
-  
   weak var delegate: UserInfoTableViewCellDelgate?
-  
   private lazy var userProfileImageView = UIImageView().then {
     $0.contentMode = .scaleAspectFit
     $0.layer.borderWidth = 1.0
@@ -29,31 +26,26 @@ final class UserInfoTableViewCell: UITableViewCell {
     $0.layer.cornerRadius = 6.0
     $0.layer.masksToBounds = true
   }
-  
   private lazy var userNameLabel = UILabel().then {
     $0.textAlignment = .left
     $0.numberOfLines = 1
     $0.textColor = .label
     $0.font = .systemFont(ofSize: 18, weight: .medium)
   }
-  
   private lazy var extraInfoLabel = UILabel().then {
     $0.textAlignment = .left
     $0.numberOfLines = 1
     $0.textColor = .label
     $0.font = .systemFont(ofSize: 16, weight: .light)
   }
-  
   private lazy var leftButton = UIButton(type: .system).then {
     $0.layer.masksToBounds = true
     $0.backgroundColor = .lightGray
     $0.setTitleColor(.black, for: .normal)
     $0.titleLabel?.textAlignment = .center
     $0.setTitle("전체등급 보기", for: .normal)
-    
     $0.addTarget(self, action: #selector(whenLeftButtonDidTouchUpInside(_:)), for: .touchUpInside)
   }
-  
   private lazy var rightButton = UIButton(type: .system).then {
     $0.layer.cornerRadius = $0.bounds.height / 2
     $0.layer.masksToBounds = true
