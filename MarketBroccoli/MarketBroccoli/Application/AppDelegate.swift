@@ -17,11 +17,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         let vc = SignUpViewController()
         let navi = UINavigationController(rootViewController: vc)
-        navi.navigationBar.barTintColor = .purple
+        navi.navigationBar.barTintColor = #colorLiteral(red: 0.3176470588, green: 0.1529411765, blue: 0.4470588235, alpha: 1)
+        navi.navigationBar.tintColor = .white
+        navi.navigationBar.isTranslucent = false
         navi.navigationBar.barStyle = .black
         navi.navigationBar.titleTextAttributes = [
           .foregroundColor : UIColor.white
         ]
+        
         
         window?.rootViewController = navi
         
