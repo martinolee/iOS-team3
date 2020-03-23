@@ -32,7 +32,6 @@ class LogOutViewController: UIViewController {
   }
   
   private func constraints() {
-    
     myCurlyTableView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
@@ -47,10 +46,10 @@ extension LogOutViewController: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    
     switch indexPath.section {
     case 0:
-      let cell0 = tableView.dequeueReusableCell(withIdentifier: LogOutTableViewCell.identifier, for: indexPath) as! LogOutTableViewCell
+      let cell0 = tableView.dequeueReusableCell(withIdentifier: LogOutTableViewCell.identifier, for: indexPath)
+        as! LogOutTableViewCell
       
       return cell0
     default:
