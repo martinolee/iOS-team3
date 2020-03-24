@@ -9,37 +9,24 @@
 import UIKit
 
 class SignUpViewController: UIViewController {
-    private let signupTableView = UITableView()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-      setupUI()
-    }
+  private let signupView = SignupView()
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    setupUI()
+  }
   private func setupUI() {
-    [signupTableView].forEach {
-      view.addSubview($0)
+    [signupView].forEach {
+        self.view.addSubview($0)
     }
     
-    signupTableView.rowHeight = 120
+    signupView.backgroundColor = .white
+    self.view.backgroundColor = .white
+    let guide = self.view.safeAreaLayoutGuide
     
-    signupTableView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+    signupView.snp.makeConstraints {
+      $0.edges.equalTo(guide)
     }
-     
-    signupTableView.dataSource = self
-    signupTableView.register(SignupTableViewCell.self, forCellReuseIdentifier: SignupTableViewCell.identifier)
   }
 }
 
-extension SignUpViewController: UITableViewDataSource {
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    10
-  }
-  
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    guard indexPath.row == 0 else { return UITableViewCell() }
-    let cell = tableView.dequeueReusableCell(withIdentifier: SignupTableViewCell.identifier, for: indexPath)
-      as! SignupTableViewCell
-    return cell
-  }
-}

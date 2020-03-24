@@ -51,7 +51,7 @@ class LogOutTableViewCell: UITableViewCell {
   
   private func setupUI() {
     [signInLabel, signInBonusButton, logInButton].forEach {
-      self.addSubview($0)
+      contentView.addSubview($0)
     }
     
     constraints()
@@ -59,23 +59,22 @@ class LogOutTableViewCell: UITableViewCell {
   
   private func constraints() {
     signInLabel.snp.makeConstraints {
-      $0.top.equalTo(self.snp.top).offset(10)
-      $0.centerX.equalTo(self.snp.centerX)
-      $0.width.equalTo(self.snp.width).multipliedBy(0.5)
-      $0.height.equalTo(self.snp.height).multipliedBy(0.25)
+      $0.top.equalTo(contentView.snp.top).offset(20)
+      $0.centerX.equalTo(contentView.snp.centerX)
+      $0.width.equalTo(contentView.snp.width).multipliedBy(0.5)
     }
     
     signInBonusButton.snp.makeConstraints {
       $0.top.equalTo(signInLabel.snp.bottom)
-      $0.centerX.equalTo(self.snp.centerX)
-      $0.height.equalTo(self.snp.height).multipliedBy(0.1)
+      $0.centerX.equalTo(signInLabel)
     }
     
     logInButton.snp.makeConstraints {
       $0.top.equalTo(signInBonusButton.snp.bottom).offset(10)
-      $0.centerX.equalTo(self.snp.centerX)
-      $0.width.equalTo(self.snp.width).multipliedBy(0.9)
-      $0.height.equalTo(self.snp.height).multipliedBy(0.2)
+      $0.centerX.equalTo(contentView.snp.centerX)
+      $0.bottom.equalTo(contentView.snp.bottom).offset(-20)
+      $0.width.equalTo(contentView.snp.width).multipliedBy(0.9)
+      $0.height.equalTo(50)
     }
   }
   
