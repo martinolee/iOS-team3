@@ -9,55 +9,63 @@
 import UIKit
 
 class LogOutViewController: UIViewController {
-
-      private let myCurlyTableView = UITableView()
-      
-      override func viewDidLoad() {
-        super.viewDidLoad()
-        self.view.backgroundColor = .white
-        setupUI()
-      }
-      private func setupUI() {
-        [myCurlyTableView].forEach {
-          view.addSubview($0)
-        }
-        self.title = "마이컬리"
-        
-    //    self.navigationItem.leftBarButtonItem = self.lef
-      
-        
-        myCurlyTableView.dataSource = self
-        myCurlyTableView.register(LogOutTableViewCell.self, forCellReuseIdentifier: LogOutTableViewCell.identifier)
-        constraints()
-      }
-      
-      private func constraints() {
-      
-        let guide = view.safeAreaLayoutGuide
-        
-        myCurlyTableView.snp.makeConstraints {
-          $0.top.equalTo(guide.snp.top)
-          $0.leading.equalTo(guide.snp.leading)
-          $0.trailing.equalTo(guide.snp.trailing)
-          $0.height.equalTo(guide.snp.height).multipliedBy(0.35)
-        }
-      }
-    @objc func didTapSingUpInButton() {
-        let loginVC = UINavigationController(rootViewController: LoginViewController())
-        loginVC.modalPresentationStyle = .fullScreen
-        loginVC.navigationBar.tintColor = .black
-        self.present(loginVC, animated: true, completion: nil)
+  private let settingOpt = [["Login"], ["비회원 주문 조회"], ["배송 안내", "공지사항", "자주하는 질문", "고객센터", "이용안내", "컬리소개"], ["알림설정"]]
+  private let myCurlyTableView = UITableView()
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    self.view.backgroundColor = .white
+    setupUI()
+  }
+  private func setupUI() {
+    [myCurlyTableView].forEach {
+      view.addSubview($0)
     }
+    self.title = "마이컬리"
     
+    myCurlyTableView.dataSource = self
+    myCurlyTableView.delegate = self
+    myCurlyTableView.register(LogOutTableViewCell.self, forCellReuseIdentifier: LogOutTableViewCell.identifier)
+    myCurlyTableView.register(UITableViewCell.self, forCellReuseIdentifier: "Detail")
+ 
+    constraints()
+  }
+  
+  private func constraints() {
+    myCurlyTableView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
     }
-    extension LogOutViewController: UITableViewDataSource {
-      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-      }
+  }
+}
+extension LogOutViewController: UITableViewDataSource {
+  func numberOfSections(in tableView: UITableView) -> Int {
+    settingOpt.count
+  }
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    settingOpt[section].count
+  }
+  
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    switch indexPath.section {
+    case 0:
+      let cell0 = tableView.dequeueReusableCell(withIdentifier: LogOutTableViewCell.identifier, for: indexPath)
+        as! LogOutTableViewCell
       
-      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: LogOutTableViewCell.identifier, for: indexPath) as! LogOutTableViewCell
-        cell.logInButton.addTarget(self, action: #selector(didTapSingUpInButton), for: .touchUpInside)
-        return cell
-      }
+      return cell0
+    default:
+      let cell = tableView.dequeueReusableCell(withIdentifier: "Detail", for: indexPath) 
+      cell.textLabel?.text = settingOpt[indexPath.section][indexPath.row]
+      
+      return cell
+    }
+  }
+}
+
+extension LogOutViewController: UITableViewDelegate {
+  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: tableView.rowHeight))
+    footerView.backgroundColor = .lightGray
+    
+    return footerView
+  }
 }
