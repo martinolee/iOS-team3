@@ -11,7 +11,7 @@ import UIKit
 class HomeReuseCollectionCell: UICollectionViewCell {
   override init(frame: CGRect) {
     super.init(frame: frame)
-    self.backgroundColor = .red
+    self.backgroundColor = .green
   }
   
   required init?(coder: NSCoder) {
