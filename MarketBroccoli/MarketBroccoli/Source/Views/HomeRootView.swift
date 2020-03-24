@@ -14,6 +14,10 @@ class HomeRootView: UIView {
   private let menuTextArray = ["컬리추천", "신상품", "베스트", "알뜰쇼핑", "이벤트"]
   private let scrollView = UIScrollView().then {
     $0.backgroundColor = .gray
+    $0.isPagingEnabled = true
+    $0.showsVerticalScrollIndicator = false
+    $0.showsHorizontalScrollIndicator = false
+    $0.bounces = false
   }
   
   private let stackViewBackground = UIView().then {
@@ -71,22 +75,48 @@ extension HomeRootView {
       $0.top.equalTo(stackView.snp.bottom)
       $0.leading.bottom.trailing.equalTo(safeArea)
     }
-    let aTableView = RecommendationView()
-    let bTableView = RecommendationView()
     
-    [aTableView, bTableView].forEach {
-      scrollView.addSubview($0)
+    var categoryArray: [UIView] = []
+    for idx in 0..<menuTextArray.count {
+      switch idx {
+      case 0:
+        categoryArray.append(RecommendationView())
+      case 1...3:
+        let product = NewProduct(frame: .zero, collectionViewLayout: CustomCollectionViewFlowLayout())
+        product.dataSource = self
+        product.register(cell: HomeReuseCollectionCell.self)
+        categoryArray.append(product)
+      case 4:
+        categoryArray.append(RecommendationView())
+      default:
+        fatalError("out of range")
+      }
     }
     
-    aTableView.snp.makeConstraints {
-      $0.top.leading.bottom.equalToSuperview()
-      $0.width.height.equalTo(self)
+    for idx in 0..<categoryArray.count {
+      scrollView.addSubview(categoryArray[idx])
+      categoryArray[idx].snp.makeConstraints {
+        if idx == 0 {
+          $0.top.leading.bottom.equalToSuperview()
+        } else if idx == categoryArray.count - 1 {
+          $0.leading.equalTo(categoryArray[idx - 1].snp.trailing)
+          $0.top.bottom.trailing.equalToSuperview()
+        } else {
+          $0.leading.equalTo(categoryArray[idx - 1].snp.trailing)
+          $0.top.bottom.equalToSuperview()
+        }
+        $0.width.height.equalTo(self.scrollView)
+      }
     }
-    
-    bTableView.snp.makeConstraints {
-      $0.leading.equalTo(aTableView.snp.trailing)
-      $0.top.bottom.trailing.equalToSuperview()
-      $0.width.height.equalTo(self)
-    }
+  }
+}
+
+extension HomeRootView: UICollectionViewDataSource {
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return 5
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    return collectionView.dequeue(HomeReuseCollectionCell.self, indexPath: indexPath)
   }
 }
