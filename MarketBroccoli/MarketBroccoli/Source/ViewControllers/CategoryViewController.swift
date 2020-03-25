@@ -16,7 +16,17 @@ struct TempCategory {
   let row: [String]
 }
 
-let item1: [TempCategory] = [TempCategory(select: false, title: "채소", imagePurple: "채소_보라", imageBlack: "채소_검정", row: ["전체보기", "기본채소", "쌈·샐러드·간편채소"])]
+let item1: [TempCategory] =
+  [
+    TempCategory(
+    select: false,
+    title: "채소",
+    imagePurple: "채소_보라",
+    imageBlack: "채소_검정",
+    row: ["전체보기", "기본채소", "쌈·샐러드·간편채소", "브로콜리·특수채소", "콩나물·버섯류", "양파·마늘·생강·파", "시금치·부추·나물", "파프리카·피망·고추"]
+  ),
+    TempCategory(select: false, title: "과일·견과·쌀", imagePurple: "과일_보라", imageBlack: "과일_검정", row: ["전체보기", "국산과일", "수입과일", "냉동·건과일", "견과류", "쌀·잡곡"])
+]
 //let items2: [TempCategory] = [
 //    TempCategory(select: false, title: "채소", row: ["전체보기", "기본채소", "쌈"]),
 //    TempCategory(select: false, title: "과일·견과·쌀", row: ["국산과일", "수입과일"])

@@ -16,7 +16,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.main.bounds)
 //        let vc = HomeViewController()
-        let vc = SignUpViewController()
+//        let vc = SignUpViewController()
+        let vc = CategoryViewController()
+        
         let navi = UINavigationController(rootViewController: vc)
         navi.navigationBar.barTintColor = #colorLiteral(red: 0.3176470588, green: 0.1529411765, blue: 0.4470588235, alpha: 1)
         navi.navigationBar.tintColor = .white
