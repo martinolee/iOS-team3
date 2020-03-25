@@ -14,7 +14,7 @@ class LogOutViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.view.backgroundColor = .white
+    self.myCurlyTableView.backgroundColor = .lightGray
     setupUI()
   }
   private func setupUI() {
@@ -22,9 +22,11 @@ class LogOutViewController: UIViewController {
       view.addSubview($0)
     }
     self.title = "마이컬리"
-    
     myCurlyTableView.dataSource = self
     myCurlyTableView.delegate = self
+    myCurlyTableView.sectionFooterHeight = 10
+    myCurlyTableView.rowHeight = UITableView.automaticDimension
+    
     myCurlyTableView.register(LogOutTableViewCell.self, forCellReuseIdentifier: LogOutTableViewCell.identifier)
     myCurlyTableView.register(UITableViewCell.self, forCellReuseIdentifier: "Detail")
  
@@ -32,7 +34,6 @@ class LogOutViewController: UIViewController {
   }
   
   private func constraints() {
-    
     myCurlyTableView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
@@ -55,11 +56,11 @@ extension LogOutViewController: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    
     switch indexPath.section {
     case 0:
-      let cell0 = tableView.dequeueReusableCell(withIdentifier: LogOutTableViewCell.identifier, for: indexPath) as! LogOutTableViewCell
-      cell0.logInButton.addTarget(self, action: #selector(didTapSingUpInButton), for: .touchUpInside)
+      guard let cell0 = tableView.dequeueReusableCell(
+        withIdentifier: LogOutTableViewCell.identifier,
+        for: indexPath) as? LogOutTableViewCell else { fatalError() }
       return cell0
     default:
       let cell = tableView.dequeueReusableCell(withIdentifier: "Detail", for: indexPath) 

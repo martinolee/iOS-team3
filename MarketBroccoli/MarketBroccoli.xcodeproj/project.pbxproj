@@ -13,6 +13,14 @@
 		7050F316242876AC00B8E13B /* IDFindViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7050F315242876AC00B8E13B /* IDFindViewController.swift */; };
 		7050F318242876B600B8E13B /* PWFindViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7050F317242876B600B8E13B /* PWFindViewController.swift */; };
 		723851E124249C6400E8B206 /* UserInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723851E024249C6400E8B206 /* UserInfoTableViewCell.swift */; };
+		727F093324287C2E00584A40 /* UITableViewCellExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727F093224287C2E00584A40 /* UITableViewCellExtension.swift */; };
+		727F093524287C4F00584A40 /* UITableViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727F093424287C4F00584A40 /* UITableViewExtension.swift */; };
+		727F09612428DFFC00584A40 /* CartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727F09602428DFFC00584A40 /* CartView.swift */; };
+		727F09632428E2DB00584A40 /* CartProductTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727F09622428E2DB00584A40 /* CartProductTableViewCell.swift */; };
+		728078682429A8A500101B7D /* ProductQuantityStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728078672429A8A500101B7D /* ProductQuantityStepper.swift */; };
+		7280786C2429CA2000101B7D /* CartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7280786B2429CA2000101B7D /* CartViewController.swift */; };
+		7C15D0B62429E55300ACB4C9 /* HomeReuseCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C15D0B52429E55300ACB4C9 /* HomeReuseCollectionCell.swift */; };
+		7C15D0B8242A2C3500ACB4C9 /* UILabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C15D0B7242A2C3500ACB4C9 /* UILabelExtension.swift */; };
 		7C65ECBA242471380075606A /* EventMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECB9242471380075606A /* EventMark.swift */; };
 		7C65ECBC242472370075606A /* EmptyExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECBB242472370075606A /* EmptyExtension.swift */; };
 		7C65ECBE242472400075606A /* EmptyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECBD242472400075606A /* EmptyManager.swift */; };
@@ -28,12 +36,19 @@
 		7C65ECD82424F03D0075606A /* BestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECD72424F03D0075606A /* BestView.swift */; };
 		7C65ECDA2424F0830075606A /* ShoppingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECD92424F0830075606A /* ShoppingView.swift */; };
 		7C65ECDC2424F08C0075606A /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECDB2424F08C0075606A /* EventView.swift */; };
+		7CCD648B2428735100FC671B /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 7CCD648A2428735100FC671B /* .swiftlint.yml */; };
+		7CCD648F24287C3800FC671B /* HomeImageTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCD648E24287C3800FC671B /* HomeImageTableCell.swift */; };
+		7CCD6491242886C500FC671B /* HomeImageCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCD6490242886C500FC671B /* HomeImageCollectionView.swift */; };
+		7CCD64942428873000FC671B /* CustomCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCD64932428873000FC671B /* CustomCollectionViewFlowLayout.swift */; };
+		7CCD64962428DABA00FC671B /* HomeBannerCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCD64952428DABA00FC671B /* HomeBannerCollectionCell.swift */; };
+		7CCD64982428DB1D00FC671B /* UICollectionViewCellExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCD64972428DB1D00FC671B /* UICollectionViewCellExtension.swift */; };
+		7CCD649A2428DB2C00FC671B /* UICollectionViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCD64992428DB2C00FC671B /* UICollectionViewExtension.swift */; };
 		7CD9D45A242460D60091AE5B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD9D459242460D60091AE5B /* AppDelegate.swift */; };
 		7CD9D45E242460D70091AE5B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD9D45D242460D70091AE5B /* ViewController.swift */; };
 		7CD9D463242460DB0091AE5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7CD9D462242460DB0091AE5B /* Assets.xcassets */; };
 		7CD9D466242460DB0091AE5B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CD9D464242460DB0091AE5B /* LaunchScreen.storyboard */; };
+		FA9AD74224287F51002D3504 /* SignupVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9AD74124287F51002D3504 /* SignupVIew.swift */; };
 		FAAE2E572424E3C400ACC5D3 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAE2E562424E3C400ACC5D3 /* SignUpViewController.swift */; };
-		FAAE2E592424E3F500ACC5D3 /* SignUpTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAE2E582424E3F500ACC5D3 /* SignUpTableViewCell.swift */; };
 		FAAFEB5F2424A74900452977 /* LogOutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAFEB5E2424A74900452977 /* LogOutViewController.swift */; };
 		FAAFEB612424A77900452977 /* LogOutTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAFEB602424A77900452977 /* LogOutTableViewCell.swift */; };
 		FAAFEB632424A79200452977 /* TypeConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAFEB622424A79200452977 /* TypeConverter.swift */; };
@@ -46,6 +61,14 @@
 		7050F315242876AC00B8E13B /* IDFindViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDFindViewController.swift; sourceTree = "<group>"; };
 		7050F317242876B600B8E13B /* PWFindViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PWFindViewController.swift; sourceTree = "<group>"; };
 		723851E024249C6400E8B206 /* UserInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoTableViewCell.swift; sourceTree = "<group>"; };
+		727F093224287C2E00584A40 /* UITableViewCellExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCellExtension.swift; sourceTree = "<group>"; };
+		727F093424287C4F00584A40 /* UITableViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewExtension.swift; sourceTree = "<group>"; };
+		727F09602428DFFC00584A40 /* CartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartView.swift; sourceTree = "<group>"; };
+		727F09622428E2DB00584A40 /* CartProductTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartProductTableViewCell.swift; sourceTree = "<group>"; };
+		728078672429A8A500101B7D /* ProductQuantityStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductQuantityStepper.swift; sourceTree = "<group>"; };
+		7280786B2429CA2000101B7D /* CartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewController.swift; sourceTree = "<group>"; };
+		7C15D0B52429E55300ACB4C9 /* HomeReuseCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeReuseCollectionCell.swift; sourceTree = "<group>"; };
+		7C15D0B7242A2C3500ACB4C9 /* UILabelExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelExtension.swift; sourceTree = "<group>"; };
 		7C65ECB9242471380075606A /* EventMark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMark.swift; sourceTree = "<group>"; };
 		7C65ECBB242472370075606A /* EmptyExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyExtension.swift; sourceTree = "<group>"; };
 		7C65ECBD242472400075606A /* EmptyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyManager.swift; sourceTree = "<group>"; };
@@ -61,6 +84,13 @@
 		7C65ECD72424F03D0075606A /* BestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BestView.swift; sourceTree = "<group>"; };
 		7C65ECD92424F0830075606A /* ShoppingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingView.swift; sourceTree = "<group>"; };
 		7C65ECDB2424F08C0075606A /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
+		7CCD648A2428735100FC671B /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
+		7CCD648E24287C3800FC671B /* HomeImageTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeImageTableCell.swift; sourceTree = "<group>"; };
+		7CCD6490242886C500FC671B /* HomeImageCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeImageCollectionView.swift; sourceTree = "<group>"; };
+		7CCD64932428873000FC671B /* CustomCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
+		7CCD64952428DABA00FC671B /* HomeBannerCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBannerCollectionCell.swift; sourceTree = "<group>"; };
+		7CCD64972428DB1D00FC671B /* UICollectionViewCellExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewCellExtension.swift; sourceTree = "<group>"; };
+		7CCD64992428DB2C00FC671B /* UICollectionViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewExtension.swift; sourceTree = "<group>"; };
 		7CD9D456242460D60091AE5B /* MarketBroccoli.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarketBroccoli.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7CD9D459242460D60091AE5B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7CD9D45D242460D70091AE5B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -69,8 +99,8 @@
 		7CD9D467242460DB0091AE5B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BA3DAD3F9ADB459218F3993B /* Pods_MarketBroccoli.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MarketBroccoli.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1C8D23965CC57B3A3E2F2A7 /* Pods-MarketBroccoli.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MarketBroccoli.release.xcconfig"; path = "Target Support Files/Pods-MarketBroccoli/Pods-MarketBroccoli.release.xcconfig"; sourceTree = "<group>"; };
+		FA9AD74124287F51002D3504 /* SignupVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupVIew.swift; sourceTree = "<group>"; };
 		FAAE2E562424E3C400ACC5D3 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
-		FAAE2E582424E3F500ACC5D3 /* SignUpTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpTableViewCell.swift; sourceTree = "<group>"; };
 		FAAFEB5E2424A74900452977 /* LogOutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogOutViewController.swift; sourceTree = "<group>"; };
 		FAAFEB602424A77900452977 /* LogOutTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogOutTableViewCell.swift; sourceTree = "<group>"; };
 		FAAFEB622424A79200452977 /* TypeConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeConverter.swift; sourceTree = "<group>"; };
@@ -105,9 +135,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		727F095F2428DCE700584A40 /* CartView */ = {
+			isa = PBXGroup;
+			children = (
+				727F09602428DFFC00584A40 /* CartView.swift */,
+				727F09622428E2DB00584A40 /* CartProductTableViewCell.swift */,
+			);
+			path = CartView;
+			sourceTree = "<group>";
+		};
 		7C65ECAD2424677C0075606A /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				7CCD648C24287AB300FC671B /* Cells */,
 				7C65ECC6242472F70075606A /* Views */,
 				7C65ECC3242472E20075606A /* Models */,
 				7C65ECB7242470E70075606A /* Utils */,
@@ -145,6 +185,7 @@
 				7050F3112424BA3800B8E13B /* LoginViewController.swift */,
 				7050F315242876AC00B8E13B /* IDFindViewController.swift */,
 				7050F317242876B600B8E13B /* PWFindViewController.swift */,
+				7280786B2429CA2000101B7D /* CartViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -153,6 +194,8 @@
 			isa = PBXGroup;
 			children = (
 				7C65ECB9242471380075606A /* EventMark.swift */,
+				728078672429A8A500101B7D /* ProductQuantityStepper.swift */,
+				7CCD64932428873000FC671B /* CustomCollectionViewFlowLayout.swift */,
 			);
 			path = CustomUI;
 			sourceTree = "<group>";
@@ -162,6 +205,11 @@
 			children = (
 				7C65ECBB242472370075606A /* EmptyExtension.swift */,
 				7050F3132424DF7F00B8E13B /* ExtensionUIView.swift */,
+				727F093424287C4F00584A40 /* UITableViewExtension.swift */,
+				727F093224287C2E00584A40 /* UITableViewCellExtension.swift */,
+				7CCD64972428DB1D00FC671B /* UICollectionViewCellExtension.swift */,
+				7CCD64992428DB2C00FC671B /* UICollectionViewExtension.swift */,
+				7C15D0B7242A2C3500ACB4C9 /* UILabelExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -203,11 +251,12 @@
 		7C65ECC6242472F70075606A /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				727F095F2428DCE700584A40 /* CartView */,
 				7C65ECD22424EF350075606A /* HomeViews */,
 				7C65ECC7242472FE0075606A /* EmptyViews.swift */,
 				FAAFEB602424A77900452977 /* LogOutTableViewCell.swift */,
 				7C65ECD02424D82C0075606A /* HomeRootView.swift */,
-				FAAE2E582424E3F500ACC5D3 /* SignUpTableViewCell.swift */,
+				FA9AD74124287F51002D3504 /* SignupVIew.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -234,9 +283,29 @@
 			path = HomeViews;
 			sourceTree = "<group>";
 		};
+		7CCD648C24287AB300FC671B /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				7CCD648D24287AF100FC671B /* HomeViewCells */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		7CCD648D24287AF100FC671B /* HomeViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				7CCD648E24287C3800FC671B /* HomeImageTableCell.swift */,
+				7CCD6490242886C500FC671B /* HomeImageCollectionView.swift */,
+				7CCD64952428DABA00FC671B /* HomeBannerCollectionCell.swift */,
+				7C15D0B52429E55300ACB4C9 /* HomeReuseCollectionCell.swift */,
+			);
+			path = HomeViewCells;
+			sourceTree = "<group>";
+		};
 		7CD9D44D242460D60091AE5B = {
 			isa = PBXGroup;
 			children = (
+				7CCD648A2428735100FC671B /* .swiftlint.yml */,
 				7CD9D458242460D60091AE5B /* MarketBroccoli */,
 				7CD9D464242460DB0091AE5B /* LaunchScreen.storyboard */,
 				7CD9D457242460D60091AE5B /* Products */,
@@ -276,6 +345,7 @@
 				7CD9D453242460D60091AE5B /* Frameworks */,
 				7CD9D454242460D60091AE5B /* Resources */,
 				0CEDE70F0BE9333EC05A1E7C /* [CP] Embed Pods Frameworks */,
+				7CCD6489242872FE00FC671B /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -324,6 +394,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7CCD648B2428735100FC671B /* .swiftlint.yml in Resources */,
 				7CD9D466242460DB0091AE5B /* LaunchScreen.storyboard in Resources */,
 				7CD9D463242460DB0091AE5B /* Assets.xcassets in Resources */,
 			);
@@ -348,6 +419,23 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MarketBroccoli/Pods-MarketBroccoli-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		7CCD6489242872FE00FC671B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 		};
 		8DA5496C091B6DF49944DCDF /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -378,33 +466,48 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7CCD64982428DB1D00FC671B /* UICollectionViewCellExtension.swift in Sources */,
 				7C65ECDA2424F0830075606A /* ShoppingView.swift in Sources */,
 				7C65ECC2242472C60075606A /* Constant.swift in Sources */,
 				7C65ECD42424EFE60075606A /* RecommendationView.swift in Sources */,
 				7050F318242876B600B8E13B /* PWFindViewController.swift in Sources */,
+				727F093324287C2E00584A40 /* UITableViewCellExtension.swift in Sources */,
 				7C65ECCB24249B2C0075606A /* EmptyTemp.swift in Sources */,
+				728078682429A8A500101B7D /* ProductQuantityStepper.swift in Sources */,
 				7CD9D45E242460D70091AE5B /* ViewController.swift in Sources */,
+				727F093524287C4F00584A40 /* UITableViewExtension.swift in Sources */,
 				7050F3122424BA3800B8E13B /* LoginViewController.swift in Sources */,
+				FA9AD74224287F51002D3504 /* SignupVIew.swift in Sources */,
 				7C65ECBC242472370075606A /* EmptyExtension.swift in Sources */,
+				7CCD64962428DABA00FC671B /* HomeBannerCollectionCell.swift in Sources */,
 				723851E124249C6400E8B206 /* UserInfoTableViewCell.swift in Sources */,
 				7C65ECD12424D82C0075606A /* HomeRootView.swift in Sources */,
 				7C65ECCF2424B95F0075606A /* HomeViewController.swift in Sources */,
 				7050F316242876AC00B8E13B /* IDFindViewController.swift in Sources */,
 				7C65ECD62424F0060075606A /* NewProductView.swift in Sources */,
+				7CCD64942428873000FC671B /* CustomCollectionViewFlowLayout.swift in Sources */,
 				7050F3142424DF7F00B8E13B /* ExtensionUIView.swift in Sources */,
 				FAAFEB612424A77900452977 /* LogOutTableViewCell.swift in Sources */,
+				7CCD6491242886C500FC671B /* HomeImageCollectionView.swift in Sources */,
+				7CCD648F24287C3800FC671B /* HomeImageTableCell.swift in Sources */,
 				7C65ECC8242472FE0075606A /* EmptyViews.swift in Sources */,
 				FAAFEB5F2424A74900452977 /* LogOutViewController.swift in Sources */,
+				7CCD649A2428DB2C00FC671B /* UICollectionViewExtension.swift in Sources */,
 				FAAFEB632424A79200452977 /* TypeConverter.swift in Sources */,
 				FAAE2E572424E3C400ACC5D3 /* SignUpViewController.swift in Sources */,
+				7C15D0B62429E55300ACB4C9 /* HomeReuseCollectionCell.swift in Sources */,
 				7C65ECC5242472EC0075606A /* EmptyModel.swift in Sources */,
 				7C65ECDC2424F08C0075606A /* EventView.swift in Sources */,
 				7C65ECBE242472400075606A /* EmptyManager.swift in Sources */,
+				727F09612428DFFC00584A40 /* CartView.swift in Sources */,
 				7C65ECBA242471380075606A /* EventMark.swift in Sources */,
 				7C65ECD82424F03D0075606A /* BestView.swift in Sources */,
 				FAAE2E592424E3F500ACC5D3 /* SignUpTableViewCell.swift in Sources */,
+				7280786C2429CA2000101B7D /* CartViewController.swift in Sources */,
+				7C15D0B8242A2C3500ACB4C9 /* UILabelExtension.swift in Sources */,
 				7CD9D45A242460D60091AE5B /* AppDelegate.swift in Sources */,
 				7C65ECC0242472480075606A /* EmptyTC.swift in Sources */,
+				727F09632428E2DB00584A40 /* CartProductTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -542,6 +645,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = G4MM77V7NH;
 				INFOPLIST_FILE = MarketBroccoli/Resource/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -560,6 +664,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = G4MM77V7NH;
 				INFOPLIST_FILE = MarketBroccoli/Resource/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
