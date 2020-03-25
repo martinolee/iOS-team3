@@ -64,6 +64,11 @@ extension LoginViewController {
     self.navigationItem.leftBarButtonItem?.tintColor = .black
   }
   
+  private func setupAttr() {
+    view.backgroundColor = .white
+    signUpBtn.addTarget(self, action: #selector(didTapsignUpButton(_:)), for: .touchUpInside)
+  }
+  
   private func setupUI() {
     view.addSubviews([idTextField, pwTextField, logInbtn, idFindBtn, pwFindBtn, signUpBtn])
     let guide = view.safeAreaLayoutGuide
@@ -90,6 +95,7 @@ extension LoginViewController {
       $0.top.equalTo(logInbtn.snp.bottom).offset(UI.btnTopMargin)
       $0.centerX.equalTo(guide.snp.centerX).offset(-UI.btnBetweenMargin)
     }
+    
     pwFindBtn.snp.makeConstraints {
       $0.top.equalTo(logInbtn.snp.bottom).offset(UI.btnTopMargin)
       $0.leading.equalTo(idFindBtn.snp.trailing).offset(4)
@@ -102,11 +108,6 @@ extension LoginViewController {
     }
     setupAttr()
   }
-  
-  private func setupAttr() {
-    view.backgroundColor = .white
-    signUpBtn.addTarget(self, action: #selector(didtapsignUpButton(_:)), for: .touchUpInside)
-  }
 }
 
 // MARK: - ACTIONS
@@ -114,10 +115,10 @@ extension LoginViewController {
   @objc private func didTapCancelButton() {
     self.dismiss(animated: true, completion: nil)
   }
-
+  
   @objc private func didtapFindButton() {}
   
-  @objc private func didtapsignUpButton(_ sender: UIButton) {
+  @objc private func didTapsignUpButton(_ sender: UIButton) {
     let nextVC = SignUpViewController()
     self.navigationController?.pushViewController(nextVC, animated: true)
   }

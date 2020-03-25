@@ -11,8 +11,10 @@ import UIKit
 class SignupView: UIView {
   private let idLabel = UILabel().then {
     let myMutableString = NSMutableAttributedString(string: "아이디*", attributes: nil)
-    myMutableString.addAttribute(NSAttributedString.Key.foregroundColor,
-        value: UIColor.purple, range: NSRange(location: 3, length: 1))
+    myMutableString.addAttribute(
+      NSAttributedString.Key.foregroundColor,
+      value: UIColor.purple, range: NSRange(location: 3, length: 1)
+    )
     // set label Attribute
     $0.attributedText = myMutableString
   }
@@ -28,24 +30,30 @@ class SignupView: UIView {
   //  private let checkingIdLabel = UILabel()
   private let secretNumberLabel = UILabel().then {
     let myMutableString = NSMutableAttributedString(string: "비밀번호*", attributes: nil)
-  myMutableString.addAttribute(NSAttributedString.Key.foregroundColor,
-        value: UIColor.purple, range: NSRange(location: 4, length: 1))
+  myMutableString.addAttribute(
+    NSAttributedString.Key.foregroundColor,
+    value: UIColor.purple, range: NSRange(location: 4, length: 1)
+    )
     // set label Attribute
     $0.attributedText = myMutableString
   }
   private var secretTextFeild = UITextField()
   private let checkSecretNumberLabel = UILabel().then {
     let myMutableString = NSMutableAttributedString(string: "비밀번호 확인*", attributes: nil)
-    myMutableString.addAttribute(NSAttributedString.Key.foregroundColor,
-          value: UIColor.purple, range: NSRange(location: 7, length: 1))
+    myMutableString.addAttribute(
+      NSAttributedString.Key.foregroundColor,
+      value: UIColor.purple, range: NSRange(location: 7, length: 1)
+    )
       // set label Attribute
       $0.attributedText = myMutableString
   }
   private var checkSecretNumberTextFeild = UITextField()
   private let nameLabel = UILabel().then {
     let myMutableString = NSMutableAttributedString(string: "이름*", attributes: nil)
-    myMutableString.addAttribute(NSAttributedString.Key.foregroundColor,
-          value: UIColor.purple, range: NSRange(location: 2, length: 1))
+    myMutableString.addAttribute(
+      NSAttributedString.Key.foregroundColor,
+      value: UIColor.purple, range: NSRange(location: 2, length: 1)
+    )
       // set label Attribute
       $0.attributedText = myMutableString
   }
@@ -56,11 +64,12 @@ class SignupView: UIView {
   private var emailTextFeild = UITextField()
   private let cellphoneLabel = UILabel().then {
     let myMutableString = NSMutableAttributedString(string: "휴대폰*", attributes: nil)
-     myMutableString.addAttribute(NSAttributedString.Key.foregroundColor,
-           value: UIColor.purple, range: NSRange(location: 3, length: 1))
+     myMutableString.addAttribute(
+      NSAttributedString.Key.foregroundColor,
+      value: UIColor.purple, range: NSRange(location: 3, length: 1)
+    )
        // set label Attribute
        $0.attributedText = myMutableString
-    
   }
   private var cellphoneTextField = UITextField()
   private let receivingCellphoneNumberButton = UIButton().then {
@@ -190,8 +199,10 @@ class SignupView: UIView {
   private let usingAgreement = UILabel().then {
     $0.font = .systemFont(ofSize: 15, weight: .bold)
     let myMutableString = NSMutableAttributedString(string: "이용약관동의*", attributes: nil)
-    myMutableString.addAttribute(NSAttributedString.Key.foregroundColor,
-          value: UIColor.purple, range: NSRange(location: 6, length: 1))
+    myMutableString.addAttribute(
+      NSAttributedString.Key.foregroundColor,
+      value: UIColor.purple, range: NSRange(location: 6, length: 1)
+    )
       // set label Attribute
       $0.attributedText = myMutableString
   }
@@ -742,9 +753,7 @@ class SignupView: UIView {
       $0.leading.equalToSuperview().offset(20)
       $0.width.equalToSuperview().multipliedBy(0.92)
       $0.bottom.equalToSuperview()
-      
     }
-    
   }
   
   required init?(coder: NSCoder) {
