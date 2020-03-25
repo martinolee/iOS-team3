@@ -2,6 +2,7 @@ disabled_rules:
 - unused_setter_value
 - trailing_whitespace
 - function_body_length
+- type_body_length
 opt_in_rules:
 - force_unwrapping
 - closure_body_length
@@ -19,12 +20,13 @@ opt_in_rules:
 - vertical_parameter_alignment_on_call
 - vertical_parameter_alignment
 - unused_import
+- type_body_length
 
 excluded:
-
 - Pods
 - MarketBroccoli/Application/AppDelegate.swift
 - MarketBroccoli/Application/SceneDelegate.swift
+- MarketBroccoli/Source/CustomUI/CustomCollectionViewFlowLayout.swift
 
 # Custom
 
@@ -33,5 +35,7 @@ force_try: warning
 force_unwrapping: warning
 identical_operands: error
 file_length:
-warning: 500
-error: 1000
+  warning: 500
+  error: 1000
+  
+
