@@ -9,21 +9,50 @@
 import UIKit
 
 class LoginViewController: UIViewController {
+  private var idTextField = UITextField().then {
+    $0.placeholder = "아이디를 입력해주세요"
+    $0.textFieldStyle()
+  }
+  private var pwTextField = UITextField().then {
+    $0.placeholder = "비밀번호를 입력해주세요"
+    $0.textFieldStyle()
+  }
+  private var logInbtn = UIButton().then {
+    $0.setTitle("로그인", for: .normal)
+    $0.roundPurpleBtnStyle()
+  }
+  private var idFindBtn = UIButton().then {
+    $0.setTitle("아이디 찾기 |", for: .normal)
+    $0.setTitleColor(.darkGray, for: .normal)
+    $0.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+  }
+  private var pwFindBtn = UIButton().then {
+    $0.setTitle("비밀번호 찾기", for: .normal)
+    $0.setTitleColor(.darkGray, for: .normal)
+    $0.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+  }
+  private var signUpBtn = UIButton().then {
+    $0.setTitle("회원가입", for: .normal)
+    $0.roundLineBtnStyle()
+  }
   
-  private var idTextField = UITextField()
-  private var pwTextField = UITextField()
-  private var logInbtn = UIButton()
-  private var idFindBtn = UIButton()
-  private var pwFindBtn = UIButton()
-  private var signUpBtn = UIButton()
+  private enum UI {
+    static let margin: CGFloat = 32
+    static let height: CGFloat = 14
+    static let btnBetweenMargin: CGFloat = 40
+    static let btnTopMargin: CGFloat = 12
+  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    setNavigation()
-    setUI()
+    setupNavigation()
+    setupUI()
   }
-  
-  private func setNavigation() {
+}
+
+// MARK: - UI
+extension LoginViewController {
+  private func setupNavigation() {
     self.navigationController?.navigationBar.barTintColor = .white
     self.navigationItem.title = "로그인"
     self.navigationItem.leftBarButtonItem = UIBarButtonItem(
@@ -32,115 +61,65 @@ class LoginViewController: UIViewController {
       target: self,
       action: #selector(didTapCancelButton)
     )
+    self.navigationItem.leftBarButtonItem?.tintColor = .black
   }
   
-  private func setUI() {
+  private func setupAttr() {
     view.backgroundColor = .white
-    idTextField.textFeildStyle(placeholder: "아이디를 입력해주세요")
-    pwTextField.textFeildStyle(placeholder: "비밀번호를 입력해주세요")
-    logInbtn.roundPurpleBtnStyle(title: "로그인") // addTarget 필요
-    idFindBtn = self.tinyGrayBtn(title: "아이디 찾기 |")
-    pwFindBtn = self.tinyGrayBtn(title: "비밀번호 찾기")
-    signUpBtn.roundLineBtnStyle(title: "회원가입") // addTarget 필요
-    [idTextField, pwTextField, logInbtn, idFindBtn, pwFindBtn, signUpBtn].forEach {
-      view.addSubview($0)
-    }
-    setLayout()
+    signUpBtn.addTarget(self, action: #selector(didTapsignUpButton(_:)), for: .touchUpInside)
   }
   
-  private func setLayout() {
+  private func setupUI() {
+    view.addSubviews([idTextField, pwTextField, logInbtn, idFindBtn, pwFindBtn, signUpBtn])
     let guide = view.safeAreaLayoutGuide
-    let margin: CGFloat = 32
-    let height: CGFloat = 14
-    let btnBetweenMargin: CGFloat = 40
-    let btnTopMargin: CGFloat = 12
     
-    idTextField.snp.makeConstraints { (make) -> Void in
-      make.height.equalTo(guide.snp.height).dividedBy(height)
-      make.top.equalTo(guide.snp.top).offset(margin)
-      make.left.equalTo(guide.snp.left).offset(margin)
-      make.right.equalTo(guide.snp.right).offset(-margin)
+    idTextField.snp.makeConstraints {
+      $0.top.equalTo(guide.snp.top).offset(UI.margin)
+      $0.leading.equalTo(guide.snp.leading).offset(UI.margin)
+      $0.trailing.equalTo(guide.snp.trailing).offset(-UI.margin)
+      $0.height.equalTo(guide.snp.height).dividedBy(UI.height)
     }
-
-    
-    private func setUI() {
-        view.backgroundColor = .white
-        idTextField.textFeildStyle(placeholder: "아이디를 입력해주세요")
-        pwTextField.textFeildStyle(placeholder: "비밀번호를 입력해주세요")
-        pwTextField.isSecureTextEntry = true
-        logInbtn.roundPurpleBtnStyle(title: "로그인") // addTarget 필요
-        idFindBtn = self.tinyGrayBtn(title: "아이디 찾기 |")
-        pwFindBtn = self.tinyGrayBtn(title: "비밀번호 찾기")
-        signUpBtn.roundLineBtnStyle(title: "회원가입") // addTarget 필요
-        [idTextField, pwTextField, logInbtn, idFindBtn, pwFindBtn, signUpBtn].forEach {
-          view.addSubview($0)
-        }
-        setLayout()
-
-    pwTextField.snp.makeConstraints { (make) -> Void in
-      make.height.equalTo(guide.snp.height).dividedBy(height)
-      make.top.equalTo(idTextField.snp.bottom).offset(btnTopMargin)
-      make.left.equalTo(guide.snp.left).offset(margin)
-      make.right.equalTo(guide.snp.right).offset(-margin)
-
+    pwTextField.snp.makeConstraints {
+      $0.top.equalTo(idTextField.snp.bottom).offset(UI.btnTopMargin)
+      $0.leading.equalTo(guide.snp.leading).offset(UI.margin)
+      $0.trailing.equalTo(guide.snp.trailing).offset(-UI.margin)
+      $0.height.equalTo(guide.snp.height).dividedBy(UI.height)
     }
-    logInbtn.snp.makeConstraints { (make) -> Void in
-      make.height.equalTo(guide.snp.height).dividedBy(height)
-      make.top.equalTo(pwTextField.snp.bottom).offset(24)
-      make.left.equalTo(guide.snp.left).offset(margin)
-      make.right.equalTo(guide.snp.right).offset(-margin)
+    logInbtn.snp.makeConstraints {
+      $0.top.equalTo(pwTextField.snp.bottom).offset(24)
+      $0.leading.equalTo(guide.snp.leading).offset(UI.margin)
+      $0.trailing.equalTo(guide.snp.trailing).offset(-UI.margin)
+      $0.height.equalTo(guide.snp.height).dividedBy(UI.height)
     }
-    idFindBtn.snp.makeConstraints { (make) -> Void in
-      make.centerX.equalTo(guide.snp.centerX).offset(-btnBetweenMargin)
-      make.top.equalTo(logInbtn.snp.bottom).offset(btnTopMargin)
-    }
-
-    
-    @objc private func didtapFindButton(_ sender: UIButton) {
-        switch sender.title(for: .normal) {
-        case "아이디 찾기 |":
-            navigationController?.pushViewController(IDFindViewController(), animated: true)
-        case "비밀번호 찾기":
-            navigationController?.pushViewController(PWFindViewController(), animated: true)
-        default:
-           self.dismiss(animated: true, completion: nil)
-
-        }
+    idFindBtn.snp.makeConstraints {
+      $0.top.equalTo(logInbtn.snp.bottom).offset(UI.btnTopMargin)
+      $0.centerX.equalTo(guide.snp.centerX).offset(-UI.btnBetweenMargin)
     }
     
-    private func tinyGrayBtn(title: String) -> UIButton {
-        let button = UIButton()
-        button.setTitle(title, for: .normal)
-        button.setTitleColor(.darkGray, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-        button.addTarget(self, action: #selector(didtapFindButton(_:)), for: .touchUpInside)
-        return button
-
-    pwFindBtn.snp.makeConstraints { (make) -> Void in
-      make.left.equalTo(idFindBtn.snp.right).offset(4)
-      make.top.equalTo(logInbtn.snp.bottom).offset(btnTopMargin)
+    pwFindBtn.snp.makeConstraints {
+      $0.top.equalTo(logInbtn.snp.bottom).offset(UI.btnTopMargin)
+      $0.leading.equalTo(idFindBtn.snp.trailing).offset(4)
     }
-    signUpBtn.snp.makeConstraints { (make) -> Void in
-      make.height.equalTo(guide.snp.height).dividedBy(height)
-      make.top.equalTo(idFindBtn.snp.bottom).offset(btnBetweenMargin)
-      make.left.equalTo(guide.snp.left).offset(margin)
-      make.right.equalTo(guide.snp.right).offset(-margin)
-
+    signUpBtn.snp.makeConstraints {
+      $0.top.equalTo(idFindBtn.snp.bottom).offset(UI.btnBetweenMargin)
+      $0.leading.equalTo(guide.snp.leading).offset(UI.margin)
+      $0.trailing.equalTo(guide.snp.trailing).offset(-UI.margin)
+      $0.height.equalTo(guide.snp.height).dividedBy(UI.height)
     }
+    setupAttr()
   }
-  
+}
+
+// MARK: - ACTIONS
+extension LoginViewController {
   @objc private func didTapCancelButton() {
     self.dismiss(animated: true, completion: nil)
   }
   
   @objc private func didtapFindButton() {}
   
-  private func tinyGrayBtn(title: String) -> UIButton {
-    let button = UIButton()
-    button.setTitle(title, for: .normal)
-    button.setTitleColor(.darkGray, for: .normal)
-    button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-    button.addTarget(self, action: #selector(didtapFindButton), for: .touchUpInside)
-    return button
+  @objc private func didTapsignUpButton(_ sender: UIButton) {
+    let nextVC = SignUpViewController()
+    self.navigationController?.pushViewController(nextVC, animated: true)
   }
 }
