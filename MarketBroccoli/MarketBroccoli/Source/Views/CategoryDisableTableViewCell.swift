@@ -9,19 +9,19 @@
 import UIKit
 
 class CategoryDisableTableViewCell: UITableViewCell {
-  
   static let identifier = "disableCell"
-  let iconImage = UIImageView()
+  
+  private let iconImage = UIImageView()
   private let title = UILabel()
-  let arrowImage = UIImageView()
+  private let arrowImage = UIImageView()
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
-    setUI()
-    setLayout()
+    setupUI()
+    setupLayout()
   }
   
-  private func setUI() {
+  private func setupUI() {
     iconImage.image = UIImage(named: "icon_sauce")
     iconImage.contentMode = .scaleAspectFit
     arrowImage.image = UIImage(systemName: "chevron.down")
@@ -32,7 +32,7 @@ class CategoryDisableTableViewCell: UITableViewCell {
     }
   }
   
-  private func setLayout() {
+  private func setupLayout() {
     iconImage.snp.makeConstraints { (make) -> Void in
       make.centerY.equalTo(contentView.snp.centerY)
       make.leading.equalTo(contentView.snp.leading).offset(10)
@@ -60,5 +60,4 @@ class CategoryDisableTableViewCell: UITableViewCell {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
 }
