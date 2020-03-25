@@ -45,8 +45,8 @@
 		7CD9D45E242460D70091AE5B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD9D45D242460D70091AE5B /* ViewController.swift */; };
 		7CD9D463242460DB0091AE5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7CD9D462242460DB0091AE5B /* Assets.xcassets */; };
 		7CD9D466242460DB0091AE5B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CD9D464242460DB0091AE5B /* LaunchScreen.storyboard */; };
+		FA9AD74224287F51002D3504 /* SignupVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9AD74124287F51002D3504 /* SignupVIew.swift */; };
 		FAAE2E572424E3C400ACC5D3 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAE2E562424E3C400ACC5D3 /* SignUpViewController.swift */; };
-		FAAE2E592424E3F500ACC5D3 /* SignUpTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAE2E582424E3F500ACC5D3 /* SignUpTableViewCell.swift */; };
 		FAAFEB5F2424A74900452977 /* LogOutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAFEB5E2424A74900452977 /* LogOutViewController.swift */; };
 		FAAFEB612424A77900452977 /* LogOutTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAFEB602424A77900452977 /* LogOutTableViewCell.swift */; };
 		FAAFEB632424A79200452977 /* TypeConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAFEB622424A79200452977 /* TypeConverter.swift */; };
@@ -95,8 +95,8 @@
 		7CD9D467242460DB0091AE5B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BA3DAD3F9ADB459218F3993B /* Pods_MarketBroccoli.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MarketBroccoli.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1C8D23965CC57B3A3E2F2A7 /* Pods-MarketBroccoli.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MarketBroccoli.release.xcconfig"; path = "Target Support Files/Pods-MarketBroccoli/Pods-MarketBroccoli.release.xcconfig"; sourceTree = "<group>"; };
+		FA9AD74124287F51002D3504 /* SignupVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupVIew.swift; sourceTree = "<group>"; };
 		FAAE2E562424E3C400ACC5D3 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
-		FAAE2E582424E3F500ACC5D3 /* SignUpTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpTableViewCell.swift; sourceTree = "<group>"; };
 		FAAFEB5E2424A74900452977 /* LogOutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogOutViewController.swift; sourceTree = "<group>"; };
 		FAAFEB602424A77900452977 /* LogOutTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogOutTableViewCell.swift; sourceTree = "<group>"; };
 		FAAFEB622424A79200452977 /* TypeConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeConverter.swift; sourceTree = "<group>"; };
@@ -250,7 +250,7 @@
 				7C65ECC7242472FE0075606A /* EmptyViews.swift */,
 				FAAFEB602424A77900452977 /* LogOutTableViewCell.swift */,
 				7C65ECD02424D82C0075606A /* HomeRootView.swift */,
-				FAAE2E582424E3F500ACC5D3 /* SignUpTableViewCell.swift */,
+				FA9AD74124287F51002D3504 /* SignupVIew.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -470,6 +470,7 @@
 				7CD9D45E242460D70091AE5B /* ViewController.swift in Sources */,
 				727F093524287C4F00584A40 /* UITableViewExtension.swift in Sources */,
 				7050F3122424BA3800B8E13B /* LoginViewController.swift in Sources */,
+				FA9AD74224287F51002D3504 /* SignupVIew.swift in Sources */,
 				7C65ECBC242472370075606A /* EmptyExtension.swift in Sources */,
 				7CCD64962428DABA00FC671B /* HomeBannerCollectionCell.swift in Sources */,
 				723851E124249C6400E8B206 /* UserInfoTableViewCell.swift in Sources */,
