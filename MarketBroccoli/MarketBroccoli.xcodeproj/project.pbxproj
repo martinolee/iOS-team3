@@ -13,6 +13,10 @@
 		723851E124249C6400E8B206 /* UserInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723851E024249C6400E8B206 /* UserInfoTableViewCell.swift */; };
 		727F093324287C2E00584A40 /* UITableViewCellExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727F093224287C2E00584A40 /* UITableViewCellExtension.swift */; };
 		727F093524287C4F00584A40 /* UITableViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727F093424287C4F00584A40 /* UITableViewExtension.swift */; };
+		727F09612428DFFC00584A40 /* CartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727F09602428DFFC00584A40 /* CartView.swift */; };
+		727F09632428E2DB00584A40 /* CartProductTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727F09622428E2DB00584A40 /* CartProductTableViewCell.swift */; };
+		728078682429A8A500101B7D /* ProductQuantityStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728078672429A8A500101B7D /* ProductQuantityStepper.swift */; };
+		7280786C2429CA2000101B7D /* CartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7280786B2429CA2000101B7D /* CartViewController.swift */; };
 		7C15D0B62429E55300ACB4C9 /* HomeReuseCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C15D0B52429E55300ACB4C9 /* HomeReuseCollectionCell.swift */; };
 		7C15D0B8242A2C3500ACB4C9 /* UILabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C15D0B7242A2C3500ACB4C9 /* UILabelExtension.swift */; };
 		7C65ECBA242471380075606A /* EventMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECB9242471380075606A /* EventMark.swift */; };
@@ -55,6 +59,10 @@
 		723851E024249C6400E8B206 /* UserInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoTableViewCell.swift; sourceTree = "<group>"; };
 		727F093224287C2E00584A40 /* UITableViewCellExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCellExtension.swift; sourceTree = "<group>"; };
 		727F093424287C4F00584A40 /* UITableViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewExtension.swift; sourceTree = "<group>"; };
+		727F09602428DFFC00584A40 /* CartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartView.swift; sourceTree = "<group>"; };
+		727F09622428E2DB00584A40 /* CartProductTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartProductTableViewCell.swift; sourceTree = "<group>"; };
+		728078672429A8A500101B7D /* ProductQuantityStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductQuantityStepper.swift; sourceTree = "<group>"; };
+		7280786B2429CA2000101B7D /* CartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewController.swift; sourceTree = "<group>"; };
 		7C15D0B52429E55300ACB4C9 /* HomeReuseCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeReuseCollectionCell.swift; sourceTree = "<group>"; };
 		7C15D0B7242A2C3500ACB4C9 /* UILabelExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelExtension.swift; sourceTree = "<group>"; };
 		7C65ECB9242471380075606A /* EventMark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMark.swift; sourceTree = "<group>"; };
@@ -123,6 +131,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		727F095F2428DCE700584A40 /* CartView */ = {
+			isa = PBXGroup;
+			children = (
+				727F09602428DFFC00584A40 /* CartView.swift */,
+				727F09622428E2DB00584A40 /* CartProductTableViewCell.swift */,
+			);
+			path = CartView;
+			sourceTree = "<group>";
+		};
 		7C65ECAD2424677C0075606A /* Source */ = {
 			isa = PBXGroup;
 			children = (
@@ -162,6 +179,7 @@
 				7C65ECCE2424B95F0075606A /* HomeViewController.swift */,
 				FAAE2E562424E3C400ACC5D3 /* SignUpViewController.swift */,
 				7050F3112424BA3800B8E13B /* LoginViewController.swift */,
+				7280786B2429CA2000101B7D /* CartViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -170,6 +188,7 @@
 			isa = PBXGroup;
 			children = (
 				7C65ECB9242471380075606A /* EventMark.swift */,
+				728078672429A8A500101B7D /* ProductQuantityStepper.swift */,
 				7CCD64932428873000FC671B /* CustomCollectionViewFlowLayout.swift */,
 			);
 			path = CustomUI;
@@ -226,6 +245,7 @@
 		7C65ECC6242472F70075606A /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				727F095F2428DCE700584A40 /* CartView */,
 				7C65ECD22424EF350075606A /* HomeViews */,
 				7C65ECC7242472FE0075606A /* EmptyViews.swift */,
 				FAAFEB602424A77900452977 /* LogOutTableViewCell.swift */,
@@ -446,6 +466,7 @@
 				7C65ECD42424EFE60075606A /* RecommendationView.swift in Sources */,
 				727F093324287C2E00584A40 /* UITableViewCellExtension.swift in Sources */,
 				7C65ECCB24249B2C0075606A /* EmptyTemp.swift in Sources */,
+				728078682429A8A500101B7D /* ProductQuantityStepper.swift in Sources */,
 				7CD9D45E242460D70091AE5B /* ViewController.swift in Sources */,
 				727F093524287C4F00584A40 /* UITableViewExtension.swift in Sources */,
 				7050F3122424BA3800B8E13B /* LoginViewController.swift in Sources */,
@@ -469,12 +490,15 @@
 				7C65ECC5242472EC0075606A /* EmptyModel.swift in Sources */,
 				7C65ECDC2424F08C0075606A /* EventView.swift in Sources */,
 				7C65ECBE242472400075606A /* EmptyManager.swift in Sources */,
+				727F09612428DFFC00584A40 /* CartView.swift in Sources */,
 				7C65ECBA242471380075606A /* EventMark.swift in Sources */,
 				7C65ECD82424F03D0075606A /* BestView.swift in Sources */,
 				FAAE2E592424E3F500ACC5D3 /* SignUpTableViewCell.swift in Sources */,
+				7280786C2429CA2000101B7D /* CartViewController.swift in Sources */,
 				7C15D0B8242A2C3500ACB4C9 /* UILabelExtension.swift in Sources */,
 				7CD9D45A242460D60091AE5B /* AppDelegate.swift in Sources */,
 				7C65ECC0242472480075606A /* EmptyTC.swift in Sources */,
+				727F09632428E2DB00584A40 /* CartProductTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -612,6 +636,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = G4MM77V7NH;
 				INFOPLIST_FILE = MarketBroccoli/Resource/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -630,6 +655,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = G4MM77V7NH;
 				INFOPLIST_FILE = MarketBroccoli/Resource/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
