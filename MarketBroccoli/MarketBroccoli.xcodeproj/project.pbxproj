@@ -12,6 +12,8 @@
 		7050F3142424DF7F00B8E13B /* ExtensionUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7050F3132424DF7F00B8E13B /* ExtensionUIView.swift */; };
 		7050F316242876AC00B8E13B /* IDFindViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7050F315242876AC00B8E13B /* IDFindViewController.swift */; };
 		7050F318242876B600B8E13B /* PWFindViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7050F317242876B600B8E13B /* PWFindViewController.swift */; };
+		7050F31A2429CEBB00B8E13B /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7050F3192429CEBB00B8E13B /* CategoryViewController.swift */; };
+		7050F31E242A3BB300B8E13B /* CategoryDisableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7050F31D242A3BB300B8E13B /* CategoryDisableTableViewCell.swift */; };
 		723851E124249C6400E8B206 /* UserInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723851E024249C6400E8B206 /* UserInfoTableViewCell.swift */; };
 		7C65ECBA242471380075606A /* EventMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECB9242471380075606A /* EventMark.swift */; };
 		7C65ECBC242472370075606A /* EmptyExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECBB242472370075606A /* EmptyExtension.swift */; };
@@ -45,6 +47,8 @@
 		7050F3132424DF7F00B8E13B /* ExtensionUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ExtensionUIView.swift; path = MarketBroccoli/Source/Extensions/ExtensionUIView.swift; sourceTree = SOURCE_ROOT; };
 		7050F315242876AC00B8E13B /* IDFindViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDFindViewController.swift; sourceTree = "<group>"; };
 		7050F317242876B600B8E13B /* PWFindViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PWFindViewController.swift; sourceTree = "<group>"; };
+		7050F3192429CEBB00B8E13B /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
+		7050F31D242A3BB300B8E13B /* CategoryDisableTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDisableTableViewCell.swift; sourceTree = "<group>"; };
 		723851E024249C6400E8B206 /* UserInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoTableViewCell.swift; sourceTree = "<group>"; };
 		7C65ECB9242471380075606A /* EventMark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMark.swift; sourceTree = "<group>"; };
 		7C65ECBB242472370075606A /* EmptyExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyExtension.swift; sourceTree = "<group>"; };
@@ -139,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				7CD9D45D242460D70091AE5B /* ViewController.swift */,
+				7050F3192429CEBB00B8E13B /* CategoryViewController.swift */,
 				FAAFEB5E2424A74900452977 /* LogOutViewController.swift */,
 				7C65ECCE2424B95F0075606A /* HomeViewController.swift */,
 				FAAE2E562424E3C400ACC5D3 /* SignUpViewController.swift */,
@@ -208,6 +213,7 @@
 				FAAFEB602424A77900452977 /* LogOutTableViewCell.swift */,
 				7C65ECD02424D82C0075606A /* HomeRootView.swift */,
 				FAAE2E582424E3F500ACC5D3 /* SignUpTableViewCell.swift */,
+				7050F31D242A3BB300B8E13B /* CategoryDisableTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -394,6 +400,7 @@
 				7050F3142424DF7F00B8E13B /* ExtensionUIView.swift in Sources */,
 				FAAFEB612424A77900452977 /* LogOutTableViewCell.swift in Sources */,
 				7C65ECC8242472FE0075606A /* EmptyViews.swift in Sources */,
+				7050F31A2429CEBB00B8E13B /* CategoryViewController.swift in Sources */,
 				FAAFEB5F2424A74900452977 /* LogOutViewController.swift in Sources */,
 				FAAFEB632424A79200452977 /* TypeConverter.swift in Sources */,
 				FAAE2E572424E3C400ACC5D3 /* SignUpViewController.swift in Sources */,
@@ -405,6 +412,7 @@
 				FAAE2E592424E3F500ACC5D3 /* SignUpTableViewCell.swift in Sources */,
 				7CD9D45A242460D60091AE5B /* AppDelegate.swift in Sources */,
 				7C65ECC0242472480075606A /* EmptyTC.swift in Sources */,
+				7050F31E242A3BB300B8E13B /* CategoryDisableTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
