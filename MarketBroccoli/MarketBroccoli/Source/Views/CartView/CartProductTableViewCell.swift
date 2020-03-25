@@ -6,17 +6,18 @@
 //  Copyright © 2020 Team3. All rights reserved.
 //
 
+import Kingfisher
 import Then
 import UIKit
 
 protocol CartProductTableViewCellDelegate: class {
-  func whenSelectingOptionButtonDidTouchUpInside(_ button: UIButton)
+  func selectingOptionButtonTouched(_ button: UIButton)
   
-  func whenProductRemoveButtonDidTouchUpInside(_ button: UIButton)
+  func productRemoveButtonTouched(_ button: UIButton)
   
-  func whenSubtractionButtonDidTouchUpInside(_ button: UIButton)
+  func subtractionButtonTouched(_ button: UIButton)
   
-  func whenAdditionButtonDidTouchUpInside(_ button: UIButton)
+  func additionButtonTouched(_ button: UIButton)
 }
 
 class CartProductTableViewCell: UITableViewCell {
@@ -33,7 +34,7 @@ class CartProductTableViewCell: UITableViewCell {
     $0.tintColor = .purple
     $0.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
     
-    $0.addTarget(self, action: #selector(whenSelectingOptionButtonDidTouchUpInside(_:)), for: .touchUpInside)
+    $0.addTarget(self, action: #selector(selectingOptionButtonTouched(_:)), for: .touchUpInside)
   }
   
   private lazy var nameLabel = UILabel().then {
@@ -46,11 +47,11 @@ class CartProductTableViewCell: UITableViewCell {
     $0.tintColor = .black
     $0.setImage(UIImage(systemName: "xmark"), for: .normal)
     
-    $0.addTarget(self, action: #selector(whenProductRemoveButtonDidTouchUpInside(_:)), for: .touchUpInside)
+    $0.addTarget(self, action: #selector(productRemoveButtonTouched(_:)), for: .touchUpInside)
   }
   
   private let productImageView = UIImageView().then {
-    $0.image = UIImage()
+    $0.contentMode = .scaleAspectFit
   }
   
   private let originalPriceLabel = UILabel().then {
@@ -74,7 +75,13 @@ class CartProductTableViewCell: UITableViewCell {
   }
   
   private let totalProductPriceLabel = UILabel().then {
+    $0.font = .systemFont(ofSize: 17, weight: .medium)
     $0.textAlignment = .right
+    $0.setContentHuggingPriority(.fittingSizeLevel, for: .horizontal)
+  }
+  
+  private let staticWonLabel = UILabel().then {
+    $0.text = "원"
   }
   
   // MARK: - Life Cycle
@@ -110,7 +117,8 @@ class CartProductTableViewCell: UITableViewCell {
       currentPriceLabel,
       productQuantityStepper,
       staticTotalPriceLabel,
-      totalProductPriceLabel
+      totalProductPriceLabel,
+      staticWonLabel
     ])
   }
   
@@ -169,8 +177,15 @@ class CartProductTableViewCell: UITableViewCell {
     }
     
     totalProductPriceLabel.snp.makeConstraints {
+      $0.top.bottom.equalTo(staticWonLabel)
+      $0.leading.equalTo(productQuantityStepper)
+      $0.bottom.equalToSuperview().inset(10)
+      $0.trailing.equalTo(staticWonLabel.snp.leading).offset(-4)
+    }
+    
+    staticWonLabel.snp.makeConstraints {
       $0.top.equalTo(productQuantityStepper.snp.bottom).offset(12)
-      $0.leading.trailing.equalTo(productQuantityStepper)
+      $0.trailing.equalTo(productQuantityStepper)
       $0.bottom.equalToSuperview().inset(10)
     }
   }
@@ -191,40 +206,43 @@ class CartProductTableViewCell: UITableViewCell {
   // MARK: - Action Handler
   
   @objc
-  private func whenSelectingOptionButtonDidTouchUpInside(_ button: UIButton) {
-    deleagte?.whenSelectingOptionButtonDidTouchUpInside(button)
+  private func selectingOptionButtonTouched(_ button: UIButton) {
+    deleagte?.selectingOptionButtonTouched(button)
   }
   
   @objc
-  private func whenProductRemoveButtonDidTouchUpInside(_ button: UIButton) {
-    deleagte?.whenProductRemoveButtonDidTouchUpInside(button)
+  private func productRemoveButtonTouched(_ button: UIButton) {
+    deleagte?.productRemoveButtonTouched(button)
   }
 }
 
 extension CartProductTableViewCell: ProductQuantityStepperDelegate {
-  func whenSubtractionButtonDidTouchUpInside(_ button: UIButton) {
-    deleagte?.whenSubtractionButtonDidTouchUpInside(button)
+  func subtractionButtonTouched(_ button: UIButton) {
+    deleagte?.subtractionButtonTouched(button)
   }
   
-  func whenAdditionButtonDidTouchUpInside(_ button: UIButton) {
-    deleagte?.whenAdditionButtonDidTouchUpInside(button)
+  func additionButtonTouched(_ button: UIButton) {
+    deleagte?.additionButtonTouched(button)
   }
   
   // MARK: - Element Control
   
-  func configure(name: String, originalPrice: Int?, currentPrice: Int) {
-    nameLabel.text = name
+  func configure(name: String, productImage: ImageResource, originalPrice: Int?, currentPrice: Int, quantity: Int) {
     if let originalPrice = originalPrice {
       let originalPrice = moneyFormatter(won: originalPrice, hasUnit: true)
-      let attributeString: NSMutableAttributedString = NSMutableAttributedString(string: originalPrice)
+      let attributeString = NSMutableAttributedString(string: originalPrice)
       attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1,
                                    range: NSRange(location: 0, length: attributeString.length))
       originalPriceLabel.attributedText = attributeString
     }
     
+    let totalPrice = moneyFormatter(won: currentPrice * quantity, hasUnit: false)
     let currentPrice = moneyFormatter(won: currentPrice, hasUnit: true)
+
+    nameLabel.text = name
+    productImageView.kf.setImage(with: productImage)
     currentPriceLabel.text = currentPrice
-    
-    totalProductPriceLabel.text = currentPrice
+    totalProductPriceLabel.text = totalPrice
+    productQuantityStepper.setValueLabel(text: "\(quantity)")
   }
 }
