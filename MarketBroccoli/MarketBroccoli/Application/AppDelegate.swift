@@ -23,15 +23,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     let tabBarController = UITabBarController()
     let homeViewController = UINavigationController(rootViewController: HomeViewController())
-    let myBroccoliViewController = UINavigationController(rootViewController: LogOutViewController())
+    let myBroccoliViewController = UINavigationController(rootViewController: SettingsViewController())
     let viewControllers = [homeViewController, myBroccoliViewController]
     
     homeViewController.title = "홈"
     myBroccoliViewController.title = "마이브로콜리"
     
     tabBarController.viewControllers = viewControllers
-    
     window?.rootViewController = tabBarController
+    
+//    let vc = SignUpViewController()
+    
     window?.makeKeyAndVisible()
   }
 }

@@ -17,13 +17,13 @@ protocol CartViewDelegate: class {
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
   
-  func whenSelectingOptionButtonDidTouchUpInside(_ button: UIButton)
+  func selectingOptionButtonTouched(_ button: UIButton)
   
-  func whenProductRemoveButtonDidTouchUpInside(_ button: UIButton)
+  func productRemoveButtonTouched(_ button: UIButton)
   
-  func whenSubtractionButtonDidTouchUpInside(_ button: UIButton)
+  func subtractionButtonTouched(_ button: UIButton)
   
-  func whenAdditionButtonDidTouchUpInside(_ button: UIButton)
+  func additionButtonTouched(_ button: UIButton)
 }
 
 class CartView: UIView {
@@ -82,19 +82,19 @@ extension CartView: UITableViewDataSource {
 }
 
 extension CartView: CartProductTableViewCellDelegate {
-  func whenSelectingOptionButtonDidTouchUpInside(_ button: UIButton) {
-    delegate?.whenSelectingOptionButtonDidTouchUpInside(button)
+  func selectingOptionButtonTouched(_ button: UIButton) {
+    delegate?.selectingOptionButtonTouched(button)
   }
   
-  func whenProductRemoveButtonDidTouchUpInside(_ button: UIButton) {
-    delegate?.whenProductRemoveButtonDidTouchUpInside(button)
+  func productRemoveButtonTouched(_ button: UIButton) {
+    delegate?.productRemoveButtonTouched(button)
   }
   
-  func whenSubtractionButtonDidTouchUpInside(_ button: UIButton) {
-    delegate?.whenSubtractionButtonDidTouchUpInside(button)
+  func subtractionButtonTouched(_ button: UIButton) {
+    delegate?.subtractionButtonTouched(button)
   }
   
-  func whenAdditionButtonDidTouchUpInside(_ button: UIButton) {
-    delegate?.whenAdditionButtonDidTouchUpInside(button)
+  func additionButtonTouched(_ button: UIButton) {
+    delegate?.additionButtonTouched(button)
   }
 }
