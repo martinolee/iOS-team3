@@ -2,6 +2,7 @@ disabled_rules:
 - unused_setter_value
 - trailing_whitespace
 - function_body_length
+- type_body_length
 opt_in_rules:
 - force_unwrapping
 - closure_body_length
@@ -36,5 +37,6 @@ identical_operands: error
 file_length:
   warning: 500
   error: 1000
-  
-
+type_name:
+  min_length: 2
+  max_length: 40
