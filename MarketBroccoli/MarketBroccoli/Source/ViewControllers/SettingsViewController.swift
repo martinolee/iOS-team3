@@ -44,6 +44,13 @@ extension SettingsViewController {
     }
     setupAttr()
   }
+    
+  @objc func didTapSingUpInButton() {
+        let loginVC = UINavigationController(rootViewController: LoginViewController())
+        loginVC.modalPresentationStyle = .fullScreen
+        loginVC.navigationBar.tintColor = .black
+        self.present(loginVC, animated: true, completion: nil)
+    }
 }
 
 extension SettingsViewController: UITableViewDataSource {
