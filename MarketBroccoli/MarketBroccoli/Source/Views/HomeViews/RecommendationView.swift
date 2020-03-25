@@ -27,12 +27,18 @@ extension RecommendationView {
   private func setupAttr() {
     self.separatorStyle = .none
     self.dataSource = self
-    self.register(cell: HomeImageTableCell.self)
+    self.register(cell: HomeBannerTableCell.self)
+    self.register(cell: HomeOfferTableCell.self)
+    self.register(cell: HomeEventTableCell.self)
   }
 }
 
 // MARK: - TableViewDataSource, TableViewDelegate
 extension RecommendationView: UITableViewDataSource {
+  func numberOfSections(in tableView: UITableView) -> Int {
+    4
+  }
+  
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     1
   }
@@ -40,7 +46,17 @@ extension RecommendationView: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     switch indexPath.section {
     case 0:
-      return tableView.dequeue(HomeImageTableCell.self)
+      return tableView.dequeue(HomeBannerTableCell.self)
+    case 1:
+      let cell = tableView.dequeue(HomeOfferTableCell.self)
+      cell.configure(cellTitle: "이 상품 어때요?")
+      return cell
+    case 2:
+      return tableView.dequeue(HomeEventTableCell.self)
+    case 3:
+      let cell = tableView.dequeue(HomeOfferTableCell.self)
+      cell.configure(cellTitle: "알뜰 상품")
+      return cell
     default:
       return UITableViewCell()
     }

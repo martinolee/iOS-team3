@@ -1,5 +1,5 @@
 //
-//  HomeImageTableCell.swift
+//  HomeBannerTableCell.swift
 //  MarketBroccoli
 //
 //  Created by Hongdonghyun on 2020/03/23.
@@ -10,14 +10,14 @@ import UIKit
 import Then
 import SnapKit
 
-class HomeImageTableCell: UITableViewCell {
+class HomeBannerTableCell: UITableViewCell {
   private let dummyData = Array(repeating: ["cloud", "chapssal"], count: 3).flatMap { $0 }
   private lazy var bannerCountLabel = UILabel().then {
     $0.backgroundColor = UIColor.gray.withAlphaComponent(0.4)
     $0.textColor = .white
     $0.layer.cornerRadius = 5
     $0.layer.masksToBounds = true
-    $0.text = " 1/\(dummyData.count) "
+    $0.text = " 1 / \(dummyData.count) "
   }
   private let bannerCollectionView = UICollectionView(
     frame: .zero,
@@ -43,7 +43,8 @@ class HomeImageTableCell: UITableViewCell {
   }
 }
 
-extension HomeImageTableCell {
+// MARK: - UI
+extension HomeBannerTableCell {
   private func setupLayout() {
     guard let layout = bannerCollectionView.collectionViewLayout as? CustomCollectionViewFlowLayout else { return }
     layout.minimumLineSpacing = 0
@@ -74,7 +75,8 @@ extension HomeImageTableCell {
   }
 }
 
-extension HomeImageTableCell: UICollectionViewDataSource {
+// MARK: - CollectionView DataSource
+extension HomeBannerTableCell: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return dummyData.count
   }
@@ -91,13 +93,14 @@ extension HomeImageTableCell: UICollectionViewDataSource {
   }
 }
 
-extension HomeImageTableCell: UICollectionViewDelegate {
+// MARK: - CollectionView Delegate
+extension HomeBannerTableCell: UICollectionViewDelegate {
   func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
     let bannerWidth = bannerCollectionView.frame.size.width
     let currentPage = Int(bannerCollectionView.contentOffset.x / bannerWidth)
     
     DispatchQueue.main.async {
-      self.bannerCountLabel.text = " \(currentPage + 1)/\(self.dummyData.count) "
+      self.bannerCountLabel.text = " \(currentPage + 1) / \(self.dummyData.count) "
     }
   }
 }

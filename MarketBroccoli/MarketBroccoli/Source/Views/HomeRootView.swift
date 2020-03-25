@@ -171,9 +171,9 @@ extension HomeRootView {
   }
 }
 
+// MARK: - ScrollViewDelegate
 extension HomeRootView: UIScrollViewDelegate {
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//    guard animationFlag else { return }
     let screenWidth = self.scrollView.frame.size.width
     let currentOffsetX = scrollView.contentOffset.x
     guard screenWidth > 0 && currentOffsetX > 0 else { return }
@@ -182,6 +182,7 @@ extension HomeRootView: UIScrollViewDelegate {
   }
 }
 
+// MARK: - CollectionViewDataSource
 extension HomeRootView: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return 5
