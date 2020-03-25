@@ -21,21 +21,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   private func setupRootViewController() {
     window = UIWindow(frame: UIScreen.main.bounds)
     
-//    let tabBarController = UITabBarController()
-//    let homeViewController = UINavigationController(rootViewController: HomeViewController())
-//    let myBroccoliViewController = UINavigationController(rootViewController: LogOutViewController())
-//    let viewControllers = [homeViewController, myBroccoliViewController]
-//
-//
-//    homeViewController.title = "홈"
-//    myBroccoliViewController.title = "마이브로콜리"
-//
-//    tabBarController.viewControllers = viewControllers
-//    window?.rootViewController = tabBarController
+    let tabBarController = UITabBarController()
+    let homeViewController = UINavigationController(rootViewController: HomeViewController())
+    let myBroccoliViewController = UINavigationController(rootViewController: SettingsViewController())
+    let viewControllers = [homeViewController, myBroccoliViewController]
     
-    let vc = SignUpViewController()
-    window?.rootViewController = vc
+    homeViewController.title = "홈"
+    myBroccoliViewController.title = "마이브로콜리"
     
+    tabBarController.viewControllers = viewControllers
+    window?.rootViewController = tabBarController
+    
+//    let vc = SignUpViewController()
     
     window?.makeKeyAndVisible()
   }
