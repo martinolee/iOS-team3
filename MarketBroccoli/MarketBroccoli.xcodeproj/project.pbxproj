@@ -10,6 +10,8 @@
 		6465B54BFF3CD0B2CF359F2B /* Pods_MarketBroccoli.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA3DAD3F9ADB459218F3993B /* Pods_MarketBroccoli.framework */; };
 		7050F3122424BA3800B8E13B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7050F3112424BA3800B8E13B /* LoginViewController.swift */; };
 		7050F3142424DF7F00B8E13B /* ExtensionUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7050F3132424DF7F00B8E13B /* ExtensionUIView.swift */; };
+		7050F316242876AC00B8E13B /* IDFindViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7050F315242876AC00B8E13B /* IDFindViewController.swift */; };
+		7050F318242876B600B8E13B /* PWFindViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7050F317242876B600B8E13B /* PWFindViewController.swift */; };
 		723851E124249C6400E8B206 /* UserInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723851E024249C6400E8B206 /* UserInfoTableViewCell.swift */; };
 		727F093324287C2E00584A40 /* UITableViewCellExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727F093224287C2E00584A40 /* UITableViewCellExtension.swift */; };
 		727F093524287C4F00584A40 /* UITableViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727F093424287C4F00584A40 /* UITableViewExtension.swift */; };
@@ -56,6 +58,8 @@
 		05E73C0F0431AD204CF10586 /* Pods-MarketBroccoli.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MarketBroccoli.debug.xcconfig"; path = "Target Support Files/Pods-MarketBroccoli/Pods-MarketBroccoli.debug.xcconfig"; sourceTree = "<group>"; };
 		7050F3112424BA3800B8E13B /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		7050F3132424DF7F00B8E13B /* ExtensionUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ExtensionUIView.swift; path = MarketBroccoli/Source/Extensions/ExtensionUIView.swift; sourceTree = SOURCE_ROOT; };
+		7050F315242876AC00B8E13B /* IDFindViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDFindViewController.swift; sourceTree = "<group>"; };
+		7050F317242876B600B8E13B /* PWFindViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PWFindViewController.swift; sourceTree = "<group>"; };
 		723851E024249C6400E8B206 /* UserInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoTableViewCell.swift; sourceTree = "<group>"; };
 		727F093224287C2E00584A40 /* UITableViewCellExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCellExtension.swift; sourceTree = "<group>"; };
 		727F093424287C4F00584A40 /* UITableViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewExtension.swift; sourceTree = "<group>"; };
@@ -179,6 +183,8 @@
 				7C65ECCE2424B95F0075606A /* HomeViewController.swift */,
 				FAAE2E562424E3C400ACC5D3 /* SignUpViewController.swift */,
 				7050F3112424BA3800B8E13B /* LoginViewController.swift */,
+				7050F315242876AC00B8E13B /* IDFindViewController.swift */,
+				7050F317242876B600B8E13B /* PWFindViewController.swift */,
 				7280786B2429CA2000101B7D /* CartViewController.swift */,
 			);
 			path = ViewControllers;
@@ -464,6 +470,7 @@
 				7C65ECDA2424F0830075606A /* ShoppingView.swift in Sources */,
 				7C65ECC2242472C60075606A /* Constant.swift in Sources */,
 				7C65ECD42424EFE60075606A /* RecommendationView.swift in Sources */,
+				7050F318242876B600B8E13B /* PWFindViewController.swift in Sources */,
 				727F093324287C2E00584A40 /* UITableViewCellExtension.swift in Sources */,
 				7C65ECCB24249B2C0075606A /* EmptyTemp.swift in Sources */,
 				728078682429A8A500101B7D /* ProductQuantityStepper.swift in Sources */,
@@ -476,6 +483,7 @@
 				723851E124249C6400E8B206 /* UserInfoTableViewCell.swift in Sources */,
 				7C65ECD12424D82C0075606A /* HomeRootView.swift in Sources */,
 				7C65ECCF2424B95F0075606A /* HomeViewController.swift in Sources */,
+				7050F316242876AC00B8E13B /* IDFindViewController.swift in Sources */,
 				7C65ECD62424F0060075606A /* NewProductView.swift in Sources */,
 				7CCD64942428873000FC671B /* CustomCollectionViewFlowLayout.swift in Sources */,
 				7050F3142424DF7F00B8E13B /* ExtensionUIView.swift in Sources */,

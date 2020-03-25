@@ -61,11 +61,28 @@ class LoginViewController: UIViewController {
       make.left.equalTo(guide.snp.left).offset(margin)
       make.right.equalTo(guide.snp.right).offset(-margin)
     }
+
+    
+    private func setUI() {
+        view.backgroundColor = .white
+        idTextField.textFeildStyle(placeholder: "아이디를 입력해주세요")
+        pwTextField.textFeildStyle(placeholder: "비밀번호를 입력해주세요")
+        pwTextField.isSecureTextEntry = true
+        logInbtn.roundPurpleBtnStyle(title: "로그인") // addTarget 필요
+        idFindBtn = self.tinyGrayBtn(title: "아이디 찾기 |")
+        pwFindBtn = self.tinyGrayBtn(title: "비밀번호 찾기")
+        signUpBtn.roundLineBtnStyle(title: "회원가입") // addTarget 필요
+        [idTextField, pwTextField, logInbtn, idFindBtn, pwFindBtn, signUpBtn].forEach {
+          view.addSubview($0)
+        }
+        setLayout()
+
     pwTextField.snp.makeConstraints { (make) -> Void in
       make.height.equalTo(guide.snp.height).dividedBy(height)
       make.top.equalTo(idTextField.snp.bottom).offset(btnTopMargin)
       make.left.equalTo(guide.snp.left).offset(margin)
       make.right.equalTo(guide.snp.right).offset(-margin)
+
     }
     logInbtn.snp.makeConstraints { (make) -> Void in
       make.height.equalTo(guide.snp.height).dividedBy(height)
@@ -77,6 +94,28 @@ class LoginViewController: UIViewController {
       make.centerX.equalTo(guide.snp.centerX).offset(-btnBetweenMargin)
       make.top.equalTo(logInbtn.snp.bottom).offset(btnTopMargin)
     }
+
+    
+    @objc private func didtapFindButton(_ sender: UIButton) {
+        switch sender.title(for: .normal) {
+        case "아이디 찾기 |":
+            navigationController?.pushViewController(IDFindViewController(), animated: true)
+        case "비밀번호 찾기":
+            navigationController?.pushViewController(PWFindViewController(), animated: true)
+        default:
+           self.dismiss(animated: true, completion: nil)
+
+        }
+    }
+    
+    private func tinyGrayBtn(title: String) -> UIButton {
+        let button = UIButton()
+        button.setTitle(title, for: .normal)
+        button.setTitleColor(.darkGray, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        button.addTarget(self, action: #selector(didtapFindButton(_:)), for: .touchUpInside)
+        return button
+
     pwFindBtn.snp.makeConstraints { (make) -> Void in
       make.left.equalTo(idFindBtn.snp.right).offset(4)
       make.top.equalTo(logInbtn.snp.bottom).offset(btnTopMargin)
@@ -86,6 +125,7 @@ class LoginViewController: UIViewController {
       make.top.equalTo(idFindBtn.snp.bottom).offset(btnBetweenMargin)
       make.left.equalTo(guide.snp.left).offset(margin)
       make.right.equalTo(guide.snp.right).offset(-margin)
+
     }
   }
   

@@ -38,6 +38,14 @@ class LogOutViewController: UIViewController {
       $0.edges.equalToSuperview()
     }
   }
+    
+  @objc func didTapSingUpInButton() {
+        let loginVC = UINavigationController(rootViewController: LoginViewController())
+        loginVC.modalPresentationStyle = .fullScreen
+        loginVC.navigationBar.tintColor = .black
+        self.present(loginVC, animated: true, completion: nil)
+    }
+    
 }
 extension LogOutViewController: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
