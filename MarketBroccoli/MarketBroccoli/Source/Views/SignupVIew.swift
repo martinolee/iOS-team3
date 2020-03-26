@@ -8,21 +8,81 @@
 
 import UIKit
 
-class SignupView: UIView, UITextFieldDelegate  {
+protocol SignupViewDelegate: class {
+  func idTextField(
+    _ textField: UITextField,
+    shouldChangeCharactersIn range: NSRange,
+    replacementString string: String
+  ) -> Bool
+  func secretTextField(
+    _ textField: UITextField,
+    shouldChangeCharactersIn range: NSRange,
+    replacementString string: String
+  ) -> Bool
+  func checkSecretNumberTextField(
+    _ textField: UITextField,
+    shouldChangeCharactersIn range: NSRange,
+    replacementString string: String
+  ) -> Bool
+  func nameTextField(
+    _ textField: UITextField,
+    shouldChangeCharactersIn range: NSRange,
+    replacementString string: String
+  ) -> Bool
+  func emailTextField(
+    _ textField: UITextField,
+    shouldChangeCharactersIn range: NSRange,
+    replacementString string: String
+  ) -> Bool
+  func cellphoneTextField(
+    _ textField: UITextField,
+    shouldChangeCharactersIn range: NSRange,
+    replacementString string: String
+  ) -> Bool
+  func checkingReceivingNumberTextField(
+    _ textField: UITextField,
+    shouldChangeCharactersIn range: NSRange,
+    replacementString string: String
+  ) -> Bool
+  func birthdayYearTextField(
+    _ textField: UITextField,
+    shouldChangeCharactersIn range: NSRange,
+    replacementString string: String
+  ) -> Bool
+  func birthdayMonthTextField(
+    _ textField: UITextField,
+    shouldChangeCharactersIn range: NSRange,
+    replacementString string: String
+  ) -> Bool
+  func birthdayDayTextField(
+    _ textField: UITextField,
+    shouldChangeCharactersIn range: NSRange,
+    replacementString string: String
+  ) -> Bool
+  func idTextFieldDidBeginEditing(_ textField: UITextField)
+  func secretTextFeildDidBeginEditing(_ textField: UITextField)
+  func checkSecretNumberTextFeildDidBeginEditing(_ textField: UITextField)
+  func idTextFieldEditingChanged(_ textField: UITextField, text: String)
+  func checkIDButtonTouched(_ button: UIButton)
+}
+class SignupView: UIView, UITextFieldDelegate {
+  weak var delegate: SignupViewDelegate?
   private lazy var idLabel = UILabel().then {
     let text = putAsteriskBehind(text: "아이디")
     $0.attributedText = text
   }
-  var myMutableString = NSMutableAttributedString()
-  private var idTextFeild = UITextField().then {
+  private lazy var idTextFeild = UITextField().then {
     $0.placeholder = "예: marketkurly12"
     $0.borderStyle = .roundedRect
     $0.clearButtonMode = .whileEditing
+    $0.delegate = self
+    $0.addTarget(self, action: #selector(idTextFieldEditingChanged), for: .editingChanged)
   }
   private let checkIDButton = UIButton().then {
     $0.setTitle("중복확인", for: .normal)
     $0.backgroundColor = .purple
     $0.setTitleColor(.white, for: .normal)
+    $0.addTarget(self, action: #selector(checkIDButtonTouched), for: .touchUpInside)
   }
   private let idLimitExplanationLabel = UILabel().then {
     $0.text = "6자 이상의 영문 혹은 영문과 숫자를 조합"
@@ -38,10 +98,11 @@ class SignupView: UIView, UITextFieldDelegate  {
     let text = putAsteriskBehind(text: "비밀번호")
     $0.attributedText = text
   }
-  private var secretTextFeild = UITextField().then {
+  private lazy var secretTextFeild = UITextField().then {
     $0.placeholder = "비밀번호를 입력해주세요"
     $0.borderStyle = .roundedRect
     $0.clearButtonMode = .whileEditing
+    $0.delegate = self
   }
   private let tenSyllableLabel = UILabel().then {
     $0.text = "10자 이상 입력"
@@ -62,17 +123,17 @@ class SignupView: UIView, UITextFieldDelegate  {
     let text = putAsteriskBehind(text: "비밀번호 확인")
     $0.attributedText = text
     }
-  private var checkSecretNumberTextFeild = UITextField().then {
+  private lazy var checkSecretNumberTextFeild = UITextField().then {
     $0.placeholder = "비밀번호를 한번 더 입력해주세요"
     $0.borderStyle = .roundedRect
     $0.clearButtonMode = .whileEditing
+    $0.delegate = self
   }
   private let sameSecretNumberLabel = UILabel().then {
     $0.text = "동일한 비밀번호를 입력해주세요"
     $0.textColor = .orange
     $0.font = .systemFont(ofSize: 10)
   }
-  
   private lazy var nameLabel = UILabel().then {
     let text = putAsteriskBehind(text: "이름")
     $0.attributedText = text
@@ -344,7 +405,6 @@ class SignupView: UIView, UITextFieldDelegate  {
     setupUI()
     layoutSubviews()
   }
-
   override func layoutSubviews() {
     makeRoundCorner(label: femaleRoundLabel)
     makeRoundCorner(label: maleRoundLabel)
@@ -352,7 +412,6 @@ class SignupView: UIView, UITextFieldDelegate  {
     makeRoundCorner(label: recoRoundLabel)
     makeRoundCorner(label: eventNameRoundLabel)
   }
-  
   private func makeRoundCorner(label: UILabel) {
     label.layer.masksToBounds = true
     label.layer.cornerRadius = label.bounds.height / 2
@@ -381,33 +440,27 @@ class SignupView: UIView, UITextFieldDelegate  {
      signupButton, lastExplainationLabel, idLimitExplanationLabel, checkingIdLabel].forEach {
       scrollView.addSubview($0)
     }
-    
     [birthdayYearTextField, firstSlashLabel,
      birthdayMonthTextField, secondSlashLabel,
      birthdayDayTextField].forEach {
       bunchBirthdayView.addSubview($0)
     }
-    
     [scrollView].forEach {
       self.addSubview($0)
     }
-    
     scrollView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
-    
     idLabel.snp.makeConstraints {
       $0.top.equalTo(scrollView.snp.top).offset(10)
       $0.leading.equalTo(scrollView.snp.leading).offset(10)
       $0.width.equalTo(scrollView.snp.width).multipliedBy(0.92)
     }
-
     idTextFeild.snp.makeConstraints {
       $0.top.equalTo(scrollView.snp.top).offset(40)
       $0.leading.equalTo(idLabel)
       $0.width.equalTo(scrollView.snp.width).multipliedBy(0.7)
     }
-    
     checkIDButton.snp.makeConstraints {
       $0.top.equalTo(scrollView.snp.top).offset(40)
       $0.leading.equalTo(idTextFeild.snp.trailing).offset(10)
@@ -417,40 +470,41 @@ class SignupView: UIView, UITextFieldDelegate  {
       $0.top.equalTo(idTextFeild.snp.bottom).offset(4)
       $0.leading.equalTo(idTextFeild)
       $0.trailing.equalTo(checkIDButton)
+      $0.height.equalTo(0)
     }
     checkingIdLabel.snp.makeConstraints {
       $0.top.equalTo(idLimitExplanationLabel.snp.bottom).offset(4)
       $0.leading.equalTo(idLimitExplanationLabel)
       $0.trailing.equalTo(idLimitExplanationLabel)
+      $0.height.equalTo(0)
     }
     secretNumberLabel.snp.makeConstraints {
-      $0.top.equalTo(checkingIdLabel.snp.bottom).offset(30)
+      $0.top.equalTo(checkingIdLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(checkingIdLabel)
     }
-    
     secretTextFeild.snp.makeConstraints {
       $0.top.equalTo(secretNumberLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(secretNumberLabel)
     }
-    
     tenSyllableLabel.snp.makeConstraints {
       $0.top.equalTo(secretTextFeild.snp.bottom).offset(4)
       $0.leading.trailing.equalTo(secretNumberLabel)
+      $0.height.equalTo(0)
     }
     combinationLabel.snp.makeConstraints {
       $0.top.equalTo(tenSyllableLabel.snp.bottom).offset(4)
       $0.leading.trailing.equalTo(tenSyllableLabel)
+      $0.height.equalTo(0)
     }
-    
     notSameTheeNumber.snp.makeConstraints {
       $0.top.equalTo(combinationLabel.snp.bottom).offset(4)
       $0.leading.trailing.equalTo(combinationLabel)
+      $0.height.equalTo(0)
     }
     checkSecretNumberLabel.snp.makeConstraints {
-      $0.top.equalTo(notSameTheeNumber.snp.bottom).offset(30)
+      $0.top.equalTo(notSameTheeNumber.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(notSameTheeNumber)
     }
-    
     checkSecretNumberTextFeild.snp.makeConstraints {
       $0.top.equalTo(checkSecretNumberLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(checkSecretNumberLabel)
@@ -458,168 +512,140 @@ class SignupView: UIView, UITextFieldDelegate  {
     sameSecretNumberLabel.snp.makeConstraints {
       $0.top.equalTo(checkSecretNumberTextFeild.snp.bottom).offset(4)
       $0.leading.trailing.equalTo(checkSecretNumberTextFeild)
+      $0.height.equalTo(0)
     }
     nameLabel.snp.makeConstraints {
-      $0.top.equalTo(sameSecretNumberLabel.snp.bottom).offset(30)
+      $0.top.equalTo(sameSecretNumberLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(checkSecretNumberTextFeild)
     }
-    
     nameTextFeild.snp.makeConstraints {
       $0.top.equalTo(nameLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(nameLabel)
     }
-    
     emailLabel.snp.makeConstraints {
       $0.top.equalTo(nameTextFeild.snp.bottom).offset(20)
       $0.leading.trailing.equalTo(nameTextFeild)
     }
-    
     emailTextFeild.snp.makeConstraints {
       $0.top.equalTo(emailLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(emailLabel)
     }
-    
     cellphoneLabel.snp.makeConstraints {
       $0.top.equalTo(emailTextFeild.snp.bottom).offset(20)
       $0.leading.trailing.equalTo(emailTextFeild)
     }
-    
     cellphoneTextField.snp.makeConstraints {
       $0.top.equalTo(cellphoneLabel.snp.bottom).offset(10)
       $0.leading.equalTo(cellphoneLabel)
       $0.width.equalTo(scrollView.snp.width).multipliedBy(0.5)
     }
-    
     receivingCellphoneNumberButton.snp.makeConstraints {
       $0.top.equalTo(cellphoneTextField)
       $0.leading.equalTo(cellphoneTextField.snp.trailing).offset(10)
       $0.trailing.equalTo(cellphoneLabel)
     }
-    
     checkingReceivingNumberTexField.snp.makeConstraints {
       $0.top.equalTo(cellphoneTextField.snp.bottom).offset(10)
       $0.leading.equalTo(cellphoneTextField)
       $0.width.equalTo(scrollView.snp.width).multipliedBy(0.5)
     }
-    
     checkingReceivingButton.snp.makeConstraints {
       $0.top.equalTo(receivingCellphoneNumberButton.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(receivingCellphoneNumberButton)
     }
-    
     addressLabel.snp.makeConstraints {
       $0.top.equalTo(checkingReceivingNumberTexField.snp.bottom).offset(20)
       $0.leading.trailing.equalTo(cellphoneLabel)
     }
-    
     addressCheckingLabel.snp.makeConstraints {
       $0.top.equalTo(addressLabel.snp.bottom).offset(4)
       $0.leading.trailing.equalTo(addressLabel)
     }
-    
     searchingAddressButton.snp.makeConstraints {
       $0.top.equalTo(addressCheckingLabel.snp.bottom).offset(20)
       $0.leading.trailing.equalTo(addressCheckingLabel)
     }
-    
     birthdayLabel.snp.makeConstraints {
       $0.top.equalTo(searchingAddressButton.snp.bottom).offset(20)
       $0.leading.trailing.equalTo(searchingAddressButton)
     }
-    
     bunchBirthdayView.snp.makeConstraints {
       $0.top.equalTo(birthdayLabel.snp.bottom).offset(20)
       $0.leading.trailing.equalTo(birthdayLabel)
       $0.height.equalTo(checkingReceivingNumberTexField)
     }
-    
     birthdayYearTextField.snp.makeConstraints {
       $0.centerY.equalTo(bunchBirthdayView.snp.centerY)
       $0.leading.equalTo(bunchBirthdayView)
       $0.width.equalTo(scrollView.snp.width).dividedBy(3.2)
     }
-    
     firstSlashLabel.snp.makeConstraints {
     $0.centerY.equalTo(bunchBirthdayView.snp.centerY)
       $0.leading.equalTo(birthdayYearTextField.snp.trailing)
       $0.width.equalTo(8)
     }
-    
     birthdayMonthTextField.snp.makeConstraints {
       $0.centerY.equalTo(bunchBirthdayView.snp.centerY)
       $0.leading.equalTo(firstSlashLabel.snp.trailing)
       $0.width.equalTo(scrollView.snp.width).dividedBy(3.2)
     }
-    
     secondSlashLabel.snp.makeConstraints {
       $0.centerY.equalTo(bunchBirthdayView.snp.centerY)
       $0.leading.equalTo(birthdayMonthTextField.snp.trailing)
       $0.width.equalTo(8)
     }
-    
     birthdayDayTextField.snp.makeConstraints {
       $0.centerY.equalTo(bunchBirthdayView.snp.centerY)
       $0.leading.equalTo(secondSlashLabel.snp.trailing)
       $0.width.equalTo(scrollView.snp.width).dividedBy(3.2)
     }
-    
     genderLabel.snp.makeConstraints {
       $0.top.equalTo(bunchBirthdayView.snp.bottom).offset(30)
       $0.leading.trailing.equalTo(searchingAddressButton)
     }
-    
     maleRoundLabel.snp.makeConstraints {
       $0.top.equalTo(genderLabel.snp.bottom).offset(30)
       $0.leading.equalTo(genderLabel).offset(4)
       $0.width.height.equalTo(20)
     }
-    
     maleLabel.snp.makeConstraints {
       $0.top.equalTo(genderLabel.snp.bottom).offset(30)
       $0.leading.equalTo(scrollView.snp.leading).offset(44)
       $0.trailing.equalTo(genderLabel)
     }
-    
     maleUnderline.snp.makeConstraints {
       $0.top.equalTo(maleRoundLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(genderLabel)
       $0.height.equalTo(1)
     }
-    
     femaleRoundLabel.snp.makeConstraints {
       $0.top.equalTo(maleUnderline.snp.bottom).offset(10)
       $0.leading.equalTo(maleRoundLabel)
       $0.width.height.equalTo(20)
     }
-    
     femaleLabel.snp.makeConstraints {
       $0.top.equalTo(femaleRoundLabel)
       $0.leading.trailing.equalTo(maleLabel)
     }
-    
     femaleUnderline.snp.makeConstraints {
       $0.top.equalTo(femaleRoundLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(maleUnderline)
       $0.height.equalTo(1)
     }
-    
     noChoiceRoundLabel.snp.makeConstraints {
       $0.top.equalTo(femaleUnderline.snp.bottom).offset(10)
       $0.leading.equalTo(femaleRoundLabel)
       $0.width.height.equalTo(20)
     }
-    
     noChoiceLabel.snp.makeConstraints {
       $0.top.equalTo(noChoiceRoundLabel)
       $0.leading.trailing.equalTo(femaleLabel)
     }
-    
     noChoiceUnderline.snp.makeConstraints {
       $0.top.equalTo(noChoiceRoundLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(femaleUnderline)
       $0.height.equalTo(1)
     }
-    
     additionalConditionLabel.snp.makeConstraints {
       $0.top.equalTo(noChoiceUnderline.snp.bottom).offset(20)
       $0.leading.trailing.equalTo(genderLabel)
@@ -628,49 +654,41 @@ class SignupView: UIView, UITextFieldDelegate  {
       $0.top.equalTo(additionalConditionLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(additionalConditionLabel)
     }
-    
     recoRoundLabel.snp.makeConstraints {
       $0.top.equalTo(additionalExplanationLabel.snp.bottom).offset(30)
       $0.leading.equalTo(noChoiceRoundLabel)
       $0.width.height.equalTo(20)
     }
-    
     recoIDLabel.snp.makeConstraints {
       $0.top.equalTo(additionalExplanationLabel.snp.bottom).offset(30)
       $0.leading.equalTo(scrollView.snp.leading).offset(50)
       $0.trailing.equalTo(additionalExplanationLabel)
     }
-    
     recoUnderline.snp.makeConstraints {
       $0.top.equalTo(recoIDLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(additionalExplanationLabel)
       $0.height.equalTo(1)
     }
-    
     eventNameRoundLabel.snp.makeConstraints {
       $0.top.equalTo(recoUnderline.snp.bottom).offset(20)
       $0.leading.equalTo(recoRoundLabel)
       $0.width.height.equalTo(20)
     }
-    
     eventName.snp.makeConstraints {
       $0.top.equalTo(eventNameRoundLabel)
       $0.leading.trailing.equalTo(recoIDLabel)
     }
-    
     eventNameUnderline.snp.makeConstraints {
       $0.top.equalTo(eventName.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(recoUnderline)
       $0.height.equalTo(1)
     }
-    
     grayView.snp.makeConstraints {
       $0.top.equalTo(eventNameUnderline.snp.bottom).offset(20)
       $0.leading.trailing.equalToSuperview()
       $0.width.equalToSuperview()
       $0.height.equalTo(10)
     }
-    
     usingAgreement.snp.makeConstraints {
       $0.top.equalTo(grayView.snp.bottom).offset(20)
       $0.leading.equalTo(scrollView.snp.leading).offset(10)
@@ -782,7 +800,7 @@ class SignupView: UIView, UITextFieldDelegate  {
       $0.leading.equalTo(ageView.snp.trailing).offset(10)
     }
     ageEssentialLabel.snp.makeConstraints {
-            $0.top.bottom.equalTo(ageLabel)
+      $0.top.bottom.equalTo(ageLabel)
       $0.leading.equalTo(ageLabel.snp.trailing).offset(10)
     }
     signupButton.snp.makeConstraints {
@@ -797,7 +815,6 @@ class SignupView: UIView, UITextFieldDelegate  {
       $0.bottom.equalToSuperview()
     }
   }
-  
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -811,19 +828,132 @@ extension SignupView {
     )
     return myMutableString
   }
-  
   func textField(_ textField: UITextField,
-                 shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-    if textField == birthdayYearTextField {
-      let currentText = textField.text ?? ""
-      guard let stringRange = Range(range, in: currentText) else { return false }
-      let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
-      return updatedText.count <= 4
-    } else {
-      let currentText = textField.text ?? ""
-      guard let stringRange = Range(range, in: currentText) else { return false }
-      let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
-      return updatedText.count <= 2
+                 shouldChangeCharactersIn range: NSRange,
+                 replacementString string: String) -> Bool {
+    guard let delegate = delegate else { fatalError() }
+    
+    switch textField {
+    case idTextFeild:
+      return delegate.idTextField(textField, shouldChangeCharactersIn: range, replacementString: string)
+    case secretTextFeild:
+      return delegate.secretTextField(
+        textField,
+        shouldChangeCharactersIn: range,
+        replacementString: string
+      )
+    case checkSecretNumberTextFeild:
+      return delegate.checkSecretNumberTextField(
+        textField,
+        shouldChangeCharactersIn: range,
+        replacementString: string
+      )
+    case nameTextFeild:
+      return delegate.nameTextField(
+        textField,
+        shouldChangeCharactersIn: range,
+        replacementString: string)
+    case emailTextFeild:
+      return delegate.emailTextField(
+        textField,
+        shouldChangeCharactersIn: range,
+        replacementString: string
+      )
+    case cellphoneTextField:
+      return delegate.cellphoneTextField(
+        textField,
+        shouldChangeCharactersIn: range,
+        replacementString: string
+      )
+    case checkingReceivingNumberTexField:
+      return delegate.checkingReceivingNumberTextField(
+        textField,
+        shouldChangeCharactersIn: range,
+        replacementString: string
+      )
+    case birthdayYearTextField:
+      return delegate.birthdayYearTextField(
+        textField,
+        shouldChangeCharactersIn: range,
+        replacementString: string
+      )
+    case birthdayMonthTextField:
+      return delegate.birthdayMonthTextField(
+        textField,
+        shouldChangeCharactersIn: range,
+        replacementString: string
+      )
+    case birthdayDayTextField:
+      return delegate.birthdayDayTextField(
+        textField,
+        shouldChangeCharactersIn: range,
+        replacementString: string
+      )
+    default:
+      fatalError()
     }
+  }
+  func textFieldDidBeginEditing(_ textField: UITextField) {
+    guard let delegate = delegate else { fatalError() }
+    switch textField {
+    case idTextFeild:
+      return delegate.idTextFieldDidBeginEditing(textField)
+    case secretTextFeild:
+      return delegate.secretTextFeildDidBeginEditing(textField)
+    case checkSecretNumberTextFeild:
+      return delegate.checkSecretNumberTextFeildDidBeginEditing(textField)
+    default:
+      fatalError()
+    }
+  }
+  func idTextFieldOpenHiddenMessage() {
+    idLimitExplanationLabel.snp.updateConstraints {
+      $0.height.equalTo(10)
+    }
+    checkingIdLabel.snp.updateConstraints {
+      $0.height.equalTo(10)
+    }
+    secretNumberLabel.snp.updateConstraints {
+      $0.top.equalTo(checkingIdLabel.snp.bottom).offset(30)
+    }
+  }
+  func secretTextFeildOpenHiddenMessage() {
+    tenSyllableLabel.snp.updateConstraints {
+      $0.height.equalTo(10)
+    }
+    combinationLabel.snp.updateConstraints {
+      $0.height.equalTo(10)
+    }
+    notSameTheeNumber.snp.updateConstraints {
+      $0.height.equalTo(10)
+    }
+    checkSecretNumberLabel.snp.updateConstraints {
+      $0.top.equalTo(notSameTheeNumber.snp.bottom).offset(30)
+    }
+  }
+  func checkSecretNumberTextFeildOpenHiddenMessage() {
+    sameSecretNumberLabel.snp.updateConstraints {
+      $0.height.equalTo(10)
+    }
+    nameLabel.snp.updateConstraints {
+      $0.top.equalTo(sameSecretNumberLabel.snp.bottom).offset(30)
+    }
+  }
+  @objc func idTextFieldEditingChanged(_ textField: UITextField) {
+    guard
+      let delegate = delegate,
+      let text = textField.text
+    else { fatalError() }
+    
+    delegate.idTextFieldEditingChanged(textField, text: text)
+  }
+  func setIDLimitExplanationLabel(textColor: UIColor) {
+    idLimitExplanationLabel.textColor = textColor
+  }
+  @objc func checkIDButtonTouched(_ button: UIButton) {
+    delegate?.checkIDButtonTouched(button)
+  }
+  func getIDTextFieldText() -> String {
+    idTextFeild.text ?? ""
   }
 }
