@@ -53,6 +53,7 @@ class CartViewController: UIViewController {
   ]
   
   private lazy var cartView = CartView().then {
+    $0.dataSource = self
     $0.delegate = self
   }
 
@@ -67,7 +68,7 @@ class CartViewController: UIViewController {
   }
 }
 
-extension CartViewController: CartViewDelegate {  
+extension CartViewController: CartViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
     1
   }
@@ -107,5 +108,15 @@ extension CartViewController: CartProductTableViewCellDelegate {
   
   func additionButtonTouched(_ button: UIButton) {
     print("additionButtonTouched")
+  }
+}
+
+extension CartViewController: CartViewDelegate {
+  func selectAllProductButtonTouched(_ button: UIButton) {
+    print("selectAllProductButtonTouched")
+  }
+  
+  func removeSelectedProductButton(_ button: UIButton) {
+    print("removeSelectedProductButton")
   }
 }
