@@ -30,7 +30,7 @@ class HomeRootView: UIView {
     $0.distribution = .fillEqually
   }
   
-  private let menuTextArray = ["컬리추천", "신상품", "베스트", "알뜰쇼핑", "이벤트"]
+  private let menuTextArray = Categories.HomeCategory
   
   override init(frame: CGRect) {
     super.init(frame: frame)

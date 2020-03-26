@@ -35,14 +35,14 @@ extension HomeEventTableCell {
     (1...3).forEach { _ in
       let innerView = UIView()
       let imageView = UIImageView().then {
-        $0.image = UIImage(named: "cloud")
+        $0.image = UIImage(named: "cloud2")
         $0.contentMode = .scaleToFill
       }
       let titleLabel = UILabel().then {
-        $0.text = "콜린스 그린 최대 10% 할인"
+        $0.text = "구름이는 귀엽다"
       }
       let subTitleLabel = UILabel().then {
-        $0.text = "맛있고 건강한 착즙 주스"
+        $0.text = "그것도 존나 귀엽다"
       }
       innerView.addSubviews([imageView, titleLabel, subTitleLabel])
       

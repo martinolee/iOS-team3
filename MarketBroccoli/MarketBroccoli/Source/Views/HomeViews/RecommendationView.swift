@@ -30,13 +30,14 @@ extension RecommendationView {
     self.register(cell: HomeBannerTableCell.self)
     self.register(cell: HomeOfferTableCell.self)
     self.register(cell: HomeEventTableCell.self)
+    self.register(cell: HomeMDTableCell.self)
   }
 }
 
 // MARK: - TableViewDataSource, TableViewDelegate
 extension RecommendationView: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
-    4
+    5
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -56,6 +57,9 @@ extension RecommendationView: UITableViewDataSource {
     case 3:
       let cell = tableView.dequeue(HomeOfferTableCell.self)
       cell.configure(cellTitle: "알뜰 상품")
+      return cell
+    case 4:
+      let cell = tableView.dequeue(HomeMDTableCell.self)
       return cell
     default:
       return UITableViewCell()

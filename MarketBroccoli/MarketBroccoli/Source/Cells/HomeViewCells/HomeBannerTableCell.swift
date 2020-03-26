@@ -11,7 +11,7 @@ import Then
 import SnapKit
 
 class HomeBannerTableCell: UITableViewCell {
-  private let dummyData = Array(repeating: ["cloud", "chapssal"], count: 3).flatMap { $0 }
+  private let dummyData = Array(repeating: ["cloud", "cloud3"], count: 3).flatMap { $0 }
   private lazy var bannerCountLabel = UILabel().then {
     $0.backgroundColor = UIColor.gray.withAlphaComponent(0.4)
     $0.textColor = .white

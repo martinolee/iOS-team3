@@ -16,9 +16,7 @@ class HomeOfferTableCell: UITableViewCell {
   private let offerCollectionView = HomeProductCollectionView(
     frame: .zero,
     collectionViewLayout: UICollectionViewFlowLayout()
-  ).then {
-    $0.backgroundColor = .clear
-  }
+  )
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
