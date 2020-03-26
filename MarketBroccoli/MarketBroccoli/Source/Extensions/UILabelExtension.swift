@@ -16,4 +16,15 @@ extension UILabel {
     }
     return nil
   }
+  
+  func strikethrough() {
+    guard let text = self.text else { return }
+    let attribute: NSMutableAttributedString = NSMutableAttributedString(string: text)
+    attribute.addAttribute(
+      NSAttributedString.Key.strikethroughStyle,
+      value: 2,
+      range: NSRange(location: 0, length: attribute.length)
+    )
+    self.attributedText = attribute
+  }
 }

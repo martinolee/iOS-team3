@@ -15,8 +15,10 @@ class HomeOfferTableCell: UITableViewCell {
   
   private let offerCollectionView = HomeProductCollectionView(
     frame: .zero,
-    collectionViewLayout: CustomCollectionViewFlowLayout()
-  )
+    collectionViewLayout: UICollectionViewFlowLayout()
+  ).then {
+    $0.backgroundColor = .clear
+  }
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -44,10 +46,11 @@ extension HomeOfferTableCell {
 // MARK: - UI
 extension HomeOfferTableCell {
   private func setupLayout() {
-    guard let layout = offerCollectionView.collectionViewLayout as? CustomCollectionViewFlowLayout else { return }
+    guard let layout = offerCollectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
     let margin: CGFloat = 10
     let itemCount: CGFloat = 2.3
     let contentSize: CGFloat = ((self.frame.width - (margin * 2) - (10 * (itemCount - 1))) / itemCount).rounded(.down)
+    layout.scrollDirection = .horizontal
     layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     layout.itemSize = CGSize(width: contentSize, height: 160)
   }
