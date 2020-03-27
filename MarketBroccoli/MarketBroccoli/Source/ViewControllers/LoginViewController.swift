@@ -45,14 +45,14 @@ class LoginViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    setNavigation()
+    setupNavigation()
     setupUI()
   }
 }
 
 // MARK: - UI
 extension LoginViewController {
-  private func setNavigation() {
+  private func setupNavigation() {
     self.navigationController?.navigationBar.barTintColor = .white
     self.navigationItem.title = "로그인"
     self.navigationItem.leftBarButtonItem = UIBarButtonItem(

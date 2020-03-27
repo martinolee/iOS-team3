@@ -12,8 +12,9 @@ import Then
 import UIKit
 
 protocol UserInfoTableViewCellDelgate: class {
-  func whenLeftButtonDidTouchUpInside(_ button: UIButton)
-  func whenRightButtonDidTouchUpInside(_ button: UIButton)
+  func leftButtonTouched(_ button: UIButton)
+  
+  func rightButtonTouched(_ button: UIButton)
 }
 
 final class UserInfoTableViewCell: UITableViewCell {
@@ -44,7 +45,7 @@ final class UserInfoTableViewCell: UITableViewCell {
     $0.setTitleColor(.black, for: .normal)
     $0.titleLabel?.textAlignment = .center
     $0.setTitle("전체등급 보기", for: .normal)
-    $0.addTarget(self, action: #selector(whenLeftButtonDidTouchUpInside(_:)), for: .touchUpInside)
+    $0.addTarget(self, action: #selector(leftButtonTouched(_:)), for: .touchUpInside)
   }
   private lazy var rightButton = UIButton(type: .system).then {
     $0.layer.cornerRadius = $0.bounds.height / 2
@@ -54,7 +55,7 @@ final class UserInfoTableViewCell: UITableViewCell {
     $0.titleLabel?.textAlignment = .center
     $0.setTitle("다음 달 예상등급 보기", for: .normal)
     
-    $0.addTarget(self, action: #selector(whenRightButtonDidTouchUpInside(_:)), for: .touchUpInside)
+    $0.addTarget(self, action: #selector(rightButtonTouched(_:)), for: .touchUpInside)
   }
   
   // MARK: - Initialization
@@ -145,13 +146,13 @@ final class UserInfoTableViewCell: UITableViewCell {
   // MARK: - Action Handler
   
   @objc
-  private func whenLeftButtonDidTouchUpInside(_ button: UIButton) {
-    delegate?.whenLeftButtonDidTouchUpInside(button)
+  private func leftButtonTouched(_ button: UIButton) {
+    delegate?.leftButtonTouched(button)
   }
   
   @objc
-  private func whenRightButtonDidTouchUpInside(_ button: UIButton) {
-    delegate?.whenRightButtonDidTouchUpInside(button)
+  private func rightButtonTouched(_ button: UIButton) {
+    delegate?.rightButtonTouched(button)
   }
   
   func configure(userProfileImageResource: ImageResource, userName: String, extraInfo: String) {

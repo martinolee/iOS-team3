@@ -10,29 +10,46 @@ import Then
 import SnapKit
 import UIKit
 
-protocol CartViewDelegate: class {
+protocol CartViewDataSource: class {
   func numberOfSections(in tableView: UITableView) -> Int
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
+}
+
+protocol CartViewDelegate: class {
+  func selectingOptionButtonTouched(_ button: UIButton)
   
-  func whenSelectingOptionButtonDidTouchUpInside(_ button: UIButton)
+  func productRemoveButtonTouched(_ button: UIButton)
   
-  func whenProductRemoveButtonDidTouchUpInside(_ button: UIButton)
+  func subtractionButtonTouched(_ button: UIButton)
   
-  func whenSubtractionButtonDidTouchUpInside(_ button: UIButton)
+  func additionButtonTouched(_ button: UIButton)
   
-  func whenAdditionButtonDidTouchUpInside(_ button: UIButton)
+  func selectAllProductButtonTouched(_ button: UIButton)
+  
+  func removeSelectedProductButton(_ button: UIButton)
 }
 
 class CartView: UIView {
   // MARK: - Properties
   
+  weak var dataSource: CartViewDataSource?
+  
   weak var delegate: CartViewDelegate?
+  
+  private lazy var cartViewHeader = CartViewHeader().then {
+    $0.delegate = self
+  }
+  
+  private lazy var cartFooterView = CartFooterView().then {
+    $0.dataSource = self
+  }
   
   private lazy var cartTableView = UITableView().then {
     $0.separatorStyle = .none
+    $0.backgroundColor = .lightGray
     
     $0.dataSource = self
     
@@ -55,12 +72,24 @@ class CartView: UIView {
   // MARK: - Setup UI
   
   private func addAllView() {
-    self.addSubview(cartTableView)
+    self.addSubviews([
+      cartViewHeader,
+      cartTableView
+    ])
   }
   
   private func setupCartTableViewAutoLayout() {
+    cartViewHeader.snp.makeConstraints {
+      $0.top.equalTo(safeAreaLayoutGuide)
+      $0.leading.trailing.equalToSuperview()
+      $0.width.equalTo(cartTableView)
+      $0.height.equalTo(50)
+    }
+    
     cartTableView.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+      $0.top.equalTo(cartViewHeader.snp.bottom)
+      $0.leading.trailing.equalTo(cartViewHeader)
+      $0.bottom.equalToSuperview()
     }
   }
   
@@ -69,32 +98,46 @@ class CartView: UIView {
 
 extension CartView: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
-    delegate?.numberOfSections(in: tableView) ?? 0
+    dataSource?.numberOfSections(in: tableView) ?? 0
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    delegate?.tableView(tableView, numberOfRowsInSection: section) ?? 0
+    dataSource?.tableView(tableView, numberOfRowsInSection: section) ?? 0
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    delegate?.tableView(tableView, cellForRowAt: indexPath) ?? UITableViewCell()
+    dataSource?.tableView(tableView, cellForRowAt: indexPath) ?? UITableViewCell()
   }
 }
 
 extension CartView: CartProductTableViewCellDelegate {
-  func whenSelectingOptionButtonDidTouchUpInside(_ button: UIButton) {
-    delegate?.whenSelectingOptionButtonDidTouchUpInside(button)
+  func selectingOptionButtonTouched(_ button: UIButton) {
+    delegate?.selectingOptionButtonTouched(button)
   }
   
-  func whenProductRemoveButtonDidTouchUpInside(_ button: UIButton) {
-    delegate?.whenProductRemoveButtonDidTouchUpInside(button)
+  func productRemoveButtonTouched(_ button: UIButton) {
+    delegate?.productRemoveButtonTouched(button)
   }
   
-  func whenSubtractionButtonDidTouchUpInside(_ button: UIButton) {
-    delegate?.whenSubtractionButtonDidTouchUpInside(button)
+  func subtractionButtonTouched(_ button: UIButton) {
+    delegate?.subtractionButtonTouched(button)
   }
   
-  func whenAdditionButtonDidTouchUpInside(_ button: UIButton) {
-    delegate?.whenAdditionButtonDidTouchUpInside(button)
+  func additionButtonTouched(_ button: UIButton) {
+    delegate?.additionButtonTouched(button)
   }
+}
+
+extension CartView: CartViewHeaderDelegate {
+  func selectAllProductButtonTouched(_ button: UIButton) {
+    delegate?.selectAllProductButtonTouched(button)
+  }
+  
+  func removeSelectedProductButton(_ button: UIButton) {
+    delegate?.removeSelectedProductButton(button)
+  }
+}
+
+extension CartView: CartFooterViewDataSource {
+  
 }

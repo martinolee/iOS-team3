@@ -27,7 +27,7 @@ excluded:
 - MarketBroccoli/Application/AppDelegate.swift
 - MarketBroccoli/Application/SceneDelegate.swift
 - MarketBroccoli/Source/CustomUI/CustomCollectionViewFlowLayout.swift
-
+- MarketBroccoli/Source/Cells/HomeViewCells/HomeMDTableCell.swift
 # Custom
 
 force_cast: warning

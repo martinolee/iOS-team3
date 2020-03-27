@@ -30,7 +30,7 @@ class HomeRootView: UIView {
     $0.distribution = .fillEqually
   }
   
-  private let menuTextArray = ["컬리추천", "신상품", "베스트", "알뜰쇼핑", "이벤트"]
+  private let menuTextArray = Categories.HomeCategory
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -44,42 +44,34 @@ class HomeRootView: UIView {
 
 // MARK: - ACTIONS
 extension HomeRootView {
-  private func scrollMoved(_ currentPage: Int) {
+  private func scrollMoved(_ currentPage: Int, scroll: Bool = false) {
     guard let label = stackView.arrangedSubviews[currentPage] as? UILabel else { return }
     stackView.arrangedSubviews.forEach {
       ($0 as? UILabel)?.textColor = .gray
     }
+    
     selectedCategory.snp.remakeConstraints {
       $0.bottom.equalTo(label.snp.bottom)
       $0.centerX.equalTo(label.snp.centerX)
       $0.width.equalTo(label.getWidth() ?? 0)
       $0.height.equalTo(5)
     }
+    
     UIView.animate(withDuration: 0.3) {
       label.textColor = .purple
+      if scroll {
+        let movePoint = CGPoint(x: self.frame.size.width * CGFloat(currentPage), y: 0)
+        self.scrollView.setContentOffset(movePoint, animated: false)
+      }
       self.layoutIfNeeded()
     }
   }
+  
   @objc private func categoryTouched(_ sender: UITapGestureRecognizer) {
     guard let label = sender.view as? UILabel,
       let labelIdx = stackView.arrangedSubviews.firstIndex(of: label)
       else { return }
-    stackView.arrangedSubviews.forEach {
-      ($0 as? UILabel)?.textColor = .gray
-    }
-    
-    selectedCategory.snp.remakeConstraints {
-      $0.bottom.equalTo(label.snp.bottom)
-      $0.centerX.equalTo(label.snp.centerX)
-      $0.width.equalTo(label.getWidth() ?? 0)
-      $0.height.equalTo(5)
-    }
-    
-    UIView.animate(withDuration: 0.3) {
-      self.scrollView.setContentOffset(CGPoint(x: self.frame.size.width * CGFloat(labelIdx), y: 0), animated: false)
-      label.textColor = .purple
-      self.layoutIfNeeded()
-    }
+    scrollMoved(labelIdx, scroll: true)
   }
 }
 
@@ -171,9 +163,9 @@ extension HomeRootView {
   }
 }
 
+// MARK: - ScrollViewDelegate
 extension HomeRootView: UIScrollViewDelegate {
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//    guard animationFlag else { return }
     let screenWidth = self.scrollView.frame.size.width
     let currentOffsetX = scrollView.contentOffset.x
     guard screenWidth > 0 && currentOffsetX > 0 else { return }
@@ -182,6 +174,7 @@ extension HomeRootView: UIScrollViewDelegate {
   }
 }
 
+// MARK: - CollectionViewDataSource
 extension HomeRootView: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return 5

@@ -10,9 +10,9 @@ import Then
 import UIKit
 
 protocol ProductQuantityStepperDelegate: class {
-  func whenSubtractionButtonDidTouchUpInside(_ button: UIButton)
+  func subtractionButtonTouched(_ button: UIButton)
   
-  func whenAdditionButtonDidTouchUpInside(_ button: UIButton)
+  func additionButtonTouched(_ button: UIButton)
 }
 
 class ProductQuantityStepper: UIView {
@@ -26,7 +26,7 @@ class ProductQuantityStepper: UIView {
     $0.backgroundColor = .lightGray
     $0.setImage(UIImage(systemName: "plus"), for: .normal)
     
-    $0.addTarget(self, action: #selector(whenSubtractionButtonDidTouchUpInside(_:)), for: .touchUpInside)
+    $0.addTarget(self, action: #selector(subtractionButtonTouched(_:)), for: .touchUpInside)
   }
   
   private lazy var valueLabel = UILabel().then {
@@ -41,7 +41,7 @@ class ProductQuantityStepper: UIView {
     $0.backgroundColor = .lightGray
     $0.setImage(UIImage(systemName: "minus"), for: .normal)
     
-    $0.addTarget(self, action: #selector(whenAdditionButtonDidTouchUpInside(_:)), for: .touchUpInside)
+    $0.addTarget(self, action: #selector(additionButtonTouched(_:)), for: .touchUpInside)
   }
   
   // MARK: - Life Cycle
@@ -88,12 +88,16 @@ class ProductQuantityStepper: UIView {
   // MARK: - Action Handler
   
   @objc
-  private func whenSubtractionButtonDidTouchUpInside(_ button: UIButton) {
-    delegate?.whenSubtractionButtonDidTouchUpInside(button)
+  private func subtractionButtonTouched(_ button: UIButton) {
+    delegate?.subtractionButtonTouched(button)
   }
   
   @objc
-  private func whenAdditionButtonDidTouchUpInside(_ button: UIButton) {
-    delegate?.whenAdditionButtonDidTouchUpInside(button)
+  private func additionButtonTouched(_ button: UIButton) {
+    delegate?.additionButtonTouched(button)
   }
+  
+  // MARK: - Element Control
+  
+  func setValueLabel(text: String) { valueLabel.text = text }
 }
