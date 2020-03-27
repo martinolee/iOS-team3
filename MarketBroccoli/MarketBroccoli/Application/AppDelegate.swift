@@ -16,24 +16,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     setupRootViewController()
     
     return true
-  }
+    }
   
   private func setupRootViewController() {
     window = UIWindow(frame: UIScreen.main.bounds)
     
-    let tabBarController = UITabBarController()
-    let homeViewController = UINavigationController(rootViewController: HomeViewController())
-    let myBroccoliViewController = UINavigationController(rootViewController: SettingsViewController())
-    let viewControllers = [homeViewController, myBroccoliViewController]
+    let marketBroccoliTabBarController = MartketBroccliTabBarController()
     
-    homeViewController.title = "홈"
-    myBroccoliViewController.title = "마이브로콜리"
-    
-    tabBarController.viewControllers = viewControllers
-    window?.rootViewController = tabBarController
-    
-//    let vc = SignUpViewController()
-    
+    window?.rootViewController = marketBroccoliTabBarController
     window?.makeKeyAndVisible()
   }
 }

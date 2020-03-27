@@ -24,16 +24,11 @@ class CustomCollectionViewFlowLayout: UICollectionViewFlowLayout {
     
     let itemSpace = itemSize.width + minimumInteritemSpacing
     var currentItemIdx = round(collectionView.contentOffset.x / itemSpace)
+
+    if velocity.x > 0 { currentItemIdx += 1 }
+    else if velocity.x < 0 { currentItemIdx -= 1 }
     
-    let vX = velocity.x
-    if vX > 0 {
-      currentItemIdx += 1
-    } else if vX < 0 {
-      currentItemIdx -= 1
-    }
-    
-    let nearestPageOffset = currentItemIdx * itemSpace
-    return CGPoint(x: nearestPageOffset,
+    return CGPoint(x: currentItemIdx * itemSpace,
                    y: parent.y)
   }
 }

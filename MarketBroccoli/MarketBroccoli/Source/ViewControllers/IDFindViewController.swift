@@ -25,22 +25,22 @@ class IDFindViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setNavigation()
-    setUI()
-    setLayout()
+    setupUI()
+    setupLayout()
   }
   private func setNavigation() {
     self.navigationController?.navigationBar.barTintColor = .white
     self.navigationItem.title = "아이디 찾기"
   }
   
-  private func setUI() {
+  private func setupUI() {
     view.backgroundColor = .white
     emailTextField.keyboardType = .emailAddress
     [nameTextField, emailTextField, submitButton].forEach {
       view.addSubview($0)
     }
   }
-  private func setLayout() {
+  private func setupLayout() {
     let guide = view.safeAreaLayoutGuide
     let margin: CGFloat = 32
     let height: CGFloat = 14
