@@ -28,21 +28,21 @@ class PWFindViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    setNavigation()
-    setUI()
-    setLayout()
+    setupNavigation()
+    setupUI()
+    setupLayout()
   }
-  private func setNavigation() {
+  private func setupNavigation() {
     self.navigationController?.navigationBar.barTintColor = .white
     self.navigationItem.title = "비밀번호 찾기"
   }
-  private func setUI() {
+  private func setupUI() {
     view.backgroundColor = .white
     emailTextField.keyboardType = .emailAddress
     [nameTextField, idTextField, emailTextField, submitButton].forEach {
       view.addSubview($0) }
   }
-  private func setLayout() {
+  private func setupLayout() {
     let guide = view.safeAreaLayoutGuide
     let margin: CGFloat = 32
     let height: CGFloat = 14
