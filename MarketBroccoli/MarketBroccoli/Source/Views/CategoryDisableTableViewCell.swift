@@ -26,7 +26,7 @@ class CategoryDisableTableViewCell: UITableViewCell {
     iconImage.contentMode = .scaleAspectFit
     arrowImage.image = UIImage(systemName: "chevron.down")
     arrowImage.contentMode = .scaleAspectFit
-    arrowImage.tintColor = .black
+    arrowImage.tintColor = .darkGray
     [iconImage, title, arrowImage].forEach {
       contentView.addSubview($0)
     }
