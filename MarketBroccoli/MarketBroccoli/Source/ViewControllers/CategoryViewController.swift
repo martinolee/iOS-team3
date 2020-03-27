@@ -121,7 +121,7 @@ let item1: [TempCategory] =
 //]
 
 class CategoryViewController: UIViewController {
-  var tableView = UITableView()
+  var tableView = UITableView(frame: .zero, style: .grouped)
   let oftenProduct = ["자주 사는 상품"]
   let items = [
     "채소", "과일·견과·쌀", "수산·해산·건어물", "정육·계란",
@@ -146,6 +146,10 @@ class CategoryViewController: UIViewController {
     view.backgroundColor = .white
     tableView.dataSource = self
     tableView.delegate = self
+    tableView.tableHeaderView =
+      UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: (view.frame.height) * 0.02))
+    tableView.tableFooterView =
+      UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: (view.frame.height) * 0.02))
     tableView.register(cell: CategoryDisableTableViewCell.self)
     tableView.register(UITableViewCell.self, forCellReuseIdentifier: "often")
     tableView.register(UITableViewCell.self, forCellReuseIdentifier: "temp")
@@ -198,6 +202,7 @@ extension CategoryViewController: UITableViewDataSource {
       let image = UIImageView(image: UIImage(systemName: "chevron.right"))
       cell.accessoryView = image
       cell.accessoryView?.tintColor = #colorLiteral(red: 0.3176470588, green: 0.1529411765, blue: 0.4470588235, alpha: 1)
+      
       return cell
     case 1:
       let cell = tableView.dequeue(CategoryDisableTableViewCell.self)
@@ -227,5 +232,12 @@ extension CategoryViewController: UITableViewDelegate {
     } else {
       return 60
     }
+  }
+  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+      return UIView()
+  }
+
+  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+      return 0.1
   }
 }
