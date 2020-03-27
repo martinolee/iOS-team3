@@ -33,6 +33,28 @@ class SignUpViewController: UIViewController {
 }
 
 extension SignUpViewController: SignupViewDelegate {
+  func secretTextFeildEditingChanged(_ textField: UITextField, text: String) {
+    print("secretTextFeildEditingChanged")
+    if text.count <= 9 || hasOnlyAlphabetAndNumber(text: text) {
+      signupView.setTenSyllableLabel(textColor: .orange)
+    } else {
+      signupView.setTenSyllableLabel(textColor: .green)
+    }
+    
+     if hasSpecialWords(text: text) {
+      signupView.setCombinationLabel(textColor: .green)
+     } else {
+      signupView.setCombinationLabel(textColor: .orange)
+    }
+    
+//    if (text: text) {
+//      signupView.setsameSecretNumberLabel(textColor: .green)
+//    } else {
+//      signupView.setsameSecretNumberLabel(textColor: .orange)
+//    }
+  }
+  
+  
   func checkIDButtonTouched(_ button: UIButton) {
     let text = signupView.getIDTextFieldText()
     if hasOnlyAlphabetAndNumber(text: text) {
@@ -47,11 +69,27 @@ extension SignUpViewController: SignupViewDelegate {
       alertController.addAction(warning)
       present(alertController, animated: true)
     }
-  }
-  
+  } 
   private func hasOnlyAlphabetAndNumber(text: String) -> Bool {
       do {
         let regex = try NSRegularExpression(pattern: "^[a-zA-Z0-9]$", options: .caseInsensitive)
+        if regex.firstMatch(
+          in: text,
+          options: NSRegularExpression.MatchingOptions.reportCompletion,
+          range: NSRange(location: 0, length: text.count)) != nil {
+              return true
+          }
+      } catch {
+          print(error.localizedDescription)
+          return false
+      }
+      return false
+  }
+  private func hasSpecialWords(text: String) -> Bool {
+      do {
+        let regex = try NSRegularExpression(
+          pattern: "^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{10,16}$",
+          options: .caseInsensitive)
         if regex.firstMatch(
           in: text,
           options: NSRegularExpression.MatchingOptions.reportCompletion,
@@ -78,11 +116,9 @@ extension SignUpViewController: SignupViewDelegate {
   func secretTextFeildDidBeginEditing(_ textField: UITextField) {
     signupView.secretTextFeildOpenHiddenMessage()
   }
-  
   func idTextFieldDidBeginEditing(_ textField: UITextField) {
     signupView.idTextFieldOpenHiddenMessage()
   }
-  
   func idTextField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let currentText = textField.text ?? ""
@@ -96,9 +132,9 @@ extension SignUpViewController: SignupViewDelegate {
     let currentText = textField.text ?? ""
     guard let stringRange = Range(range, in: currentText) else { return false }
     let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
-    return updatedText.count <= 12
+    return updatedText.count <= 16
   }
-  
+
   func checkSecretNumberTextField(_ textField: UITextField,
                                   shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let currentText = textField.text ?? ""
