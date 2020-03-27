@@ -22,6 +22,9 @@
 		7280786C2429CA2000101B7D /* CartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7280786B2429CA2000101B7D /* CartViewController.swift */; };
 		7291F87D242C7EAF009D4E83 /* CartViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7291F87C242C7EAF009D4E83 /* CartViewHeader.swift */; };
 		7291F87F242CC63C009D4E83 /* CartFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7291F87E242CC63C009D4E83 /* CartFooterView.swift */; };
+		7298BEFD242DC205005B0517 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7298BEFC242DC205005B0517 /* UIViewControllerExtension.swift */; };
+		7298BEFF242DDF2E005B0517 /* MarketBroccoliTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7298BEFE242DDF2E005B0517 /* MarketBroccoliTabBarController.swift */; };
+		7298BF01242DE470005B0517 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7298BF00242DE470005B0517 /* SearchViewController.swift */; };
 		7C15D0B62429E55300ACB4C9 /* HomeReuseCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C15D0B52429E55300ACB4C9 /* HomeReuseCollectionCell.swift */; };
 		7C15D0B8242A2C3500ACB4C9 /* UILabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C15D0B7242A2C3500ACB4C9 /* UILabelExtension.swift */; };
 		7C65ECBA242471380075606A /* EventMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECB9242471380075606A /* EventMark.swift */; };
@@ -79,6 +82,9 @@
 		7280786B2429CA2000101B7D /* CartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewController.swift; sourceTree = "<group>"; };
 		7291F87C242C7EAF009D4E83 /* CartViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewHeader.swift; sourceTree = "<group>"; };
 		7291F87E242CC63C009D4E83 /* CartFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartFooterView.swift; sourceTree = "<group>"; };
+		7298BEFC242DC205005B0517 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
+		7298BEFE242DDF2E005B0517 /* MarketBroccoliTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketBroccoliTabBarController.swift; sourceTree = "<group>"; };
+		7298BF00242DE470005B0517 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		7C15D0B52429E55300ACB4C9 /* HomeReuseCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeReuseCollectionCell.swift; sourceTree = "<group>"; };
 		7C15D0B7242A2C3500ACB4C9 /* UILabelExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelExtension.swift; sourceTree = "<group>"; };
 		7C65ECB9242471380075606A /* EventMark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMark.swift; sourceTree = "<group>"; };
@@ -198,6 +204,7 @@
 		7C65ECB3242470AB0075606A /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				7298BEFE242DDF2E005B0517 /* MarketBroccoliTabBarController.swift */,
 				7050F3192429CEBB00B8E13B /* CategoryViewController.swift */,
 				FAAFEB5E2424A74900452977 /* SettingsViewController.swift */,
 				7C65ECCE2424B95F0075606A /* HomeViewController.swift */,
@@ -206,6 +213,7 @@
 				7050F315242876AC00B8E13B /* IDFindViewController.swift */,
 				7050F317242876B600B8E13B /* PWFindViewController.swift */,
 				7280786B2429CA2000101B7D /* CartViewController.swift */,
+				7298BF00242DE470005B0517 /* SearchViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -233,6 +241,7 @@
 				7C8C4A25242B0DEE00FA912B /* UITextFieldExtension.swift */,
 				7C8C4A27242B0DFC00FA912B /* UIButtonExtension.swift */,
 				7C8C4A29242B0E9100FA912B /* UIColorExtension.swift */,
+				7298BEFC242DC205005B0517 /* UIViewControllerExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -513,6 +522,7 @@
 				7C65ECCF2424B95F0075606A /* HomeViewController.swift in Sources */,
 				7291F87F242CC63C009D4E83 /* CartFooterView.swift in Sources */,
 				7050F316242876AC00B8E13B /* IDFindViewController.swift in Sources */,
+				7298BEFF242DDF2E005B0517 /* MarketBroccoliTabBarController.swift in Sources */,
 				7C8C4A30242B474600FA912B /* HomeProductCollectionView.swift in Sources */,
 				7C65ECD62424F0060075606A /* NewProductView.swift in Sources */,
 				7CCD64942428873000FC671B /* CustomCollectionViewFlowLayout.swift in Sources */,
@@ -520,8 +530,7 @@
 				FAAFEB612424A77900452977 /* LogOutTableViewCell.swift in Sources */,
 				7050F31A2429CEBB00B8E13B /* CategoryViewController.swift in Sources */,
 				FAAFEB5F2424A74900452977 /* SettingsViewController.swift in Sources */,
-				7CCD6491242886C500FC671B /* HomeImageCollectionView.swift in Sources */,
-				7CCD648F24287C3800FC671B /* HomeImageTableCell.swift in Sources */,
+				7CCD648F24287C3800FC671B /* HomeBannerTableCell.swift in Sources */,
 				7CCD648F24287C3800FC671B /* HomeBannerTableCell.swift in Sources */,
 				FAAFEB5F2424A74900452977 /* SettingsViewController.swift in Sources */,
 				7C8C4A28242B0DFC00FA912B /* UIButtonExtension.swift in Sources */,
@@ -531,12 +540,14 @@
 				FAAE2E572424E3C400ACC5D3 /* SignUpViewController.swift in Sources */,
 				7C15D0B62429E55300ACB4C9 /* HomeReuseCollectionCell.swift in Sources */,
 				7C8C4A2E242B44AF00FA912B /* HomeOfferTableCell.swift in Sources */,
+				7298BEFD242DC205005B0517 /* UIViewControllerExtension.swift in Sources */,
 				7C8C4A26242B0DEE00FA912B /* UITextFieldExtension.swift in Sources */,
 				7C65ECC5242472EC0075606A /* EmptyModel.swift in Sources */,
 				7C65ECDC2424F08C0075606A /* EventView.swift in Sources */,
 				7C65ECBE242472400075606A /* EmptyManager.swift in Sources */,
 				727F09612428DFFC00584A40 /* CartView.swift in Sources */,
 				7C7171E4242C78E9009CE7D5 /* HomeMDTableCell.swift in Sources */,
+				7298BF01242DE470005B0517 /* SearchViewController.swift in Sources */,
 				7C65ECBA242471380075606A /* EventMark.swift in Sources */,
 				7C8C4A2A242B0E9100FA912B /* UIColorExtension.swift in Sources */,
 				7C65ECD82424F03D0075606A /* BestView.swift in Sources */,

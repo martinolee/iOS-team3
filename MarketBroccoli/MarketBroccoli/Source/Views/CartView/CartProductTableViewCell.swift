@@ -15,9 +15,9 @@ protocol CartProductTableViewCellDelegate: class {
   
   func productRemoveButtonTouched(_ button: UIButton)
   
-  func subtractionButtonTouched(_ button: UIButton)
+  func subtractionButtonTouched(_ button: UIButton, _ valueLabel: UILabel)
   
-  func additionButtonTouched(_ button: UIButton)
+  func additionButtonTouched(_ button: UIButton, _ valueLabel: UILabel)
 }
 
 class CartProductTableViewCell: UITableViewCell {
@@ -217,12 +217,12 @@ class CartProductTableViewCell: UITableViewCell {
 }
 
 extension CartProductTableViewCell: ProductQuantityStepperDelegate {
-  func subtractionButtonTouched(_ button: UIButton) {
-    deleagte?.subtractionButtonTouched(button)
+  func subtractionButtonTouched(_ button: UIButton, _ valueLabel: UILabel) {
+    deleagte?.subtractionButtonTouched(button, valueLabel)
   }
   
-  func additionButtonTouched(_ button: UIButton) {
-    deleagte?.additionButtonTouched(button)
+  func additionButtonTouched(_ button: UIButton, _ valueLabel: UILabel) {
+    deleagte?.additionButtonTouched(button, valueLabel)
   }
   
   // MARK: - Element Control

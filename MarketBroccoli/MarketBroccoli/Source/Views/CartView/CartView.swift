@@ -23,9 +23,9 @@ protocol CartViewDelegate: class {
   
   func productRemoveButtonTouched(_ button: UIButton)
   
-  func subtractionButtonTouched(_ button: UIButton)
+  func subtractionButtonTouched(_ button: UIButton, _ valueLabel: UILabel)
   
-  func additionButtonTouched(_ button: UIButton)
+  func additionButtonTouched(_ button: UIButton, _ valueLabel: UILabel)
   
   func selectAllProductButtonTouched(_ button: UIButton)
   
@@ -50,10 +50,13 @@ class CartView: UIView {
   private lazy var cartTableView = UITableView().then {
     $0.separatorStyle = .none
     $0.backgroundColor = .lightGray
-    
     $0.dataSource = self
     
     $0.register(cell: CartProductTableViewCell.self)
+  }
+  
+  private lazy var orderButton = UIButton(type: .system).then {
+    $0.backgroundColor = .kurlyPurple
   }
   
   // MARK: - Initialization
@@ -69,12 +72,17 @@ class CartView: UIView {
     fatalError("init(coder:) has not been implemented")
   }
   
+  override func layoutSubviews() {
+    setupCartFooterViewSize()
+  }
+  
   // MARK: - Setup UI
   
   private func addAllView() {
     self.addSubviews([
       cartViewHeader,
-      cartTableView
+      cartTableView,
+      orderButton
     ])
   }
   
@@ -91,6 +99,19 @@ class CartView: UIView {
       $0.leading.trailing.equalTo(cartViewHeader)
       $0.bottom.equalToSuperview()
     }
+    
+    cartTableView.snp.makeConstraints {
+      $0.top.equalTo(cartTableView.snp.bottom)
+      $0.leading.trailing.equalTo(cartTableView)
+      $0.bottom.equalToSuperview()
+    }
+  }
+  
+  private func setupCartFooterViewSize() {
+    cartTableView.tableFooterView = cartFooterView.then({
+      $0.frame = CGRect(x: 0, y: 0, width: cartTableView.frame.width, height: 300)
+      $0.backgroundColor = .white
+    })
   }
   
   // MARK: - Action Handler
@@ -119,12 +140,12 @@ extension CartView: CartProductTableViewCellDelegate {
     delegate?.productRemoveButtonTouched(button)
   }
   
-  func subtractionButtonTouched(_ button: UIButton) {
-    delegate?.subtractionButtonTouched(button)
+  func subtractionButtonTouched(_ button: UIButton, _ valueLabel: UILabel) {
+    delegate?.subtractionButtonTouched(button, valueLabel)
   }
   
-  func additionButtonTouched(_ button: UIButton) {
-    delegate?.additionButtonTouched(button)
+  func additionButtonTouched(_ button: UIButton, _ valueLabel: UILabel) {
+    delegate?.additionButtonTouched(button, valueLabel)
   }
 }
 
@@ -139,5 +160,4 @@ extension CartView: CartViewHeaderDelegate {
 }
 
 extension CartView: CartFooterViewDataSource {
-  
 }
