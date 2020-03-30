@@ -23,7 +23,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     let marketBroccoliTabBarController = MartketBroccliTabBarController()
     
-    window?.rootViewController = marketBroccoliTabBarController
+//    window?.rootViewController = marketBroccoliTabBarController
+    window?.rootViewController = SignUpViewController()
     window?.makeKeyAndVisible()
   }
 }
