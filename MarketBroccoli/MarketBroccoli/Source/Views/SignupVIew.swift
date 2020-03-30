@@ -65,6 +65,13 @@ protocol SignupViewDelegate: class {
   func idTextFieldEditingChanged(_ textField: UITextField, text: String)
   func checkIDButtonTouched(_ button: UIButton)
   func secretTextFeildEditingChanged(_ textField: UITextField, text: String)
+  func checkSecretNumberTextFeildEditingChanged(_ textField: UITextField, text: String)
+  func emailTextFeildEditingChanged(_ textField: UITextField, text: String)
+  func cellphoneTextFieldEditingChanged(_ textField: UITextField, text: String)
+  func receivingCellphoneNumberButtonTouched()
+  func checkingCodeButtonTouched()
+  func genderRoundButtonTouched(button: UIButton, noChoice: [UIButton])
+  func recoAndEventRoundButtonTouched(button: UIButton, eventButton: [UIButton])
 }
 class SignupView: UIView, UITextFieldDelegate {
   weak var delegate: SignupViewDelegate?
@@ -81,7 +88,7 @@ class SignupView: UIView, UITextFieldDelegate {
   }
   private let checkIDButton = UIButton().then {
     $0.setTitle("중복확인", for: .normal)
-    $0.backgroundColor = .purple
+    $0.backgroundColor = .kurlyPurple
     $0.setTitleColor(.white, for: .normal)
     $0.addTarget(self, action: #selector(checkIDButtonTouched), for: .touchUpInside)
   }
@@ -124,12 +131,13 @@ class SignupView: UIView, UITextFieldDelegate {
   private lazy var checkSecretNumberLabel = UILabel().then {
     let text = putAsteriskBehind(text: "비밀번호 확인")
     $0.attributedText = text
-    }
+  }
   private lazy var checkSecretNumberTextFeild = UITextField().then {
     $0.placeholder = "비밀번호를 한번 더 입력해주세요"
     $0.borderStyle = .roundedRect
     $0.clearButtonMode = .whileEditing
     $0.delegate = self
+    $0.addTarget(self, action: #selector(checkSecretNumberTextFeildEditingChanged), for: .editingChanged)
   }
   private let sameSecretNumberLabel = UILabel().then {
     $0.text = "동일한 비밀번호를 입력해주세요"
@@ -145,39 +153,56 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.borderStyle = .roundedRect
     $0.clearButtonMode = .whileEditing
   }
-  private let emailLabel = UILabel().then {
-    $0.text = "이메일"
+  private lazy var emailLabel = UILabel().then {
+    let text = putAsteriskBehind(text: "이메일")
+    $0.attributedText = text
   }
-  private var emailTextFeild = UITextField().then { $0.placeholder = "예: marketkurly@kurly.com"
+  private lazy var emailTextFeild = UITextField().then { $0.placeholder = "예: marketkurly@kurly.com"
     $0.borderStyle = .roundedRect
     $0.clearButtonMode = .whileEditing
+    $0.delegate = self
+    $0.addTarget(self, action: #selector(emailTextFeildEditingChanged), for: .editingChanged)
   }
   private lazy var cellphoneLabel = UILabel().then {
     let text = putAsteriskBehind(text: "휴대폰")
     $0.attributedText = text
   }
-  private var cellphoneTextField = UITextField().then {
+  private lazy var cellphoneTextField = UITextField().then {
     $0.placeholder = "'-' 없이 숫자만"
     $0.borderStyle = .roundedRect
     $0.clearButtonMode = .whileEditing
+    $0.delegate = self
+    $0.addTarget(self, action: #selector(cellphoneTextFieldEditingChanged), for: .editingChanged)
   }
-  private let receivingCellphoneNumberButton = UIButton().then {
+  private lazy var getCodeButton = UIButton().then {
     $0.setTitle("인증번호 받기", for: .normal)
     $0.setTitleColor(.white, for: .normal)
     $0.backgroundColor = .gray
+    $0.addTarget(self, action: #selector(getCodeButtonTouched), for: .touchUpInside)
   }
-  private var checkingReceivingNumberTexField = UITextField().then {
+  private lazy var checkingCodeTexField = UITextField().then {
     $0.placeholder = ""
     $0.borderStyle = .roundedRect
     $0.clearButtonMode = .whileEditing
+    $0.delegate = self
   }
-  private let checkingReceivingButton = UIButton().then {
+  private let timerInTextField = UILabel().then {
+    $0.textColor = .orange
+    $0.isHidden = true
+  }
+  
+  private let checkingCodeButton = UIButton().then {
     $0.setTitle("인증번호 확인", for: .normal)
     $0.setTitleColor(.gray, for: .normal)
     $0.layer.borderWidth = 1
     $0.layer.borderColor = UIColor.lightGray.cgColor
     $0.backgroundColor = .white
+    $0.addTarget(self, action: #selector(checkingCodeButtonTouched), for: .touchUpInside)
   }
+  private var checkingCodeCompleteLabel = UILabel().then {
+    $0.font = .systemFont(ofSize: 10)
+  }
+  
   private let addressLabel = UILabel().then {
     $0.text = "배송주소"
   }
@@ -188,7 +213,7 @@ class SignupView: UIView, UITextFieldDelegate {
   }
   private let searchingAddressButton = UIButton().then {
     $0.setTitle("주소 검색", for: .normal)
-    $0.backgroundColor = .purple
+    $0.backgroundColor = .kurlyPurple
     $0.setTitleColor(.white, for: .normal)
   }
   private let birthdayLabel = UILabel().then {
@@ -225,9 +250,10 @@ class SignupView: UIView, UITextFieldDelegate {
   private let genderLabel = UILabel().then {
     $0.text = "성별"
   }
-  private let maleRoundLabel = UILabel().then {
+  private lazy var maleRoundButton = UIButton().then {
     $0.layer.borderWidth = 1
     $0.layer.borderColor = UIColor.lightGray.cgColor
+    $0.addTarget(self, action: #selector(genderRoundButtonTouched), for: .touchUpInside)
   }
   private let maleLabel = UILabel().then {
     $0.text = "남자"
@@ -236,9 +262,10 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.layer.borderWidth = 0.2
     $0.layer.borderColor = UIColor.lightGray.cgColor
   }
-  private let femaleRoundLabel = UILabel().then {
+  private let femaleRoundButton = UIButton().then {
     $0.layer.borderWidth = 1
     $0.layer.borderColor = UIColor.lightGray.cgColor
+    $0.addTarget(self, action: #selector(genderRoundButtonTouched), for: .touchUpInside)
   }
   private let femaleLabel = UILabel().then {
     $0.text = "여자"
@@ -247,9 +274,10 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.layer.borderWidth = 0.2
     $0.layer.borderColor = UIColor.lightGray.cgColor
   }
-  private let noChoiceRoundLabel = UILabel().then {
+  private let noChoiceRoundButton = UIButton().then {
     $0.layer.borderWidth = 1
     $0.layer.borderColor = UIColor.lightGray.cgColor
+    $0.addTarget(self, action: #selector(genderRoundButtonTouched), for: .touchUpInside)
   }
   private let noChoiceLabel = UILabel().then {
     $0.text = "선택안함"
@@ -266,9 +294,10 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.font = .systemFont(ofSize: 12)
     $0.textColor = .gray
   }
-  private let recoRoundLabel = UILabel().then {
+  private let recoRoundButton = UIButton().then {
     $0.layer.borderWidth = 1
     $0.layer.borderColor = UIColor.lightGray.cgColor
+    $0.addTarget(self, action: #selector(recoAndEventRoundButtonTouched), for: .touchUpInside)
   }
   private let recoIDLabel = UILabel().then {
     $0.text = "추천인 아이디"
@@ -277,9 +306,10 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.layer.borderWidth = 0.2
     $0.layer.borderColor = UIColor.lightGray.cgColor
   }
-  private let eventNameRoundLabel = UILabel().then {
+  private let eventNameRoundButton = UIButton().then {
     $0.layer.borderWidth = 1
     $0.layer.borderColor = UIColor.lightGray.cgColor
+    $0.addTarget(self, action: #selector(recoAndEventRoundButtonTouched), for: .touchUpInside)
   }
   private let eventName = UILabel().then {
     $0.text = "참여 이벤트명"
@@ -297,14 +327,14 @@ class SignupView: UIView, UITextFieldDelegate {
     let text = putAsteriskBehind(text: "이용약관동의")
     $0.attributedText = text
   }
-  private let totalAgreeView = UIView().then {
+  private let totalAgreeButton = UIButton().then {
     $0.layer.borderWidth = 1
     $0.layer.borderColor = UIColor.lightGray.cgColor
   }
   private let totalAgreeLabel = UILabel().then {
     $0.text = "전체동의"
   }
-  private let usingLawView = UIView().then {
+  private let usingLawButton = UIButton().then {
     $0.layer.borderWidth = 1
     $0.layer.borderColor = UIColor.lightGray.cgColor
   }
@@ -315,11 +345,11 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.text = "(필수)"
     $0.textColor = .lightGray
   }
-  private let usingLawButton = UIButton().then {
+  private let usingLawSeeButton = UIButton().then {
     $0.setTitle("약관보기 >", for: .normal)
-    $0.setTitleColor(.purple, for: .normal)
+    $0.setTitleColor(.kurlyPurple, for: .normal)
   }
-  private let personalEssentialView = UIView().then {
+  private let personalEssentialButton = UIButton().then {
     $0.layer.borderWidth = 1
     $0.layer.borderColor = UIColor.lightGray.cgColor
   }
@@ -330,11 +360,11 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.text = "(필수)"
     $0.textColor = .lightGray
   }
-  private let personalEssentialButton = UIButton().then {
+  private let personalEssentialSeeButton = UIButton().then {
     $0.setTitle("약관보기 >", for: .normal)
-    $0.setTitleColor(.purple, for: .normal)
+    $0.setTitleColor(.kurlyPurple, for: .normal)
   }
-  private let personalNotEssentialView = UIView().then {
+  private let personalNotEssentialButton = UIButton().then {
     $0.layer.borderWidth = 1
     $0.layer.borderColor = UIColor.lightGray.cgColor
   }
@@ -345,11 +375,11 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.text = "(선택)"
     $0.textColor = .lightGray
   }
-  private let personalNotEssentialButton = UIButton().then {
+  private let personalNotEssentialSeeButton = UIButton().then {
     $0.setTitle("약관보기 >", for: .normal)
-    $0.setTitleColor(.purple, for: .normal)
+    $0.setTitleColor(.kurlyPurple, for: .normal)
   }
-  private let freeShippingView = UIView().then {
+  private let freeShippingButton = UIButton().then {
     $0.layer.borderWidth = 1
     $0.layer.borderColor = UIColor.lightGray.cgColor
   }
@@ -360,14 +390,14 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.text = "(선택)"
     $0.textColor = .lightGray
   }
-  private let smsView = UIView().then {
+  private let smsButton = UIButton().then {
     $0.layer.borderWidth = 1
     $0.layer.borderColor = UIColor.lightGray.cgColor
   }
   private let smsLabel = UILabel().then {
     $0.text = "SMS"
   }
-  private let emailCheckView = UIView().then {
+  private let emailCheckButton = UIButton().then {
     $0.layer.borderWidth = 1
     $0.layer.borderColor = UIColor.lightGray.cgColor
   }
@@ -377,7 +407,7 @@ class SignupView: UIView, UITextFieldDelegate {
   private let purchaseAdsView = UIImageView().then {
     $0.image = UIImage(named: "구매혜택")
   }
-  private let ageView = UIView().then {
+  private let ageCheckButton = UIButton().then {
     $0.layer.borderWidth = 1
     $0.layer.borderColor = UIColor.lightGray.cgColor
   }
@@ -391,7 +421,7 @@ class SignupView: UIView, UITextFieldDelegate {
   private let signupButton = UIButton().then {
     $0.setTitle("가입하기", for: .normal)
     $0.setTitleColor(.white, for: .normal)
-    $0.backgroundColor = .purple
+    $0.backgroundColor = .kurlyPurple
   }
   private let lastExplainationLabel = UILabel().then {
     $0.text = "선택항목에 동의하지 않은 경우도 회원가입 및 일반적인 서비스를 이용할 수 \n있습니다."
@@ -408,37 +438,37 @@ class SignupView: UIView, UITextFieldDelegate {
     layoutSubviews()
   }
   override func layoutSubviews() {
-    makeRoundCorner(label: femaleRoundLabel)
-    makeRoundCorner(label: maleRoundLabel)
-    makeRoundCorner(label: noChoiceRoundLabel)
-    makeRoundCorner(label: recoRoundLabel)
-    makeRoundCorner(label: eventNameRoundLabel)
+    makeRoundCorner(button: femaleRoundButton)
+    makeRoundCorner(button: maleRoundButton)
+    makeRoundCorner(button: noChoiceRoundButton)
+    makeRoundCorner(button: recoRoundButton)
+    makeRoundCorner(button: eventNameRoundButton)
   }
-  private func makeRoundCorner(label: UILabel) {
-    label.layer.masksToBounds = true
-    label.layer.cornerRadius = label.bounds.height / 2
+  private func makeRoundCorner(button: UIButton) {
+    button.layer.masksToBounds = true
+    button.layer.cornerRadius = button.bounds.height / 2
   }
   private func setupUI() {
     [idLabel, idTextFeild, checkIDButton,
      secretNumberLabel, secretTextFeild, checkSecretNumberLabel,
      checkSecretNumberTextFeild, nameLabel, nameTextFeild,
      emailLabel, emailTextFeild, cellphoneLabel,
-     cellphoneTextField, receivingCellphoneNumberButton,
-     checkingReceivingNumberTexField, checkingReceivingButton,
+     cellphoneTextField, getCodeButton, checkingCodeCompleteLabel,
+     checkingCodeTexField, timerInTextField, checkingCodeButton,
      addressLabel, addressCheckingLabel, searchingAddressButton,
-     birthdayLabel, genderLabel, maleRoundLabel, maleLabel,
-     bunchBirthdayView, femaleRoundLabel, noChoiceRoundLabel,
-     recoRoundLabel, eventNameRoundLabel, recoUnderline, eventNameUnderline,
+     birthdayLabel, genderLabel, maleRoundButton, maleLabel,
+     bunchBirthdayView, femaleRoundButton, noChoiceRoundButton,
+     recoRoundButton, eventNameRoundButton, recoUnderline, eventNameUnderline,
      maleUnderline, femaleUnderline, noChoiceUnderline,
      femaleLabel, noChoiceLabel, additionalConditionLabel,
      additionalExplanationLabel, recoIDLabel, eventName, grayView,
-     usingAgreement, totalAgreeView, totalAgreeLabel, usingLawView, usingLawLabel, sameSecretNumberLabel,
-     usingLawEssentialLabel, usingLawButton, personalEssentialView, personalEssentialLabel,
+     usingAgreement, totalAgreeButton, totalAgreeLabel, usingLawButton, usingLawLabel, sameSecretNumberLabel,
+     usingLawEssentialLabel, usingLawSeeButton, personalEssentialButton, personalEssentialLabel,
      tenSyllableLabel, combinationLabel, notSameTheeNumber,
-     personalEssentialNeedLabel, personalEssentialButton, personalNotEssentialView, personalNotEssentialLabel,
-     personalNotEssentialNeedLabel, personalNotEssentialButton, freeShippingView, freeShippingLabel,
-     freeShippingCheckLabel, smsView, smsLabel, emailCheckView, emailCheckLabel,
-     purchaseAdsView, ageView, ageLabel, ageEssentialLabel,
+     personalEssentialNeedLabel, personalEssentialSeeButton, personalNotEssentialButton, personalNotEssentialLabel,
+     personalNotEssentialNeedLabel, personalNotEssentialSeeButton, freeShippingButton, freeShippingLabel,
+     freeShippingCheckLabel, smsButton, smsLabel, emailCheckButton, emailCheckLabel,
+     purchaseAdsView, ageCheckButton, ageLabel, ageEssentialLabel,
      signupButton, lastExplainationLabel, idLimitExplanationLabel, checkingIdLabel].forEach {
       scrollView.addSubview($0)
     }
@@ -541,22 +571,32 @@ class SignupView: UIView, UITextFieldDelegate {
       $0.leading.equalTo(cellphoneLabel)
       $0.width.equalTo(scrollView.snp.width).multipliedBy(0.5)
     }
-    receivingCellphoneNumberButton.snp.makeConstraints {
+    getCodeButton.snp.makeConstraints {
       $0.top.equalTo(cellphoneTextField)
       $0.leading.equalTo(cellphoneTextField.snp.trailing).offset(10)
       $0.trailing.equalTo(cellphoneLabel)
     }
-    checkingReceivingNumberTexField.snp.makeConstraints {
+    checkingCodeTexField.snp.makeConstraints {
       $0.top.equalTo(cellphoneTextField.snp.bottom).offset(10)
       $0.leading.equalTo(cellphoneTextField)
       $0.width.equalTo(scrollView.snp.width).multipliedBy(0.5)
     }
-    checkingReceivingButton.snp.makeConstraints {
-      $0.top.equalTo(receivingCellphoneNumberButton.snp.bottom).offset(10)
-      $0.leading.trailing.equalTo(receivingCellphoneNumberButton)
+    timerInTextField.snp.makeConstraints {
+      $0.top.bottom.equalTo(checkingCodeTexField)
+      $0.trailing.equalTo(checkingCodeTexField.snp.trailing).offset(-10)
+    }
+    
+    checkingCodeButton.snp.makeConstraints {
+      $0.top.equalTo(getCodeButton.snp.bottom).offset(10)
+      $0.leading.trailing.equalTo(getCodeButton)
+    }
+    checkingCodeCompleteLabel.snp.makeConstraints {
+      $0.top.equalTo(checkingCodeTexField.snp.bottom).offset(10)
+      $0.leading.equalTo(checkingCodeTexField)
+      $0.height.equalTo(0)
     }
     addressLabel.snp.makeConstraints {
-      $0.top.equalTo(checkingReceivingNumberTexField.snp.bottom).offset(20)
+      $0.top.equalTo(checkingCodeCompleteLabel.snp.bottom).offset(20)
       $0.leading.trailing.equalTo(cellphoneLabel)
     }
     addressCheckingLabel.snp.makeConstraints {
@@ -574,7 +614,7 @@ class SignupView: UIView, UITextFieldDelegate {
     bunchBirthdayView.snp.makeConstraints {
       $0.top.equalTo(birthdayLabel.snp.bottom).offset(20)
       $0.leading.trailing.equalTo(birthdayLabel)
-      $0.height.equalTo(checkingReceivingNumberTexField)
+      $0.height.equalTo(checkingCodeTexField)
     }
     birthdayYearTextField.snp.makeConstraints {
       $0.centerY.equalTo(bunchBirthdayView.snp.centerY)
@@ -605,7 +645,7 @@ class SignupView: UIView, UITextFieldDelegate {
       $0.top.equalTo(bunchBirthdayView.snp.bottom).offset(30)
       $0.leading.trailing.equalTo(searchingAddressButton)
     }
-    maleRoundLabel.snp.makeConstraints {
+    maleRoundButton.snp.makeConstraints {
       $0.top.equalTo(genderLabel.snp.bottom).offset(30)
       $0.leading.equalTo(genderLabel).offset(4)
       $0.width.height.equalTo(20)
@@ -616,35 +656,35 @@ class SignupView: UIView, UITextFieldDelegate {
       $0.trailing.equalTo(genderLabel)
     }
     maleUnderline.snp.makeConstraints {
-      $0.top.equalTo(maleRoundLabel.snp.bottom).offset(10)
+      $0.top.equalTo(maleRoundButton.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(genderLabel)
       $0.height.equalTo(1)
     }
-    femaleRoundLabel.snp.makeConstraints {
+    femaleRoundButton.snp.makeConstraints {
       $0.top.equalTo(maleUnderline.snp.bottom).offset(10)
-      $0.leading.equalTo(maleRoundLabel)
+      $0.leading.equalTo(maleRoundButton)
       $0.width.height.equalTo(20)
     }
     femaleLabel.snp.makeConstraints {
-      $0.top.equalTo(femaleRoundLabel)
+      $0.top.equalTo(femaleRoundButton)
       $0.leading.trailing.equalTo(maleLabel)
     }
     femaleUnderline.snp.makeConstraints {
-      $0.top.equalTo(femaleRoundLabel.snp.bottom).offset(10)
+      $0.top.equalTo(femaleRoundButton.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(maleUnderline)
       $0.height.equalTo(1)
     }
-    noChoiceRoundLabel.snp.makeConstraints {
+    noChoiceRoundButton.snp.makeConstraints {
       $0.top.equalTo(femaleUnderline.snp.bottom).offset(10)
-      $0.leading.equalTo(femaleRoundLabel)
+      $0.leading.equalTo(femaleRoundButton)
       $0.width.height.equalTo(20)
     }
     noChoiceLabel.snp.makeConstraints {
-      $0.top.equalTo(noChoiceRoundLabel)
+      $0.top.equalTo(noChoiceRoundButton)
       $0.leading.trailing.equalTo(femaleLabel)
     }
     noChoiceUnderline.snp.makeConstraints {
-      $0.top.equalTo(noChoiceRoundLabel.snp.bottom).offset(10)
+      $0.top.equalTo(noChoiceRoundButton.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(femaleUnderline)
       $0.height.equalTo(1)
     }
@@ -656,9 +696,9 @@ class SignupView: UIView, UITextFieldDelegate {
       $0.top.equalTo(additionalConditionLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(additionalConditionLabel)
     }
-    recoRoundLabel.snp.makeConstraints {
+    recoRoundButton.snp.makeConstraints {
       $0.top.equalTo(additionalExplanationLabel.snp.bottom).offset(30)
-      $0.leading.equalTo(noChoiceRoundLabel)
+      $0.leading.equalTo(noChoiceRoundButton)
       $0.width.height.equalTo(20)
     }
     recoIDLabel.snp.makeConstraints {
@@ -671,13 +711,13 @@ class SignupView: UIView, UITextFieldDelegate {
       $0.leading.trailing.equalTo(additionalExplanationLabel)
       $0.height.equalTo(1)
     }
-    eventNameRoundLabel.snp.makeConstraints {
+    eventNameRoundButton.snp.makeConstraints {
       $0.top.equalTo(recoUnderline.snp.bottom).offset(20)
-      $0.leading.equalTo(recoRoundLabel)
+      $0.leading.equalTo(recoRoundButton)
       $0.width.height.equalTo(20)
     }
     eventName.snp.makeConstraints {
-      $0.top.equalTo(eventNameRoundLabel)
+      $0.top.equalTo(eventNameRoundButton)
       $0.leading.trailing.equalTo(recoIDLabel)
     }
     eventNameUnderline.snp.makeConstraints {
@@ -696,110 +736,110 @@ class SignupView: UIView, UITextFieldDelegate {
       $0.leading.equalTo(scrollView.snp.leading).offset(10)
       $0.trailing.equalTo(scrollView.snp.trailing).offset(10)
     }
-    totalAgreeView.snp.makeConstraints {
+    totalAgreeButton.snp.makeConstraints {
       $0.top.equalTo(usingAgreement.snp.bottom).offset(20)
       $0.leading.equalTo(usingAgreement)
       $0.width.height.equalTo(20)
     }
     totalAgreeLabel.snp.makeConstraints {
-      $0.top.equalTo(totalAgreeView)
-      $0.leading.equalTo(totalAgreeView.snp.trailing).offset(10)
+      $0.top.equalTo(totalAgreeButton)
+      $0.leading.equalTo(totalAgreeButton.snp.trailing).offset(10)
     }
-    usingLawView.snp.makeConstraints {
+    usingLawButton.snp.makeConstraints {
       $0.top.equalTo(totalAgreeLabel.snp.bottom).offset(10)
       $0.leading.equalTo(totalAgreeLabel)
       $0.width.height.equalTo(20)
     }
     usingLawLabel.snp.makeConstraints {
-      $0.top.bottom.equalTo(usingLawView)
-      $0.leading.equalTo(usingLawView.snp.trailing).offset(10)
+      $0.top.bottom.equalTo(usingLawButton)
+      $0.leading.equalTo(usingLawButton.snp.trailing).offset(10)
     }
     usingLawEssentialLabel.snp.makeConstraints {
       $0.top.bottom.equalTo(usingLawLabel)
       $0.leading.equalTo(usingLawLabel.snp.trailing).offset(10)
     }
-    usingLawButton.snp.makeConstraints {
+    usingLawSeeButton.snp.makeConstraints {
       $0.top.bottom.equalTo(usingLawEssentialLabel)
       $0.trailing.equalToSuperview().offset(-20)
     }
-    personalEssentialView.snp.makeConstraints {
-      $0.top.equalTo(usingLawView.snp.bottom).offset(10)
-      $0.leading.equalTo(usingLawView)
+    personalEssentialButton.snp.makeConstraints {
+      $0.top.equalTo(usingLawButton.snp.bottom).offset(10)
+      $0.leading.equalTo(usingLawButton)
       $0.width.height.equalTo(20)
     }
     personalEssentialLabel.snp.makeConstraints {
-      $0.top.bottom.equalTo(personalEssentialView)
-      $0.leading.equalTo(personalEssentialView.snp.trailing).offset(10)
+      $0.top.bottom.equalTo(personalEssentialButton)
+      $0.leading.equalTo(personalEssentialButton.snp.trailing).offset(10)
     }
     personalEssentialNeedLabel.snp.makeConstraints {
       $0.top.bottom.equalTo(personalEssentialLabel)
       $0.leading.equalTo(personalEssentialLabel.snp.trailing).offset(10)
     }
-    personalEssentialButton.snp.makeConstraints {
+    personalEssentialSeeButton.snp.makeConstraints {
       $0.top.bottom.equalTo(personalEssentialNeedLabel)
       $0.trailing.equalToSuperview().offset(-20)
     }
-    personalNotEssentialView.snp.makeConstraints {
-      $0.top.equalTo(personalEssentialView.snp.bottom).offset(10)
-      $0.leading.equalTo(personalEssentialView)
+    personalNotEssentialButton.snp.makeConstraints {
+      $0.top.equalTo(personalEssentialButton.snp.bottom).offset(10)
+      $0.leading.equalTo(personalEssentialButton)
       $0.width.height.equalTo(20)
     }
     personalNotEssentialLabel.snp.makeConstraints {
-      $0.top.bottom.equalTo(personalNotEssentialView)
-      $0.leading.equalTo(personalNotEssentialView.snp.trailing).offset(10)
+      $0.top.bottom.equalTo(personalNotEssentialButton)
+      $0.leading.equalTo(personalNotEssentialButton.snp.trailing).offset(10)
     }
     personalNotEssentialNeedLabel.snp.makeConstraints {
       $0.top.bottom.equalTo(personalNotEssentialLabel)
       $0.leading.equalTo(personalNotEssentialLabel.snp.trailing).offset(10)
     }
-    personalNotEssentialButton.snp.makeConstraints {
+    personalNotEssentialSeeButton.snp.makeConstraints {
       $0.top.bottom.equalTo(personalNotEssentialLabel)
       $0.trailing.equalToSuperview().offset(-20)
     }
-    freeShippingView.snp.makeConstraints {
-      $0.top.equalTo(personalNotEssentialView.snp.bottom).offset(10)
-      $0.leading.equalTo(personalNotEssentialView)
+    freeShippingButton.snp.makeConstraints {
+      $0.top.equalTo(personalNotEssentialButton.snp.bottom).offset(10)
+      $0.leading.equalTo(personalNotEssentialButton)
       $0.width.height.equalTo(20)
     }
     freeShippingLabel.snp.makeConstraints {
-      $0.top.bottom.equalTo(freeShippingView)
-      $0.leading.equalTo(freeShippingView.snp.trailing).offset(10)
+      $0.top.bottom.equalTo(freeShippingButton)
+      $0.leading.equalTo(freeShippingButton.snp.trailing).offset(10)
     }
     freeShippingCheckLabel.snp.makeConstraints {
       $0.top.bottom.equalTo(freeShippingLabel)
       $0.leading.equalTo(freeShippingLabel.snp.trailing).offset(10)
     }
-    smsView.snp.makeConstraints {
+    smsButton.snp.makeConstraints {
       $0.top.equalTo(freeShippingLabel.snp.bottom).offset(10)
       $0.leading.equalTo(freeShippingLabel)
       $0.width.height.equalTo(20)
     }
     smsLabel.snp.makeConstraints {
-      $0.top.bottom.equalTo(smsView)
-      $0.leading.equalTo(smsView.snp.trailing).offset(10)
+      $0.top.bottom.equalTo(smsButton)
+      $0.leading.equalTo(smsButton.snp.trailing).offset(10)
     }
-    emailCheckView.snp.makeConstraints {
+    emailCheckButton.snp.makeConstraints {
       $0.top.bottom.equalTo(smsLabel)
        $0.leading.equalTo(smsLabel.snp.trailing).offset(50)
       $0.width.height.equalTo(20)
     }
     emailCheckLabel.snp.makeConstraints {
-      $0.top.bottom.equalTo(emailCheckView)
-      $0.leading.equalTo(emailCheckView.snp.trailing).offset(10)
+      $0.top.bottom.equalTo(emailCheckButton)
+      $0.leading.equalTo(emailCheckButton.snp.trailing).offset(10)
     }
     purchaseAdsView.snp.makeConstraints {
       $0.top.equalTo(emailCheckLabel.snp.bottom).offset(4)
       $0.leading.trailing.equalToSuperview()
       $0.height.equalTo(50)
     }
-    ageView.snp.makeConstraints {
+    ageCheckButton.snp.makeConstraints {
       $0.top.equalTo(purchaseAdsView.snp.bottom).offset(10)
-      $0.leading.equalTo(freeShippingView)
+      $0.leading.equalTo(freeShippingButton)
       $0.width.height.equalTo(20)
     }
     ageLabel.snp.makeConstraints {
-      $0.top.bottom.equalTo(ageView)
-      $0.leading.equalTo(ageView.snp.trailing).offset(10)
+      $0.top.bottom.equalTo(ageCheckButton)
+      $0.leading.equalTo(ageCheckButton.snp.trailing).offset(10)
     }
     ageEssentialLabel.snp.makeConstraints {
       $0.top.bottom.equalTo(ageLabel)
@@ -807,8 +847,8 @@ class SignupView: UIView, UITextFieldDelegate {
     }
     signupButton.snp.makeConstraints {
       $0.top.equalTo(ageEssentialLabel.snp.bottom).offset(30)
-      $0.leading.equalTo(totalAgreeView)
-      $0.trailing.equalTo(personalNotEssentialButton)
+      $0.leading.equalTo(totalAgreeButton)
+      $0.trailing.equalTo(personalNotEssentialSeeButton)
     }
     lastExplainationLabel.snp.makeConstraints {
       $0.top.equalTo(signupButton.snp.bottom).offset(10)
@@ -826,7 +866,7 @@ extension SignupView {
     let myMutableString = NSMutableAttributedString(string: "\(text)*", attributes: nil)
     myMutableString.addAttribute(
       NSAttributedString.Key.foregroundColor,
-      value: UIColor.purple, range: NSRange(location: text.count, length: 1)
+      value: UIColor.kurlyPurple, range: NSRange(location: text.count, length: 1)
     )
     return myMutableString
   }
@@ -867,7 +907,7 @@ extension SignupView {
         shouldChangeCharactersIn: range,
         replacementString: string
       )
-    case checkingReceivingNumberTexField:
+    case checkingCodeTexField:
       return delegate.checkingReceivingNumberTextField(
         textField,
         shouldChangeCharactersIn: range,
@@ -905,7 +945,7 @@ extension SignupView {
     case checkSecretNumberTextFeild:
       return delegate.checkSecretNumberTextFeildDidBeginEditing(textField)
     default:
-      return print("생일 입력할 경우")
+      return print("")
     }
   }
   func idTextFieldOpenHiddenMessage() {
@@ -941,6 +981,16 @@ extension SignupView {
       $0.top.equalTo(sameSecretNumberLabel.snp.bottom).offset(30)
     }
   }
+  func checkingCodeCompleteLabelOpenHiddenMessage(text: String, textColor: UIColor) {
+    checkingCodeCompleteLabel.text = text
+    checkingCodeCompleteLabel.textColor = textColor
+    checkingCodeCompleteLabel.snp.updateConstraints {
+      $0.height.equalTo(10)
+    }
+    addressLabel.snp.updateConstraints {
+      $0.top.equalTo(checkingCodeCompleteLabel.snp.bottom).offset(30)
+    }
+  }
   @objc func idTextFieldEditingChanged(_ textField: UITextField) {
     guard
       let delegate = delegate,
@@ -974,7 +1024,86 @@ extension SignupView {
   func setCombinationLabel(textColor: UIColor) {
     combinationLabel.textColor = textColor
   }
-  func setsameSecretNumberLabel(textColor: UIColor) {
+  func setnotSameTheeNumberLabel(textColor: UIColor) {
+    notSameTheeNumber.textColor = textColor
+  }
+  @objc func checkSecretNumberTextFeildEditingChanged(_ textField: UITextField, text: String) {
+    guard
+      let delegate = delegate,
+      let text = textField.text
+    else { fatalError() }
+    delegate.checkSecretNumberTextFeildEditingChanged(textField, text: text)
+  }
+  func setSameSecretNumberLabel(textColor: UIColor) {
     sameSecretNumberLabel.textColor = textColor
   }
+  @objc func cellphoneTextFieldEditingChanged(_ textField: UITextField, text: String) {
+    guard
+      let delegate = delegate,
+      let text = textField.text
+    else { fatalError() }
+    delegate.cellphoneTextFieldEditingChanged(textField, text: text)
+  }
+  func setGetCodeButton(buttonColor: UIColor) {
+    getCodeButton.backgroundColor = buttonColor
+  }
+  func enableReceivingCellphoneNumberButton(_ enable: Bool) {
+    getCodeButton.isEnabled = enable
+  }
+  @objc func emailTextFeildEditingChanged(_ textField: UITextField, text: String) {
+    guard
+      let delegate = delegate,
+      let text = textField.text
+    else { fatalError() }
+    delegate.emailTextFeildEditingChanged(textField, text: text)
+  }
+  
+  @objc func getCodeButtonTouched() {
+    delegate?.receivingCellphoneNumberButtonTouched()
+  }
+  func setTimerInTextField(text: String) {
+    timerInTextField.text = text
+  }
+  func getCellphoneTextField() -> String {
+    cellphoneTextField.text ?? ""
+  }
+  func hideTimerInTextField(_ hidden: Bool) {
+    timerInTextField.isHidden = hidden
+  }
+  func activateGetCodeButton(_ able: Bool) {
+    getCodeButton.isEnabled = able
+    able ? (getCodeButton.backgroundColor = .kurlyPurple) : (getCodeButton.backgroundColor = .lightGray)
+  }
+  func setCheckingCodeButton(buttonColor: UIColor) {
+    checkingCodeButton.layer.borderColor = buttonColor.cgColor
+    checkingCodeButton.setTitleColor(buttonColor, for: .normal)
+  }
+   func activateCellphoneTextField(_ able: Bool) {
+    cellphoneTextField.isEnabled = able
+  }
+  func getCheckingCodeTexField() -> String {
+    checkingCodeTexField.text ?? ""
+  }
+  @objc func checkingCodeButtonTouched() {
+    delegate?.checkingCodeButtonTouched()
+  }
+  func activateCheckingCodeTexField(_ able: Bool) {
+   checkingCodeTexField.isEnabled = able
+  }
+  func activateCheckingCodeButton(_ able: Bool) {
+  checkingCodeButton.isEnabled = able
+  }
+  @objc func genderRoundButtonTouched(button: UIButton) {
+    let buttons = [maleRoundButton, femaleRoundButton, noChoiceRoundButton]
+      .filter { $0 != button }
+    delegate?.genderRoundButtonTouched(button: button, noChoice: buttons)
+  }
+  @objc func recoAndEventRoundButtonTouched(button: UIButton) {
+    let buttons = [recoRoundButton, eventNameRoundButton]
+      .filter { $0 != button }
+    delegate?.recoAndEventRoundButtonTouched(button: button, eventButton: buttons)
+    
+  }
+  
+  
 }

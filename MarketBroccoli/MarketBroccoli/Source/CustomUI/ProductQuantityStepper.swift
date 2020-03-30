@@ -10,9 +10,9 @@ import Then
 import UIKit
 
 protocol ProductQuantityStepperDelegate: class {
-  func subtractionButtonTouched(_ button: UIButton)
+  func subtractionButtonTouched(_ button: UIButton, _ valueLabel: UILabel)
   
-  func additionButtonTouched(_ button: UIButton)
+  func additionButtonTouched(_ button: UIButton, _ valueLabel: UILabel)
 }
 
 class ProductQuantityStepper: UIView {
@@ -89,12 +89,12 @@ class ProductQuantityStepper: UIView {
   
   @objc
   private func subtractionButtonTouched(_ button: UIButton) {
-    delegate?.subtractionButtonTouched(button)
+    delegate?.subtractionButtonTouched(button, valueLabel)
   }
   
   @objc
   private func additionButtonTouched(_ button: UIButton) {
-    delegate?.additionButtonTouched(button)
+    delegate?.additionButtonTouched(button, valueLabel)
   }
   
   // MARK: - Element Control
