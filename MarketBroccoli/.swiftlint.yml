@@ -3,6 +3,7 @@ disabled_rules:
 - trailing_whitespace
 - function_body_length
 - type_body_length
+- function_parameter_count
 opt_in_rules:
 - force_unwrapping
 - closure_body_length
