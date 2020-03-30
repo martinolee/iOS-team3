@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MartketBroccliTabBarController: UITabBarController {
+class MartketBroccoliTabBarController: UITabBarController {
   override func viewDidLoad() {
     setupTabBar()
   }

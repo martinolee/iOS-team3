@@ -25,6 +25,11 @@ class HomeMDTableCell: UITableViewCell {
   
   private let categoryArray = Categories.HomeMDCategory
   
+  enum UI {
+    static let inset: CGFloat = 10
+    static let spacing: CGFloat = 10
+  }
+  
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     setupUI()
@@ -85,7 +90,7 @@ extension HomeMDTableCell {
 extension HomeMDTableCell: UICollectionViewDelegateFlowLayout {
   // 위아래간격
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-    10
+    UI.spacing
   }
   
   // 최소 아이템 간격
@@ -102,7 +107,7 @@ extension HomeMDTableCell: UICollectionViewDelegateFlowLayout {
   
   // 컬렉션 뷰 인셋
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-    UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+    UIEdgeInsets(top: 0, left: UI.inset, bottom: 0, right: UI.inset)
   }
   
   // 아이템 사이즈
@@ -113,7 +118,7 @@ extension HomeMDTableCell: UICollectionViewDelegateFlowLayout {
       return CGSize(width: label.getWidth() ?? 0, height: 30)
     case MDProductCollectionView:
       return CGSize(
-        width: ((self.frame.width - (10 * 2) - (10 * 2)) / 3).rounded(.down),
+        width: ((self.frame.width - (UI.inset * 2) - (UI.spacing * 2)) / 3).rounded(.down),
         height: 200
       )
     default:
@@ -124,12 +129,12 @@ extension HomeMDTableCell: UICollectionViewDelegateFlowLayout {
 
 extension HomeMDTableCell: UIScrollViewDelegate {
   func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-    let cellWidth = (self.frame.width - (10 * 2)).rounded(.down)
+    let cellWidth = ((self.frame.width - (UI.inset * 2) - (UI.spacing * 2)) / 3).rounded(.down) * 3 + (UI.inset + UI.spacing * 2)
     var page = round(MDProductCollectionView.contentOffset.x / cellWidth)
     if velocity.x > 0 {
       page += 1
     }
-    if velocity.x < 0{
+    if velocity.x < 0 {
       page -= 1
     }
     page = max(page, 0)
@@ -144,7 +149,7 @@ extension HomeMDTableCell: UICollectionViewDataSource {
     case MDcategoryCollectionView:
       return categoryArray.count
     case MDProductCollectionView:
-      return 24
+      return 200
     default:
       fatalError("CollectionView Not Found")
     }

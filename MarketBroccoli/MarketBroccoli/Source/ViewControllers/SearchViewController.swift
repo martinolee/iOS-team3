@@ -9,5 +9,25 @@
 import UIKit
 
 class SearchViewController: UIViewController {
+  // MARK: - Properties
   
+  private lazy var searchView = SearchView().then {
+    $0.delegate = self
+  }
+  
+  // MARK: - Life Cycle
+  
+  override func loadView() {
+    view = searchView
+  }
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    
+    self.addNavigationBarCartButton()
+    self.setupBroccoliNavigationBar(title: "검색")
+  }
+}
+
+extension SearchViewController: SearchViewDelegate {
 }
