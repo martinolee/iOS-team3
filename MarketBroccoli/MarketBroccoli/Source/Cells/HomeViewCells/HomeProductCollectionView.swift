@@ -12,7 +12,7 @@ class HomeProductCollectionView: UICollectionView {
   override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
     super.init(frame: frame, collectionViewLayout: layout)
     self.backgroundColor = .clear
-    self.decelerationRate = UIScrollView.DecelerationRate.fast
+    self.decelerationRate = .fast
     self.showsHorizontalScrollIndicator = false
   }
   
