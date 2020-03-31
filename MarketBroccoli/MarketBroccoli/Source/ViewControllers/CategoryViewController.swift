@@ -91,6 +91,7 @@ extension CategoryViewController: UITableViewDataSource {
       let data = categoryData[indexPath.row]
       cell.titleName(name: data.title)
       cell.subCategory(data: data)
+      cell.separatorInset = .zero
 //      if data.select == false {
 //        cell.iconImageName(name: data.imageBlack)
 //      } else {
@@ -112,6 +113,9 @@ extension CategoryViewController: UITableViewDataSource {
 // MARK: - TableViewDelegate
 extension CategoryViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    if indexPath.section == 1 {
+      return UITableView.automaticDimension
+    }
     if indexPath.section == 2 {
       return 400
     } else {
@@ -128,8 +132,12 @@ extension CategoryViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     if indexPath.section == 1 {
       categoryData[indexPath.row].select.toggle()
+//      tableView.beginUpdates()
+//      tableView.endUpdates()
       tableView.reloadData()
+//      tableView.reloadRows(at: [indexPath], with: .automatic)
       print(categoryData[indexPath.row].select)
+      print(indexPath.row)
     }
   }
 }
