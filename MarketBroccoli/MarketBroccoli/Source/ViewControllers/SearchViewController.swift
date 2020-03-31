@@ -29,5 +29,20 @@ class SearchViewController: UIViewController {
   }
 }
 
+// MARK: - Action Handler
+
 extension SearchViewController: SearchViewDelegate {
+  func searchProductTextFieldEditingDidBegin(_ textField: UITextField, _ button: UIButton) {
+    button.isEnabled = true
+  }
+  
+  func searchProductTextFieldEditingChanged(_ textField: UITextField, _ text: String) {
+    print("searchProductTextFieldEditingChanged")
+  }
+  
+  func cancelSearchButtonTouched(_ button: UIButton, _ textField: UITextField) {
+    print("cancelSearchButtonTouched")
+    button.isEnabled = false
+    textField.resignFirstResponder()
+  }
 }

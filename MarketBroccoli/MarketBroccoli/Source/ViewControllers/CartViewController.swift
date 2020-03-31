@@ -175,13 +175,28 @@ extension CartViewController: CartViewDelegate {
   func selectAllProductCheckBoxTouched(_ checkBox: CheckBox, _ isChecked: Bool) {
     for category in cartDummy {
       for product in category {
-        product.isChecked = false
+        product.isChecked = isChecked
+        cartView.reloadCartTableViewData()
       }
     }
   }
   
   func removeSelectedProductButton(_ button: UIButton) {
-    print("removeSelectedProductButton")
+    let message = "선택된 상품을 삭제하시겠습니까?"
+    let removeShoppingItemAlert = UIAlertController(title: nil, message: message, preferredStyle: .alert).then {
+      $0.addAction(UIAlertAction(title: "취소", style: .cancel))
+      $0.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { _ in
+        for categoryIndex in self.cartDummy.indices.reversed() {
+          for productIndex in self.cartDummy[categoryIndex].indices.reversed()
+            where self.cartDummy[categoryIndex][productIndex].isChecked {
+              self.cartDummy[categoryIndex].remove(at: productIndex)
+              if self.cartDummy[categoryIndex].isEmpty { self.cartDummy.remove(at: categoryIndex) }
+          }
+        }
+      }))
+    }
+    
+    present(removeShoppingItemAlert, animated: true)
   }
 }
 
