@@ -1,23 +1,22 @@
-//
 //  SignUpViewController.swift
 //  MarketBroccoli
 //
 //  Created by macbook on 2020/03/20.
 //  Copyright © 2020 Team3. All rights reserved.
-//
 import UIKit
-
 class SignUpViewController: UIViewController {
   private lazy var signupView = SignupView().then {
     $0.delegate = self
   }
+  let agreement = Agreement()
+  
   private var leftTime = 10 {
     didSet {
       signupView.setTimerInTextField(text: timeFormatted(leftTime))
     }
   }
   private var isAuthorized = true
-   private var timer = Timer()
+  private var timer = Timer()
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUI()
@@ -35,16 +34,94 @@ class SignUpViewController: UIViewController {
       $0.edges.equalTo(guide)
     }
   }
+  func selectedAllButton() {
+    agreement.usingLaw = true
+    agreement.personalEseesntial = true
+    agreement.personalNotEssential = true
+    agreement.freeShipping = true
+    agreement.sms = true
+    agreement.emailCheck = true
+    agreement.ageCheck = true
+    signupView.totalAgreeButton.setStatus(true)
+    signupView.usingLawButton.setStatus(true)
+    signupView.personalEssentialButton.setStatus(true)
+    signupView.personalNotEssentialButton.setStatus(true)
+    signupView.freeShippingButton.setStatus(true)
+    signupView.smsButton.setStatus(true)
+    signupView.emailCheckButton.setStatus(true)
+    signupView.ageCheckButton.setStatus(true)
+  }
+  func notSelectedAllButton() {
+    agreement.usingLaw = false
+    agreement.personalEseesntial = false
+    agreement.personalNotEssential = false
+    agreement.freeShipping = false
+    agreement.sms = false
+    agreement.emailCheck = false
+    agreement.ageCheck = false
+    signupView.totalAgreeButton.setStatus(false)
+    signupView.usingLawButton.setStatus(false)
+    signupView.personalEssentialButton.setStatus(false)
+    signupView.personalNotEssentialButton.setStatus(false)
+    signupView.freeShippingButton.setStatus(false)
+    signupView.smsButton.setStatus(false)
+    signupView.emailCheckButton.setStatus(false)
+    signupView.ageCheckButton.setStatus(false)
+  }
 }
 
 // MARK: - Action
 extension SignUpViewController: SignupViewDelegate {
+  func signupButtonTouched(button: UIButton) {
+  }
+  func squareButtonTouched(button: UIButton, leftButtons leftButton: [UIButton]) {
+    if button == signupView.totalAgreeButton {
+      agreement.total ? notSelectedAllButton() : selectedAllButton()
+    } else if button == signupView.usingLawButton {
+      agreement.usingLaw.toggle()
+      
+      signupView.usingLawButton.setStatus(agreement.usingLaw)
+      signupView.totalAgreeButton.setStatus(agreement.total)
+    } else if button == signupView.personalEssentialButton {
+      agreement.personalEseesntial.toggle()
+      signupView.personalEssentialButton.setStatus(agreement.personalEseesntial)
+      signupView.totalAgreeButton.setStatus(agreement.total)
+    } else if button == signupView.personalNotEssentialButton {
+      agreement.personalNotEssential.toggle()
+      signupView.personalNotEssentialButton.setStatus(agreement.personalNotEssential)
+      signupView.totalAgreeButton.setStatus(agreement.total)
+    } else if button == signupView.freeShippingButton {
+      agreement.freeShipping.toggle()
+      
+      signupView.freeShippingButton.setStatus(agreement.freeShipping)
+      signupView.smsButton.setStatus(agreement.sms)
+      signupView.emailCheckButton.setStatus(agreement.emailCheck)
+      signupView.totalAgreeButton.setStatus(agreement.total)
+    } else if button == signupView.smsButton {
+      agreement.sms.toggle()
+      agreement.freeShipping = agreement.sms && agreement.emailCheck
+      
+      signupView.smsButton.setStatus(agreement.sms)
+      signupView.freeShippingButton.setStatus(agreement.freeShipping)
+      signupView.totalAgreeButton.setStatus(agreement.total)
+    } else if button == signupView.emailCheckButton {
+      agreement.emailCheck.toggle()
+      agreement.freeShipping = agreement.sms && agreement.emailCheck
+      
+      signupView.emailCheckButton.setStatus(agreement.emailCheck)
+      signupView.freeShippingButton.setStatus(agreement.freeShipping)
+      signupView.totalAgreeButton.setStatus(agreement.total)
+    } else if button == signupView.ageCheckButton {
+      agreement.ageCheck.toggle()
+      
+      signupView.ageCheckButton.setStatus(agreement.ageCheck)
+      signupView.totalAgreeButton.setStatus(agreement.total)
+    }
+  }
   func recoAndEventRoundButtonTouched(button: UIButton, eventButton: [UIButton]) {
     let borderWidth: CGFloat = 6
-    button.frame.insetBy(dx: -borderWidth, dy: -borderWidth)
     button.layer.borderColor = UIColor.kurlyPurple.cgColor
     button.layer.borderWidth = borderWidth
-    
     eventButton.forEach {
       $0.layer.borderWidth = 1
       $0.layer.borderColor = UIColor.lightGray.cgColor
@@ -52,10 +129,8 @@ extension SignUpViewController: SignupViewDelegate {
   }
   func genderRoundButtonTouched(button: UIButton, noChoice: [UIButton]) {
     let borderWidth: CGFloat = 6
-    button.frame.insetBy(dx: -borderWidth, dy: -borderWidth)
     button.layer.borderColor = UIColor.kurlyPurple.cgColor
     button.layer.borderWidth = borderWidth
-    
     noChoice.forEach {
       $0.layer.borderWidth = 1
       $0.layer.borderColor = UIColor.lightGray.cgColor
@@ -105,7 +180,7 @@ extension SignUpViewController: SignupViewDelegate {
   @objc func update() {
     leftTime -= 1
     
-    if leftTime == 0 && isAuthorized{
+    if leftTime == 0 && isAuthorized {
       endTimer()
       let alertController = UIAlertController(
         title: nil,
@@ -178,7 +253,6 @@ extension SignUpViewController: SignupViewDelegate {
       signupView.setSameSecretNumberLabel(textColor: .orange)
     }
   }
-  
   func secretTextFeildEditingChanged(_ textField: UITextField, text: String) {
     print("secretTextFeildEditingChanged")
     
@@ -292,7 +366,6 @@ extension SignUpViewController: SignupViewDelegate {
       }
       return false
   }
-  
   func idTextFieldEditingChanged(_ textField: UITextField, text: String) {
     if text.count <= 5 || hasOnlyAlphabetAndNumber(text: text) {
       signupView.setIDLimitExplanationLabel(textColor: .orange)
@@ -316,7 +389,6 @@ extension SignUpViewController: SignupViewDelegate {
     let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
     return updatedText.count <= 12
   }
-  
   func secretTextField(_ textField: UITextField,
                        shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let currentText = textField.text ?? ""
@@ -324,7 +396,6 @@ extension SignUpViewController: SignupViewDelegate {
     let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
     return updatedText.count <= 16
   }
-
   func checkSecretNumberTextField(_ textField: UITextField,
                                   shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let currentText = textField.text ?? ""
@@ -332,7 +403,6 @@ extension SignUpViewController: SignupViewDelegate {
     let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
     return updatedText.count <= 12
   }
-  
   func nameTextField(_ textField: UITextField,
                      shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let currentText = textField.text ?? ""
@@ -340,7 +410,6 @@ extension SignUpViewController: SignupViewDelegate {
     let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
     return updatedText.count <= 12
   }
-  
   func emailTextField(_ textField: UITextField,
                       shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let currentText = textField.text ?? ""
@@ -355,7 +424,6 @@ extension SignUpViewController: SignupViewDelegate {
     let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
     return updatedText.count <= 13
   }
-  
   func checkingReceivingNumberTextField(_ textField: UITextField,
                                         shouldChangeCharactersIn range: NSRange,
                                         replacementString string: String) -> Bool {

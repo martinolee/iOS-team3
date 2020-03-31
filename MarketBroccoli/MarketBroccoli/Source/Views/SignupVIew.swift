@@ -72,6 +72,8 @@ protocol SignupViewDelegate: class {
   func checkingCodeButtonTouched()
   func genderRoundButtonTouched(button: UIButton, noChoice: [UIButton])
   func recoAndEventRoundButtonTouched(button: UIButton, eventButton: [UIButton])
+  func squareButtonTouched(button: UIButton, leftButtons: [UIButton])
+  func signupButtonTouched(button: UIButton)
 }
 class SignupView: UIView, UITextFieldDelegate {
   weak var delegate: SignupViewDelegate?
@@ -327,16 +329,16 @@ class SignupView: UIView, UITextFieldDelegate {
     let text = putAsteriskBehind(text: "이용약관동의")
     $0.attributedText = text
   }
-  private let totalAgreeButton = UIButton().then {
-    $0.layer.borderWidth = 1
-    $0.layer.borderColor = UIColor.lightGray.cgColor
+  var totalAgreeButton = SignupCheckBox().then {
+    $0.setStatus(false)
+    $0.addTarget(self, action: #selector(squareButtonTouched(button:)), for: .touchUpInside)
   }
   private let totalAgreeLabel = UILabel().then {
     $0.text = "전체동의"
   }
-  private let usingLawButton = UIButton().then {
-    $0.layer.borderWidth = 1
-    $0.layer.borderColor = UIColor.lightGray.cgColor
+  let usingLawButton = SignupCheckBox().then {
+    $0.setStatus(false)
+    $0.addTarget(self, action: #selector(squareButtonTouched(button:)), for: .touchUpInside)
   }
   private let usingLawLabel = UILabel().then {
     $0.text = "이용약관"
@@ -349,9 +351,9 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.setTitle("약관보기 >", for: .normal)
     $0.setTitleColor(.kurlyPurple, for: .normal)
   }
-  private let personalEssentialButton = UIButton().then {
-    $0.layer.borderWidth = 1
-    $0.layer.borderColor = UIColor.lightGray.cgColor
+  let personalEssentialButton = SignupCheckBox().then {
+    $0.setStatus(false)
+    $0.addTarget(self, action: #selector(squareButtonTouched(button:)), for: .touchUpInside)
   }
   private let personalEssentialLabel = UILabel().then {
     $0.text = "개인정보처리방침"
@@ -364,9 +366,9 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.setTitle("약관보기 >", for: .normal)
     $0.setTitleColor(.kurlyPurple, for: .normal)
   }
-  private let personalNotEssentialButton = UIButton().then {
-    $0.layer.borderWidth = 1
-    $0.layer.borderColor = UIColor.lightGray.cgColor
+  let personalNotEssentialButton = SignupCheckBox().then {
+    $0.setStatus(false)
+    $0.addTarget(self, action: #selector(squareButtonTouched(button:)), for: .touchUpInside)
   }
   private let personalNotEssentialLabel = UILabel().then {
     $0.text = "개인정보처리방침"
@@ -379,9 +381,9 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.setTitle("약관보기 >", for: .normal)
     $0.setTitleColor(.kurlyPurple, for: .normal)
   }
-  private let freeShippingButton = UIButton().then {
-    $0.layer.borderWidth = 1
-    $0.layer.borderColor = UIColor.lightGray.cgColor
+  let freeShippingButton = SignupCheckBox().then {
+    $0.setStatus(false)
+    $0.addTarget(self, action: #selector(squareButtonTouched(button:)), for: .touchUpInside)
   }
   private let freeShippingLabel = UILabel().then {
     $0.text = "무료배송, 할인쿠폰 등 혜택/정보 수신"
@@ -390,16 +392,16 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.text = "(선택)"
     $0.textColor = .lightGray
   }
-  private let smsButton = UIButton().then {
-    $0.layer.borderWidth = 1
-    $0.layer.borderColor = UIColor.lightGray.cgColor
+  let smsButton = SignupCheckBox().then {
+    $0.setStatus(false)
+    $0.addTarget(self, action: #selector(squareButtonTouched(button:)), for: .touchUpInside)
   }
   private let smsLabel = UILabel().then {
     $0.text = "SMS"
   }
-  private let emailCheckButton = UIButton().then {
-    $0.layer.borderWidth = 1
-    $0.layer.borderColor = UIColor.lightGray.cgColor
+  let emailCheckButton = SignupCheckBox().then {
+    $0.setStatus(false)
+    $0.addTarget(self, action: #selector(squareButtonTouched(button:)), for: .touchUpInside)
   }
   private let emailCheckLabel = UILabel().then {
     $0.text = "이메일"
@@ -407,9 +409,9 @@ class SignupView: UIView, UITextFieldDelegate {
   private let purchaseAdsView = UIImageView().then {
     $0.image = UIImage(named: "구매혜택")
   }
-  private let ageCheckButton = UIButton().then {
-    $0.layer.borderWidth = 1
-    $0.layer.borderColor = UIColor.lightGray.cgColor
+  let ageCheckButton = SignupCheckBox().then {
+    $0.setStatus(false)
+    $0.addTarget(self, action: #selector(squareButtonTouched(button:)), for: .touchUpInside)
   }
   private let ageLabel = UILabel().then {
     $0.text = "본인은 만 14세 이상입니다."
@@ -422,6 +424,7 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.setTitle("가입하기", for: .normal)
     $0.setTitleColor(.white, for: .normal)
     $0.backgroundColor = .kurlyPurple
+    $0.addTarget(self, action: #selector(signupButtonTouched(button:)), for: .touchUpInside)
   }
   private let lastExplainationLabel = UILabel().then {
     $0.text = "선택항목에 동의하지 않은 경우도 회원가입 및 일반적인 서비스를 이용할 수 \n있습니다."
@@ -1102,8 +1105,30 @@ extension SignupView {
     let buttons = [recoRoundButton, eventNameRoundButton]
       .filter { $0 != button }
     delegate?.recoAndEventRoundButtonTouched(button: button, eventButton: buttons)
-    
   }
-  
-  
+  @objc func squareButtonTouched(button: UIButton) {
+    let buttons: [UIButton] = [
+      totalAgreeButton,
+      usingLawButton,
+      personalEssentialButton,
+      personalNotEssentialButton,
+      freeShippingButton,
+      smsButton,
+      emailCheckButton,
+      ageCheckButton
+    ]
+
+    delegate?.squareButtonTouched(button: button, leftButtons: buttons)
+  }
+  func getTotalSquareButton() -> UIButton {
+    totalAgreeButton
+  }
+  @objc func signupButtonTouched(button: UIButton) {
+    delegate?.signupButtonTouched(button: button)
+  }
 }
+
+
+
+
+
