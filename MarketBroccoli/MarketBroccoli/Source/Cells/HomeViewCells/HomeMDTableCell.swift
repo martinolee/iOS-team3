@@ -43,8 +43,7 @@ class HomeMDTableCell: UITableViewCell {
     super.layoutSubviews()
     itemWidth = ((self.frame.width - (UI.inset * 2) - (UI.spacing * 2)) / 3).rounded(.down)
     productMoved(0)
-//    categoryMoved(0)
-    updateAnimation(movePoint: 0, indexPath: IndexPath(item: 0, section: 0))
+    updateAnimation(movePoint: 0, indexPath: IndexPath(item: 0, section: 0), direction: false)
   }
   
   required init?(coder: NSCoder) {
@@ -97,15 +96,18 @@ extension HomeMDTableCell: UIScrollViewDelegate {
     if scrollView == MDProductCollectionView {
       let cellWidth = itemWidth * 3 + (UI.inset + UI.spacing * 2)
       var page = round(MDProductCollectionView.contentOffset.x / cellWidth)
+      var isRight = true
       if velocity.x > 0 {
         page += 1
+        isRight = true
       }
       if velocity.x < 0 {
         page -= 1
+        isRight = false
       }
       page = max(page, 0)
       targetContentOffset.pointee.x = page * cellWidth
-      categoryMoved(Int(page))
+      categoryMoved(Int(page), direction: isRight)
     }
   }
 }
@@ -192,7 +194,7 @@ extension HomeMDTableCell {
 
 // MARK: - ACTIONS
 extension HomeMDTableCell {
-  private func categoryMoved(_ currentPage: Int) {
+  private func categoryMoved(_ currentPage: Int, direction: Bool) {
     var MDTextWidth: CGFloat = 0
     let label = UILabel()
     for i in 0..<currentPage {
@@ -204,10 +206,10 @@ extension HomeMDTableCell {
     let correction = (self.frame.width / 2) - textWidth + (textWidth / 2) - 20
     let movePoint = MDTextWidth - correction
     
-    updateAnimation(movePoint: movePoint, indexPath: IndexPath(item: currentPage, section: 0))
+    updateAnimation(movePoint: movePoint, indexPath: IndexPath(item: currentPage, section: 0), direction: direction)
   }
   
-  private func updateAnimation(movePoint: CGFloat, indexPath: IndexPath) {
+  private func updateAnimation(movePoint: CGFloat, indexPath: IndexPath, direction isRight: Bool) {
     guard let item = self.MDcategoryCollectionView.cellForItem(
       at: indexPath)
       as? MDCategoryCollectionCell else { return }
@@ -220,10 +222,14 @@ extension HomeMDTableCell {
       $0.leading.trailing.width.equalTo(item)
       $0.height.equalTo(2)
     }
-    print(movePoint)
+    
     UIView.animate(withDuration: 0.3) {
       item.titleLabel.textColor = .kurlyPurple
-      self.MDcategoryCollectionView.setContentOffset(CGPoint(x: movePoint, y: 0), animated: false)
+      if 2...12 ~= indexPath.item {
+        self.MDcategoryCollectionView.setContentOffset(CGPoint(x: movePoint, y: 0), animated: false)
+      } else if !isRight {
+        self.MDcategoryCollectionView.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
+      }
       
       self.layoutIfNeeded()
     }
