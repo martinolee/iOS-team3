@@ -19,5 +19,7 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+      self.addNavigationBarCartButton()
+      self.setupBroccoliNavigationBar(title: "마켓브로콜리")
     }
 }

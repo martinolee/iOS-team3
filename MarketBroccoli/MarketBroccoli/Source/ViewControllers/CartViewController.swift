@@ -65,6 +65,38 @@ class CartViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    setupAttribute()
+    setupLeftBarButtonItem()
+  }
+  
+  // MARK: Setup Attribute
+  
+  private func setupAttribute() {
+    title = "장바구니"
+    
+    navigationController?.do({
+      $0.navigationBar.barTintColor = .white
+      $0.navigationBar.isTranslucent = false
+      $0.navigationBar.barStyle = .black
+      $0.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
+    })
+  }
+  
+  @objc
+  private func closeCart() {
+    dismiss(animated: true)
+  }
+  
+  private func setupLeftBarButtonItem() {
+    let closeCartbutton = UIButton(type: .system).then {
+      $0.tintColor = .black
+      $0.setImage(UIImage(systemName: "xmark"), for: .normal)
+      
+      $0.addTarget(self, action: #selector(closeCart), for: .touchUpInside)
+    }
+    
+    navigationItem.leftBarButtonItem = UIBarButtonItem(customView: closeCartbutton)
   }
 }
 
@@ -102,11 +134,11 @@ extension CartViewController: CartProductTableViewCellDelegate {
      print("productRemoveButtonTouched")
   }
   
-  func subtractionButtonTouched(_ button: UIButton) {
+  func subtractionButtonTouched(_ button: UIButton, _ valueLabel: UILabel) {
     print("subtractionButtonTouched")
   }
   
-  func additionButtonTouched(_ button: UIButton) {
+  func additionButtonTouched(_ button: UIButton, _ valueLabel: UILabel) {
     print("additionButtonTouched")
   }
 }

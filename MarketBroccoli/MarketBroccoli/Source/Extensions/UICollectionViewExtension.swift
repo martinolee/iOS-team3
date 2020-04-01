@@ -33,7 +33,6 @@ extension UICollectionView {
     } else if let layout = self.collectionViewLayout as? UICollectionViewFlowLayout {
       width -= layout.sectionInset.left
       width -= layout.sectionInset.right
-      print("123")
     }
 
     return width

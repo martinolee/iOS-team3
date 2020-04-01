@@ -64,6 +64,7 @@ protocol SignupViewDelegate: class {
   func checkSecretNumberTextFeildDidBeginEditing(_ textField: UITextField)
   func idTextFieldEditingChanged(_ textField: UITextField, text: String)
   func checkIDButtonTouched(_ button: UIButton)
+  func secretTextFeildEditingChanged(_ textField: UITextField, text: String)
 }
 class SignupView: UIView, UITextFieldDelegate {
   weak var delegate: SignupViewDelegate?
@@ -103,6 +104,7 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.borderStyle = .roundedRect
     $0.clearButtonMode = .whileEditing
     $0.delegate = self
+    $0.addTarget(self, action: #selector(secretTextFeildEditingChanged), for: .editingChanged)
   }
   private let tenSyllableLabel = UILabel().then {
     $0.text = "10자 이상 입력"
@@ -110,7 +112,7 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.font = .systemFont(ofSize: 10)
   }
   private let combinationLabel = UILabel().then {
-    $0.text = "영문/숫자/특수문자(공백제외)만 허용하며, 2개 이상 조합"
+    $0.text = "영문/숫자/공백제외만 허용하며, 2개 이상 조합"
     $0.textColor = .lightGray
     $0.font = .systemFont(ofSize: 10)
   }
@@ -903,7 +905,7 @@ extension SignupView {
     case checkSecretNumberTextFeild:
       return delegate.checkSecretNumberTextFeildDidBeginEditing(textField)
     default:
-      fatalError()
+      return print("생일 입력할 경우")
     }
   }
   func idTextFieldOpenHiddenMessage() {
@@ -955,5 +957,24 @@ extension SignupView {
   }
   func getIDTextFieldText() -> String {
     idTextFeild.text ?? ""
+  }
+  @objc func secretTextFeildEditingChanged(_ textField: UITextField, text: String) {
+    guard
+      let delegate = delegate,
+      let text = textField.text
+    else { fatalError() }
+    delegate.secretTextFeildEditingChanged(textField, text: text)
+  }
+  func setTenSyllableLabel(textColor: UIColor) {
+    tenSyllableLabel.textColor = textColor
+  }
+  func getSecretTextFeildText() -> String {
+    secretTextFeild.text ?? ""
+  }
+  func setCombinationLabel(textColor: UIColor) {
+    combinationLabel.textColor = textColor
+  }
+  func setsameSecretNumberLabel(textColor: UIColor) {
+    sameSecretNumberLabel.textColor = textColor
   }
 }
