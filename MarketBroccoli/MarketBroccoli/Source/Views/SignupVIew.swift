@@ -21,10 +21,13 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.signupStyle(round: .roundedRect, clearButton: .whileEditing)
   }
   
-  private let checkIDButton = UIButton().then {
+  private let checkIDButton = SignupButton(
+    setTitleColor: .white,
+    backgroundColor: .kurlyPurple,
+    borderWidth: nil,
+    borderColor: nil
+  ).then {
     $0.setTitle("중복확인", for: .normal)
-    $0.backgroundColor = .kurlyPurple
-    $0.setTitleColor(.white, for: .normal)
     $0.addTarget(self, action: #selector(checkIDButtonTouched), for: .touchUpInside)
   }
   private let idLimitExplanationLabel = SignupLabel(textColor: .lightGray, font: .systemFont(ofSize: 10)).then {
@@ -37,19 +40,19 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.text = "비밀번호"
     $0.required = true
   }
-  private lazy var secretTextFeild = UITextField().then {
+  private lazy var secretTextField = UITextField().then {
     $0.signupStyle(round: .roundedRect, clearButton: .whileEditing)
     $0.placeholder = "비밀번호를 입력해주세요"
     $0.delegate = self
     $0.addTarget(self, action: #selector(secretTextFeildEditingChanged), for: .editingChanged)
   }
-  private let tenSyllableLabel = SignupLabel(textColor: .lightGray, font: nil).then {
+  private let tenSyllableLabel = SignupLabel(textColor: .lightGray, font: .systemFont(ofSize: 10)).then {
     $0.text = "10자 이상 입력"
   }
-  private let combinationLabel = SignupLabel(textColor: .lightGray, font: nil).then {
+  private let combinationLabel = SignupLabel(textColor: .lightGray, font: .systemFont(ofSize: 10)).then {
     $0.text = "영문/숫자/공백제외만 허용하며, 2개 이상 조합"
   }
-  private let notSameTheeNumber = SignupLabel(textColor: .lightGray, font: nil).then {
+  private let notSameTheeNumber = SignupLabel(textColor: .lightGray, font: .systemFont(ofSize: 10)).then {
     $0.text = "동일한 숫자 3개 이상 연속 사용 불가"
   }
   private lazy var checkSecretNumberLabel = SignupLabel().then {
@@ -63,7 +66,7 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.signupStyle(round: .roundedRect, clearButton: .whileEditing)
   }
   
-  private let sameSecretNumberLabel = SignupLabel(textColor: .orange, font: nil).then {
+  private let sameSecretNumberLabel = SignupLabel(textColor: .orange, font: .systemFont(ofSize: 10)).then {
     $0.text = "동일한 비밀번호를 입력해주세요"
   }
   private lazy var nameLabel = SignupLabel().then {
@@ -94,10 +97,13 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.addTarget(self, action: #selector(cellphoneTextFieldEditingChanged), for: .editingChanged)
     $0.signupStyle(round: .roundedRect, clearButton: .whileEditing)
   }
-  private lazy var getCodeButton = UIButton().then {
+  private lazy var getCodeButton = SignupButton(
+    setTitleColor: .white,
+    backgroundColor: .gray,
+    borderWidth: nil,
+    borderColor: nil
+  ).then {
     $0.setTitle("인증번호 받기", for: .normal)
-    $0.setTitleColor(.white, for: .normal)
-    $0.backgroundColor = .gray
     $0.addTarget(self, action: #selector(getCodeButtonTouched), for: .touchUpInside)
   }
   private lazy var checkingCodeTexField = UITextField().then {
@@ -109,12 +115,13 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.isHidden = true
   }
   
-  private let checkingCodeButton = UIButton().then {
+  private let checkingCodeButton = SignupButton(
+    setTitleColor: .gray,
+    backgroundColor: .white,
+    borderWidth: 1,
+    borderColor: UIColor.lightGray.cgColor
+  ).then {
     $0.setTitle("인증번호 확인", for: .normal)
-    $0.setTitleColor(.gray, for: .normal)
-    $0.layer.borderWidth = 1
-    $0.layer.borderColor = UIColor.lightGray.cgColor
-    $0.backgroundColor = .white
     $0.addTarget(self, action: #selector(checkingCodeButtonTouched), for: .touchUpInside)
   }
   private var checkingCodeCompleteLabel = SignupLabel(textColor: nil, font: .systemFont(ofSize: 10))
@@ -125,10 +132,13 @@ class SignupView: UIView, UITextFieldDelegate {
   private let addressCheckingLabel = SignupLabel(textColor: .lightGray, font: .systemFont(ofSize: 12)).then {
     $0.text = "배송 가능 여부를 확인할 수 있습니다."
   }
-  private let searchingAddressButton = UIButton().then {
+  private let searchingAddressButton = SignupButton(
+    setTitleColor: .white,
+    backgroundColor: .kurlyPurple,
+    borderWidth: nil,
+    borderColor: nil
+  ).then {
     $0.setTitle("주소 검색", for: .normal)
-    $0.backgroundColor = .kurlyPurple
-    $0.setTitleColor(.white, for: .normal)
   }
   private let birthdayLabel = SignupLabel(textColor: nil, font: nil).then {
     $0.text = "생년월일"
@@ -164,72 +174,72 @@ class SignupView: UIView, UITextFieldDelegate {
   private let genderLabel = SignupLabel(textColor: nil, font: nil).then {
     $0.text = "성별"
   }
-  private lazy var maleRoundButton = UIButton().then {
-    $0.layer.borderWidth = 1
-    $0.layer.borderColor = UIColor.lightGray.cgColor
+  private lazy var maleRoundButton = SignupButton(
+    setTitleColor: nil,
+    backgroundColor: nil,
+    borderWidth: 1,
+    borderColor: UIColor.lightGray.cgColor
+  ).then {
     $0.addTarget(self, action: #selector(genderRoundButtonTouched), for: .touchUpInside)
   }
   private let maleLabel = SignupLabel(textColor: nil, font: nil).then {
     $0.text = "남자"
   }
-  private let maleUnderline = UIView().then {
-    $0.layer.borderWidth = 0.2
-    $0.layer.borderColor = UIColor.lightGray.cgColor
-  }
-  private let femaleRoundButton = UIButton().then {
-    $0.layer.borderWidth = 1
-    $0.layer.borderColor = UIColor.lightGray.cgColor
+  private let maleUnderline = SignupUnderLineView(borderWidth: 0.2, borderColor: UIColor.lightGray.cgColor)
+  private let femaleRoundButton = SignupButton(
+     setTitleColor: nil,
+     backgroundColor: nil,
+     borderWidth: 1,
+     borderColor: UIColor.lightGray.cgColor
+   ).then {
     $0.addTarget(self, action: #selector(genderRoundButtonTouched), for: .touchUpInside)
   }
   private let femaleLabel = SignupLabel(textColor: nil, font: nil).then {
     $0.text = "여자"
   }
-  private let femaleUnderline = UIView().then {
-    $0.layer.borderWidth = 0.2
-    $0.layer.borderColor = UIColor.lightGray.cgColor
-  }
-  private let noChoiceRoundButton = UIButton().then {
-    $0.layer.borderWidth = 1
-    $0.layer.borderColor = UIColor.lightGray.cgColor
+  private let femaleUnderline = SignupUnderLineView(borderWidth: 0.2, borderColor: UIColor.lightGray.cgColor)
+  private let noChoiceRoundButton = SignupButton(
+     setTitleColor: nil,
+     backgroundColor: nil,
+     borderWidth: 1,
+     borderColor: UIColor.lightGray.cgColor
+   ).then {
     $0.addTarget(self, action: #selector(genderRoundButtonTouched), for: .touchUpInside)
   }
   private let noChoiceLabel = SignupLabel(textColor: nil, font: nil).then {
     $0.text = "선택안함"
   }
-  private let noChoiceUnderline = UIView().then {
-    $0.layer.borderWidth = 0.2
-    $0.layer.borderColor = UIColor.lightGray.cgColor
-  }
+  private let noChoiceUnderline = SignupUnderLineView(borderWidth: 0.2, borderColor: UIColor.lightGray.cgColor)
   private let additionalConditionLabel = SignupLabel(textColor: nil, font: nil).then {
     $0.text = "추가입력 사항"
   }
   private let additionalExplanationLabel = SignupLabel(textColor: .gray, font: .systemFont(ofSize: 12)).then {
     $0.text = "추천인 아이디와 참여 이벤트명 중 하나마나 선택 가능합니다."
   }
-  private let recoRoundButton = UIButton().then {
-    $0.layer.borderWidth = 1
-    $0.layer.borderColor = UIColor.lightGray.cgColor
+  private let recoRoundButton = SignupButton(
+     setTitleColor: nil,
+     backgroundColor: nil,
+     borderWidth: 1,
+     borderColor: UIColor.lightGray.cgColor
+   ).then {
     $0.addTarget(self, action: #selector(recoAndEventRoundButtonTouched), for: .touchUpInside)
   }
   private let recoIDLabel = SignupLabel(textColor: nil, font: nil).then {
     $0.text = "추천인 아이디"
   }
-  private let recoUnderline = UIView().then {
-    $0.layer.borderWidth = 0.2
-    $0.layer.borderColor = UIColor.lightGray.cgColor
-  }
-  private let eventNameRoundButton = UIButton().then {
-    $0.layer.borderWidth = 1
-    $0.layer.borderColor = UIColor.lightGray.cgColor
+  private let recoUnderline = SignupUnderLineView(borderWidth: 0.2, borderColor: UIColor.lightGray.cgColor)
+  private let eventNameRoundButton = SignupButton(
+     setTitleColor: nil,
+     backgroundColor: nil,
+     borderWidth: 1,
+     borderColor: UIColor.lightGray.cgColor
+   ).then {
     $0.addTarget(self, action: #selector(recoAndEventRoundButtonTouched), for: .touchUpInside)
   }
   private let eventName = SignupLabel(textColor: nil, font: nil).then {
     $0.text = "참여 이벤트명"
   }
-  private let eventNameUnderline = UIView().then {
-    $0.layer.borderWidth = 0.2
-    $0.layer.borderColor = UIColor.lightGray.cgColor
-  }
+  private let eventNameUnderline = SignupUnderLineView(borderWidth: 0.2, borderColor: UIColor.lightGray.cgColor)
   private let scrollView = UIScrollView()
   private let grayView = UIView().then {
     $0.backgroundColor = .gray
@@ -343,19 +353,14 @@ class SignupView: UIView, UITextFieldDelegate {
     layoutSubviews()
   }
   override func layoutSubviews() {
-    makeRoundCorner(button: femaleRoundButton)
-    makeRoundCorner(button: maleRoundButton)
-    makeRoundCorner(button: noChoiceRoundButton)
-    makeRoundCorner(button: recoRoundButton)
-    makeRoundCorner(button: eventNameRoundButton)
+    [femaleRoundButton, maleRoundButton, noChoiceRoundButton, recoRoundButton, eventNameRoundButton].forEach {
+      $0.makeCircleButton()
+    }
   }
-  private func makeRoundCorner(button: UIButton) {
-    button.layer.masksToBounds = true
-    button.layer.cornerRadius = button.bounds.height / 2
-  }
+
   private func setupUI() {
     [idLabel, idTextField, checkIDButton,
-     secretNumberLabel, secretTextFeild, checkSecretNumberLabel,
+     secretNumberLabel, secretTextField, checkSecretNumberLabel,
      checkSecretNumberTextFeild, nameLabel, nameTextFeild,
      emailLabel, emailTextFeild, cellphoneLabel,
      cellphoneTextField, getCodeButton, checkingCodeCompleteLabel,
@@ -419,12 +424,12 @@ class SignupView: UIView, UITextFieldDelegate {
       $0.top.equalTo(checkingIdLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(checkingIdLabel)
     }
-    secretTextFeild.snp.makeConstraints {
+    secretTextField.snp.makeConstraints {
       $0.top.equalTo(secretNumberLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(secretNumberLabel)
     }
     tenSyllableLabel.snp.makeConstraints {
-      $0.top.equalTo(secretTextFeild.snp.bottom).offset(4)
+      $0.top.equalTo(secretTextField.snp.bottom).offset(4)
       $0.leading.trailing.equalTo(secretNumberLabel)
       $0.height.equalTo(0)
     }
@@ -767,8 +772,6 @@ class SignupView: UIView, UITextFieldDelegate {
   }
 }
 extension SignupView {
-  
-  
   func textField(_ textField: UITextField,
                  shouldChangeCharactersIn range: NSRange,
                  replacementString string: String) -> Bool {
@@ -777,7 +780,7 @@ extension SignupView {
     switch textField {
     case idTextField:
       return delegate.idTextField(textField, shouldChangeCharactersIn: range, replacementString: string)
-    case secretTextFeild:
+    case secretTextField:
       return delegate.secretTextField(
         textField,
         shouldChangeCharactersIn: range,
@@ -839,7 +842,7 @@ extension SignupView {
     switch textField {
     case idTextField:
       return delegate.idTextFieldDidBeginEditing(textField)
-    case secretTextFeild:
+    case secretTextField:
       return delegate.secretTextFeildDidBeginEditing(textField)
     case checkSecretNumberTextFeild:
       return delegate.checkSecretNumberTextFeildDidBeginEditing(textField)
@@ -918,7 +921,7 @@ extension SignupView {
     tenSyllableLabel.textColor = textColor
   }
   func getSecretTextFeildText() -> String {
-    secretTextFeild.text ?? ""
+    secretTextField.text ?? ""
   }
   func setCombinationLabel(textColor: UIColor) {
     combinationLabel.textColor = textColor

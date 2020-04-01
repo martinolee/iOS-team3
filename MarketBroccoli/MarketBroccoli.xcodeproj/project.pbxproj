@@ -72,6 +72,9 @@
 		7CFCE96B24320AFF00E067AD /* CategorySelected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFCE96A24320AFF00E067AD /* CategorySelected.swift */; };
 		FA48FBD4243319DE00E53EB5 /* SignupCheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA48FBD3243319DE00E53EB5 /* SignupCheckBox.swift */; };
 		FA48FBD624335BC000E53EB5 /* Agreement.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA48FBD524335BC000E53EB5 /* Agreement.swift */; };
+		FA48FBD824345AE800E53EB5 /* SignupButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA48FBD724345AE800E53EB5 /* SignupButton.swift */; };
+		FA48FBDA2434648E00E53EB5 /* SignupUnderLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA48FBD92434648E00E53EB5 /* SignupUnderLineView.swift */; };
+		FA48FBDC2434792100E53EB5 /* Signup.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA48FBDB2434792100E53EB5 /* Signup.swift */; };
 		FA9AD74224287F51002D3504 /* SignupVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9AD74124287F51002D3504 /* SignupVIew.swift */; };
 		FAAE2E572424E3C400ACC5D3 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAE2E562424E3C400ACC5D3 /* SignUpViewController.swift */; };
 		FAAFEB612424A77900452977 /* LogOutTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAFEB602424A77900452977 /* LogOutTableViewCell.swift */; };
@@ -147,6 +150,9 @@
 		D1C8D23965CC57B3A3E2F2A7 /* Pods-MarketBroccoli.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MarketBroccoli.release.xcconfig"; path = "Target Support Files/Pods-MarketBroccoli/Pods-MarketBroccoli.release.xcconfig"; sourceTree = "<group>"; };
 		FA48FBD3243319DE00E53EB5 /* SignupCheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupCheckBox.swift; sourceTree = "<group>"; };
 		FA48FBD524335BC000E53EB5 /* Agreement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Agreement.swift; sourceTree = "<group>"; };
+		FA48FBD724345AE800E53EB5 /* SignupButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupButton.swift; sourceTree = "<group>"; };
+		FA48FBD92434648E00E53EB5 /* SignupUnderLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupUnderLineView.swift; sourceTree = "<group>"; };
+		FA48FBDB2434792100E53EB5 /* Signup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signup.swift; sourceTree = "<group>"; };
 		FA9AD74124287F51002D3504 /* SignupVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupVIew.swift; sourceTree = "<group>"; };
 		FAAE2E562424E3C400ACC5D3 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		FAAFEB5E2424A74900452977 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -216,9 +222,9 @@
 				7C5A889224343AC4006361AC /* Protocols */,
 				7CCD648C24287AB300FC671B /* Cells */,
 				7C65ECC6242472F70075606A /* Views */,
+				7C65ECB5242470C90075606A /* Extensions */,
 				7C65ECC3242472E20075606A /* Models */,
 				7C65ECB7242470E70075606A /* Utils */,
-				7C65ECB5242470C90075606A /* Extensions */,
 				7C65ECB4242470B60075606A /* CustomUI */,
 				7C65ECB3242470AB0075606A /* ViewControllers */,
 			);
@@ -270,6 +276,8 @@
 				7CFCE96A24320AFF00E067AD /* CategorySelected.swift */,
 				7C212DAE243361A900025869 /* CategoryScrollView.swift */,
 				7C5A889524343F41006361AC /* SignupLabel.swift */,
+				FA48FBD724345AE800E53EB5 /* SignupButton.swift */,
+				FA48FBD92434648E00E53EB5 /* SignupUnderLineView.swift */,
 			);
 			path = CustomUI;
 			sourceTree = "<group>";
@@ -325,6 +333,7 @@
 				7C65ECC4242472EC0075606A /* EmptyModel.swift */,
 				7050F323242DDE7900B8E13B /* CategoryData.swift */,
 				FA48FBD524335BC000E53EB5 /* Agreement.swift */,
+				FA48FBDB2434792100E53EB5 /* Signup.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -565,6 +574,7 @@
 				7050F318242876B600B8E13B /* PWFindViewController.swift in Sources */,
 				727F093324287C2E00584A40 /* UITableViewCellExtension.swift in Sources */,
 				7C8C4A36242B61CD00FA912B /* HomeProductCollectionCell.swift in Sources */,
+				FA48FBDA2434648E00E53EB5 /* SignupUnderLineView.swift in Sources */,
 				7C65ECCB24249B2C0075606A /* EmptyTemp.swift in Sources */,
 				FA48FBD4243319DE00E53EB5 /* SignupCheckBox.swift in Sources */,
 				728078682429A8A500101B7D /* ProductQuantityStepper.swift in Sources */,
@@ -578,6 +588,7 @@
 				7291F87D242C7EAF009D4E83 /* CartViewHeader.swift in Sources */,
 				723851E124249C6400E8B206 /* UserInfoTableViewCell.swift in Sources */,
 				7C5A889424343AD9006361AC /* SignupViewProtocol.swift in Sources */,
+				FA48FBDC2434792100E53EB5 /* Signup.swift in Sources */,
 				7C65ECD12424D82C0075606A /* HomeRootView.swift in Sources */,
 				7C65ECCF2424B95F0075606A /* HomeViewController.swift in Sources */,
 				7291F87F242CC63C009D4E83 /* CartFooterView.swift in Sources */,
@@ -597,6 +608,7 @@
 				7C8C4A28242B0DFC00FA912B /* UIButtonExtension.swift in Sources */,
 				7CCD649A2428DB2C00FC671B /* UICollectionViewExtension.swift in Sources */,
 				7C8C4A32242B4D2800FA912B /* HomeEventTableCell.swift in Sources */,
+				FA48FBD824345AE800E53EB5 /* SignupButton.swift in Sources */,
 				FAAFEB632424A79200452977 /* TypeConverter.swift in Sources */,
 				FAAE2E572424E3C400ACC5D3 /* SignUpViewController.swift in Sources */,
 				7C15D0B62429E55300ACB4C9 /* HomeReuseCollectionCell.swift in Sources */,

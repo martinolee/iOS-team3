@@ -9,7 +9,7 @@ class SignUpViewController: UIViewController {
     $0.delegate = self
   }
   let agreement = Agreement()
-  
+  let signup = Signup()
   private var leftTime = 10 {
     didSet {
       signupView.setTimerInTextField(text: timeFormatted(leftTime))
@@ -73,6 +73,15 @@ class SignUpViewController: UIViewController {
 // MARK: - Action
 extension SignUpViewController: SignupViewDelegate {
   func signupButtonTouched(button: UIButton) {
+    if signup.id == "marketkurly12" &&
+      signup.password == "1q2w3e4r1!" &&
+      signup.passwordIdentified == "1q2w3e4r1!" &&
+      signup.name == "허경영" &&
+      signup.email == "king@naver.com" &&
+      signup.cellphone == "01012345678" &&
+      signup.cellphoneIdentified == "000000" {
+  
+    }
   }
   func squareButtonTouched(button: UIButton, leftButtons leftButton: [UIButton]) {
     if button == signupView.totalAgreeButton {
