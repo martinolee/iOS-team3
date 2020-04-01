@@ -9,7 +9,13 @@
 import UIKit
 
 class SignupLabel: UILabel {
-  var required: Bool = false
+  var required: Bool = false {
+    willSet {
+      if newValue {
+        self.attributedText = putAsteriskBehind(self.text ?? "")
+      }
+    }
+  }
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -22,9 +28,6 @@ class SignupLabel: UILabel {
     }
     if font != nil {
       self.font = font
-    }
-    if required {
-      self.attributedText = putAsteriskBehind(self.text ?? "")
     }
   }
   
