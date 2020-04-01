@@ -38,5 +38,6 @@ extension NewProduct {
     let contentWidth: CGFloat = width - (margin * 2) - (10 * (itemCount - 1))
     let itemWidth: CGFloat = (contentWidth / itemCount).rounded(.down)
     layout.itemSize = CGSize(width: itemWidth, height: 200)
+    layout.scrollDirection = .vertical
   }
 }

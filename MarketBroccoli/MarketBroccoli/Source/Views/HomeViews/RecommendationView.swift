@@ -27,6 +27,7 @@ extension RecommendationView {
   private func setupAttr() {
     self.separatorStyle = .none
     self.dataSource = self
+    self.allowsSelection = false
     self.register(cell: HomeBannerTableCell.self)
     self.register(cell: HomeOfferTableCell.self)
     self.register(cell: HomeEventTableCell.self)

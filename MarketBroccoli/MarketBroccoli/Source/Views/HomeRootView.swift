@@ -11,9 +11,7 @@ import Then
 import SnapKit
 
 class HomeRootView: UIView {
-  private let selectedCategory = UIView().then {
-    $0.backgroundColor = .purple
-  }
+  private let selectedCategory = CategorySelected()
   private let scrollView = UIScrollView().then {
     $0.backgroundColor = .gray
     $0.isPagingEnabled = true
@@ -150,7 +148,7 @@ extension HomeRootView {
       categoryArray[idx].snp.makeConstraints {
         if idx == 0 {
           $0.top.leading.bottom.equalToSuperview()
-        } else if idx == categoryArray.count - 1 {
+        } else if idx == 4 {
           $0.leading.equalTo(categoryArray[idx - 1].snp.trailing)
           $0.top.bottom.trailing.equalToSuperview()
         } else {
@@ -177,7 +175,7 @@ extension HomeRootView: UIScrollViewDelegate {
 // MARK: - CollectionViewDataSource
 extension HomeRootView: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 5
+    return 20
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

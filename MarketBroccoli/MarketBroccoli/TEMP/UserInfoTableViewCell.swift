@@ -91,11 +91,7 @@ final class UserInfoTableViewCell: UITableViewCell {
   // MARK: - Setup UI
   
   private func addAllView() {
-    contentView.addSubview(userProfileImageView)
-    contentView.addSubview(userNameLabel)
-    contentView.addSubview(extraInfoLabel)
-    contentView.addSubview(leftButton)
-    contentView.addSubview(rightButton)
+    contentView.addSubviews([userProfileImageView, userNameLabel, extraInfoLabel, leftButton, rightButton])
   }
   
   private func setupUserProfileImageViewAutoLayout() {
