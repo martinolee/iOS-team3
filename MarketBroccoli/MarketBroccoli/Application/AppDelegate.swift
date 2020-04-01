@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Then
+import SnapKit
 
 @UIApplicationMain
  class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -23,8 +25,7 @@ import UIKit
     
     let marketBroccoliTabBarController = MartketBroccoliTabBarController()
     
-//    window?.rootViewController = marketBroccoliTabBarController
-    window?.rootViewController = SignUpViewController()
+    window?.rootViewController = marketBroccoliTabBarController
     window?.makeKeyAndVisible()
   }
 }
