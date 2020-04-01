@@ -23,7 +23,8 @@ import UIKit
     
     let marketBroccoliTabBarController = MartketBroccoliTabBarController()
     
-    window?.rootViewController = marketBroccoliTabBarController
+//    window?.rootViewController = marketBroccoliTabBarController
+    window?.rootViewController = SignUpViewController()
     window?.makeKeyAndVisible()
   }
 }
