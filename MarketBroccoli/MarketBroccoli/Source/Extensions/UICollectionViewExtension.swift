@@ -9,8 +9,9 @@
 import UIKit
 
 extension UICollectionView {
-  func register<Cell>(cell: Cell.Type,
-                      forCellReuseIdentifier reuseIdentifier: String = Cell.identifier) where Cell: UICollectionViewCell {
+  func register<Cell>(
+    cell: Cell.Type,
+    forCellReuseIdentifier reuseIdentifier: String = Cell.identifier) where Cell: UICollectionViewCell {
     register(cell, forCellWithReuseIdentifier: reuseIdentifier)
   }
   

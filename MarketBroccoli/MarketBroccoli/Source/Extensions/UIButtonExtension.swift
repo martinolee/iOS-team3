@@ -24,24 +24,9 @@ extension UIButton {
     self.layer.borderColor = UIColor.kurlyPurple.cgColor
     self.layer.cornerRadius = 4
   }
-}
-
-
-
-class RoundPurpleBtn: UIButton {
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    self.backgroundColor = .purple
-    self.setTitleColor(.yellow, for: .normal)
-  }
   
-  convenience init(round: CGFloat) {
-    self.init()
-    self.layer.cornerRadius = round
+  func makeCircleButton() {
+    self.layer.masksToBounds = true
+    self.layer.cornerRadius = self.bounds.height / 2
   }
-  
-  required init?(coder: NSCoder) {
-    fatalError()
-  }
-  
 }
