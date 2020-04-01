@@ -12,6 +12,7 @@ class SearchViewController: UIViewController {
   // MARK: - Properties
   
   private lazy var searchView = SearchView().then {
+    $0.dataSource = self
     $0.delegate = self
   }
   
@@ -29,9 +30,24 @@ class SearchViewController: UIViewController {
   }
 }
 
+extension SearchViewController: SearchViewDataSource {
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    10
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    let cell = collectionView.dequeue(ProductCollectionCell.self, indexPath: indexPath)
+    
+    return cell
+  }
+}
+
 // MARK: - Action Handler
 
 extension SearchViewController: SearchViewDelegate {
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+  }
+  
   func searchProductTextFieldEditingDidBegin(_ textField: UITextField, _ button: UIButton) {
     button.isEnabled = true
   }

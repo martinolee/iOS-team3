@@ -7,17 +7,20 @@
 //
 
 import UIKit
+import SnapKit
 
 class CategoryTableViewCell: UITableViewCell {
   static let identifier = "categoryCell"
   
+  let tableView = UITableView()
   private let iconImage = UIImageView()
   private let title = UILabel()
   private let arrowImage = UIImageView()
   private let subCategoryView = UIView()
   
   private var bottomConstraint: NSLayoutConstraint?
-  
+  private var testConstraint: Constraint?
+    
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     setupUI()
@@ -34,39 +37,14 @@ class CategoryTableViewCell: UITableViewCell {
       iconImageName(name: data.imagePurple)
       title.textColor = #colorLiteral(red: 0.3176470588, green: 0.1529411765, blue: 0.4470588235, alpha: 1)
     }
-    
-    var buttons = [UIButton]()
-        data.row.forEach {
-          let tempButton = UIButton()
-          tempButton.setTitle("    \($0)", for: .normal)
-          tempButton.setTitleColor(.darkGray, for: .normal)
-          tempButton.contentMode = .left
-          buttons.append(tempButton)
-          subCategoryView.addSubview(tempButton)
-        }
-        
-        buttons.enumerated().forEach { (index, tempButton) in
-          tempButton.translatesAutoresizingMaskIntoConstraints = false
-          tempButton.leadingAnchor.constraint(equalTo: subCategoryView.leadingAnchor).isActive = true
-    //      tempButton.trailingAnchor.constraint(equalTo: rowView.trailingAnchor).isActive = true
-          
-          switch index {
-          case 0, buttons.count - 1:
-            tempButton.topAnchor.constraint(equalTo: subCategoryView.topAnchor, constant: 16).isActive = true
-            
-            tempButton.bottomAnchor.constraint(equalTo: subCategoryView.bottomAnchor, constant: -16).isActive = true
-          default:
-            tempButton.topAnchor.constraint(equalTo: buttons[index - 1].bottomAnchor, constant: 16).isActive = true
-          }
-        }
-    
+
     switch data.select {
     case true:
-      bottomConstraint?.priority = .defaultLow
       subCategoryView.isHidden = false
+      testConstraint?.update(priority: .low)
     case false:
-      bottomConstraint?.priority = .defaultHigh
       subCategoryView.isHidden = true
+      testConstraint?.update(priority: .high)
     }
   }
   
@@ -77,7 +55,13 @@ class CategoryTableViewCell: UITableViewCell {
     arrowImage.contentMode = .scaleAspectFit
     arrowImage.tintColor = .darkGray
     subCategoryView.backgroundColor = .systemTeal
-    [iconImage, title, arrowImage, subCategoryView].forEach {
+    
+//    tableView.separatorStyle = .none
+//    tableView.backgroundColor = .systemGray
+//    tableView.dataSource = self
+//    tableView.register(UITableViewCell.self, forCellReuseIdentifier: "test")
+    
+    [iconImage, title, arrowImage, subCategoryView, tableView].forEach {
       contentView.addSubview($0)
     }
   }
@@ -89,8 +73,9 @@ class CategoryTableViewCell: UITableViewCell {
       make.width.height.equalTo(40)
     }
     title.snp.makeConstraints { (make) -> Void in
-      make.centerY.equalTo(contentView.snp.centerY)
+      make.top.equalTo(contentView.snp.top).offset(20)
       make.leading.equalTo(iconImage.snp.trailing).offset(8)
+      make.bottom.equalToSuperview().offset(-20)
     }
     arrowImage.snp.makeConstraints { (make) -> Void in
       make.centerY.equalTo(contentView.snp.centerY)
@@ -98,11 +83,24 @@ class CategoryTableViewCell: UITableViewCell {
       make.width.height.equalTo(20)
     }
     subCategoryView.snp.makeConstraints { (make) -> Void in
-      make.top.equalTo(iconImage.snp.bottom).offset(16)
-      make.centerX.equalTo(contentView.snp.centerX)
-      make.bottom.equalTo(contentView.snp.bottom).offset(16)
-      make.bottom.equalTo(contentView.snp.bottom).priority(250)
+      make.top.equalTo(iconImage.snp.bottom).offset(10)
+      make.leading.equalTo(contentView.snp.leading)
+      make.trailing.equalTo(contentView.snp.trailing)
+
+      make.height.equalTo(contentView.snp.height).multipliedBy(2)
     }
+  
+//    contentView.snp.makeConstraints { (make) -> Void in
+//      make.bottom.equalTo(subCategoryView.snp.bottom).priority(.medium)
+//      make.bottom.equalTo(iconImage.snp.bottom).offset(16).priority(.low)
+//    }
+    
+//    tableView.snp.makeConstraints { (make) -> Void in
+//      make.top.equalTo(iconImage.snp.bottom).offset(10)
+//      make.leading.equalToSuperview()
+//      make.trailing.equalToSuperview()
+//      make.height.equalTo(contentView.snp.height).multipliedBy(6)
+//    }
   }
   
   func titleName(name: String) {
@@ -115,5 +113,18 @@ class CategoryTableViewCell: UITableViewCell {
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+}
+
+extension CategoryTableViewCell: UITableViewDataSource {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return categoryData.count
+  }
+  
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: "test", for: indexPath)
+    cell.textLabel?.text = categoryData[indexPath.row].title
+    cell.textLabel?.textColor = .systemPink
+    return cell
   }
 }
