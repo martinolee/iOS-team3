@@ -9,7 +9,7 @@
 import UIKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+ class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
   
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   private func setupRootViewController() {
     window = UIWindow(frame: UIScreen.main.bounds)
     
-    let marketBroccoliTabBarController = MartketBroccliTabBarController()
+    let marketBroccoliTabBarController = MartketBroccoliTabBarController()
     
 //    window?.rootViewController = marketBroccoliTabBarController
     window?.rootViewController = SignUpViewController()

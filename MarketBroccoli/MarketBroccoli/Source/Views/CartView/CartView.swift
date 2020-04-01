@@ -19,15 +19,7 @@ protocol CartViewDataSource: class {
 }
 
 protocol CartViewDelegate: class {
-  func selectingOptionButtonTouched(_ button: UIButton)
-  
-  func productRemoveButtonTouched(_ button: UIButton)
-  
-  func subtractionButtonTouched(_ button: UIButton, _ valueLabel: UILabel)
-  
-  func additionButtonTouched(_ button: UIButton, _ valueLabel: UILabel)
-  
-  func selectAllProductButtonTouched(_ button: UIButton)
+  func selectAllProductCheckBoxTouched(_ checkBox: CheckBox, _ isChecked: Bool)
   
   func removeSelectedProductButton(_ button: UIButton)
 }
@@ -50,6 +42,8 @@ class CartView: UIView {
   private lazy var cartTableView = UITableView().then {
     $0.separatorStyle = .none
     $0.backgroundColor = .lightGray
+    $0.tableFooterView = cartFooterView
+    
     $0.dataSource = self
     
     $0.register(cell: CartProductTableViewCell.self)
@@ -64,6 +58,7 @@ class CartView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
     
+    setupAttribute()
     addAllView()
     setupCartTableViewAutoLayout()
   }
@@ -77,6 +72,10 @@ class CartView: UIView {
   }
   
   // MARK: - Setup UI
+  
+  private func setupAttribute() {
+    backgroundColor = .kurlyPurple
+  }
   
   private func addAllView() {
     self.addSubviews([
@@ -97,25 +96,55 @@ class CartView: UIView {
     cartTableView.snp.makeConstraints {
       $0.top.equalTo(cartViewHeader.snp.bottom)
       $0.leading.trailing.equalTo(cartViewHeader)
-      $0.bottom.equalToSuperview()
     }
     
-    cartTableView.snp.makeConstraints {
+    orderButton.snp.makeConstraints {
       $0.top.equalTo(cartTableView.snp.bottom)
       $0.leading.trailing.equalTo(cartTableView)
-      $0.bottom.equalToSuperview()
+      $0.bottom.equalTo(safeAreaLayoutGuide)
+      $0.height.equalTo(60)
     }
   }
   
   private func setupCartFooterViewSize() {
-    cartTableView.tableFooterView = cartFooterView.then({
-      $0.frame = CGRect(x: 0, y: 0, width: cartTableView.frame.width, height: 300)
+    cartTableView.tableFooterView = cartFooterView.then {
+      $0.frame = CGRect(x: 0, y: 0, width: cartTableView.frame.width, height: 200)
       $0.backgroundColor = .white
-    })
+    }
   }
   
-  // MARK: - Action Handler
+  // MARK: - Element Control
+  
+  func setSelectAllProductCheckBoxStatus(_ checked: Bool) {
+    cartViewHeader.setSelectAllProductCheckBoxStatus(checked)
+  }
+  
+  func reloadCartTableViewData() {
+    cartTableView.reloadData()
+  }
+  
+  func setOrderButtonText(totalPrice: Int) {
+    let totalPrice = moneyFormatter(won: totalPrice, hasUnit: true)
+    let totalPriceText = "주문하기 (\(totalPrice))"
+    let buttonAttributedTitle = NSMutableAttributedString(
+      string: totalPriceText,
+      attributes: [
+        .foregroundColor: UIColor.white,
+        .font: UIFont.boldSystemFont(ofSize: 17)
+      ]
+    )
+
+    buttonAttributedTitle.addAttribute(
+      .foregroundColor,
+      value: UIColor.white.withAlphaComponent(0.5),
+      range: NSRange(location: 5, length: totalPriceText.count - 5)
+    )
+    
+    orderButton.setAttributedTitle(buttonAttributedTitle, for: .normal)
+  }
 }
+
+// MARK: - Action Handler
 
 extension CartView: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
@@ -131,27 +160,9 @@ extension CartView: UITableViewDataSource {
   }
 }
 
-extension CartView: CartProductTableViewCellDelegate {
-  func selectingOptionButtonTouched(_ button: UIButton) {
-    delegate?.selectingOptionButtonTouched(button)
-  }
-  
-  func productRemoveButtonTouched(_ button: UIButton) {
-    delegate?.productRemoveButtonTouched(button)
-  }
-  
-  func subtractionButtonTouched(_ button: UIButton, _ valueLabel: UILabel) {
-    delegate?.subtractionButtonTouched(button, valueLabel)
-  }
-  
-  func additionButtonTouched(_ button: UIButton, _ valueLabel: UILabel) {
-    delegate?.additionButtonTouched(button, valueLabel)
-  }
-}
-
 extension CartView: CartViewHeaderDelegate {
-  func selectAllProductButtonTouched(_ button: UIButton) {
-    delegate?.selectAllProductButtonTouched(button)
+  func selectAllProductCheckBoxTouched(_ checkBox: CheckBox, isChecked: Bool) {
+    delegate?.selectAllProductCheckBoxTouched(checkBox, isChecked)
   }
   
   func removeSelectedProductButton(_ button: UIButton) {
