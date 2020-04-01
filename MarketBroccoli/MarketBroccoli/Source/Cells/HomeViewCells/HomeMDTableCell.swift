@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol MDCategoryTouchProtocol: class {
+  func cellTouch(index: Int)
+}
+
 class HomeMDTableCell: UITableViewCell {
   private let cellTitleLabel = UILabel().then {
     $0.text = "MD의 추천"
@@ -18,6 +22,9 @@ class HomeMDTableCell: UITableViewCell {
     frame: .zero,
     collectionViewLayout: UICollectionViewFlowLayout()
   )
+  private lazy var MDCategoryScrollView = CategoryScrollView(categories: categoryArray).then {
+    $0.customDelegate = self
+  }
   private let seperatorBottom = Seperator()
   private let MDProductCollectionView = HomeProductCollectionView(
     frame: .zero,
@@ -25,7 +32,6 @@ class HomeMDTableCell: UITableViewCell {
   )
   
   private let categoryArray = Categories.HomeMDCategory
-  
   private var itemWidth: CGFloat = 0
   
   enum UI {
@@ -42,8 +48,9 @@ class HomeMDTableCell: UITableViewCell {
   override func layoutSubviews() {
     super.layoutSubviews()
     itemWidth = ((self.frame.width - (UI.inset * 2) - (UI.spacing * 2)) / 3).rounded(.down)
+    
     productMoved(0)
-    updateAnimation(movePoint: 0, indexPath: IndexPath(item: 0, section: 0), direction: false)
+    updateAnimation(movePoint: 0, page: 0, direction: false)
   }
   
   required init?(coder: NSCoder) {
@@ -52,7 +59,7 @@ class HomeMDTableCell: UITableViewCell {
 }
 
 extension HomeMDTableCell: UICollectionViewDelegateFlowLayout {
-  // 위아래간격
+  // 위아래간격 horizontal인경우 좌우간격이 된다.
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
     return UI.spacing
   }
@@ -60,8 +67,6 @@ extension HomeMDTableCell: UICollectionViewDelegateFlowLayout {
   // 최소 아이템 간격
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
     switch collectionView {
-    case MDcategoryCollectionView:
-      return 20
     case MDProductCollectionView:
       return 10
     default:
@@ -77,9 +82,6 @@ extension HomeMDTableCell: UICollectionViewDelegateFlowLayout {
   // 아이템 사이즈
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     switch collectionView {
-    case MDcategoryCollectionView:
-      let label = UILabel().then { $0.text = categoryArray[indexPath.row] }
-      return CGSize(width: (label.getWidth() ?? 0), height: 30)
     case MDProductCollectionView:
       return CGSize(
         width: itemWidth,
@@ -116,8 +118,6 @@ extension HomeMDTableCell: UIScrollViewDelegate {
 extension HomeMDTableCell: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     switch collectionView {
-    case MDcategoryCollectionView:
-      return categoryArray.count
     case MDProductCollectionView:
       return 6 * categoryArray.count
     default:
@@ -127,11 +127,6 @@ extension HomeMDTableCell: UICollectionViewDataSource {
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     switch collectionView {
-    case MDcategoryCollectionView:
-      
-      let cell = collectionView.dequeue(MDCategoryCollectionCell.self, indexPath: indexPath)
-      cell.configure(title: categoryArray[indexPath.item])
-      return cell
     case MDProductCollectionView:
       let cell = collectionView.dequeue(UICollectionViewCell.self, indexPath: indexPath)
       cell.backgroundColor = .blue
@@ -145,12 +140,8 @@ extension HomeMDTableCell: UICollectionViewDataSource {
 // MARK: - UI
 extension HomeMDTableCell {
   private func setupAttr() {
-    [MDcategoryCollectionView, MDProductCollectionView].forEach {
-      if $0 == MDcategoryCollectionView {
-        $0.register(cell: MDCategoryCollectionCell.self)
-      } else {
-        $0.register(cell: UICollectionViewCell.self)
-      }
+    [MDProductCollectionView].forEach {
+      $0.register(cell: UICollectionViewCell.self)
       $0.dataSource = self
       $0.delegate = self
       ($0.collectionViewLayout as? UICollectionViewFlowLayout)?.scrollDirection = .horizontal
@@ -159,7 +150,7 @@ extension HomeMDTableCell {
   
   private func setupUI() {
     self.contentView.addSubviews(
-      [cellTitleLabel, seperatorTop, selectedCategory, MDcategoryCollectionView, seperatorBottom, MDProductCollectionView]
+      [cellTitleLabel, seperatorTop, selectedCategory, MDCategoryScrollView, seperatorBottom, MDProductCollectionView]
     )
     
     cellTitleLabel.snp.makeConstraints {
@@ -172,20 +163,20 @@ extension HomeMDTableCell {
       $0.height.equalTo(1)
     }
     
-    MDcategoryCollectionView.snp.makeConstraints {
+    MDCategoryScrollView.snp.makeConstraints {
       $0.top.equalTo(seperatorTop.snp.bottom)
       $0.leading.trailing.equalToSuperview()
       $0.height.equalTo(30)
     }
     
     seperatorBottom.snp.makeConstraints {
-      $0.top.equalTo(MDcategoryCollectionView.snp.bottom)
+      $0.top.equalTo(MDCategoryScrollView.snp.bottom)
       $0.leading.trailing.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10))
       $0.height.equalTo(1)
     }
     
     MDProductCollectionView.snp.makeConstraints {
-      $0.top.equalTo(MDcategoryCollectionView.snp.bottom).offset(20)
+      $0.top.equalTo(MDCategoryScrollView.snp.bottom).offset(20)
       $0.leading.bottom.trailing.equalToSuperview()
       $0.height.equalTo(410)
     }
@@ -197,26 +188,23 @@ extension HomeMDTableCell {
   private func categoryMoved(_ currentPage: Int, direction: Bool) {
     var MDTextWidth: CGFloat = 0
     let label = UILabel()
+    print(currentPage)
     for i in 0..<currentPage {
       label.text = categoryArray[i]
-      MDTextWidth += (label.getWidth() ?? 0) + 20
+      MDTextWidth += (label.getWidth() ?? 0) + 10
     }
     let textWidth = (label.getWidth() ?? 0)
-    
-    let correction = (self.frame.width / 2) - textWidth + (textWidth / 2) - 20
+    let correction = (self.frame.width / 2) - textWidth + (textWidth / 2) - 10
     let movePoint = MDTextWidth - correction
-    
-    updateAnimation(movePoint: movePoint, indexPath: IndexPath(item: currentPage, section: 0), direction: direction)
+    updateAnimation(movePoint: movePoint, page: currentPage, direction: direction)
   }
   
-  private func updateAnimation(movePoint: CGFloat, indexPath: IndexPath, direction isRight: Bool) {
-    guard let item = self.MDcategoryCollectionView.cellForItem(
-      at: indexPath)
-      as? MDCategoryCollectionCell else { return }
-    
-    self.MDcategoryCollectionView.visibleCells.forEach {
-      ($0 as? MDCategoryCollectionCell)?.titleLabel.textColor = .gray
+  private func updateAnimation(movePoint: CGFloat, page: Int, direction isRight: Bool) {
+    guard let item = MDCategoryScrollView.viewWithTag(9999 - page) as? UILabel else { return }
+    MDCategoryScrollView.subviews.forEach {
+      ($0 as? UILabel)?.textColor = .gray
     }
+    
     selectedCategory.snp.remakeConstraints {
       $0.top.equalTo(item.snp.bottom)
       $0.leading.trailing.width.equalTo(item)
@@ -224,13 +212,14 @@ extension HomeMDTableCell {
     }
     
     UIView.animate(withDuration: 0.3) {
-      item.titleLabel.textColor = .kurlyPurple
-      if 2...12 ~= indexPath.item {
-        self.MDcategoryCollectionView.setContentOffset(CGPoint(x: movePoint, y: 0), animated: false)
-      } else if !isRight {
-        self.MDcategoryCollectionView.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
+      item.textColor = .kurlyPurple
+      if 2...11 ~= page {
+        self.MDCategoryScrollView.setContentOffset(CGPoint(x: movePoint, y: 0), animated: false)
+      } else if 0...1 ~= page {
+        self.MDcategoryCollectionView.setContentOffset(CGPoint(x: -10, y: 0), animated: false)
+      } else {
+        self.MDCategoryScrollView.setContentOffset(CGPoint(x: self.MDCategoryScrollView.maxContentOffset.x, y: 0), animated: false)
       }
-      
       self.layoutIfNeeded()
     }
   }
@@ -238,5 +227,12 @@ extension HomeMDTableCell {
   private func productMoved(_ currentPage: Int) {
     let movePoint = CGPoint(x: (self.itemWidth * 3 + (UI.inset + UI.spacing * 2)) * CGFloat(currentPage), y: 0)
     self.MDProductCollectionView.setContentOffset(movePoint, animated: true)
+  }
+}
+
+extension HomeMDTableCell: MDCategoryTouchProtocol {
+  func cellTouch(index: Int) {
+    productMoved(index)
+    categoryMoved(index, direction: false)
   }
 }
