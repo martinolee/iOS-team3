@@ -30,10 +30,11 @@ class CategoryViewController: UIViewController {
       UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: (view.frame.height) * 0.02))
     tableView.tableFooterView =
       UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: (view.frame.height) * 0.02))
-//    tableView.separatorStyle = .none // 테이블 뷰 라인 없애기
+    tableView.separatorStyle = .none // 테이블 뷰 라인 없애기
     tableView.register(cell: CategoryTableViewCell.self)
     tableView.register(UITableViewCell.self, forCellReuseIdentifier: "often")
     tableView.register(UITableViewCell.self, forCellReuseIdentifier: "temp")
+    tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
     [tableView].forEach {
       view.addSubview($0)
     }
@@ -55,8 +56,20 @@ extension CategoryViewController: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 1
+    switch section {
+    case 0, 16:
+      return 1
+    default:
+//      print(section)
+//      return 1
+      if categoryData[section - 1].select {
+        return categoryData[section - 1].row.count + 1
+      } else {
+        return 1
+      }
+    }
   }
+  
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     switch indexPath.section {
     case 0:
@@ -72,12 +85,18 @@ extension CategoryViewController: UITableViewDataSource {
       cell.textLabel?.text = "컬리의 추천"
       return cell
     default:
-      let cell = tableView.dequeue(CategoryTableViewCell.self)
-            let data = categoryData[indexPath.section - 1]
-            cell.titleName(name: data.title)
-            cell.subCategory(data: data)
-            cell.separatorInset = .zero
-            return cell
+      if indexPath.row == 0 {
+        let cell = tableView.dequeue(CategoryTableViewCell.self)
+        let data = categoryData[indexPath.section - 1]
+        cell.titleName(name: data.title)
+        cell.subCategory(data: data)
+        cell.separatorInset = .zero
+        return cell
+      } else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell") else { return UITableViewCell() }
+        cell.textLabel?.text = categoryData[indexPath.section - 1].row[indexPath.row - 1]
+        return cell
+      }
     }
   }
 }
@@ -89,10 +108,15 @@ extension CategoryViewController: UITableViewDelegate {
     case 0, 16:
       print(indexPath.section)
     default:
-      categoryData[indexPath.section - 1].select.toggle()
-      tableView.reloadData()
-      print(categoryData[indexPath.section - 1].select)
-      print(indexPath.section)
+      if indexPath.row == 0 {
+        categoryData[indexPath.section - 1].select.toggle()
+//        tableView.reloadData()
+        let row = IndexSet.init(integer: indexPath.section)
+        tableView.reloadSections(row, with: .none)
+      } else {
+        // Todo: 다음페이지 넘김
+        print(indexPath.row)
+      }
     }
   }
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -102,7 +126,7 @@ extension CategoryViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
     return " "
   }
-  
+
   func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
     return "footer"
   }
