@@ -84,4 +84,5 @@ protocol SignupViewDelegate: class {
   func recoAndEventRoundButtonTouched(button: UIButton, eventButton: [UIButton])
   func squareButtonTouched(button: UIButton, leftButtons: [UIButton])
   func signupButtonTouched(button: UIButton)
+  func checkName(_ textField: UITextField, text: String)
 }
