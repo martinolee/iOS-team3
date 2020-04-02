@@ -23,7 +23,7 @@ class HomeOfferTableCell: UITableViewCell {
     frame: .zero,
     collectionViewLayout: UICollectionViewFlowLayout()
   )
-  
+
   var offset: CGFloat {
     get {
       self.offerCollectionView.contentOffset.x
@@ -119,7 +119,11 @@ extension HomeOfferTableCell: UICollectionViewDataSource {
 }
 
 // MARK: - Delegate
-extension HomeOfferTableCell: UICollectionViewDelegateFlowLayout {
+extension HomeOfferTableCell: UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    NotificationCenter.default.post(name: NSNotification.Name("ProductTouched"), object: nil, userInfo: nil)
+  }
+  
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     if indexPath.item == 8 {
       return CGSize(width: 120, height: 200)

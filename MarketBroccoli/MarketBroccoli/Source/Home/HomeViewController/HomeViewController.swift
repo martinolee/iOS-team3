@@ -9,17 +9,37 @@
 import UIKit
 
 class HomeViewController: UIViewController {
-    let rootView = HomeRootView()
-    
-    override func loadView() {
-        view = rootView
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+  let rootView = HomeRootView()
+  
+  override func loadView() {
+    view = rootView
+  }
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    registerObserver()
+    self.addNavigationBarCartButton()
+    self.setupBroccoliNavigationBar(title: "마켓브로콜리")
+  }
+  
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    resignObserver()
+  }
+}
 
-        // Do any additional setup after loading the view.
-      self.addNavigationBarCartButton()
-      self.setupBroccoliNavigationBar(title: "마켓브로콜리")
-    }
+extension HomeViewController {
+  private func registerObserver() {
+    NotificationCenter.default.addObserver(self, selector: #selector(didReceiveNotification(_:)), name: NSNotification.Name("ProductTouched"), object: nil)
+    print("add ProductTouched notification")
+  }
+  
+  private func resignObserver() {
+    NotificationCenter.default.removeObserver(self, name: NSNotification.Name("ProductTouched"), object: nil)
+    print("remove ProductTouched notification")
+  }
+  
+  @objc private func didReceiveNotification(_ notification: Notification) {
+    print(notification)
+  }
 }
