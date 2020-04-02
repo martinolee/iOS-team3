@@ -56,6 +56,7 @@ class SearchView: UIView {
     $0.leftView = containerView
     $0.returnKeyType = .search
     $0.placeholder = "검색어를 입력해 주세요"
+    $0.setContentHuggingPriority(.fittingSizeLevel, for: .horizontal)
     
     $0.addTarget(self, action: #selector(searchProductTextFieldEditingDidBegin(_:)), for: .editingDidBegin)
     $0.addTarget(self, action: #selector(searchProductTextFieldEditingChanged(_:)), for: .editingChanged)
@@ -66,6 +67,7 @@ class SearchView: UIView {
     $0.setTitleColor(.black, for: .normal)
     $0.setTitleColor(.gray, for: .disabled)
     $0.isEnabled = false
+    $0.setContentHuggingPriority(.required, for: .horizontal)
     
     $0.addTarget(self, action: #selector(cancelSearchButtonTouched(_:)), for: .touchUpInside)
   }
@@ -76,7 +78,7 @@ class SearchView: UIView {
     frame: .zero,
     collectionViewLayout: searchResultCollectionViewFlowLayout
   ).then {
-    $0.backgroundColor = .white
+    $0.backgroundColor = .lightGray
     
     $0.register(cell: ProductCollectionCell.self)
     
@@ -92,7 +94,6 @@ class SearchView: UIView {
     setupAttribute()
     addAllView()
     setupAutoLayout()
-    setupFlowLayout()
   }
   
   required init?(coder: NSCoder) {
@@ -136,7 +137,8 @@ class SearchView: UIView {
     
     cancelSearchButton.snp.makeConstraints {
       $0.top.bottom.equalTo(searchProductTextField)
-      $0.trailing.equalToSuperview().inset(8)
+      $0.trailing.equalToSuperview().inset(12)
+      $0.width.equalTo(36)
     }
     
     searchResultCollectionView.snp.makeConstraints {
