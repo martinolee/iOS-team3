@@ -11,7 +11,6 @@ import UIKit
 class CategoryViewController: UIViewController {
   var tableView = UITableView(frame: .zero, style: .grouped)
   let oftenProduct = ["자주 사는 상품"]
-//  let temp = ["컬리의 추천"]
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -55,27 +54,8 @@ extension CategoryViewController: UITableViewDataSource {
     return categoryData.count + 2
   }
   
-  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-   if section == 2 {
-      return 80
-    } else {
-      return 0
-    }
-  }
-  
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return 1
-
-//    switch section {
-//    case 0:
-//      return 1
-//    case 1:
-//      return categoryData.count
-//    case 2:
-//      return 1
-//    default:
-//      return 0
-//    }
   }
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     switch indexPath.section {
@@ -97,11 +77,6 @@ extension CategoryViewController: UITableViewDataSource {
             cell.titleName(name: data.title)
             cell.subCategory(data: data)
             cell.separatorInset = .zero
-      //      if data.select == false {
-      //        cell.iconImageName(name: data.imageBlack)
-      //      } else {
-      //        cell.iconImageName(name: data.imagePurple)
-      //      }
             return cell
     }
   }
@@ -109,29 +84,50 @@ extension CategoryViewController: UITableViewDataSource {
 
 // MARK: - TableViewDelegate
 extension CategoryViewController: UITableViewDelegate {
-  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    if indexPath.section == 0 {
-      return 60
-    } else {
-      return UITableView.automaticDimension
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    switch indexPath.section {
+    case 0, 16:
+      print(indexPath.section)
+    default:
+      categoryData[indexPath.section - 1].select.toggle()
+      tableView.reloadData()
+      print(categoryData[indexPath.section - 1].select)
+      print(indexPath.section)
     }
   }
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-      return UIView()
-  }
+       return UIView()
+   }
 
-  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-      return 0.1
+  func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    return " "
   }
-  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    if indexPath.section == 1 {
-      categoryData[indexPath.row].select.toggle()
-//      tableView.beginUpdates()
-//      tableView.endUpdates()
-      tableView.reloadData()
-//      tableView.reloadRows(at: [indexPath], with: .automatic)
-      print(categoryData[indexPath.row].select)
-      print(indexPath.row)
+  
+  func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    return "footer"
+  }
+  
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    switch section {
+    case 16:
+      return 20
+    default:
+      return 0
     }
   }
+  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    switch section {
+    case 0:
+      return 20
+    default:
+      return 0
+    }
+  }
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+     if indexPath.section == 0 {
+       return 60
+     } else {
+       return UITableView.automaticDimension
+     }
+   }
 }

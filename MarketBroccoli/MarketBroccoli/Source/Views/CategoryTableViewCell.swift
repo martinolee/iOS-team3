@@ -18,7 +18,6 @@ class CategoryTableViewCell: UITableViewCell {
   private let arrowImage = UIImageView()
   private let subCategoryView = UIView()
   
-    
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     setupUI()
