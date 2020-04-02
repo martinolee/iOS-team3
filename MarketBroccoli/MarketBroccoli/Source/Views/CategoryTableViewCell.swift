@@ -64,13 +64,13 @@ class CategoryTableViewCell: UITableViewCell {
   private func setupLayout() {
     iconImage.snp.makeConstraints { (make) -> Void in
       make.centerY.equalTo(contentView.snp.centerY)
-      make.leading.equalTo(contentView.snp.leading).offset(10)
-      make.width.height.equalTo(40)
+      make.leading.equalTo(contentView.snp.leading).offset(16)
+      make.width.height.equalTo(32)
     }
     title.snp.makeConstraints { (make) -> Void in
-      make.top.equalTo(contentView.snp.top).offset(20)
-      make.leading.equalTo(iconImage.snp.trailing).offset(8)
-      make.bottom.equalToSuperview().offset(-20)
+      make.top.equalTo(contentView.snp.top).offset(16)
+      make.leading.equalTo(iconImage.snp.trailing).offset(10)
+      make.bottom.equalToSuperview().offset(-16)
     }
     arrowImage.snp.makeConstraints { (make) -> Void in
       make.centerY.equalTo(contentView.snp.centerY)
