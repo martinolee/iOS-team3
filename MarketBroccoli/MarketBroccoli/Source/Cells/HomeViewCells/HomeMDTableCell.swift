@@ -30,7 +30,12 @@ class HomeMDTableCell: UITableViewCell {
     frame: .zero,
     collectionViewLayout: UICollectionViewFlowLayout()
   )
-  
+  private lazy var categoryShowBtn = UIButton().then {
+    $0.setTitle("\(self.categoryArray.first ?? "")" + "전체 보기 >", for: .normal)
+    $0.setTitleColor(.black, for: .normal)
+    $0.backgroundColor = .kurlyGray3
+    $0.addTarget(self, action: #selector(categoryShowBtnTouched(_:)), for: .touchUpInside)
+  }
   private let categoryArray = Categories.HomeMDCategory
   private var itemWidth: CGFloat = 0
   
@@ -49,8 +54,6 @@ class HomeMDTableCell: UITableViewCell {
     super.layoutSubviews()
     itemWidth = ((self.frame.width - (UI.inset * 2) - (UI.spacing * 2)) / 3).rounded(.down)
     
-    productMoved(0)
-    updateAnimation(movePoint: 0, page: 0, direction: false)
   }
   
   required init?(coder: NSCoder) {
@@ -128,8 +131,7 @@ extension HomeMDTableCell: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     switch collectionView {
     case MDProductCollectionView:
-      let cell = collectionView.dequeue(UICollectionViewCell.self, indexPath: indexPath)
-      cell.backgroundColor = .blue
+      let cell = collectionView.dequeue(HomeProductCollectionCell.self, indexPath: indexPath)
       return cell
     default:
       fatalError("CollectionView Not Found")
@@ -142,6 +144,7 @@ extension HomeMDTableCell {
   private func setupAttr() {
     [MDProductCollectionView].forEach {
       $0.register(cell: UICollectionViewCell.self)
+      $0.register(cell: HomeProductCollectionCell.self)
       $0.dataSource = self
       $0.delegate = self
       ($0.collectionViewLayout as? UICollectionViewFlowLayout)?.scrollDirection = .horizontal
@@ -150,8 +153,17 @@ extension HomeMDTableCell {
   
   private func setupUI() {
     self.contentView.addSubviews(
-      [cellTitleLabel, seperatorTop, selectedCategory, MDCategoryScrollView, seperatorBottom, MDProductCollectionView]
+      [cellTitleLabel, seperatorTop, selectedCategory, MDCategoryScrollView, seperatorBottom, MDProductCollectionView, categoryShowBtn]
     )
+    
+    if let item = MDCategoryScrollView.subviews.first as? UILabel {
+      item.textColor = .kurlyMainPurple
+      selectedCategory.snp.makeConstraints {
+        $0.top.equalTo(item.snp.bottom)
+        $0.leading.trailing.width.equalTo(item)
+        $0.height.equalTo(2)
+      }
+    }
     
     cellTitleLabel.snp.makeConstraints {
       $0.top.leading.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0))
@@ -177,8 +189,15 @@ extension HomeMDTableCell {
     
     MDProductCollectionView.snp.makeConstraints {
       $0.top.equalTo(MDCategoryScrollView.snp.bottom).offset(20)
-      $0.leading.bottom.trailing.equalToSuperview()
+      $0.leading.trailing.equalToSuperview()
       $0.height.equalTo(410)
+    }
+    
+    categoryShowBtn.snp.makeConstraints {
+      $0.top.equalTo(MDProductCollectionView.snp.bottom).offset(20)
+      $0.leading.trailing.equalToSuperview().inset(10)
+      $0.height.equalTo(50)
+      $0.bottom.equalToSuperview()
     }
   }
 }
@@ -188,7 +207,6 @@ extension HomeMDTableCell {
   private func categoryMoved(_ currentPage: Int, direction: Bool) {
     var MDTextWidth: CGFloat = 0
     let label = UILabel()
-    print(currentPage)
     for i in 0..<currentPage {
       label.text = categoryArray[i]
       MDTextWidth += (label.getWidth() ?? 0) + 10
@@ -210,9 +228,8 @@ extension HomeMDTableCell {
       $0.leading.trailing.width.equalTo(item)
       $0.height.equalTo(2)
     }
-    
-    UIView.animate(withDuration: 0.3) {
-      item.textColor = .kurlyPurple
+    UIView.animate(withDuration: 0.5, animations: {
+      item.textColor = .kurlyMainPurple
       if 2...11 ~= page {
         self.MDCategoryScrollView.setContentOffset(CGPoint(x: movePoint, y: 0), animated: false)
       } else if 0...1 ~= page {
@@ -221,12 +238,19 @@ extension HomeMDTableCell {
         self.MDCategoryScrollView.setContentOffset(CGPoint(x: self.MDCategoryScrollView.maxContentOffset.x, y: 0), animated: false)
       }
       self.layoutIfNeeded()
+    }) { _ in
+      self.categoryShowBtn.setTitle((item.text ?? "") + "전체 보기 >", for: .normal)
     }
+    
   }
   
   private func productMoved(_ currentPage: Int) {
     let movePoint = CGPoint(x: (self.itemWidth * 3 + (UI.inset + UI.spacing * 2)) * CGFloat(currentPage), y: 0)
     self.MDProductCollectionView.setContentOffset(movePoint, animated: true)
+  }
+  
+  @objc private func categoryShowBtnTouched(_ sender: UIButton) {
+    print(sender.titleLabel?.text)
   }
 }
 

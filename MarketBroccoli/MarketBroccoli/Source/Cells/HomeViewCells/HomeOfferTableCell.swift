@@ -13,10 +13,25 @@ class HomeOfferTableCell: UITableViewCell {
     $0.font = .boldSystemFont(ofSize: 20)
   }
   
+  private let cellSubtitleLabel = UILabel().then {
+    $0.textColor = .gray
+    $0.font = .systemFont(ofSize: 14)
+    $0.isHidden = false
+  }
+  
   private let offerCollectionView = HomeProductCollectionView(
     frame: .zero,
     collectionViewLayout: UICollectionViewFlowLayout()
   )
+  
+  var offset: CGFloat {
+    get {
+      self.offerCollectionView.contentOffset.x
+    }
+    set {
+      self.offerCollectionView.contentOffset.x = newValue
+    }
+  }
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -29,6 +44,13 @@ class HomeOfferTableCell: UITableViewCell {
     setupLayout()
   }
   
+  override func prepareForReuse() {
+    super.prepareForReuse()
+    cellSubtitleLabel.text = ""
+    cellSubtitleLabel.isHidden = true
+    self.backgroundColor = .clear
+  }
+  
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -36,8 +58,12 @@ class HomeOfferTableCell: UITableViewCell {
 
 // MARK: - ACTION Handler
 extension HomeOfferTableCell {
-  func configure(cellTitle title: String) {
+  func configure(cellTitle title: String, subtitle: String? = nil) {
     cellTitleLabel.text = title
+    if let subtitle = subtitle {
+      cellSubtitleLabel.text = subtitle
+      cellSubtitleLabel.isHidden = false
+    }
   }
 }
 
@@ -45,41 +71,63 @@ extension HomeOfferTableCell {
 extension HomeOfferTableCell {
   private func setupLayout() {
     guard let layout = offerCollectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
-    let margin: CGFloat = 10
-    let itemCount: CGFloat = 2.3
-    let contentSize: CGFloat = ((self.frame.width - (margin * 2) - (10 * (itemCount - 1))) / itemCount).rounded(.down)
     layout.scrollDirection = .horizontal
-    layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-    layout.itemSize = CGSize(width: contentSize, height: 160)
   }
   
   private func setupAttr() {
     offerCollectionView.register(cell: HomeProductCollectionCell.self)
+    offerCollectionView.register(cell: HomeReuseShowAllCollectionCell.self)
     offerCollectionView.dataSource = self
+    offerCollectionView.delegate = self
   }
   
   private func setupUI() {
-    self.contentView.addSubviews([cellTitleLabel, offerCollectionView])
+    self.contentView.addSubviews([cellTitleLabel, cellSubtitleLabel, offerCollectionView])
     
     cellTitleLabel.snp.makeConstraints {
       $0.top.equalTo(self.contentView)
       $0.leading.equalToSuperview().inset(10)
     }
     
+    cellSubtitleLabel.snp.makeConstraints {
+      $0.top.equalTo(cellTitleLabel.snp.bottom).offset(4)
+      $0.leading.equalToSuperview().inset(10)
+    }
+    
     offerCollectionView.snp.makeConstraints {
-      $0.top.equalTo(cellTitleLabel.snp.bottom)
+      $0.top.equalTo(cellSubtitleLabel.snp.bottom)
       $0.leading.bottom.trailing.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0))
       $0.height.equalTo(200)
     }
   }
 }
 
+// MARK: - DataSource
 extension HomeOfferTableCell: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    8
+    9
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    offerCollectionView.dequeue(HomeProductCollectionCell.self, indexPath: indexPath)
+    if indexPath.item <= 7 {
+      return offerCollectionView.dequeue(HomeProductCollectionCell.self, indexPath: indexPath)
+    } else {
+      let cell = offerCollectionView.dequeue(HomeReuseShowAllCollectionCell.self, indexPath: indexPath)
+      return cell
+    }
+  }
+}
+
+// MARK: - Delegate
+extension HomeOfferTableCell: UICollectionViewDelegateFlowLayout {
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    if indexPath.item == 8 {
+      return CGSize(width: 120, height: 200)
+    } else {
+      let margin: CGFloat = 10
+      let itemCount: CGFloat = 2.3
+      let contentSize: CGFloat = ((self.frame.width - (margin * 2) - (10 * (itemCount - 1))) / itemCount).rounded(.down)
+      return CGSize(width: contentSize, height: 200)
+    }
   }
 }
