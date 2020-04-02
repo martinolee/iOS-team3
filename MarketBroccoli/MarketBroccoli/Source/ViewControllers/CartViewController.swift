@@ -64,11 +64,7 @@ class CartViewController: UIViewController {
                      imageURL: URL(string: "https://img-cf.kurly.com/shop/data/goods/1510708692930y0.jpg")!,
                      originalPrice: 19800, currentPrice: 17820),
       quantity: 5, isChecked: false)]
-    ] {
-    didSet {
-      cartView.reloadCartTableViewData()
-    }
-  }
+    ]
   
   private lazy var cartView = CartView().then {
     $0.dataSource = self
