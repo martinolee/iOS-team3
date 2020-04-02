@@ -1,10 +1,8 @@
-//
 //  testUIView.swift
 //  20200112ScrollViewPractice
 //
 //  Created by macbook on 2020/03/23.
 //  Copyright © 2020 Lance. All rights reserved.
-//
 
 import UIKit
 
@@ -59,7 +57,7 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.text = "비밀번호 확인"
     $0.required = true
   }
-  private lazy var checkSecretNumberTextFeild = UITextField().then {
+  private lazy var checkSecretNumberTextField = UITextField().then {
     $0.placeholder = "비밀번호를 한번 더 입력해주세요"
     $0.delegate = self
     $0.addTarget(self, action: #selector(checkSecretNumberTextFeildEditingChanged), for: .editingChanged)
@@ -76,6 +74,7 @@ class SignupView: UIView, UITextFieldDelegate {
   private var nameTextFeild = UITextField().then {
     $0.placeholder = "고객님의 이름을 입력해주세요"
     $0.signupStyle(round: .roundedRect, clearButton: .whileEditing)
+    $0.addTarget(self, action: #selector(checkName), for: .editingChanged)
   }
   private lazy var emailLabel = SignupLabel().then {
     $0.text = "이메일"
@@ -83,6 +82,8 @@ class SignupView: UIView, UITextFieldDelegate {
   }
   private lazy var emailTextFeild = UITextField().then {
     $0.placeholder = "예: marketkurly@kurly.com"
+    $0.layer.borderWidth = 1
+    $0.layer.borderColor = UIColor.clear.cgColor
     $0.delegate = self
     $0.addTarget(self, action: #selector(emailTextFeildEditingChanged), for: .editingChanged)
     $0.signupStyle(round: .roundedRect, clearButton: .whileEditing)
@@ -107,7 +108,6 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.addTarget(self, action: #selector(getCodeButtonTouched), for: .touchUpInside)
   }
   private lazy var checkingCodeTexField = UITextField().then {
-    $0.placeholder = ""
     $0.delegate = self
     $0.signupStyle(round: .roundedRect, clearButton: .whileEditing)
   }
@@ -140,6 +140,9 @@ class SignupView: UIView, UITextFieldDelegate {
   ).then {
     $0.setTitle("주소 검색", for: .normal)
   }
+//  private let addressTextField = UITextField().then {
+//    $0.signupStyle(round: .roundedRect, clearButton: .never)
+//  }
   private let birthdayLabel = SignupLabel(textColor: nil, font: nil).then {
     $0.text = "생년월일"
   }
@@ -361,7 +364,7 @@ class SignupView: UIView, UITextFieldDelegate {
   private func setupUI() {
     [idLabel, idTextField, checkIDButton,
      secretNumberLabel, secretTextField, checkSecretNumberLabel,
-     checkSecretNumberTextFeild, nameLabel, nameTextFeild,
+     checkSecretNumberTextField, nameLabel, nameTextFeild,
      emailLabel, emailTextFeild, cellphoneLabel,
      cellphoneTextField, getCodeButton, checkingCodeCompleteLabel,
      checkingCodeTexField, timerInTextField, checkingCodeButton,
@@ -447,18 +450,18 @@ class SignupView: UIView, UITextFieldDelegate {
       $0.top.equalTo(notSameTheeNumber.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(notSameTheeNumber)
     }
-    checkSecretNumberTextFeild.snp.makeConstraints {
+    checkSecretNumberTextField.snp.makeConstraints {
       $0.top.equalTo(checkSecretNumberLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(checkSecretNumberLabel)
     }
     sameSecretNumberLabel.snp.makeConstraints {
-      $0.top.equalTo(checkSecretNumberTextFeild.snp.bottom).offset(4)
-      $0.leading.trailing.equalTo(checkSecretNumberTextFeild)
+      $0.top.equalTo(checkSecretNumberTextField.snp.bottom).offset(4)
+      $0.leading.trailing.equalTo(checkSecretNumberTextField)
       $0.height.equalTo(0)
     }
     nameLabel.snp.makeConstraints {
       $0.top.equalTo(sameSecretNumberLabel.snp.bottom).offset(10)
-      $0.leading.trailing.equalTo(checkSecretNumberTextFeild)
+      $0.leading.trailing.equalTo(checkSecretNumberTextField)
     }
     nameTextFeild.snp.makeConstraints {
       $0.top.equalTo(nameLabel.snp.bottom).offset(10)
@@ -786,7 +789,7 @@ extension SignupView {
         shouldChangeCharactersIn: range,
         replacementString: string
       )
-    case checkSecretNumberTextFeild:
+    case checkSecretNumberTextField:
       return delegate.checkSecretNumberTextField(
         textField,
         shouldChangeCharactersIn: range,
@@ -844,7 +847,7 @@ extension SignupView {
       return delegate.idTextFieldDidBeginEditing(textField)
     case secretTextField:
       return delegate.secretTextFeildDidBeginEditing(textField)
-    case checkSecretNumberTextFeild:
+    case checkSecretNumberTextField:
       return delegate.checkSecretNumberTextFeildDidBeginEditing(textField)
     default:
       return print("")
@@ -860,6 +863,9 @@ extension SignupView {
     secretNumberLabel.snp.updateConstraints {
       $0.top.equalTo(checkingIdLabel.snp.bottom).offset(30)
     }
+  }
+  func setCheckingIdLabel(_ textColor: UIColor) {
+    checkingIdLabel.textColor = textColor
   }
   func secretTextFeildOpenHiddenMessage() {
     tenSyllableLabel.snp.updateConstraints {
@@ -920,7 +926,7 @@ extension SignupView {
   func setTenSyllableLabel(textColor: UIColor) {
     tenSyllableLabel.textColor = textColor
   }
-  func getSecretTextFeildText() -> String {
+  func getSecretTextFieldText() -> String {
     secretTextField.text ?? ""
   }
   func setCombinationLabel(textColor: UIColor) {
@@ -929,6 +935,17 @@ extension SignupView {
   func setnotSameTheeNumberLabel(textColor: UIColor) {
     notSameTheeNumber.textColor = textColor
   }
+  func getCheckSecretNumberTextFeild() -> String {
+    checkSecretNumberTextField.text ?? ""
+  }
+  @objc func checkName(_ textField: UITextField, text: String) {
+    guard
+      let delegate = delegate,
+      let text = textField.text
+    else { fatalError() }
+    delegate.checkName(textField, text: text)
+  }
+  
   @objc func checkSecretNumberTextFeildEditingChanged(_ textField: UITextField, text: String) {
     guard
       let delegate = delegate,

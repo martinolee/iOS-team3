@@ -8,13 +8,14 @@
 
 import Foundation
 
-class Signup {
-  var id: String?
-  var password: String?
-  var passwordIdentified: String?
-  var name: String?
-  var email: String?
-  var cellphone: String?
-  var cellphoneIdentified: String?
+enum Signup {
+  case identification
+  case password
+  case passwordCheck
+  case name
+  case email
+  case cellphone
+  case usingLaw
+  case personalInfo
+  case ageLimit
 }
-
