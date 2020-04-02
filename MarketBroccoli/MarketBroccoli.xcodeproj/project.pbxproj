@@ -204,6 +204,24 @@
 			path = SearchView;
 			sourceTree = "<group>";
 		};
+		7C16CEEB2435D641007CD954 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				7C16CEEC2435D675007CD954 /* HomeViewController */,
+				7C65ECD22424EF350075606A /* HomeViews */,
+				7CCD648D24287AF100FC671B /* HomeViewCells */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		7C16CEEC2435D675007CD954 /* HomeViewController */ = {
+			isa = PBXGroup;
+			children = (
+				7C65ECCE2424B95F0075606A /* HomeViewController.swift */,
+			);
+			path = HomeViewController;
+			sourceTree = "<group>";
+		};
 		7C5A889224343AC4006361AC /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
@@ -215,6 +233,7 @@
 		7C65ECAD2424677C0075606A /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				7C16CEEB2435D641007CD954 /* Home */,
 				7C5A889224343AC4006361AC /* Protocols */,
 				7CCD648C24287AB300FC671B /* Cells */,
 				7C65ECC6242472F70075606A /* Views */,
@@ -250,7 +269,6 @@
 				7298BEFE242DDF2E005B0517 /* MarketBroccoliTabBarController.swift */,
 				7050F3192429CEBB00B8E13B /* CategoryViewController.swift */,
 				FAAFEB5E2424A74900452977 /* SettingsViewController.swift */,
-				7C65ECCE2424B95F0075606A /* HomeViewController.swift */,
 				FAAE2E562424E3C400ACC5D3 /* SignUpViewController.swift */,
 				7050F3112424BA3800B8E13B /* LoginViewController.swift */,
 				7050F315242876AC00B8E13B /* IDFindViewController.swift */,
@@ -335,7 +353,6 @@
 			isa = PBXGroup;
 			children = (
 				727F095F2428DCE700584A40 /* CartView */,
-				7C65ECD22424EF350075606A /* HomeViews */,
 				72EB58D12431D618001C4CCF /* SearchView */,
 				FAAFEB602424A77900452977 /* LogOutTableViewCell.swift */,
 				7C65ECD02424D82C0075606A /* HomeRootView.swift */,
@@ -371,7 +388,6 @@
 		7CCD648C24287AB300FC671B /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				7CCD648D24287AF100FC671B /* HomeViewCells */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
