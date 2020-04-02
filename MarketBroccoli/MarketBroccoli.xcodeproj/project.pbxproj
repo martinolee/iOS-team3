@@ -14,6 +14,7 @@
 		7050F31A2429CEBB00B8E13B /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7050F3192429CEBB00B8E13B /* CategoryViewController.swift */; };
 		7050F31E242A3BB300B8E13B /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7050F31D242A3BB300B8E13B /* CategoryTableViewCell.swift */; };
 		7050F324242DDE7900B8E13B /* CategoryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7050F323242DDE7900B8E13B /* CategoryData.swift */; };
+		70E8178324360DF70010EB4C /* CategorySubTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E8178224360DF70010EB4C /* CategorySubTableViewCell.swift */; };
 		723851E124249C6400E8B206 /* UserInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723851E024249C6400E8B206 /* UserInfoTableViewCell.swift */; };
 		727F093324287C2E00584A40 /* UITableViewCellExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727F093224287C2E00584A40 /* UITableViewCellExtension.swift */; };
 		727F093524287C4F00584A40 /* UITableViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727F093424287C4F00584A40 /* UITableViewExtension.swift */; };
@@ -72,6 +73,7 @@
 		7050F3192429CEBB00B8E13B /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		7050F31D242A3BB300B8E13B /* CategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCell.swift; sourceTree = "<group>"; };
 		7050F323242DDE7900B8E13B /* CategoryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryData.swift; sourceTree = "<group>"; };
+		70E8178224360DF70010EB4C /* CategorySubTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySubTableViewCell.swift; sourceTree = "<group>"; };
 		723851E024249C6400E8B206 /* UserInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoTableViewCell.swift; sourceTree = "<group>"; };
 		727F093224287C2E00584A40 /* UITableViewCellExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCellExtension.swift; sourceTree = "<group>"; };
 		727F093424287C4F00584A40 /* UITableViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewExtension.swift; sourceTree = "<group>"; };
@@ -282,6 +284,7 @@
 				FAAFEB602424A77900452977 /* LogOutTableViewCell.swift */,
 				7C65ECD02424D82C0075606A /* HomeRootView.swift */,
 				7050F31D242A3BB300B8E13B /* CategoryTableViewCell.swift */,
+				70E8178224360DF70010EB4C /* CategorySubTableViewCell.swift */,
 				FA9AD74124287F51002D3504 /* SignupVIew.swift */,
 			);
 			path = Views;
@@ -514,6 +517,7 @@
 				7291F87D242C7EAF009D4E83 /* CartViewHeader.swift in Sources */,
 				723851E124249C6400E8B206 /* UserInfoTableViewCell.swift in Sources */,
 				7C65ECD12424D82C0075606A /* HomeRootView.swift in Sources */,
+				70E8178324360DF70010EB4C /* CategorySubTableViewCell.swift in Sources */,
 				7C65ECCF2424B95F0075606A /* HomeViewController.swift in Sources */,
 				7291F87F242CC63C009D4E83 /* CartFooterView.swift in Sources */,
 				7050F316242876AC00B8E13B /* IDFindViewController.swift in Sources */,

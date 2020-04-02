@@ -33,6 +33,7 @@ class CategoryViewController: UIViewController {
       UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: (view.frame.height) * 0.01))
     tableView.separatorStyle = .none // 테이블 뷰 라인 없애기
     tableView.register(cell: CategoryTableViewCell.self)
+    tableView.register(cell: CategorySubTableViewCell.self)
     tableView.register(cell: UITableViewCell.self)
     [tableView].forEach {
       view.addSubview($0)
@@ -69,30 +70,34 @@ extension CategoryViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     switch indexPath.section {
     case 0:
-      let cell = tableView.dequeue(UITableViewCell.self)
-      cell.textLabel?.text = oftenProduct[indexPath.section]
-      cell.textLabel?.textColor = #colorLiteral(red: 0.3176470588, green: 0.1529411765, blue: 0.4470588235, alpha: 1)
       let image = UIImageView(image: UIImage(systemName: "chevron.right"))
-      cell.accessoryView = image
-      cell.accessoryView?.tintColor = #colorLiteral(red: 0.3176470588, green: 0.1529411765, blue: 0.4470588235, alpha: 1)
+      let cell = tableView.dequeue(UITableViewCell.self).then {
+        $0.textLabel?.text = oftenProduct[indexPath.section]
+        $0.textLabel?.textColor = #colorLiteral(red: 0.3176470588, green: 0.1529411765, blue: 0.4470588235, alpha: 1)
+        $0.accessoryView = image
+        $0.accessoryView?.tintColor = #colorLiteral(red: 0.3176470588, green: 0.1529411765, blue: 0.4470588235, alpha: 1)
+      }
       return cell
     case 16:
-      let cell = tableView.dequeue(UITableViewCell.self)
-      cell.textLabel?.text = "컬리의 추천"
+      let cell = tableView.dequeue(UITableViewCell.self).then {
+       $0.textLabel?.text = "컬리의 추천"
+      }
       return cell
     default:
       if indexPath.row == 0 {
-        let cell = tableView.dequeue(CategoryTableViewCell.self)
         let data = categoryData[indexPath.section - 1]
-        cell.titleName(name: data.title)
-        cell.subCategory(data: data)
+        let cell = tableView.dequeue(CategoryTableViewCell.self).then {
+          $0.titleName(name: data.title)
+          $0.selectState(data: data)
+        }
         return cell
       } else {
-        let cell = tableView.dequeue(UITableViewCell.self)
         let data =
-          categoryData[indexPath.section - 1].row[indexPath.row - 1]
-        cell.textLabel?.text = data
-        cell.backgroundColor = #colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.968627451, alpha: 1)
+        categoryData[indexPath.section - 1].row[indexPath.row - 1]
+        let cell = tableView.dequeue(CategorySubTableViewCell.self).then {
+          $0.titleName(name: data)
+          $0.backgroundColor = #colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.968627451, alpha: 1)
+        }
         return cell
       }
     }
