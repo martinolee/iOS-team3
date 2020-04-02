@@ -18,9 +18,6 @@ class CategoryTableViewCell: UITableViewCell {
   private let arrowImage = UIImageView()
   private let subCategoryView = UIView()
   
-  private var bottomConstraint: NSLayoutConstraint?
-  private var testConstraint: Constraint?
-    
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     setupUI()
@@ -41,10 +38,8 @@ class CategoryTableViewCell: UITableViewCell {
     switch data.select {
     case true:
       subCategoryView.isHidden = false
-      testConstraint?.update(priority: .low)
     case false:
       subCategoryView.isHidden = true
-      testConstraint?.update(priority: .high)
     }
   }
   
@@ -69,38 +64,26 @@ class CategoryTableViewCell: UITableViewCell {
   private func setupLayout() {
     iconImage.snp.makeConstraints { (make) -> Void in
       make.centerY.equalTo(contentView.snp.centerY)
-      make.leading.equalTo(contentView.snp.leading).offset(10)
-      make.width.height.equalTo(40)
+      make.leading.equalTo(contentView.snp.leading).offset(16)
+      make.width.height.equalTo(32)
     }
     title.snp.makeConstraints { (make) -> Void in
-      make.top.equalTo(contentView.snp.top).offset(20)
-      make.leading.equalTo(iconImage.snp.trailing).offset(8)
-      make.bottom.equalToSuperview().offset(-20)
+      make.top.equalTo(contentView.snp.top).offset(16)
+      make.leading.equalTo(iconImage.snp.trailing).offset(10)
+      make.bottom.equalToSuperview().offset(-16)
     }
     arrowImage.snp.makeConstraints { (make) -> Void in
       make.centerY.equalTo(contentView.snp.centerY)
       make.trailing.equalTo(contentView.snp.trailing).offset(-20)
       make.width.height.equalTo(20)
     }
-    subCategoryView.snp.makeConstraints { (make) -> Void in
-      make.top.equalTo(iconImage.snp.bottom).offset(10)
-      make.leading.equalTo(contentView.snp.leading)
-      make.trailing.equalTo(contentView.snp.trailing)
-
-      make.height.equalTo(contentView.snp.height).multipliedBy(2)
-    }
-  
-//    contentView.snp.makeConstraints { (make) -> Void in
-//      make.bottom.equalTo(subCategoryView.snp.bottom).priority(.medium)
-//      make.bottom.equalTo(iconImage.snp.bottom).offset(16).priority(.low)
-//    }
-    
-//    tableView.snp.makeConstraints { (make) -> Void in
+//    subCategoryView.snp.makeConstraints { (make) -> Void in
 //      make.top.equalTo(iconImage.snp.bottom).offset(10)
-//      make.leading.equalToSuperview()
-//      make.trailing.equalToSuperview()
-//      make.height.equalTo(contentView.snp.height).multipliedBy(6)
+//      make.leading.equalTo(contentView.snp.leading)
+//      make.trailing.equalTo(contentView.snp.trailing)
+//      make.height.equalTo(contentView.snp.height).multipliedBy(2)
 //    }
+
   }
   
   func titleName(name: String) {
