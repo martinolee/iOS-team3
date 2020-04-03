@@ -23,7 +23,7 @@ class SignupView: UIView, UITextFieldDelegate {
   
   private let checkIDButton = UIButton().then {
     $0.setTitle("중복확인", for: .normal)
-    $0.backgroundColor = .kurlyPurple
+    $0.backgroundColor = .kurlyMainPurple
     $0.setTitleColor(.white, for: .normal)
     $0.addTarget(self, action: #selector(checkIDButtonTouched), for: .touchUpInside)
   }
@@ -127,7 +127,7 @@ class SignupView: UIView, UITextFieldDelegate {
   }
   private let searchingAddressButton = UIButton().then {
     $0.setTitle("주소 검색", for: .normal)
-    $0.backgroundColor = .kurlyPurple
+    $0.backgroundColor = .kurlyMainPurple
     $0.setTitleColor(.white, for: .normal)
   }
   private let birthdayLabel = SignupLabel(textColor: nil, font: nil).then {
@@ -257,7 +257,7 @@ class SignupView: UIView, UITextFieldDelegate {
   }
   private let usingLawSeeButton = UIButton().then {
     $0.setTitle("약관보기 >", for: .normal)
-    $0.setTitleColor(.kurlyPurple, for: .normal)
+    $0.setTitleColor(.kurlyMainPurple, for: .normal)
   }
   let personalEssentialButton = SignupCheckBox().then {
     $0.setStatus(false)
@@ -271,7 +271,7 @@ class SignupView: UIView, UITextFieldDelegate {
   }
   private let personalEssentialSeeButton = UIButton().then {
     $0.setTitle("약관보기 >", for: .normal)
-    $0.setTitleColor(.kurlyPurple, for: .normal)
+    $0.setTitleColor(.kurlyMainPurple, for: .normal)
   }
   let personalNotEssentialButton = SignupCheckBox().then {
     $0.setStatus(false)
@@ -285,7 +285,7 @@ class SignupView: UIView, UITextFieldDelegate {
   }
   private let personalNotEssentialSeeButton = UIButton().then {
     $0.setTitle("약관보기 >", for: .normal)
-    $0.setTitleColor(.kurlyPurple, for: .normal)
+    $0.setTitleColor(.kurlyMainPurple, for: .normal)
   }
   let freeShippingButton = SignupCheckBox().then {
     $0.setStatus(false)
@@ -327,7 +327,7 @@ class SignupView: UIView, UITextFieldDelegate {
   private let signupButton = UIButton().then {
     $0.setTitle("가입하기", for: .normal)
     $0.setTitleColor(.white, for: .normal)
-    $0.backgroundColor = .kurlyPurple
+    $0.backgroundColor = .kurlyMainPurple
     $0.addTarget(self, action: #selector(signupButtonTouched(button:)), for: .touchUpInside)
   }
   private let lastExplainationLabel = SignupLabel(textColor: .lightGray, font: .systemFont(ofSize: 12)).then {
@@ -971,7 +971,7 @@ extension SignupView {
   }
   func activateGetCodeButton(_ able: Bool) {
     getCodeButton.isEnabled = able
-    able ? (getCodeButton.backgroundColor = .kurlyPurple) : (getCodeButton.backgroundColor = .lightGray)
+    able ? (getCodeButton.backgroundColor = .kurlyMainPurple) : (getCodeButton.backgroundColor = .lightGray)
   }
   func setCheckingCodeButton(buttonColor: UIColor) {
     checkingCodeButton.layer.borderColor = buttonColor.cgColor

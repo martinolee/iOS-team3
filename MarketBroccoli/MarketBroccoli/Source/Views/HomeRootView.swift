@@ -19,14 +19,18 @@ class HomeRootView: UIView {
     $0.showsHorizontalScrollIndicator = false
     $0.bounces = false
   }
+  
   private let stackViewBackground = UIView().then {
     $0.backgroundColor = .white
   }
-  private let stackView = UIStackView().then {
-    $0.axis = .horizontal
-    $0.spacing = 8
-    $0.distribution = .fillEqually
-  }
+  
+//  private let stackView = UIStackView().then {
+//    $0.axis = .horizontal
+//    $0.spacing = 8
+//    $0.distribution = .fillEqually
+//  }
+  
+  private let stackView = CategoryStackView(categories: Categories.HomeCategory, distribution: .fillProportionally)
   
   private let menuTextArray = Categories.HomeCategory
   
@@ -96,7 +100,7 @@ extension HomeRootView {
   }
   
   private func setupUI() {
-    makeStackView()
+//    makeStackView()
     setupAttr()
     let safeArea = self.safeAreaLayoutGuide
     guard let firstStackViewItem = stackView.arrangedSubviews.first as? UILabel else { return }
@@ -114,11 +118,6 @@ extension HomeRootView {
       $0.centerX.equalTo(firstStackViewItem.snp.centerX)
       $0.width.equalTo(firstStackViewItem.getWidth() ?? 0)
       $0.height.equalTo(5)
-    }
-    
-    stackViewBackground.snp.makeConstraints {
-      $0.top.leading.bottom.trailing.equalTo(stackView)
-      $0.height.equalTo(40)
     }
     
     scrollView.snp.makeConstraints {

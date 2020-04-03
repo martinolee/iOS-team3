@@ -13,7 +13,7 @@ extension UIViewController {
     self.title = title
     
     navigationController?.do({
-      $0.navigationBar.barTintColor = .kurlyPurple
+      $0.navigationBar.barTintColor = .kurlyMainPurple
       $0.navigationBar.tintColor = .white
       $0.navigationBar.isTranslucent = false
       $0.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
