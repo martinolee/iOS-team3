@@ -9,9 +9,10 @@
 import UIKit
 
 class CategoryViewController: UIViewController {
-  var tableView = UITableView(frame: .zero, style: .grouped)
-  let oftenProduct = ["자주 사는 상품"]
-  var lastSelection: IndexPath?
+  private var tableView = UITableView(frame: .zero, style: .grouped)
+  private let oftenProduct = ["자주 사는 상품"]
+  private var lastSelection: IndexPath?
+  private var refreshControl = UIRefreshControl()
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -38,6 +39,12 @@ class CategoryViewController: UIViewController {
     [tableView].forEach {
       view.addSubview($0)
     }
+    if #available(iOS 10.0, *) {
+      tableView.refreshControl = refreshControl
+    } else {
+      tableView.addSubview(refreshControl)
+    }
+    refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
   }
   
   private func setupLayout() {
@@ -45,6 +52,22 @@ class CategoryViewController: UIViewController {
     tableView.snp.makeConstraints { (make) -> Void in
       make.edges.equalTo(guide)
     }
+  }
+//  private func downloadData(success: @escaping ()->()){
+//    Alamofire.request(URL).responseJSON{ (response) in
+//    /*
+//       Download Data
+//      */
+//      success()
+//    }
+//  }
+   @objc private func refresh() {
+//    downloadData {
+      /*
+      success 메소드 정의
+      */
+      self.refreshControl.endRefreshing()
+//    }
   }
 }
 
