@@ -41,7 +41,7 @@ class CartView: UIView {
   
   private lazy var cartTableView = UITableView().then {
     $0.separatorStyle = .none
-    $0.backgroundColor = .lightGray
+    $0.backgroundColor = .kurlyGray3
     $0.tableFooterView = cartFooterView
     
     $0.dataSource = self
@@ -50,7 +50,7 @@ class CartView: UIView {
   }
   
   private lazy var orderButton = UIButton(type: .system).then {
-    $0.backgroundColor = .kurlyPurple
+    $0.backgroundColor = .kurlyMainPurple
   }
   
   // MARK: - Initialization
@@ -74,7 +74,7 @@ class CartView: UIView {
   // MARK: - Setup UI
   
   private func setupAttribute() {
-    backgroundColor = .kurlyPurple
+    backgroundColor = .kurlyMainPurple
   }
   
   private func addAllView() {

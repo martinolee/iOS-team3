@@ -155,6 +155,7 @@ extension CartViewController: CartProductTableViewCellDelegate {
       $0.addAction(UIAlertAction(title: "취소", style: .cancel))
       $0.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { _ in
         self.cartDummy[shoppingItemIndexPath.section].remove(at: shoppingItemIndexPath.row)
+        self.cartView.reloadCartTableViewData()
       }))
     }
     
@@ -187,6 +188,7 @@ extension CartViewController: CartViewDelegate {
             where self.cartDummy[categoryIndex][productIndex].isChecked {
               self.cartDummy[categoryIndex].remove(at: productIndex)
               if self.cartDummy[categoryIndex].isEmpty { self.cartDummy.remove(at: categoryIndex) }
+              self.cartView.reloadCartTableViewData()
           }
         }
       }))

@@ -66,7 +66,7 @@ extension HomeEventTableCell {
     }
   }
   private func setupAttr() {
-    self.backgroundColor = .gray
+    self.backgroundColor = .kurlyGray3
   }
   
   private func setupUI() {

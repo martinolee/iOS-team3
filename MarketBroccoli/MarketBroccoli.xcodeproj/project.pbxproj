@@ -32,12 +32,15 @@
 		72EB58D52431F935001C4CCF /* CheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72EB58D42431F935001C4CCF /* CheckBox.swift */; };
 		7C15D0B62429E55300ACB4C9 /* HomeReuseCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C15D0B52429E55300ACB4C9 /* HomeReuseCollectionCell.swift */; };
 		7C15D0B8242A2C3500ACB4C9 /* UILabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C15D0B7242A2C3500ACB4C9 /* UILabelExtension.swift */; };
+		7C16CEF02435D725007CD954 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C16CEEF2435D725007CD954 /* DetailViewController.swift */; };
 		7C1CEB5F243436800055A986 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAFEB5E2424A74900452977 /* SettingsViewController.swift */; };
 		7C212DAF243361A900025869 /* CategoryScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C212DAE243361A900025869 /* CategoryScrollView.swift */; };
 		7C212DB324337DE100025869 /* UIScrollViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C212DB224337DE100025869 /* UIScrollViewExtension.swift */; };
+		7C4A77262435FE950033F4D5 /* CategoryStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4A77252435FE950033F4D5 /* CategoryStackView.swift */; };
 		7C5A889124343A2E006361AC /* HomeBannerTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5A889024343A2E006361AC /* HomeBannerTableCell.swift */; };
 		7C5A889424343AD9006361AC /* SignupViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5A889324343AD9006361AC /* SignupViewProtocol.swift */; };
 		7C5A889624343F41006361AC /* SignupLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5A889524343F41006361AC /* SignupLabel.swift */; };
+		7C5A889A243488A7006361AC /* HomeReuseShowAllCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5A8899243488A7006361AC /* HomeReuseShowAllCollectionCell.swift */; };
 		7C65ECBA242471380075606A /* EventMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECB9242471380075606A /* EventMark.swift */; };
 		7C65ECBE242472400075606A /* EmptyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECBD242472400075606A /* EmptyManager.swift */; };
 		7C65ECC0242472480075606A /* EmptyTC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECBF242472480075606A /* EmptyTC.swift */; };
@@ -73,6 +76,9 @@
 		7CFCE96B24320AFF00E067AD /* CategorySelected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFCE96A24320AFF00E067AD /* CategorySelected.swift */; };
 		FA48FBD4243319DE00E53EB5 /* SignupCheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA48FBD3243319DE00E53EB5 /* SignupCheckBox.swift */; };
 		FA48FBD624335BC000E53EB5 /* Agreement.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA48FBD524335BC000E53EB5 /* Agreement.swift */; };
+		FA48FBD824345AE800E53EB5 /* SignupButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA48FBD724345AE800E53EB5 /* SignupButton.swift */; };
+		FA48FBDA2434648E00E53EB5 /* SignupUnderLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA48FBD92434648E00E53EB5 /* SignupUnderLineView.swift */; };
+		FA48FBDC2434792100E53EB5 /* Signup.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA48FBDB2434792100E53EB5 /* Signup.swift */; };
 		FA9AD74224287F51002D3504 /* SignupVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9AD74124287F51002D3504 /* SignupVIew.swift */; };
 		FAAE2E572424E3C400ACC5D3 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAE2E562424E3C400ACC5D3 /* SignUpViewController.swift */; };
 		FAAFEB612424A77900452977 /* LogOutTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAFEB602424A77900452977 /* LogOutTableViewCell.swift */; };
@@ -105,11 +111,14 @@
 		72EB58D42431F935001C4CCF /* CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBox.swift; sourceTree = "<group>"; };
 		7C15D0B52429E55300ACB4C9 /* HomeReuseCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeReuseCollectionCell.swift; sourceTree = "<group>"; };
 		7C15D0B7242A2C3500ACB4C9 /* UILabelExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelExtension.swift; sourceTree = "<group>"; };
+		7C16CEEF2435D725007CD954 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		7C212DAE243361A900025869 /* CategoryScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryScrollView.swift; sourceTree = "<group>"; };
 		7C212DB224337DE100025869 /* UIScrollViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollViewExtension.swift; sourceTree = "<group>"; };
+		7C4A77252435FE950033F4D5 /* CategoryStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryStackView.swift; sourceTree = "<group>"; };
 		7C5A889024343A2E006361AC /* HomeBannerTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeBannerTableCell.swift; sourceTree = "<group>"; };
 		7C5A889324343AD9006361AC /* SignupViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewProtocol.swift; sourceTree = "<group>"; };
 		7C5A889524343F41006361AC /* SignupLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupLabel.swift; sourceTree = "<group>"; };
+		7C5A8899243488A7006361AC /* HomeReuseShowAllCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeReuseShowAllCollectionCell.swift; sourceTree = "<group>"; };
 		7C65ECB9242471380075606A /* EventMark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMark.swift; sourceTree = "<group>"; };
 		7C65ECBD242472400075606A /* EmptyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyManager.swift; sourceTree = "<group>"; };
 		7C65ECBF242472480075606A /* EmptyTC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyTC.swift; sourceTree = "<group>"; };
@@ -149,6 +158,9 @@
 		D1C8D23965CC57B3A3E2F2A7 /* Pods-MarketBroccoli.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MarketBroccoli.release.xcconfig"; path = "Target Support Files/Pods-MarketBroccoli/Pods-MarketBroccoli.release.xcconfig"; sourceTree = "<group>"; };
 		FA48FBD3243319DE00E53EB5 /* SignupCheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupCheckBox.swift; sourceTree = "<group>"; };
 		FA48FBD524335BC000E53EB5 /* Agreement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Agreement.swift; sourceTree = "<group>"; };
+		FA48FBD724345AE800E53EB5 /* SignupButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupButton.swift; sourceTree = "<group>"; };
+		FA48FBD92434648E00E53EB5 /* SignupUnderLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupUnderLineView.swift; sourceTree = "<group>"; };
+		FA48FBDB2434792100E53EB5 /* Signup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signup.swift; sourceTree = "<group>"; };
 		FA9AD74124287F51002D3504 /* SignupVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupVIew.swift; sourceTree = "<group>"; };
 		FAAE2E562424E3C400ACC5D3 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		FAAFEB5E2424A74900452977 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -205,6 +217,40 @@
 			path = SearchView;
 			sourceTree = "<group>";
 		};
+		7C16CEEB2435D641007CD954 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				7C16CEEC2435D675007CD954 /* HomeViewController */,
+				7C65ECD22424EF350075606A /* HomeViews */,
+				7CCD648D24287AF100FC671B /* HomeViewCells */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		7C16CEEC2435D675007CD954 /* HomeViewController */ = {
+			isa = PBXGroup;
+			children = (
+				7C65ECCE2424B95F0075606A /* HomeViewController.swift */,
+			);
+			path = HomeViewController;
+			sourceTree = "<group>";
+		};
+		7C16CEED2435D6F3007CD954 /* Details */ = {
+			isa = PBXGroup;
+			children = (
+				7C16CEEE2435D706007CD954 /* DetailViewController */,
+			);
+			path = Details;
+			sourceTree = "<group>";
+		};
+		7C16CEEE2435D706007CD954 /* DetailViewController */ = {
+			isa = PBXGroup;
+			children = (
+				7C16CEEF2435D725007CD954 /* DetailViewController.swift */,
+			);
+			path = DetailViewController;
+			sourceTree = "<group>";
+		};
 		7C5A889224343AC4006361AC /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
@@ -216,12 +262,14 @@
 		7C65ECAD2424677C0075606A /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				7C16CEED2435D6F3007CD954 /* Details */,
+				7C16CEEB2435D641007CD954 /* Home */,
 				7C5A889224343AC4006361AC /* Protocols */,
 				7CCD648C24287AB300FC671B /* Cells */,
 				7C65ECC6242472F70075606A /* Views */,
+				7C65ECB5242470C90075606A /* Extensions */,
 				7C65ECC3242472E20075606A /* Models */,
 				7C65ECB7242470E70075606A /* Utils */,
-				7C65ECB5242470C90075606A /* Extensions */,
 				7C65ECB4242470B60075606A /* CustomUI */,
 				7C65ECB3242470AB0075606A /* ViewControllers */,
 			);
@@ -251,7 +299,6 @@
 				7298BEFE242DDF2E005B0517 /* MarketBroccoliTabBarController.swift */,
 				7050F3192429CEBB00B8E13B /* CategoryViewController.swift */,
 				FAAFEB5E2424A74900452977 /* SettingsViewController.swift */,
-				7C65ECCE2424B95F0075606A /* HomeViewController.swift */,
 				FAAE2E562424E3C400ACC5D3 /* SignUpViewController.swift */,
 				7050F3112424BA3800B8E13B /* LoginViewController.swift */,
 				7050F315242876AC00B8E13B /* IDFindViewController.swift */,
@@ -273,6 +320,9 @@
 				7CFCE96A24320AFF00E067AD /* CategorySelected.swift */,
 				7C212DAE243361A900025869 /* CategoryScrollView.swift */,
 				7C5A889524343F41006361AC /* SignupLabel.swift */,
+				FA48FBD724345AE800E53EB5 /* SignupButton.swift */,
+				FA48FBD92434648E00E53EB5 /* SignupUnderLineView.swift */,
+				7C4A77252435FE950033F4D5 /* CategoryStackView.swift */,
 			);
 			path = CustomUI;
 			sourceTree = "<group>";
@@ -328,6 +378,7 @@
 				7C65ECC4242472EC0075606A /* EmptyModel.swift */,
 				7050F323242DDE7900B8E13B /* CategoryData.swift */,
 				FA48FBD524335BC000E53EB5 /* Agreement.swift */,
+				FA48FBDB2434792100E53EB5 /* Signup.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -336,7 +387,6 @@
 			isa = PBXGroup;
 			children = (
 				727F095F2428DCE700584A40 /* CartView */,
-				7C65ECD22424EF350075606A /* HomeViews */,
 				72EB58D12431D618001C4CCF /* SearchView */,
 				FAAFEB602424A77900452977 /* LogOutTableViewCell.swift */,
 				7C65ECD02424D82C0075606A /* HomeRootView.swift */,
@@ -360,6 +410,7 @@
 		7C65ECD22424EF350075606A /* HomeViews */ = {
 			isa = PBXGroup;
 			children = (
+				7C8C4A2F242B474600FA912B /* HomeProductCollectionView.swift */,
 				7C65ECD32424EFE60075606A /* RecommendationView.swift */,
 				7C65ECD52424F0060075606A /* NewProductView.swift */,
 				7C65ECD72424F03D0075606A /* BestView.swift */,
@@ -372,7 +423,6 @@
 		7CCD648C24287AB300FC671B /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				7CCD648D24287AF100FC671B /* HomeViewCells */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -381,7 +431,6 @@
 			isa = PBXGroup;
 			children = (
 				7C5A889024343A2E006361AC /* HomeBannerTableCell.swift */,
-				7C8C4A2F242B474600FA912B /* HomeProductCollectionView.swift */,
 				7C8C4A2D242B44AF00FA912B /* HomeOfferTableCell.swift */,
 				7C8C4A31242B4D2800FA912B /* HomeEventTableCell.swift */,
 				7C7171E3242C78E9009CE7D5 /* HomeMDTableCell.swift */,
@@ -389,6 +438,7 @@
 				7C15D0B52429E55300ACB4C9 /* HomeReuseCollectionCell.swift */,
 				7C8C4A35242B61CD00FA912B /* HomeProductCollectionCell.swift */,
 				7CBB7348242E2E9F0078B363 /* MDCategoryCollectionCell.swift */,
+				7C5A8899243488A7006361AC /* HomeReuseShowAllCollectionCell.swift */,
 			);
 			path = HomeViewCells;
 			sourceTree = "<group>";
@@ -566,12 +616,16 @@
 				7CBB7349242E2E9F0078B363 /* MDCategoryCollectionCell.swift in Sources */,
 				7C65ECD42424EFE60075606A /* RecommendationView.swift in Sources */,
 				7050F318242876B600B8E13B /* PWFindViewController.swift in Sources */,
+				7C4A77262435FE950033F4D5 /* CategoryStackView.swift in Sources */,
 				727F093324287C2E00584A40 /* UITableViewCellExtension.swift in Sources */,
+				7C5A889A243488A7006361AC /* HomeReuseShowAllCollectionCell.swift in Sources */,
 				7C8C4A36242B61CD00FA912B /* HomeProductCollectionCell.swift in Sources */,
+				FA48FBDA2434648E00E53EB5 /* SignupUnderLineView.swift in Sources */,
 				7C65ECCB24249B2C0075606A /* EmptyTemp.swift in Sources */,
 				FA48FBD4243319DE00E53EB5 /* SignupCheckBox.swift in Sources */,
 				728078682429A8A500101B7D /* ProductQuantityStepper.swift in Sources */,
 				7C7171E6242C9437009CE7D5 /* Seperator.swift in Sources */,
+				7C16CEF02435D725007CD954 /* DetailViewController.swift in Sources */,
 				727F093524287C4F00584A40 /* UITableViewExtension.swift in Sources */,
 				7050F3122424BA3800B8E13B /* LoginViewController.swift in Sources */,
 				FA9AD74224287F51002D3504 /* SignupVIew.swift in Sources */,
@@ -581,6 +635,7 @@
 				7291F87D242C7EAF009D4E83 /* CartViewHeader.swift in Sources */,
 				723851E124249C6400E8B206 /* UserInfoTableViewCell.swift in Sources */,
 				7C5A889424343AD9006361AC /* SignupViewProtocol.swift in Sources */,
+				FA48FBDC2434792100E53EB5 /* Signup.swift in Sources */,
 				7C65ECD12424D82C0075606A /* HomeRootView.swift in Sources */,
 				7C65ECCF2424B95F0075606A /* HomeViewController.swift in Sources */,
 				7291F87F242CC63C009D4E83 /* CartFooterView.swift in Sources */,
@@ -600,6 +655,7 @@
 				7C8C4A28242B0DFC00FA912B /* UIButtonExtension.swift in Sources */,
 				7CCD649A2428DB2C00FC671B /* UICollectionViewExtension.swift in Sources */,
 				7C8C4A32242B4D2800FA912B /* HomeEventTableCell.swift in Sources */,
+				FA48FBD824345AE800E53EB5 /* SignupButton.swift in Sources */,
 				FAAFEB632424A79200452977 /* TypeConverter.swift in Sources */,
 				FAAE2E572424E3C400ACC5D3 /* SignUpViewController.swift in Sources */,
 				728A34DF2434663E00FBEAF5 /* ProductCollectionCell.swift in Sources */,
