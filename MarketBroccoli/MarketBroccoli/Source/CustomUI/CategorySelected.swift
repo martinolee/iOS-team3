@@ -11,7 +11,7 @@ import UIKit
 class CategorySelected: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
-    self.backgroundColor = .kurlyPurple
+    self.backgroundColor = .kurlyMainPurple
   }
   
   required init?(coder: NSCoder) {

@@ -54,7 +54,7 @@ extension HomeProductCollectionCell {
     
     imageView.snp.makeConstraints {
       $0.top.leading.trailing.equalToSuperview()
-      $0.height.equalTo(100)
+      $0.height.equalTo(150)
     }
     
     descriptionView.snp.makeConstraints {
