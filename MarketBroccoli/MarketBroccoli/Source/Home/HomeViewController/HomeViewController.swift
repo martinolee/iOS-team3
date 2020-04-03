@@ -17,9 +17,13 @@ class HomeViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    registerObserver()
     self.addNavigationBarCartButton()
     self.setupBroccoliNavigationBar(title: "마켓브로콜리")
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    registerObserver()
   }
   
   override func viewDidDisappear(_ animated: Bool) {
@@ -30,7 +34,11 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController {
   private func registerObserver() {
-    NotificationCenter.default.addObserver(self, selector: #selector(didReceiveNotification(_:)), name: NSNotification.Name("ProductTouched"), object: nil)
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(didReceiveNotification(_:)),
+      name: NSNotification.Name("ProductTouched"),
+      object: nil)
     print("add ProductTouched notification")
   }
   
@@ -40,6 +48,11 @@ extension HomeViewController {
   }
   
   @objc private func didReceiveNotification(_ notification: Notification) {
-    print(notification)
+    let detailVC = DetailViewController()
+    let barBtnItem = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
+    
+    detailVC.hidesBottomBarWhenPushed = true
+    navigationItem.backBarButtonItem = barBtnItem
+    navigationController?.pushViewController(detailVC, animated: true)
   }
 }
