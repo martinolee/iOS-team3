@@ -30,7 +30,7 @@ class CartViewHeader: UIView {
   }
   
   private lazy var removeProductButton = UIButton(type: .system).then {
-    $0.layer.borderColor = UIColor.gray.cgColor
+    $0.layer.borderColor = UIColor.kurlyGray3.cgColor
     $0.layer.borderWidth = 1
     $0.titleLabel?.font = .systemFont(ofSize: 15, weight: .light)
     $0.setTitleColor(.black, for: .normal)
@@ -62,7 +62,7 @@ class CartViewHeader: UIView {
   // MARK: - Setup UI
   
   private func setupAttribute() {
-    self.backgroundColor = .lightGray
+    self.backgroundColor = .kurlyGray3
   }
   
   private func addAllView() {
