@@ -8,7 +8,15 @@
 
 import UIKit
 
+protocol SearchViewDataSource: class {
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
+  
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
+}
+
 protocol SearchViewDelegate: class {
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
+  
   func searchProductTextFieldEditingDidBegin(_ textField: UITextField, _ button: UIButton)
   
   func searchProductTextFieldEditingChanged(_ textField: UITextField, _ text: String)
@@ -18,6 +26,8 @@ protocol SearchViewDelegate: class {
 
 class SearchView: UIView {
   // MARK: - Properties
+  
+  weak var dataSource: SearchViewDataSource?
   
   weak var delegate: SearchViewDelegate?
   
@@ -46,6 +56,7 @@ class SearchView: UIView {
     $0.leftView = containerView
     $0.returnKeyType = .search
     $0.placeholder = "검색어를 입력해 주세요"
+    $0.setContentHuggingPriority(.fittingSizeLevel, for: .horizontal)
     
     $0.addTarget(self, action: #selector(searchProductTextFieldEditingDidBegin(_:)), for: .editingDidBegin)
     $0.addTarget(self, action: #selector(searchProductTextFieldEditingChanged(_:)), for: .editingChanged)
@@ -56,8 +67,23 @@ class SearchView: UIView {
     $0.setTitleColor(.black, for: .normal)
     $0.setTitleColor(.gray, for: .disabled)
     $0.isEnabled = false
+    $0.setContentHuggingPriority(.required, for: .horizontal)
     
     $0.addTarget(self, action: #selector(cancelSearchButtonTouched(_:)), for: .touchUpInside)
+  }
+  
+  private lazy var searchResultCollectionViewFlowLayout = UICollectionViewFlowLayout()
+  
+  private lazy var searchResultCollectionView = UICollectionView(
+    frame: .zero,
+    collectionViewLayout: searchResultCollectionViewFlowLayout
+  ).then {
+    $0.backgroundColor = .lightGray
+    
+    $0.register(cell: ProductCollectionCell.self)
+    
+    $0.dataSource = self
+    $0.delegate = self
   }
   
   // MARK: - Life Cycle
@@ -74,6 +100,10 @@ class SearchView: UIView {
     fatalError("init(coder:) has not been implemented")
   }
   
+  override func layoutSubviews() {
+    setupFlowLayout()
+  }
+  
   // MARK: - Setup UI
   
   private func setupAttribute() {
@@ -82,7 +112,8 @@ class SearchView: UIView {
   
   private func addAllView() {
     self.addSubviews([
-      searchView
+      searchView,
+      searchResultCollectionView
     ])
     
     searchView.addSubviews([
@@ -92,8 +123,10 @@ class SearchView: UIView {
   }
   
   private func setupAutoLayout() {
+    let safeArea = self.safeAreaLayoutGuide
+    
     searchView.snp.makeConstraints {
-      $0.top.leading.trailing.equalTo(self.safeAreaLayoutGuide)
+      $0.top.leading.trailing.equalTo(safeArea)
       $0.height.equalTo(50)
     }
     
@@ -104,8 +137,51 @@ class SearchView: UIView {
     
     cancelSearchButton.snp.makeConstraints {
       $0.top.bottom.equalTo(searchProductTextField)
-      $0.trailing.equalToSuperview().inset(8)
+      $0.trailing.equalToSuperview().inset(12)
+      $0.width.equalTo(36)
     }
+    
+    searchResultCollectionView.snp.makeConstraints {
+      $0.top.equalTo(searchView.snp.bottom)
+      $0.leading.trailing.equalTo(searchView)
+      $0.bottom.equalTo(safeArea)
+    }
+  }
+  
+  private func setupFlowLayout() {
+    let minimumLineSpacing: CGFloat = 8.0
+    let minimumInteritemSpacing: CGFloat = 8.0
+    let insets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+    let itemsForLine: CGFloat = 2
+    let itemSizeWidth = (
+      (
+        searchResultCollectionView.frame.width - (
+          insets.left + insets.right + minimumInteritemSpacing * (itemsForLine - 1))
+        ) / itemsForLine
+      ).rounded(.down)
+    let itemSize = CGSize(width: itemSizeWidth, height: itemSizeWidth * 1.8)
+
+    searchResultCollectionViewFlowLayout.sectionInset = insets
+    searchResultCollectionViewFlowLayout.minimumLineSpacing = minimumLineSpacing
+    searchResultCollectionViewFlowLayout.minimumInteritemSpacing = minimumInteritemSpacing
+    searchResultCollectionViewFlowLayout.itemSize = itemSize
+    searchResultCollectionViewFlowLayout.scrollDirection = .vertical
+  }
+}
+
+extension SearchView: UICollectionViewDataSource {
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    dataSource?.collectionView(collectionView, numberOfItemsInSection: section) ?? 0
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    dataSource?.collectionView(collectionView, cellForItemAt: indexPath) ?? UICollectionViewCell()
+  }
+}
+
+extension SearchView: UICollectionViewDelegate {
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    delegate?.collectionView(collectionView, didSelectItemAt: indexPath)
   }
 }
 
