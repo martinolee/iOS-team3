@@ -10,6 +10,18 @@ class SignUpViewController: UIViewController {
   }
   let agreement = Agreement()
   
+  var essentialInfo: [Signup : Bool] = [
+    .identification: false,
+    .password: false,
+    .passwordCheck: false,
+    .name : false,
+    .email: false,
+    .cellphone: false,
+    .usingLaw: false,
+    .personalInfo: false,
+    .ageLimit: false
+  ]
+  
   private var leftTime = 10 {
     didSet {
       signupView.setTimerInTextField(text: timeFormatted(leftTime))
@@ -73,18 +85,43 @@ class SignUpViewController: UIViewController {
 // MARK: - Action
 extension SignUpViewController: SignupViewDelegate {
   func signupButtonTouched(button: UIButton) {
+    print(essentialInfo.enumerated())
+    
+    for (_, value) in essentialInfo {
+      if value == true {
+        let alertController = UIAlertController(
+          title: nil,
+          message: "회원가입을 축하드립니다!\n당신의 일상에 컬리를 더해 보세요",
+          preferredStyle: .alert
+        )
+        let warning = UIAlertAction(title: "확인", style: .default)
+        alertController.addAction(warning)
+        present(alertController, animated: true)
+      } else {
+        let alertController = UIAlertController(
+          title: nil,
+          message: "컬리를 더해 보세요",
+          preferredStyle: .alert
+        )
+        let warning = UIAlertAction(title: "확인", style: .default) {_ in
+        }
+        alertController.addAction(warning)
+        present(alertController, animated: true)
+      }
+    }
   }
   func squareButtonTouched(button: UIButton, leftButtons leftButton: [UIButton]) {
     if button == signupView.totalAgreeButton {
       agreement.total ? notSelectedAllButton() : selectedAllButton()
     } else if button == signupView.usingLawButton {
+      essentialInfo[.usingLaw]?.toggle()
       agreement.usingLaw.toggle()
-      
       signupView.usingLawButton.setStatus(agreement.usingLaw)
       signupView.totalAgreeButton.setStatus(agreement.total)
     } else if button == signupView.personalEssentialButton {
+      essentialInfo[.personalInfo]?.toggle()
       agreement.personalEseesntial.toggle()
-      signupView.personalEssentialButton.setStatus(agreement.personalEseesntial)
+    signupView.personalEssentialButton.setStatus(agreement.personalEseesntial)
       signupView.totalAgreeButton.setStatus(agreement.total)
     } else if button == signupView.personalNotEssentialButton {
       agreement.personalNotEssential.toggle()
@@ -113,7 +150,7 @@ extension SignUpViewController: SignupViewDelegate {
       signupView.totalAgreeButton.setStatus(agreement.total)
     } else if button == signupView.ageCheckButton {
       agreement.ageCheck.toggle()
-      
+      essentialInfo[.ageLimit]?.toggle()
       signupView.ageCheckButton.setStatus(agreement.ageCheck)
       signupView.totalAgreeButton.setStatus(agreement.total)
     }
@@ -144,8 +181,10 @@ extension SignUpViewController: SignupViewDelegate {
       signupView.activateGetCodeButton(false)
       isAuthorized = false
       self.signupView.hideTimerInTextField(true)
+      essentialInfo[.cellphone] = true
     } else {
       signupView.checkingCodeCompleteLabelOpenHiddenMessage(text: "인증번호를 확인해주세요", textColor: .orange)
+      essentialInfo[.cellphone] = false
     }
   }
   func receivingCellphoneNumberButtonTouched() {
@@ -210,7 +249,11 @@ extension SignUpViewController: SignupViewDelegate {
   }
   func emailTextFeildEditingChanged(_ textField: UITextField, text: String) {
     if isEmail(email: text) {
-      print("correct")
+      textField.layer.borderColor = UIColor.green.cgColor
+      essentialInfo[.email] = true
+    } else {
+      textField.layer.borderColor = UIColor.orange.cgColor
+      essentialInfo[.email] = false
     }
   }
   func cellphoneTextFieldEditingChanged(_ textField: UITextField, text: String) {
@@ -245,23 +288,38 @@ extension SignUpViewController: SignupViewDelegate {
       let predicate = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
       return predicate.evaluate(with: self)
   }
+  func checkName(_ textField: UITextField, text: String) {
+    if text.count >= 1 {
+      essentialInfo[.name] = true
+    } else {
+      essentialInfo[.name] = false
+    }
+  }
   func checkSecretNumberTextFeildEditingChanged(_ textField: UITextField, text: String) {
     print("checkSecretNumberTextFeildEditingChanged")
-    if text == signupView.getSecretTextFeildText() {
+    if text == signupView.getSecretTextFieldText() {
       signupView.setSameSecretNumberLabel(textColor: .green)
+        essentialInfo[.passwordCheck] = true
     } else {
       signupView.setSameSecretNumberLabel(textColor: .orange)
+       essentialInfo[.passwordCheck] = false
     }
   }
   func secretTextFeildEditingChanged(_ textField: UITextField, text: String) {
-    print("secretTextFeildEditingChanged")
-    
-    if text.count <= 9 || hasOnlyAlphabetAndNumber(text: text) {
-      signupView.setTenSyllableLabel(textColor: .orange)
+    if text.count >= 10 &&
+      hasSpecialWords(text: text) &&
+      !checkContinuousNumber(text) {
+      essentialInfo[.password] = true
     } else {
-      signupView.setTenSyllableLabel(textColor: .green)
+      essentialInfo[.password] = false
     }
-//
+    
+    if text.count >= 10 {
+      signupView.setTenSyllableLabel(textColor: .green)
+    } else {
+      signupView.setTenSyllableLabel(textColor: .orange)
+    }
+
      if hasSpecialWords(text: text) {
       signupView.setCombinationLabel(textColor: .green)
      } else {
@@ -269,11 +327,21 @@ extension SignUpViewController: SignupViewDelegate {
     }
     
     let isContinuous = checkContinuousNumber(text)
-    print(isContinuous)
-    if !checkContinuousNumber(text) {
+    
+    if !isContinuous {
       signupView.setnotSameTheeNumberLabel(textColor: .green)
     } else {
       signupView.setnotSameTheeNumberLabel(textColor: .orange)
+    }
+    if text == signupView.getCheckSecretNumberTextFeild() {
+      print("1")
+      print(text)
+      signupView.setSameSecretNumberLabel(textColor: .green)
+    } else {
+      print("2")
+      print(text)
+      print(signupView.getCheckingCodeTexField())
+      signupView.setSameSecretNumberLabel(textColor: .orange)
     }
   }
   
@@ -291,33 +359,16 @@ extension SignUpViewController: SignupViewDelegate {
     }
     return isContinuous
   }
-//  func checkAlphabet(_ ascii: String.UTF16View.Element) -> Bool {
-//    if (65...90).contains(ascii) || (97...122).contains(ascii) {
-//      return true
-//    } else {
-//      return false
-//    }
-//  }
-//
-//  func checkNumber(_ ascii: String.UTF16View.Element) -> Bool {
-//    if (48...57).contains(ascii) {
-//      return true
-//    } else {
-//      return false
-//    }
-//  }
-//
-//  func checkSpecialCharacter(_ ascii: String.UTF16View.Element) -> Bool {
-//    if (33...47).contains(ascii) {
-//      return true
-//    } else {
-//      return false
-//    }
-//  }
   func checkIDButtonTouched(_ button: UIButton) {
     let text = signupView.getIDTextFieldText()
-    if hasOnlyAlphabetAndNumber(text: text) {
+    if text.count >= 6 && hasOnlyAlphabetAndNumber(text: text) {
+      print("Correct")
+      signupView.setCheckingIdLabel(.green)
+      essentialInfo[.identification] = true
+      print(essentialInfo[.identification])
     } else {
+      signupView.setCheckingIdLabel(.orange)
+      essentialInfo[.identification] = false
       let alertController = UIAlertController(
         title: nil,
         message: "6자 이상의 영문 혹은 영문과 숫자를 조합으로 입력해 주세요",
@@ -336,7 +387,9 @@ extension SignUpViewController: SignupViewDelegate {
   }
   private func hasOnlyAlphabetAndNumber(text: String) -> Bool {
       do {
-        let regex = try NSRegularExpression(pattern: "^[a-zA-Z0-9]$", options: .caseInsensitive)
+        let regex = try NSRegularExpression(
+          pattern: "^(?!(?:[0-9]+)$)([a-zA-Z]|[0-9a-zA-Z]){4,}$",
+          options: .caseInsensitive)
         if regex.firstMatch(
           in: text,
           options: NSRegularExpression.MatchingOptions.reportCompletion,
@@ -367,10 +420,10 @@ extension SignUpViewController: SignupViewDelegate {
       return false
   }
   func idTextFieldEditingChanged(_ textField: UITextField, text: String) {
-    if text.count <= 5 || hasOnlyAlphabetAndNumber(text: text) {
-      signupView.setIDLimitExplanationLabel(textColor: .orange)
-    } else {
+    if text.count >= 6 && hasOnlyAlphabetAndNumber(text: text) {
       signupView.setIDLimitExplanationLabel(textColor: .green)
+    } else {
+      signupView.setIDLimitExplanationLabel(textColor: .orange)
     }
   }
   func checkSecretNumberTextFeildDidBeginEditing(_ textField: UITextField) {
