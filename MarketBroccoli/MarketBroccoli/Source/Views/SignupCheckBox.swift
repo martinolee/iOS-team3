@@ -33,7 +33,7 @@ class SignupCheckBox: UIButton {
   private func setupAttribute() {
     self.do {
       $0.contentMode = .scaleAspectFit
-      $0.tintColor = .kurlyPurple
+      $0.tintColor = .kurlyMainPurple
       $0.addTarget(self, action: #selector(checkBoxTouched(_:)), for: .touchUpInside)
     }
   }

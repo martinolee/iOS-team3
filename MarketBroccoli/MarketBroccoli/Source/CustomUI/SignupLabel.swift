@@ -41,7 +41,7 @@ extension SignupLabel {
     let myMutableString = NSMutableAttributedString(string: "\(text)*", attributes: nil)
     myMutableString.addAttribute(
       NSAttributedString.Key.foregroundColor,
-      value: UIColor.kurlyPurple, range: NSRange(location: text.count, length: 1)
+      value: UIColor.kurlyMainPurple, range: NSRange(location: text.count, length: 1)
     )
     return myMutableString
   }

@@ -14,7 +14,7 @@ class MartketBroccoliTabBarController: UITabBarController {
   }
   
   func setupTabBar() {
-    tabBar.tintColor = .kurlyPurple
+    tabBar.tintColor = .kurlyMainPurple
     tabBar.backgroundColor = .white
     
     let homeViewController = UINavigationController(rootViewController: HomeViewController()).then {

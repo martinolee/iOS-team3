@@ -157,7 +157,7 @@ extension SignUpViewController: SignupViewDelegate {
   }
   func recoAndEventRoundButtonTouched(button: UIButton, eventButton: [UIButton]) {
     let borderWidth: CGFloat = 6
-    button.layer.borderColor = UIColor.kurlyPurple.cgColor
+    button.layer.borderColor = UIColor.kurlyMainPurple.cgColor
     button.layer.borderWidth = borderWidth
     eventButton.forEach {
       $0.layer.borderWidth = 1
@@ -166,7 +166,7 @@ extension SignUpViewController: SignupViewDelegate {
   }
   func genderRoundButtonTouched(button: UIButton, noChoice: [UIButton]) {
     let borderWidth: CGFloat = 6
-    button.layer.borderColor = UIColor.kurlyPurple.cgColor
+    button.layer.borderColor = UIColor.kurlyMainPurple.cgColor
     button.layer.borderWidth = borderWidth
     noChoice.forEach {
       $0.layer.borderWidth = 1
@@ -192,7 +192,7 @@ extension SignUpViewController: SignupViewDelegate {
     if hasCellphoneNumber(text: text) {
       signupView.hideTimerInTextField(false)
       signupView.activateGetCodeButton(false)
-      signupView.setCheckingCodeButton(buttonColor: .kurlyPurple)
+      signupView.setCheckingCodeButton(buttonColor: .kurlyMainPurple)
       startTimer()
       signupView.setGetCodeButton(buttonColor: .lightGray)
       signupView.activateCellphoneTextField(false)
@@ -229,7 +229,7 @@ extension SignUpViewController: SignupViewDelegate {
       let warning = UIAlertAction(title: "확인", style: .default) { _ in
         self.signupView.hideTimerInTextField(true)
         self.signupView.setCheckingCodeButton(buttonColor: .lightGray)
-        self.signupView.setGetCodeButton(buttonColor: .kurlyPurple)
+        self.signupView.setGetCodeButton(buttonColor: .kurlyMainPurple)
         self.signupView.activateGetCodeButton(true)
         self.leftTime = 5
         self.signupView.activateCellphoneTextField(true)
@@ -258,7 +258,7 @@ extension SignUpViewController: SignupViewDelegate {
   }
   func cellphoneTextFieldEditingChanged(_ textField: UITextField, text: String) {
     if text.count > 9 {
-      signupView.setGetCodeButton(buttonColor: .kurlyPurple)
+      signupView.setGetCodeButton(buttonColor: .kurlyMainPurple)
       signupView.enableReceivingCellphoneNumberButton(true)
     } else {
       signupView.setGetCodeButton(buttonColor: .gray)
