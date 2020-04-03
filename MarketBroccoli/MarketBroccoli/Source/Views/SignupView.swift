@@ -139,6 +139,8 @@ class SignupView: UIView, UITextFieldDelegate {
     borderColor: nil
   ).then {
     $0.setTitle("주소 검색", for: .normal)
+    $0.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
+    $0.tintColor = .white
   }
 //  private let addressTextField = UITextField().then {
 //    $0.signupStyle(round: .roundedRect, clearButton: .never)
@@ -519,6 +521,7 @@ class SignupView: UIView, UITextFieldDelegate {
     searchingAddressButton.snp.makeConstraints {
       $0.top.equalTo(addressCheckingLabel.snp.bottom).offset(20)
       $0.leading.trailing.equalTo(addressCheckingLabel)
+      $0.height.equalTo(40)
     }
     birthdayLabel.snp.makeConstraints {
       $0.top.equalTo(searchingAddressButton.snp.bottom).offset(20)
@@ -852,6 +855,9 @@ extension SignupView {
     default:
       return print("")
     }
+  }
+  func activateIdtextField(_ able: Bool) {
+    idTextField.isEnabled = able
   }
   func idTextFieldOpenHiddenMessage() {
     idLimitExplanationLabel.snp.updateConstraints {
