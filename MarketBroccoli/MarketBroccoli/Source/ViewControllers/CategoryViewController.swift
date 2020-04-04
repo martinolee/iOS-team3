@@ -79,7 +79,7 @@ extension CategoryViewController: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     switch section {
-    case 0, 16:
+    case 0, categoryData.count + 1:
       return 1
     default:
       if categoryData[section - 1].select {
@@ -101,7 +101,7 @@ extension CategoryViewController: UITableViewDataSource {
         $0.accessoryView?.tintColor = #colorLiteral(red: 0.3176470588, green: 0.1529411765, blue: 0.4470588235, alpha: 1)
       }
       return cell
-    case 16:
+    case categoryData.count + 1:
       let cell = tableView.dequeue(UITableViewCell.self).then {
        $0.textLabel?.text = "컬리의 추천"
       }
@@ -131,7 +131,7 @@ extension CategoryViewController: UITableViewDataSource {
 extension CategoryViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     switch indexPath.section {
-    case 0, 16:
+    case 0, categoryData.count + 1:
       print(indexPath.section)
     default:
       if indexPath.row == 0 {
@@ -169,7 +169,7 @@ extension CategoryViewController: UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     switch section {
-    case 16:
+    case categoryData.count + 1:
       return 10
     default:
       return 0

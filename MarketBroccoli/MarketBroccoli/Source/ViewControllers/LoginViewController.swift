@@ -95,7 +95,6 @@ extension LoginViewController {
       $0.top.equalTo(logInbtn.snp.bottom).offset(UI.btnTopMargin)
       $0.centerX.equalTo(guide.snp.centerX).offset(-UI.btnBetweenMargin)
     }
-    
     pwFindBtn.snp.makeConstraints {
       $0.top.equalTo(logInbtn.snp.bottom).offset(UI.btnTopMargin)
       $0.leading.equalTo(idFindBtn.snp.trailing).offset(4)
