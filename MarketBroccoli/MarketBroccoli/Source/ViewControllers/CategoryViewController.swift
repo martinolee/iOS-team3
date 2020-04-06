@@ -9,21 +9,23 @@
 import UIKit
 
 class CategoryViewController: UIViewController {
+  // MARK: - Properties
   private var tableView = UITableView(frame: .zero, style: .grouped)
   private let oftenProduct = ["자주 사는 상품"]
   private var lastSelection: IndexPath?
   private var refreshControl = UIRefreshControl()
-  
+// MARK: - Life Cycle
   override func viewDidLoad() {
     super.viewDidLoad()
     setupNavigation()
     setupUI()
-    setupLayout()
+    setupLayout()    
   }
+  // MARK: - Action Handler
   private func setupNavigation() {
-    self.navigationItem.title = "카테고리"
+    self.addNavigationBarCartButton()
+    self.setupBroccoliNavigationBar(title: "카테고리")
   }
-  
   private func setupUI() {
     view.backgroundColor = .white
     tableView.dataSource = self
@@ -131,7 +133,10 @@ extension CategoryViewController: UITableViewDataSource {
 extension CategoryViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     switch indexPath.section {
-    case 0, categoryData.count + 1:
+    case 0:
+      let buyOftenViewController = BuyOftenViewController()
+      self.navigationController?.pushViewController(buyOftenViewController, animated: true)
+    case categoryData.count + 1:
       print(indexPath.section)
     default:
       if indexPath.row == 0 {

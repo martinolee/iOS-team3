@@ -14,6 +14,7 @@
 		7050F31A2429CEBB00B8E13B /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7050F3192429CEBB00B8E13B /* CategoryViewController.swift */; };
 		7050F31E242A3BB300B8E13B /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7050F31D242A3BB300B8E13B /* CategoryTableViewCell.swift */; };
 		7050F324242DDE7900B8E13B /* CategoryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7050F323242DDE7900B8E13B /* CategoryData.swift */; };
+		70BB5438243B432F00BE81F4 /* BuyOftenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BB5437243B432F00BE81F4 /* BuyOftenViewController.swift */; };
 		70E8178324360DF70010EB4C /* CategorySubTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E8178224360DF70010EB4C /* CategorySubTableViewCell.swift */; };
 		723851E124249C6400E8B206 /* UserInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723851E024249C6400E8B206 /* UserInfoTableViewCell.swift */; };
 		7268B6FC242E173300DE95CB /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7268B6FB242E173300DE95CB /* UIDeviceExtension.swift */; };
@@ -94,6 +95,7 @@
 		7050F3192429CEBB00B8E13B /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		7050F31D242A3BB300B8E13B /* CategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCell.swift; sourceTree = "<group>"; };
 		7050F323242DDE7900B8E13B /* CategoryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryData.swift; sourceTree = "<group>"; };
+		70BB5437243B432F00BE81F4 /* BuyOftenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyOftenViewController.swift; sourceTree = "<group>"; };
 		70E8178224360DF70010EB4C /* CategorySubTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySubTableViewCell.swift; sourceTree = "<group>"; };
 		723851E024249C6400E8B206 /* UserInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoTableViewCell.swift; sourceTree = "<group>"; };
 		7268B6FB242E173300DE95CB /* UIDeviceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
@@ -300,6 +302,7 @@
 			children = (
 				7298BEFE242DDF2E005B0517 /* MarketBroccoliTabBarController.swift */,
 				7050F3192429CEBB00B8E13B /* CategoryViewController.swift */,
+				70BB5437243B432F00BE81F4 /* BuyOftenViewController.swift */,
 				FAAFEB5E2424A74900452977 /* SettingsViewController.swift */,
 				FAAE2E562424E3C400ACC5D3 /* SignUpViewController.swift */,
 				7050F3112424BA3800B8E13B /* LoginViewController.swift */,
@@ -636,6 +639,7 @@
 				7CFCE96B24320AFF00E067AD /* CategorySelected.swift in Sources */,
 				7C5A889624343F41006361AC /* SignupLabel.swift in Sources */,
 				7291F87D242C7EAF009D4E83 /* CartViewHeader.swift in Sources */,
+				70BB5438243B432F00BE81F4 /* BuyOftenViewController.swift in Sources */,
 				723851E124249C6400E8B206 /* UserInfoTableViewCell.swift in Sources */,
 				7C5A889424343AD9006361AC /* SignupViewProtocol.swift in Sources */,
 				FA48FBDC2434792100E53EB5 /* Signup.swift in Sources */,

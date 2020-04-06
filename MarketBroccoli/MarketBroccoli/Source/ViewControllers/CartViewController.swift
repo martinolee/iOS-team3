@@ -86,7 +86,7 @@ class CartViewController: UIViewController {
     setCorrectSelectAllProductCheckBoxStatus()
   }
   
-  // MARK: Setup Attribute
+  // MARK: - Setup Attribute
   
   private func setupAttribute() {
     title = "장바구니"
