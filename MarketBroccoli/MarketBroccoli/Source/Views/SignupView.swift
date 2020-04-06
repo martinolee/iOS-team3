@@ -5,6 +5,7 @@
 //  Copyright © 2020 Lance. All rights reserved.
 
 import UIKit
+import WebKit
 
 class SignupView: UIView, UITextFieldDelegate {
   weak var delegate: SignupViewDelegate?
@@ -41,6 +42,7 @@ class SignupView: UIView, UITextFieldDelegate {
   private lazy var secretTextField = UITextField().then {
     $0.signupStyle(round: .roundedRect, clearButton: .whileEditing)
     $0.placeholder = "비밀번호를 입력해주세요"
+    $0.isSecureTextEntry = true
     $0.delegate = self
     $0.addTarget(self, action: #selector(secretTextFeildEditingChanged), for: .editingChanged)
   }
@@ -60,6 +62,7 @@ class SignupView: UIView, UITextFieldDelegate {
   private lazy var checkSecretNumberTextField = UITextField().then {
     $0.placeholder = "비밀번호를 한번 더 입력해주세요"
     $0.delegate = self
+    $0.isSecureTextEntry = true
     $0.addTarget(self, action: #selector(checkSecretNumberTextFeildEditingChanged), for: .editingChanged)
     $0.signupStyle(round: .roundedRect, clearButton: .whileEditing)
   }
@@ -132,7 +135,7 @@ class SignupView: UIView, UITextFieldDelegate {
   private let addressCheckingLabel = SignupLabel(textColor: .lightGray, font: .systemFont(ofSize: 12)).then {
     $0.text = "배송 가능 여부를 확인할 수 있습니다."
   }
-  private let searchingAddressButton = SignupButton(
+  let searchingAddressButton = SignupButton(
     setTitleColor: .white,
     backgroundColor: .kurlyMainPurple,
     borderWidth: nil,
@@ -141,10 +144,40 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.setTitle("주소 검색", for: .normal)
     $0.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
     $0.tintColor = .white
+    $0.addTarget(self, action: #selector(searchingAddressButtonTouched), for: .touchUpInside)
   }
-//  private let addressTextField = UITextField().then {
-//    $0.signupStyle(round: .roundedRect, clearButton: .never)
-//  }
+  let addressWebViewContainer = UIView().then {
+    $0.backgroundColor = UIColor.black.withAlphaComponent(0.2)
+    $0.isHidden = true
+  }
+  var addressWebView: WKWebView?
+  
+  let addressCloseButton = UIButton(type: .system).then {
+    $0.setImage(UIImage(systemName: "xmark"), for: .normal)
+    $0.tintColor = .black
+    $0.addTarget(self, action: #selector(addressCloseButton(button:)), for: .touchUpInside)
+  }
+  let addressCloseView = UIView().then {
+    $0.backgroundColor = .white
+  }
+    
+  let addressTextField = UITextField().then {
+    $0.signupStyle(round: .roundedRect, clearButton: .never)
+    $0.addTarget(self, action: #selector(addressTextFieldDidChange(_:)), for: .editingChanged)
+  }
+  let showAddressLabel = SignupLabel(textColor: .lightGray, font: .systemFont(ofSize: 12))
+  
+  lazy var addressDetailTextField = UITextField().then {
+    $0.signupStyle(round: .roundedRect, clearButton: .never)
+    $0.placeholder = "세부주소를 입력해주세요"
+    $0.delegate = self
+    $0.addTarget(self, action: #selector(addressTextFieldDidChange(_:)), for: .editingChanged)
+  }
+
+  let limitAddressLabel = SignupLabel(textColor: .green, font: .systemFont(ofSize: 12)).then {
+    $0.textAlignment = .right
+  }
+  
   private let birthdayLabel = SignupLabel(textColor: nil, font: nil).then {
     $0.text = "생년월일"
   }
@@ -371,6 +404,7 @@ class SignupView: UIView, UITextFieldDelegate {
      cellphoneTextField, getCodeButton, checkingCodeCompleteLabel,
      checkingCodeTexField, timerInTextField, checkingCodeButton,
      addressLabel, addressCheckingLabel, searchingAddressButton,
+     addressTextField, showAddressLabel, addressDetailTextField, limitAddressLabel,
      birthdayLabel, genderLabel, maleRoundButton, maleLabel,
      bunchBirthdayView, femaleRoundButton, noChoiceRoundButton,
      recoRoundButton, eventNameRoundButton, recoUnderline, eventNameUnderline,
@@ -392,8 +426,21 @@ class SignupView: UIView, UITextFieldDelegate {
      birthdayDayTextField].forEach {
       bunchBirthdayView.addSubview($0)
     }
-    [scrollView].forEach {
+    [addressCloseButton].forEach {
+      addressCloseView.addSubview($0)
+    }
+    
+    [addressCloseView].forEach {
+      addressWebViewContainer.addSubview($0)
+    }
+    
+    [scrollView, addressWebViewContainer].forEach {
       self.addSubview($0)
+    }
+    
+    setupAddressWebView()
+    if let addressWebView = addressWebView {
+      addressWebViewContainer.addSubview(addressWebView)
     }
     scrollView.snp.makeConstraints {
       $0.edges.equalToSuperview()
@@ -523,8 +570,29 @@ class SignupView: UIView, UITextFieldDelegate {
       $0.leading.trailing.equalTo(addressCheckingLabel)
       $0.height.equalTo(40)
     }
+    addressTextField.snp.makeConstraints {
+      $0.top.equalTo(searchingAddressButton.snp.bottom).offset(10)
+      $0.leading.trailing.equalTo(searchingAddressButton)
+      $0.height.equalTo(0)
+    }
+    showAddressLabel.snp.makeConstraints {
+      $0.top.equalTo(addressTextField.snp.bottom).offset(4)
+      $0.leading.trailing.equalTo(addressTextField)
+      $0.height.equalTo(0)
+    }
+    addressDetailTextField.snp.makeConstraints {
+      $0.top.equalTo(showAddressLabel.snp.bottom).offset(4)
+      $0.leading.trailing.equalTo(showAddressLabel)
+      $0.height.equalTo(0)
+    }
+    limitAddressLabel.snp.makeConstraints {
+      $0.top.equalTo(addressDetailTextField.snp.bottom).offset(4)
+      $0.leading.trailing.equalTo(addressDetailTextField)
+      $0.height.equalTo(0)
+    }
+
     birthdayLabel.snp.makeConstraints {
-      $0.top.equalTo(searchingAddressButton.snp.bottom).offset(20)
+      $0.top.equalTo(limitAddressLabel.snp.bottom).offset(20)
       $0.leading.trailing.equalTo(searchingAddressButton)
     }
     bunchBirthdayView.snp.makeConstraints {
@@ -772,6 +840,33 @@ class SignupView: UIView, UITextFieldDelegate {
       $0.width.equalToSuperview().multipliedBy(0.92)
       $0.bottom.equalToSuperview()
     }
+    
+    addressWebViewContainer.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
+    
+    addressCloseView.snp.makeConstraints {
+      if let addressWebView = addressWebView {
+        $0.top.equalTo(safeAreaLayoutGuide).inset(30)
+        $0.leading.trailing.equalTo(addressWebView)
+        $0.bottom.equalTo(addressWebView.snp.top)
+      }
+    }
+    
+    addressCloseButton.snp.makeConstraints {
+      if addressWebView != nil {
+        $0.trailing.equalTo(addressCloseView.snp.trailing)
+      }
+    }
+
+    if let addressWebView = addressWebView {
+      let safeArea = addressWebViewContainer.safeAreaLayoutGuide
+      addressWebView.snp.makeConstraints {
+        $0.top.equalTo(safeArea).inset(50)
+        $0.leading.trailing.equalTo(safeArea).inset(30)
+        $0.bottom.equalTo(safeArea).inset(20)
+      }
+    }
   }
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
@@ -835,6 +930,12 @@ extension SignupView {
       )
     case birthdayDayTextField:
       return delegate.birthdayDayTextField(
+        textField,
+        shouldChangeCharactersIn: range,
+        replacementString: string
+      )
+    case addressDetailTextField:
+      return delegate.addressDetailTextField(
         textField,
         shouldChangeCharactersIn: range,
         replacementString: string
@@ -1018,6 +1119,28 @@ extension SignupView {
   func activateCheckingCodeButton(_ able: Bool) {
     checkingCodeButton.isEnabled = able
   }
+  @objc func searchingAddressButtonTouched(button: UIButton) {
+    delegate?.searchingAddressButtonTouched(button)
+  }
+
+  func addressButtonTouchedOpenTextField() {
+    addressTextField.snp.updateConstraints {
+      $0.height.equalTo(40)
+    }
+    showAddressLabel.snp.updateConstraints {
+      $0.height.equalTo(12)
+    }
+    addressDetailTextField.snp.updateConstraints {
+      $0.height.equalTo(40)
+    }
+    limitAddressLabel.snp.updateConstraints {
+      $0.height.equalTo(12)
+    }
+    birthdayLabel.snp.updateConstraints {
+      $0.top.equalTo(limitAddressLabel.snp.bottom).offset(30)
+    }
+  }
+  
   @objc func genderRoundButtonTouched(button: UIButton) {
     let buttons = [maleRoundButton, femaleRoundButton, noChoiceRoundButton]
       .filter { $0 != button }
@@ -1047,5 +1170,32 @@ extension SignupView {
   }
   @objc func signupButtonTouched(button: UIButton) {
     delegate?.signupButtonTouched(button: button)
+  }
+  @objc private func addressTextFieldDidChange(_ addressTextField: UITextField) {
+    delegate?.addressTextField(
+      self.addressTextField,
+      self.addressDetailTextField,
+      self.addressTextField.text ?? "",
+      self.addressDetailTextField.text ?? ""
+    )
+  }
+
+  private func setupAddressWebView() {
+    let contentController = WKUserContentController()
+    contentController.add(self, name: "callBackHandler")
+    
+    let config = WKWebViewConfiguration()
+    config.userContentController = contentController
+    
+    self.addressWebView = WKWebView(frame: .zero, configuration: config)
+  }
+  @objc func addressCloseButton(button: UIButton) {
+    delegate?.addressCloseButton(button: button)
+  }
+}
+
+extension SignupView: WKScriptMessageHandler {
+  func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+    delegate?.userContentController(userContentController, didReceive: message)
   }
 }

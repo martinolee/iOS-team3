@@ -3,7 +3,11 @@
 //
 //  Created by macbook on 2020/03/20.
 //  Copyright © 2020 Team3. All rights reserved.
+
+import Alamofire
 import UIKit
+import WebKit
+
 class SignUpViewController: UIViewController {
   private lazy var signupView = SignupView().then {
     $0.delegate = self
@@ -40,10 +44,10 @@ class SignUpViewController: UIViewController {
     
     signupView.backgroundColor = .white
     self.view.backgroundColor = .white
-    let guide = self.view.safeAreaLayoutGuide
+//    let guide = self.view.safeAreaLayoutGuide
     
     signupView.snp.makeConstraints {
-      $0.edges.equalTo(guide)
+      $0.edges.equalToSuperview()
     }
   }
   func selectedAllButton() {
@@ -84,6 +88,41 @@ class SignUpViewController: UIViewController {
 
 // MARK: - Action
 extension SignUpViewController: SignupViewDelegate {
+  func addressTextField(
+    _ addressTextField: UITextField,
+    _ detailAddressTextField: UITextField,
+    _ address: String,
+    _ detailAddress: String
+  ) {
+    signupView.limitAddressLabel.text = "\(address.count + detailAddress.count)자 / 85자"
+  }
+  
+  func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+    guard
+      let addressData = message.body as? [String: String],
+      let zonecode = addressData["zonecode"],
+      let roadAddress = addressData["roadAddress"],
+      let jibunAddress = addressData["jibunAddress"]
+      else { return signupView.addressWebViewContainer.isHidden = true }
+    
+    print(addressData)
+    
+    signupView.addressWebViewContainer.isHidden = true
+    signupView.addressTextField.text = jibunAddress
+    signupView.showAddressLabel.text = roadAddress
+    signupView.addressButtonTouchedOpenTextField()
+    signupView.searchingAddressButton.setTitle("주소 재검색", for: .normal)
+    signupView.searchingAddressButton.setTitleColor(.kurlyPurple1, for: .normal)
+    signupView.searchingAddressButton.backgroundColor = .white
+    signupView.searchingAddressButton.tintColor = .kurlyPurple1
+    signupView.searchingAddressButton.layer.borderColor = UIColor.kurlyPurple1.cgColor
+    signupView.searchingAddressButton.layer.borderWidth = 1
+    
+    let addressCount = (signupView.addressTextField.text ?? "").count
+    let detailAddressCount = (signupView.addressDetailTextField.text ?? "").count
+    signupView.limitAddressLabel.text = "\(addressCount + detailAddressCount)자 / 85자"
+  }
+  
   func alert(message: String) {
     let alertController = UIAlertController(
       title: nil,
@@ -95,9 +134,29 @@ extension SignUpViewController: SignupViewDelegate {
     alertController.addAction(warning)
     present(alertController, animated: true)
   }
+  
   func signupButtonTouched(button: UIButton) {
     if !essentialInfo.values.contains(false) {
       alert(message: "회원가입을 축하드립니다!\n당신의 일상에 컬리를 더해 보세요")
+      
+      let user = User(
+        userName: "Steve Jobs",
+        email: "steve@icloud.com",
+        password: "steve12345",
+        mobile: "01012345678",
+        address: User.Address(
+          jibunAddress: "California",
+          roadAddress: "California",
+          zipCode: "123456")
+        )
+      
+//      AF.request(
+//        "http://15.164.49.32/accounts/create/",
+//        method: .post,
+//        parameters: user,
+//        encoding: JSONEncoding.default,
+//        headers: ["Content-Type":"application/json", "Accept":"application/json"]
+//      )
     } else if essentialInfo[.identification] == false {
       alert(message: "아이디를 입력해주세요")
     } else if essentialInfo[.password] == false {
@@ -186,7 +245,23 @@ extension SignUpViewController: SignupViewDelegate {
       $0.layer.borderWidth = 1
       $0.layer.borderColor = UIColor.lightGray.cgColor
     }
-  }  
+  }
+  func addressCloseButton(button: UIButton) {
+    signupView.addressWebViewContainer.isHidden = true
+  }
+  func searchingAddressButtonTouched(_ button: UIButton) {
+    signupView.addressWebViewContainer.isHidden = false
+    
+    guard
+      let url = URL(string: "https://martinolee.github.io/postcode/"),
+      let addressWebView = signupView.addressWebView
+    else { return }
+    
+    let urlRequest = URLRequest(url: url)
+    
+    addressWebView.load(urlRequest)
+  }
+  
   func checkingCodeButtonTouched() {
     if signupView.getCheckingCodeTexField() == "000000" {
       signupView.activateCheckingCodeTexField(false)
@@ -504,5 +579,16 @@ extension SignUpViewController: SignupViewDelegate {
     guard let stringRange = Range(range, in: currentText) else { return false }
     let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
     return updatedText.count <= 2
+  }
+  func addressDetailTextField(_ textField: UITextField,
+                              shouldChangeCharactersIn range: NSRange,
+                              replacementString string: String) -> Bool {
+    let currentText = textField.text ?? ""
+    guard let stringRange = Range(range, in: currentText) else { return false }
+    let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+    
+    guard let addressTextFieldText = signupView.addressTextField.text else { fatalError() }
+    
+    return (updatedText.count + addressTextFieldText.count) <= 85
   }
 }
