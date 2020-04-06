@@ -79,6 +79,7 @@
 		FA48FBD824345AE800E53EB5 /* SignupButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA48FBD724345AE800E53EB5 /* SignupButton.swift */; };
 		FA48FBDA2434648E00E53EB5 /* SignupUnderLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA48FBD92434648E00E53EB5 /* SignupUnderLineView.swift */; };
 		FA48FBDC2434792100E53EB5 /* Signup.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA48FBDB2434792100E53EB5 /* Signup.swift */; };
+		FA48FBFF24385A2D00E53EB5 /* AddressWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA48FBFE24385A2D00E53EB5 /* AddressWebView.swift */; };
 		FA9AD74224287F51002D3504 /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9AD74124287F51002D3504 /* SignupView.swift */; };
 		FAAE2E572424E3C400ACC5D3 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAE2E562424E3C400ACC5D3 /* SignUpViewController.swift */; };
 		FAAFEB612424A77900452977 /* LogOutTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAFEB602424A77900452977 /* LogOutTableViewCell.swift */; };
@@ -161,6 +162,7 @@
 		FA48FBD724345AE800E53EB5 /* SignupButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupButton.swift; sourceTree = "<group>"; };
 		FA48FBD92434648E00E53EB5 /* SignupUnderLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupUnderLineView.swift; sourceTree = "<group>"; };
 		FA48FBDB2434792100E53EB5 /* Signup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signup.swift; sourceTree = "<group>"; };
+		FA48FBFE24385A2D00E53EB5 /* AddressWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressWebView.swift; sourceTree = "<group>"; };
 		FA9AD74124287F51002D3504 /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
 		FAAE2E562424E3C400ACC5D3 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		FAAFEB5E2424A74900452977 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -392,6 +394,7 @@
 				7C65ECD02424D82C0075606A /* HomeRootView.swift */,
 				7050F31D242A3BB300B8E13B /* CategoryTableViewCell.swift */,
 				FA9AD74124287F51002D3504 /* SignupView.swift */,
+				FA48FBFE24385A2D00E53EB5 /* AddressWebView.swift */,
 				FA48FBD3243319DE00E53EB5 /* SignupCheckBox.swift */,
 			);
 			path = Views;
@@ -651,6 +654,7 @@
 				7050F31A2429CEBB00B8E13B /* CategoryViewController.swift in Sources */,
 				7268B6FC242E173300DE95CB /* UIDeviceExtension.swift in Sources */,
 				72EB58D32431D629001C4CCF /* SearchView.swift in Sources */,
+				FA48FBFF24385A2D00E53EB5 /* AddressWebView.swift in Sources */,
 				7C212DB324337DE100025869 /* UIScrollViewExtension.swift in Sources */,
 				7C8C4A28242B0DFC00FA912B /* UIButtonExtension.swift in Sources */,
 				7CCD649A2428DB2C00FC671B /* UICollectionViewExtension.swift in Sources */,
