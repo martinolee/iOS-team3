@@ -7,7 +7,16 @@
 //
 
 import UIKit
-
+//enum SettingViewProperties : Int {
+//  case login
+//  case noMemberSearching
+//  case shippingExplanation
+//  case noticeBoard
+//  case questionBoard
+//  case warranty
+//  case utilityBoard
+//  case marketIntroducing
+//}
 class SettingsViewController: UIViewController {
   private let settingOpt = [
     ["Login"],
@@ -29,6 +38,7 @@ class SettingsViewController: UIViewController {
 // MARK: - UI
 extension SettingsViewController {
   private func setupAttr() {
+    myCurlyTableView.allowsSelection = false
     myCurlyTableView.dataSource = self
     myCurlyTableView.delegate = self
     myCurlyTableView.register(cell: LogOutTableViewCell.self)

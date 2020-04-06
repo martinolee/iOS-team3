@@ -11,7 +11,7 @@ import Then
 import UIKit
 
 protocol CartViewHeaderDelegate: class {
-  func selectAllProductButtonTouched(_ button: UIButton)
+  func selectAllProductCheckBoxTouched(_ checkBox: CheckBox, isChecked: Bool)
   
   func removeSelectedProductButton(_ button: UIButton)
 }
@@ -21,12 +21,8 @@ class CartViewHeader: UIView {
   
   weak var delegate: CartViewHeaderDelegate?
   
-  private lazy var selectAllProductButton = UIButton(type: .system).then {
-    $0.contentMode = .center
-    $0.tintColor = .purple
-    $0.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
-    
-    $0.addTarget(self, action: #selector(selectAllProductButtonTouched(_:)), for: .touchUpInside)
+  private lazy var selectAllProductCheckBox = CheckBox(type: .system).then {
+    $0.delegate = self
   }
   
   private lazy var selectingStatusLabel = UILabel().then {
@@ -59,7 +55,7 @@ class CartViewHeader: UIView {
   }
   
   override func layoutSubviews() {
-    makeRoundCorner(selectAllProductButton, radius: 6)
+    makeRoundCorner(selectAllProductCheckBox, radius: 6)
     makeRoundCorner(removeProductButton, radius: 6)
   }
   
@@ -71,23 +67,23 @@ class CartViewHeader: UIView {
   
   private func addAllView() {
     self.addSubviews([
-      selectAllProductButton,
+      selectAllProductCheckBox,
       selectingStatusLabel,
       removeProductButton
     ])
   }
   
   private func setupAutoLayout() {
-    selectAllProductButton.snp.makeConstraints {
+    selectAllProductCheckBox.snp.makeConstraints {
       $0.leading.equalToSuperview().inset(18)
       $0.centerY.equalToSuperview()
       $0.width.equalTo(25)
-      $0.height.equalTo(selectAllProductButton.snp.width)
+      $0.height.equalTo(selectAllProductCheckBox.snp.width)
     }
     
     selectingStatusLabel.snp.makeConstraints {
-      $0.centerY.equalTo(selectAllProductButton)
-      $0.leading.equalTo(selectAllProductButton.snp.trailing).offset(20)
+      $0.centerY.equalTo(selectAllProductCheckBox)
+      $0.leading.equalTo(selectAllProductCheckBox.snp.trailing).offset(20)
     }
     
     removeProductButton.snp.makeConstraints {
@@ -102,16 +98,25 @@ class CartViewHeader: UIView {
     view.layer.masksToBounds = true
     view.layer.cornerRadius = radius
   }
-  
-  // MARK: - Action Handler
-  
-  @objc
-  private func selectAllProductButtonTouched(_ button: UIButton) {
-    delegate?.selectAllProductButtonTouched(button)
+}
+
+// MARK: - Action Handler
+
+extension CartViewHeader: CheckBoxDelegate {
+  func checkBoxTouched(_ checkBox: CheckBox, _ isChecked: Bool) {
+    delegate?.selectAllProductCheckBoxTouched(checkBox, isChecked: isChecked)
   }
   
   @objc
   private func removeSelectedProductButton(_ button: UIButton) {
     delegate?.removeSelectedProductButton(button)
+  }
+}
+
+// MARK: - Element Control
+
+extension CartViewHeader {
+  func setSelectAllProductCheckBoxStatus(_ checked: Bool) {
+    selectAllProductCheckBox.setStatus(checked)
   }
 }

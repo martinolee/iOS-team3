@@ -9,14 +9,6 @@
 import UIKit
 
 extension UILabel {
-  func getSize() -> CGSize? {
-    if let title = self.text, let font = self.font {
-      let attr = [NSAttributedString.Key.font: font]
-      return (title as NSString).size(withAttributes: attr)
-    }
-    return nil
-  }
-  
   func getWidth() -> CGFloat? {
     if let title = self.text, let font = self.font {
       let attr = [NSAttributedString.Key.font: font]

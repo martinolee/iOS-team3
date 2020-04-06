@@ -3,6 +3,7 @@ disabled_rules:
 - trailing_whitespace
 - function_body_length
 - type_body_length
+- function_parameter_count
 opt_in_rules:
 - force_unwrapping
 - closure_body_length
@@ -27,7 +28,7 @@ excluded:
 - MarketBroccoli/Application/AppDelegate.swift
 - MarketBroccoli/Application/SceneDelegate.swift
 - MarketBroccoli/Source/CustomUI/CustomCollectionViewFlowLayout.swift
-- MarketBroccoli/Source/Cells/HomeViewCells/HomeMDTableCell.swift
+- MarketBroccoli/Source/Home/HomeViewCells/HomeMDTableCell.swift
 # Custom
 
 force_cast: warning
