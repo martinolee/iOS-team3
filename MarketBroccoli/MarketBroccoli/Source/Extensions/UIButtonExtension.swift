@@ -11,17 +11,30 @@ import UIKit
 extension UIButton {
   func roundPurpleBtnStyle() {
     self.setTitleColor(.white, for: .normal)
-    self.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-    self.backgroundColor = .kurlyPurple
+    self.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
+    self.backgroundColor = .kurlyMainPurple
     self.layer.cornerRadius = 4
   }
   
   func roundLineBtnStyle() {
-    self.setTitleColor(.kurlyPurple, for: .normal)
-    self.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+    self.setTitleColor(.kurlyMainPurple, for: .normal)
+    self.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
     self.backgroundColor = .white
     self.layer.borderWidth = 1
-    self.layer.borderColor = UIColor.kurlyPurple.cgColor
+    self.layer.borderColor = UIColor.kurlyMainPurple.cgColor
     self.layer.cornerRadius = 4
+  }
+  
+  func makeCircleButton() {
+    self.layer.masksToBounds = true
+    self.layer.cornerRadius = self.bounds.height / 2
+  }
+  
+  func circleLineBtnStyle() {
+    self.setTitleColor(.kurlyMainPurple, for: .normal)
+    self.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
+    self.layer.borderWidth = 1
+    self.layer.borderColor = UIColor.kurlyMainPurple.cgColor
+    self.layer.cornerRadius = self.bounds.height / 2
   }
 }

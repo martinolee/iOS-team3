@@ -11,9 +11,7 @@ import Then
 import SnapKit
 
 class HomeRootView: UIView {
-  private let selectedCategory = UIView().then {
-    $0.backgroundColor = .purple
-  }
+  private let selectedCategory = CategorySelected()
   private let scrollView = UIScrollView().then {
     $0.backgroundColor = .gray
     $0.isPagingEnabled = true
@@ -21,14 +19,18 @@ class HomeRootView: UIView {
     $0.showsHorizontalScrollIndicator = false
     $0.bounces = false
   }
+  
   private let stackViewBackground = UIView().then {
     $0.backgroundColor = .white
   }
-  private let stackView = UIStackView().then {
-    $0.axis = .horizontal
-    $0.spacing = 8
-    $0.distribution = .fillEqually
-  }
+  
+//  private let stackView = UIStackView().then {
+//    $0.axis = .horizontal
+//    $0.spacing = 8
+//    $0.distribution = .fillEqually
+//  }
+  
+  private let stackView = CategoryStackView(categories: Categories.HomeCategory, distribution: .fillProportionally)
   
   private let menuTextArray = Categories.HomeCategory
   
@@ -98,7 +100,7 @@ extension HomeRootView {
   }
   
   private func setupUI() {
-    makeStackView()
+//    makeStackView()
     setupAttr()
     let safeArea = self.safeAreaLayoutGuide
     guard let firstStackViewItem = stackView.arrangedSubviews.first as? UILabel else { return }
@@ -116,11 +118,6 @@ extension HomeRootView {
       $0.centerX.equalTo(firstStackViewItem.snp.centerX)
       $0.width.equalTo(firstStackViewItem.getWidth() ?? 0)
       $0.height.equalTo(5)
-    }
-    
-    stackViewBackground.snp.makeConstraints {
-      $0.top.leading.bottom.trailing.equalTo(stackView)
-      $0.height.equalTo(40)
     }
     
     scrollView.snp.makeConstraints {
@@ -150,7 +147,7 @@ extension HomeRootView {
       categoryArray[idx].snp.makeConstraints {
         if idx == 0 {
           $0.top.leading.bottom.equalToSuperview()
-        } else if idx == categoryArray.count - 1 {
+        } else if idx == 4 {
           $0.leading.equalTo(categoryArray[idx - 1].snp.trailing)
           $0.top.bottom.trailing.equalToSuperview()
         } else {
@@ -177,7 +174,7 @@ extension HomeRootView: UIScrollViewDelegate {
 // MARK: - CollectionViewDataSource
 extension HomeRootView: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 5
+    return 20
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

@@ -11,13 +11,11 @@ import Then
 import UIKit
 
 protocol CartProductTableViewCellDelegate: class {
-  func selectingOptionButtonTouched(_ button: UIButton)
+  func checkBoxTouched(_ checkBox: CheckBox, _ isChecked: Bool, _ shoppingItemIndexPath: IndexPath)
   
-  func productRemoveButtonTouched(_ button: UIButton)
+  func productRemoveButtonTouched(_ button: UIButton, _ shoppingItemIndexPath: IndexPath)
   
-  func subtractionButtonTouched(_ button: UIButton)
-  
-  func additionButtonTouched(_ button: UIButton)
+  func productQuantityStepperValueChanged(_ value: Int, _ shoppingItemIndexPath: IndexPath)
 }
 
 class CartProductTableViewCell: UITableViewCell {
@@ -25,16 +23,14 @@ class CartProductTableViewCell: UITableViewCell {
   
   weak var deleagte: CartProductTableViewCellDelegate?
   
+  private var shoppingItemIndexPath: IndexPath!
+  
   private let containerView = UIView().then {
     $0.backgroundColor = .white
   }
   
-  private lazy var selectingOptionButton = UIButton(type: .system).then {
-    $0.contentMode = .scaleAspectFit
-    $0.tintColor = .purple
-    $0.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
-    
-    $0.addTarget(self, action: #selector(selectingOptionButtonTouched(_:)), for: .touchUpInside)
+  private lazy var checkBox = CheckBox(type: .system).then {
+    $0.delegate = self
   }
   
   private lazy var nameLabel = UILabel().then {
@@ -66,8 +62,6 @@ class CartProductTableViewCell: UITableViewCell {
   
   private lazy var productQuantityStepper = ProductQuantityStepper().then {
     $0.delegate = self
-    $0.layer.borderColor = UIColor.gray.cgColor
-    $0.layer.borderWidth = 1
   }
   
   private let staticTotalPriceLabel = UILabel().then {
@@ -109,7 +103,7 @@ class CartProductTableViewCell: UITableViewCell {
     contentView.addSubview(containerView)
     
     containerView.addSubviews([
-      selectingOptionButton,
+      checkBox,
       nameLabel,
       productRemoveButton,
       productImageView,
@@ -128,23 +122,21 @@ class CartProductTableViewCell: UITableViewCell {
       $0.leading.trailing.equalToSuperview().inset(8)
     }
     
-    selectingOptionButton.snp.makeConstraints {
+    checkBox.snp.makeConstraints {
       $0.top.equalToSuperview().inset(16)
       $0.leading.equalToSuperview().inset(10)
-      $0.width.equalTo(25)
-      $0.height.equalTo(selectingOptionButton.snp.width)
     }
     
     nameLabel.snp.makeConstraints {
-      $0.top.equalTo(selectingOptionButton)
-      $0.leading.equalTo(selectingOptionButton.snp.trailing).offset(16)
+      $0.top.equalTo(checkBox)
+      $0.leading.equalTo(checkBox.snp.trailing).offset(16)
       $0.trailing.equalTo(productRemoveButton.snp.leading).offset(-32)
     }
     
     productRemoveButton.snp.makeConstraints {
-      $0.top.bottom.equalTo(selectingOptionButton)
+      $0.top.bottom.equalTo(checkBox)
       $0.trailing.equalToSuperview().inset(10)
-      $0.width.height.equalTo(selectingOptionButton)
+      $0.width.height.equalTo(checkBox)
     }
     
     productImageView.snp.makeConstraints {
@@ -202,32 +194,33 @@ class CartProductTableViewCell: UITableViewCell {
     productQuantityStepper.layer.masksToBounds = true
     productQuantityStepper.layer.cornerRadius = 3.0
   }
-  
-  // MARK: - Action Handler
-  
-  @objc
-  private func selectingOptionButtonTouched(_ button: UIButton) {
-    deleagte?.selectingOptionButtonTouched(button)
+}
+
+// MARK: - Action Handler
+
+extension CartProductTableViewCell: CheckBoxDelegate {
+  func checkBoxTouched(_ checkBox: CheckBox, _ isChecked: Bool) {
+    deleagte?.checkBoxTouched(checkBox, isChecked, shoppingItemIndexPath)
   }
   
   @objc
   private func productRemoveButtonTouched(_ button: UIButton) {
-    deleagte?.productRemoveButtonTouched(button)
+    deleagte?.productRemoveButtonTouched(button, shoppingItemIndexPath)
   }
 }
 
 extension CartProductTableViewCell: ProductQuantityStepperDelegate {
-  func subtractionButtonTouched(_ button: UIButton) {
-    deleagte?.subtractionButtonTouched(button)
-  }
-  
-  func additionButtonTouched(_ button: UIButton) {
-    deleagte?.additionButtonTouched(button)
+  func valueChanged(_ value: Int) {
+    deleagte?.productQuantityStepperValueChanged(value, shoppingItemIndexPath)
   }
   
   // MARK: - Element Control
   
-  func configure(name: String, productImage: ImageResource, originalPrice: Int?, currentPrice: Int, quantity: Int) {
+  func configure(
+    name: String, productImage: ImageResource,
+    originalPrice: Int?, currentPrice: Int,
+    quantity: Int, isChecked: Bool, shoppingItemIndexPath: IndexPath
+  ) {
     if let originalPrice = originalPrice {
       let originalPrice = moneyFormatter(won: originalPrice, hasUnit: true)
       let attributeString = NSMutableAttributedString(string: originalPrice)
@@ -243,6 +236,8 @@ extension CartProductTableViewCell: ProductQuantityStepperDelegate {
     productImageView.kf.setImage(with: productImage)
     currentPriceLabel.text = currentPrice
     totalProductPriceLabel.text = totalPrice
-    productQuantityStepper.setValueLabel(text: "\(quantity)")
+    productQuantityStepper.setValue(quantity)
+    checkBox.setStatus(isChecked)
+    self.shoppingItemIndexPath = shoppingItemIndexPath
   }
 }

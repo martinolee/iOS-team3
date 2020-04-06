@@ -9,21 +9,23 @@
 import UIKit
 
 class CategoryViewController: UIViewController {
+  // MARK: - Properties
   private var tableView = UITableView(frame: .zero, style: .grouped)
   private let oftenProduct = ["자주 사는 상품"]
   private var lastSelection: IndexPath?
   private var refreshControl = UIRefreshControl()
-  
+// MARK: - Life Cycle
   override func viewDidLoad() {
     super.viewDidLoad()
     setupNavigation()
     setupUI()
-    setupLayout()
+    setupLayout()    
   }
+  // MARK: - Action Handler
   private func setupNavigation() {
-    self.navigationItem.title = "카테고리"
+    self.addNavigationBarCartButton()
+    self.setupBroccoliNavigationBar(title: "카테고리")
   }
-  
   private func setupUI() {
     view.backgroundColor = .white
     tableView.dataSource = self
@@ -79,7 +81,7 @@ extension CategoryViewController: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     switch section {
-    case 0, 16:
+    case 0, categoryData.count + 1:
       return 1
     default:
       if categoryData[section - 1].select {
@@ -101,7 +103,7 @@ extension CategoryViewController: UITableViewDataSource {
         $0.accessoryView?.tintColor = #colorLiteral(red: 0.3176470588, green: 0.1529411765, blue: 0.4470588235, alpha: 1)
       }
       return cell
-    case 16:
+    case categoryData.count + 1:
       let cell = tableView.dequeue(UITableViewCell.self).then {
        $0.textLabel?.text = "컬리의 추천"
       }
@@ -131,7 +133,10 @@ extension CategoryViewController: UITableViewDataSource {
 extension CategoryViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     switch indexPath.section {
-    case 0, 16:
+    case 0:
+      let buyOftenViewController = BuyOftenViewController()
+      self.navigationController?.pushViewController(buyOftenViewController, animated: true)
+    case categoryData.count + 1:
       print(indexPath.section)
     default:
       if indexPath.row == 0 {
@@ -169,7 +174,7 @@ extension CategoryViewController: UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     switch section {
-    case 16:
+    case categoryData.count + 1:
       return 10
     default:
       return 0

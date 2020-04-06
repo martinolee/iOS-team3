@@ -10,9 +10,7 @@ import Then
 import UIKit
 
 protocol ProductQuantityStepperDelegate: class {
-  func subtractionButtonTouched(_ button: UIButton)
-  
-  func additionButtonTouched(_ button: UIButton)
+  func valueChanged(_ value: Int)
 }
 
 class ProductQuantityStepper: UIView {
@@ -20,13 +18,19 @@ class ProductQuantityStepper: UIView {
   
   weak var delegate: ProductQuantityStepperDelegate?
   
+  private var value = 0 {
+    didSet {
+      valueLabel.text = "\(value)"
+    }
+  }
+  
   private lazy var subtractionButton = UIButton(type: .system).then {
     $0.contentMode = .scaleAspectFit
     $0.tintColor = .purple
     $0.backgroundColor = .lightGray
-    $0.setImage(UIImage(systemName: "plus"), for: .normal)
+    $0.setImage(UIImage(systemName: "minus"), for: .normal)
     
-    $0.addTarget(self, action: #selector(subtractionButtonTouched(_:)), for: .touchUpInside)
+    $0.addTarget(self, action: #selector(subtractValue), for: .touchUpInside)
   }
   
   private lazy var valueLabel = UILabel().then {
@@ -39,16 +43,17 @@ class ProductQuantityStepper: UIView {
     $0.contentMode = .scaleAspectFit
     $0.tintColor = .purple
     $0.backgroundColor = .lightGray
-    $0.setImage(UIImage(systemName: "minus"), for: .normal)
+    $0.setImage(UIImage(systemName: "plus"), for: .normal)
     
-    $0.addTarget(self, action: #selector(additionButtonTouched(_:)), for: .touchUpInside)
+    $0.addTarget(self, action: #selector(addValue), for: .touchUpInside)
   }
   
   // MARK: - Life Cycle
   
-  override init(frame: CGRect) {
+  private override init(frame: CGRect) {
     super.init(frame: frame)
     
+    setupAttribute()
     addAllView()
     setupAutoLayout()
   }
@@ -58,6 +63,13 @@ class ProductQuantityStepper: UIView {
   }
   
   // MARK: - Setup UI
+  
+  private func setupAttribute() {
+    self.do {
+      $0.layer.borderColor = UIColor.gray.cgColor
+      $0.layer.borderWidth = 1
+    }
+  }
   
   private func addAllView() {
     self.addSubviews([
@@ -88,16 +100,24 @@ class ProductQuantityStepper: UIView {
   // MARK: - Action Handler
   
   @objc
-  private func subtractionButtonTouched(_ button: UIButton) {
-    delegate?.subtractionButtonTouched(button)
+  private func subtractValue() {
+    if value > 1 {
+      value -= 1
+      
+      delegate?.valueChanged(value)
+    }
   }
   
   @objc
-  private func additionButtonTouched(_ button: UIButton) {
-    delegate?.additionButtonTouched(button)
+  private func addValue() {
+    value += 1
+    
+    delegate?.valueChanged(value)
   }
   
   // MARK: - Element Control
   
-  func setValueLabel(text: String) { valueLabel.text = text }
+  func setValue(_ value: Int) {
+    self.value = value
+  }
 }

@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import Then
-import SnapKit
 
 class BannerCollectionCell: UICollectionViewCell {
   let imageView = UIImageView().then {
