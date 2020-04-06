@@ -17,6 +17,14 @@ class DetailRootView: UIView {
   }
   private let stackView = CategoryStackView(categories: Categories.DetailCategory, distribution: .fillProportionally)
   
+  private let purchaseBtn = UIButton().then {
+    $0.setTitle("구매하기", for: .normal)
+    $0.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
+    $0.contentEdgeInsets = UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0)
+    $0.setTitleColor(.white, for: .normal)
+    $0.backgroundColor = .kurlyMainPurple
+    $0.contentVerticalAlignment = .top
+  }
   override init(frame: CGRect) {
     super.init(frame: frame)
     setupAttr()
@@ -92,7 +100,7 @@ extension DetailRootView {
     let safeArea = self.safeAreaLayoutGuide
     guard let firstStackViewItem = stackView.arrangedSubviews.first as? UILabel else { return }
     firstStackViewItem.textColor = .kurlyMainPurple
-    self.addSubviews([stackView, scrollView])
+    self.addSubviews([stackView, scrollView, purchaseBtn])
     self.stackView.addSubview(selectedCategory)
     stackView.snp.makeConstraints {
       $0.top.equalTo(safeArea.snp.top)
@@ -108,7 +116,13 @@ extension DetailRootView {
     
     scrollView.snp.makeConstraints {
       $0.top.equalTo(stackView.snp.bottom)
-      $0.leading.bottom.trailing.equalTo(safeArea)
+      $0.leading.trailing.equalTo(safeArea)
+    }
+    purchaseBtn.snp.makeConstraints {
+      $0.top.equalTo(scrollView.snp.bottom)
+      $0.leading.trailing.equalTo(safeArea)
+      $0.bottom.equalToSuperview()
+      $0.height.equalTo(self).multipliedBy(0.12)
     }
     
     var categoryArray: [UIView] = []

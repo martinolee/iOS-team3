@@ -9,20 +9,9 @@
 import UIKit
 
 class DetailDescriptionTableView: UITableView {
-  let purchaseView = UIView().then {
-    $0.backgroundColor = .kurlyMainPurple
-    $0.isUserInteractionEnabled = true
-  }
-  let purchaseLabel = UILabel().then {
-    $0.text = "구매하기"
-    $0.font = .systemFont(ofSize: 20)
-    $0.textColor = .white
-  }
-  
   override init(frame: CGRect, style: UITableView.Style) {
     super.init(frame: frame, style: style)
     setupAttr()
-    setupUI()
   }
   
   required init?(coder: NSCoder) {
@@ -42,8 +31,7 @@ extension DetailDescriptionTableView: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     switch indexPath.section {
     case 0:
-      let cell = UITableViewCell()
-      cell.backgroundColor = .red
+      let cell = tableView.dequeue(DetailDescriptionTopTableCell.self)
       return cell
     default:
       fatalError()
@@ -57,20 +45,6 @@ extension DetailDescriptionTableView {
     self.separatorStyle = .none
     self.allowsSelection = false
     self.dataSource = self
-  }
-  
-  private func setupUI() {
-    purchaseView.addSubview(purchaseLabel)
-    self.addSubview(purchaseView)
-    
-    purchaseLabel.snp.makeConstraints {
-      $0.center.equalToSuperview()
-    }
-    
-    purchaseView.snp.makeConstraints {
-      $0.leading.bottom.trailing.equalToSuperview()
-      $0.width.equalTo(self)
-      $0.height.equalTo(60)
-    }
+    self.register(cell: DetailDescriptionTopTableCell.self)
   }
 }
