@@ -86,7 +86,7 @@ class CartProductTableViewCell: UITableViewCell {
     addAllView()
     setupAutoLayout()
     setupSelectedBackgroundView()
-    setupContentViewBackgroundColor(.lightGray)
+    setupContentViewBackgroundColor(.kurlyGray3)
   }
   
   required init?(coder: NSCoder) {

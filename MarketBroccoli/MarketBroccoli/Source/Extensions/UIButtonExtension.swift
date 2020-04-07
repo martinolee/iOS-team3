@@ -24,4 +24,17 @@ extension UIButton {
     self.layer.borderColor = UIColor.kurlyMainPurple.cgColor
     self.layer.cornerRadius = 4
   }
+  
+  func makeCircleButton() {
+    self.layer.masksToBounds = true
+    self.layer.cornerRadius = self.bounds.height / 2
+  }
+  
+  func circleLineBtnStyle() {
+    self.setTitleColor(.kurlyMainPurple, for: .normal)
+    self.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
+    self.layer.borderWidth = 1
+    self.layer.borderColor = UIColor.kurlyMainPurple.cgColor
+    self.layer.cornerRadius = self.bounds.height / 2
+  }
 }

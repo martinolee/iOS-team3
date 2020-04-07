@@ -64,11 +64,7 @@ class CartViewController: UIViewController {
                      imageURL: URL(string: "https://img-cf.kurly.com/shop/data/goods/1510708692930y0.jpg")!,
                      originalPrice: 19800, currentPrice: 17820),
       quantity: 5, isChecked: false)]
-    ] {
-    didSet {
-      cartView.reloadCartTableViewData()
-    }
-  }
+    ]
   
   private lazy var cartView = CartView().then {
     $0.dataSource = self
@@ -90,7 +86,7 @@ class CartViewController: UIViewController {
     setCorrectSelectAllProductCheckBoxStatus()
   }
   
-  // MARK: Setup Attribute
+  // MARK: - Setup Attribute
   
   private func setupAttribute() {
     title = "장바구니"
@@ -159,6 +155,7 @@ extension CartViewController: CartProductTableViewCellDelegate {
       $0.addAction(UIAlertAction(title: "취소", style: .cancel))
       $0.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { _ in
         self.cartDummy[shoppingItemIndexPath.section].remove(at: shoppingItemIndexPath.row)
+        self.cartView.reloadCartTableViewData()
       }))
     }
     
@@ -191,6 +188,7 @@ extension CartViewController: CartViewDelegate {
             where self.cartDummy[categoryIndex][productIndex].isChecked {
               self.cartDummy[categoryIndex].remove(at: productIndex)
               if self.cartDummy[categoryIndex].isEmpty { self.cartDummy.remove(at: categoryIndex) }
+              self.cartView.reloadCartTableViewData()
           }
         }
       }))

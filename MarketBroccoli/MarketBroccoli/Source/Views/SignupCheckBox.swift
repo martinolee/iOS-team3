@@ -25,7 +25,6 @@ class SignupCheckBox: UIButton {
     isChecked = true
     super.init(frame: frame)
     setupAttribute()
-    setupAutoLayout()
   }
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
@@ -36,12 +35,6 @@ class SignupCheckBox: UIButton {
       $0.contentMode = .scaleAspectFit
       $0.tintColor = .kurlyMainPurple
       $0.addTarget(self, action: #selector(checkBoxTouched(_:)), for: .touchUpInside)
-    }
-  }
-  private func setupAutoLayout() {
-    self.snp.makeConstraints {
-      $0.width.equalTo(25)
-      $0.height.equalTo(self.snp.width)
     }
   }
   // MARK: - Action Handler

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import WebKit
 
 protocol SignupViewDelegate: class {
   func idTextField(
@@ -68,6 +69,11 @@ protocol SignupViewDelegate: class {
     shouldChangeCharactersIn range: NSRange,
     replacementString string: String
   ) -> Bool
+  func addressDetailTextField(
+    _ textField: UITextField,
+    shouldChangeCharactersIn range: NSRange,
+    replacementString string: String
+  ) -> Bool
   
   func idTextFieldDidBeginEditing(_ textField: UITextField)
   func secretTextFeildDidBeginEditing(_ textField: UITextField)
@@ -84,4 +90,14 @@ protocol SignupViewDelegate: class {
   func recoAndEventRoundButtonTouched(button: UIButton, eventButton: [UIButton])
   func squareButtonTouched(button: UIButton, leftButtons: [UIButton])
   func signupButtonTouched(button: UIButton)
+  func checkName(_ textField: UITextField, text: String)
+  func searchingAddressButtonTouched(_ button: UIButton)
+  func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage)
+  func addressTextField(
+    _ addressTextField: UITextField,
+    _ detailAddressTextField: UITextField,
+    _ address: String,
+    _ detailAddress: String
+  )
+  func addressCloseButton(button: UIButton)
 }
