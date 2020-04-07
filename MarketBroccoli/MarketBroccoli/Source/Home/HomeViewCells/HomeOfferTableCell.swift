@@ -121,7 +121,10 @@ extension HomeOfferTableCell: UICollectionViewDataSource {
 // MARK: - Delegate
 extension HomeOfferTableCell: UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    NotificationCenter.default.post(name: NSNotification.Name("ProductTouched"), object: nil, userInfo: nil)
+    NotificationCenter.default.post(
+      name: NSNotification.Name("ProductTouched"),
+      object: nil,
+      userInfo: ["indexPath": indexPath])
   }
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

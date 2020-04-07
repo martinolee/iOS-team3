@@ -41,7 +41,7 @@ class CartView: UIView {
   
   private lazy var cartTableView = UITableView().then {
     $0.separatorStyle = .none
-    $0.backgroundColor = .lightGray
+    $0.backgroundColor = .kurlyGray3
     $0.tableFooterView = cartFooterView
     
     $0.dataSource = self

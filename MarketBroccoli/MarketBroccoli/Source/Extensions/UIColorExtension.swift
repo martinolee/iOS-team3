@@ -11,7 +11,8 @@ import UIKit
 extension UIColor {
   // mainColor
   static var kurlyMainPurple: UIColor {
-      UIColor(red: 81 / 255, green: 39 / 255, blue: 114 / 255, alpha: 1)
+//    UIColor(red: 81 / 255, green: 39 / 255, blue: 114 / 255, alpha: 1)
+    UIColor(red: 95 / 255, green: 0 / 255, blue: 128 / 255, alpha: 1)
   }
   static var kurlyPurple1: UIColor {
     UIColor(red: 105 / 255, green: 53 / 255, blue: 143 / 255, alpha: 1)
