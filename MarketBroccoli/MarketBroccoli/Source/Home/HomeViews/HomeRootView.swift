@@ -20,16 +20,6 @@ class HomeRootView: UIView {
     $0.bounces = false
   }
   
-  private let stackViewBackground = UIView().then {
-    $0.backgroundColor = .white
-  }
-  
-//  private let stackView = UIStackView().then {
-//    $0.axis = .horizontal
-//    $0.spacing = 8
-//    $0.distribution = .fillEqually
-//  }
-  
   private let stackView = CategoryStackView(categories: Categories.HomeCategory, distribution: .fillProportionally)
   
   private let menuTextArray = Categories.HomeCategory
@@ -56,11 +46,11 @@ extension HomeRootView {
       $0.bottom.equalTo(label.snp.bottom)
       $0.centerX.equalTo(label.snp.centerX)
       $0.width.equalTo(label.getWidth() ?? 0)
-      $0.height.equalTo(5)
+      $0.height.equalTo(4)
     }
     
     UIView.animate(withDuration: 0.3) {
-      label.textColor = .purple
+      label.textColor = .kurlyMainPurple
       if scroll {
         let movePoint = CGPoint(x: self.frame.size.width * CGFloat(currentPage), y: 0)
         self.scrollView.setContentOffset(movePoint, animated: false)
@@ -81,30 +71,22 @@ extension HomeRootView {
 extension HomeRootView {
   private func setupAttr() {
     scrollView.delegate = self
+    categoryAddGesture()
   }
   
-  private func makeStackView() {
-    menuTextArray.forEach { text in
+  private func categoryAddGesture() {
+    stackView.subviews.forEach {
+      guard let label = $0 as? UILabel else { return }
       let tap = UITapGestureRecognizer(target: self, action: #selector(categoryTouched(_:)))
-      let label = UILabel().then {
-        $0.text = text
-        $0.font = .systemFont(ofSize: 18)
-        $0.textAlignment = .center
-        $0.textColor = .gray
-        $0.isUserInteractionEnabled = true
-        $0.addGestureRecognizer(tap)
-      }
-      stackView.addArrangedSubview(label)
+      label.addGestureRecognizer(tap)
     }
-    stackView.insertSubview(stackViewBackground, at: 0)
   }
   
   private func setupUI() {
-//    makeStackView()
     setupAttr()
     let safeArea = self.safeAreaLayoutGuide
     guard let firstStackViewItem = stackView.arrangedSubviews.first as? UILabel else { return }
-    firstStackViewItem.textColor = .purple
+    firstStackViewItem.textColor = .kurlyMainPurple
     self.addSubviews([scrollView, stackView])
     stackView.addSubview(selectedCategory)
     
@@ -126,37 +108,23 @@ extension HomeRootView {
     }
     
     var categoryArray: [UIView] = []
-    for idx in 0..<menuTextArray.count {
+    let categoryCnt = menuTextArray.count
+    for idx in menuTextArray.indices {
       switch idx {
       case 0:
         categoryArray.append(RecommendationView())
-      case 1...3:
+      case 1...categoryCnt - 2:
         let product = NewProduct(frame: .zero, collectionViewLayout: CustomCollectionViewFlowLayout())
         product.dataSource = self
         product.register(cell: HomeReuseCollectionCell.self)
         categoryArray.append(product)
-      case 4:
+      case categoryCnt - 1:
         categoryArray.append(RecommendationView())
       default:
         fatalError("out of range")
       }
     }
-    
-    for idx in 0..<categoryArray.count {
-      scrollView.addSubview(categoryArray[idx])
-      categoryArray[idx].snp.makeConstraints {
-        if idx == 0 {
-          $0.top.leading.bottom.equalToSuperview()
-        } else if idx == 4 {
-          $0.leading.equalTo(categoryArray[idx - 1].snp.trailing)
-          $0.top.bottom.trailing.equalToSuperview()
-        } else {
-          $0.leading.equalTo(categoryArray[idx - 1].snp.trailing)
-          $0.top.bottom.equalToSuperview()
-        }
-        $0.width.height.equalTo(self.scrollView)
-      }
-    }
+    makeCategoryConstraint(target: scrollView, categories: categoryArray)
   }
 }
 

@@ -10,11 +10,11 @@ class SignUpViewController: UIViewController {
   }
   let agreement = Agreement()
   
-  var essentialInfo: [Signup : Bool] = [
+  var essentialInfo: [Signup: Bool] = [
     .identification: false,
     .password: false,
     .passwordCheck: false,
-    .name : false,
+    .name: false,
     .email: false,
     .cellphone: false,
     .usingLaw: false,
