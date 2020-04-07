@@ -15,8 +15,19 @@ extension UIViewController {
     navigationController?.do({
       $0.navigationBar.barTintColor = .kurlyMainPurple
       $0.navigationBar.tintColor = .white
+      $0.navigationBar.barStyle = .black
       $0.navigationBar.isTranslucent = false
       $0.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+    })
+  }
+  
+  func setupSubNavigationBar(title: String) {
+    self.title = title
+    
+    navigationController?.do({
+      $0.navigationBar.tintColor = .black
+      $0.navigationBar.barTintColor = .white
+      $0.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
     })
   }
   
