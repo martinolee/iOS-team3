@@ -85,6 +85,7 @@
 		7CD9D466242460DB0091AE5B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CD9D464242460DB0091AE5B /* LaunchScreen.storyboard */; };
 		7CEB86EB243C52000044ED55 /* PriceStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEB86EA243C52000044ED55 /* PriceStackView.swift */; };
 		7CEB86ED243C5C9B0044ED55 /* DetailDescriptionBottomTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEB86EC243C5C9B0044ED55 /* DetailDescriptionBottomTableCell.swift */; };
+		7CEB871B243C69A90044ED55 /* DeliveryNoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEB871A243C69A90044ED55 /* DeliveryNoticeView.swift */; };
 		7CFCE96B24320AFF00E067AD /* CategorySelected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFCE96A24320AFF00E067AD /* CategorySelected.swift */; };
 		FA48FBD4243319DE00E53EB5 /* SignupCheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA48FBD3243319DE00E53EB5 /* SignupCheckBox.swift */; };
 		FA48FBD624335BC000E53EB5 /* Agreement.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA48FBD524335BC000E53EB5 /* Agreement.swift */; };
@@ -178,6 +179,7 @@
 		7CD9D467242460DB0091AE5B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7CEB86EA243C52000044ED55 /* PriceStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceStackView.swift; sourceTree = "<group>"; };
 		7CEB86EC243C5C9B0044ED55 /* DetailDescriptionBottomTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailDescriptionBottomTableCell.swift; sourceTree = "<group>"; };
+		7CEB871A243C69A90044ED55 /* DeliveryNoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryNoticeView.swift; sourceTree = "<group>"; };
 		7CFCE96A24320AFF00E067AD /* CategorySelected.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelected.swift; sourceTree = "<group>"; };
 		BA3DAD3F9ADB459218F3993B /* Pods_MarketBroccoli.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MarketBroccoli.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1C8D23965CC57B3A3E2F2A7 /* Pods-MarketBroccoli.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MarketBroccoli.release.xcconfig"; path = "Target Support Files/Pods-MarketBroccoli/Pods-MarketBroccoli.release.xcconfig"; sourceTree = "<group>"; };
@@ -533,6 +535,7 @@
 			isa = PBXGroup;
 			children = (
 				7CEB86EA243C52000044ED55 /* PriceStackView.swift */,
+				7CEB871A243C69A90044ED55 /* DeliveryNoticeView.swift */,
 			);
 			path = Details;
 			sourceTree = "<group>";
@@ -710,6 +713,7 @@
 				7291F87F242CC63C009D4E83 /* CartFooterView.swift in Sources */,
 				7C212DAF243361A900025869 /* CategoryScrollView.swift in Sources */,
 				7050F316242876AC00B8E13B /* IDFindViewController.swift in Sources */,
+				7CEB871B243C69A90044ED55 /* DeliveryNoticeView.swift in Sources */,
 				7CEB86EB243C52000044ED55 /* PriceStackView.swift in Sources */,
 				7298BEFF242DDF2E005B0517 /* MarketBroccoliTabBarController.swift in Sources */,
 				7C8C4A30242B474600FA912B /* HomeProductCollectionView.swift in Sources */,
