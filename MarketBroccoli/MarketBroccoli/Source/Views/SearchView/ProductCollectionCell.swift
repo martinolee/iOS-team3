@@ -10,6 +10,7 @@ import Kingfisher
 import UIKit
 
 protocol ProductCollectionCellDelegate: class {
+  func cartOrAlarmButtonTouched(_ button: UIButton, _ productIndexPath: IndexPath)
 }
 
 class ProductCollectionCell: UICollectionViewCell {
@@ -18,6 +19,26 @@ class ProductCollectionCell: UICollectionViewCell {
   weak var delegate: ProductCollectionCellDelegate?
   
   private var productIndexPath: IndexPath!
+  
+  private let eventMark = EventMark().then {
+    $0.backgroundColor = UIColor.kurlyPurple1.withAlphaComponent(0.5)
+  }
+  
+  private lazy var cartOrAlarmButton = UIButton(type: .system).then {
+    $0.clipsToBounds = true
+    $0.tintColor = .white
+    $0.backgroundColor = UIColor.kurlyPurple1.withAlphaComponent(0.5)
+    
+    $0.addTarget(self, action: #selector(cartOrAlarmButtonTouched(_:)), for: .touchUpInside)
+  }
+  
+  private let dimView = UILabel().then {
+    $0.font = .systemFont(ofSize: 24, weight: .bold)
+    $0.textAlignment = .center
+    $0.textColor = .white
+    $0.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+    $0.text = "Coming Soon"
+  }
   
   private let productImageView = UIImageView().then {
     $0.contentMode = .scaleAspectFit
@@ -79,7 +100,15 @@ class ProductCollectionCell: UICollectionViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
+  override func layoutSubviews() {
+    makeCircle(cartOrAlarmButton)
+  }
+  
   // MARK: - Setup UI
+  
+  private func makeCircle(_ view: UIView) {
+    view.layer.cornerRadius = ((view.bounds.width + view.bounds.height) / 2) / 2
+  }
   
   private func setupAttribute() {
   }
@@ -87,6 +116,9 @@ class ProductCollectionCell: UICollectionViewCell {
   private func addAllView() {
     contentView.addSubviews([
       productImageView,
+      eventMark,
+      dimView,
+      cartOrAlarmButton,
       productInfoView
     ])
     
@@ -104,6 +136,22 @@ class ProductCollectionCell: UICollectionViewCell {
       $0.top.leading.trailing.equalToSuperview()
       $0.width.equalToSuperview()
       $0.height.equalToSuperview().dividedBy(1.4)
+    }
+    
+    eventMark.snp.makeConstraints {
+      $0.top.leading.equalTo(productImageView)
+      $0.width.equalTo(productImageView).dividedBy(4)
+      $0.height.equalTo(eventMark.snp.width)
+    }
+    
+    dimView.snp.makeConstraints {
+      $0.edges.equalTo(productImageView)
+    }
+    
+    cartOrAlarmButton.snp.makeConstraints {
+      $0.bottom.trailing.equalTo(productImageView).inset(10)
+      $0.width.equalTo(productImageView).dividedBy(4)
+      $0.height.equalTo(cartOrAlarmButton.snp.width)
     }
     
     productInfoView.snp.makeConstraints {
@@ -127,7 +175,7 @@ class ProductCollectionCell: UICollectionViewCell {
     }
     
     firstAdditionalInfoLabel.snp.makeConstraints {
-      $0.top.equalTo(originalPriceLabel.snp.bottom).offset(6)
+      $0.bottom.equalTo(productInfoView).inset(6)
       $0.leading.equalTo(productNameLabel)
     }
     
@@ -143,6 +191,10 @@ class ProductCollectionCell: UICollectionViewCell {
 // MARK: - Action Handler
 
 extension ProductCollectionCell {
+  @objc
+  private func cartOrAlarmButtonTouched(_ button: UIButton) {
+    delegate?.cartOrAlarmButtonTouched(button, productIndexPath)
+  }
 }
 
 // MARK: - Element Control
@@ -150,20 +202,30 @@ extension ProductCollectionCell {
 extension ProductCollectionCell {
   func configure(
     productName: String, productImage: ImageResource,
-    originalPrice: Int?, currentPrice: Int,
-    additionalInfo: [String], productIndexPath: IndexPath
+    price: Int, discount: Double,
+    additionalInfo: [String], isSoldOut: Bool,
+    productIndexPath: IndexPath
   ) {
-    if let originalPrice = originalPrice {
-      let originalPrice = moneyFormatter(won: originalPrice, hasUnit: true)
-      let attributeString = NSMutableAttributedString(string: originalPrice)
-      attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1,
-                                   range: NSRange(location: 0, length: attributeString.length))
-      originalPriceLabel.attributedText = attributeString
+    if discount != 0 {
+      eventMark.isHidden = false
+      let eventMarkAttributeString = NSMutableAttributedString()
+        .normal("SAVE\n", textColor: .white, fontSize: 12)
+        .bold("\(Int(discount * 100))", fontSize: 16)
+        .normal("%", textColor: .white, fontSize: 12)
+      eventMark.textLabel.attributedText = eventMarkAttributeString
+      
+      let originalPrice = moneyFormatter(won: Int(Double(price) / (1 - discount)), hasUnit: true)
+      let originalPriceAttributeString = NSMutableAttributedString()
+        .strikethrough(originalPrice, textColor: .kurlyGray2)
+      originalPriceLabel.attributedText = originalPriceAttributeString
       
       currentPriceLabel.snp.updateConstraints {
         $0.leading.equalTo(originalPriceLabel.snp.trailing).offset(4)
       }
     } else {
+      eventMark.isHidden = true
+      eventMark.textLabel.text = ""
+      
       originalPriceLabel.text = ""
       
       currentPriceLabel.snp.updateConstraints {
@@ -196,7 +258,17 @@ extension ProductCollectionCell {
       secondAdditionalInfoLabel.isHidden = true
     }
     
-    let currentPrice = moneyFormatter(won: currentPrice, hasUnit: true)
+    if isSoldOut {
+      cartOrAlarmButton.setImage(UIImage(systemName: "bell"), for: .normal)
+      cartOrAlarmButton.setImage(UIImage(systemName: "bell.fill"), for: .highlighted)
+      dimView.isHidden = false
+    } else {
+      cartOrAlarmButton.setImage(UIImage(systemName: "cart"), for: .normal)
+      cartOrAlarmButton.setImage(UIImage(systemName: "cart.fill"), for: .highlighted)
+      dimView.isHidden = true
+    }
+    
+    let currentPrice = moneyFormatter(won: price, hasUnit: true)
     
     productNameLabel.text = productName
     productImageView.kf.setImage(with: productImage)

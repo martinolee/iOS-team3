@@ -9,7 +9,10 @@
 import UIKit
 
 protocol SearchViewDataSource: class {
-  func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView
+  func collectionView(
+    _ collectionView: UICollectionView,
+    viewForSupplementaryElementOfKind kind: String,
+    at indexPath: IndexPath) -> UICollectionReusableView
   
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
   
@@ -34,6 +37,8 @@ protocol SearchViewDelegate: class {
   func cancelSearchButtonTouched(_ button: UIButton, _ textField: UITextField)
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
+  
+  func searchingRefreshControlValueChanged(_ refreshControl: UIRefreshControl, _ tableView: UITableView)
 }
 
 class SearchView: UIView {
@@ -86,7 +91,12 @@ class SearchView: UIView {
     $0.addTarget(self, action: #selector(cancelSearchButtonTouched(_:)), for: .touchUpInside)
   }
   
+  private lazy var searchingRefreshControl = UIRefreshControl().then {
+    $0.addTarget(self, action: #selector(searchingRefreshControlValueChanged(_:)), for: .valueChanged)
+  }
+  
   private lazy var searchWordTableView = UITableView().then {
+    $0.refreshControl = searchingRefreshControl
     $0.tableFooterView = UIView()
     $0.backgroundColor = .kurlyGray3
     
@@ -97,7 +107,9 @@ class SearchView: UIView {
     $0.delegate = self
   }
   
-  private lazy var searchResultCollectionViewFlowLayout = UICollectionViewFlowLayout()
+  private lazy var searchResultCollectionViewFlowLayout = UICollectionViewFlowLayout().then {
+    $0.sectionHeadersPinToVisibleBounds = false
+  }
   
   private lazy var searchResultCollectionView = UICollectionView(
     frame: .zero,
@@ -105,6 +117,7 @@ class SearchView: UIView {
   ).then {
     $0.backgroundColor = .kurlyGray3
     
+    $0.register(header: ProductCollectionHeader.self)
     $0.register(cell: ProductCollectionCell.self)
     
     $0.dataSource = self
@@ -192,6 +205,9 @@ class SearchView: UIView {
       ).rounded(.down)
     let itemSize = CGSize(width: itemSizeWidth, height: itemSizeWidth * 1.8)
 
+    searchResultCollectionViewFlowLayout.headerReferenceSize = CGSize(
+      width: searchResultCollectionView.bounds.width, height: 36
+    )
     searchResultCollectionViewFlowLayout.sectionInset = insets
     searchResultCollectionViewFlowLayout.minimumLineSpacing = minimumLineSpacing
     searchResultCollectionViewFlowLayout.minimumInteritemSpacing = minimumInteritemSpacing
@@ -222,6 +238,11 @@ extension SearchView {
   private func searchProductTextFieldSearchButtonTouched(_ textField: UITextField) {
     delegate?.searchProductTextFieldSearchButtonTouched(textField, textField.text ?? "")
   }
+  
+  @objc
+  private func searchingRefreshControlValueChanged(_ refreshControl: UIRefreshControl) {
+    delegate?.searchingRefreshControlValueChanged(refreshControl, searchWordTableView)
+  }
 }
 
 extension SearchView: UITableViewDataSource {
@@ -250,9 +271,11 @@ extension SearchView: UICollectionViewDataSource {
     viewForSupplementaryElementOfKind kind: String,
     at indexPath: IndexPath
   ) -> UICollectionReusableView {
-    dataSource?
-      .collectionView(collectionView, viewForSupplementaryElementOfKind: kind, at: indexPath)
-      ?? UICollectionReusableView()
+    dataSource?.collectionView(
+      collectionView,
+      viewForSupplementaryElementOfKind: kind,
+      at: indexPath
+      ) ?? UICollectionReusableView()
   }
   
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -297,5 +320,9 @@ extension SearchView {
   
   func resignSearchProductTextFieldFirstResponder() {
     searchProductTextField.resignFirstResponder()
+  }
+  
+  func activateCancelSearchButton(_ enable: Bool) {
+    cancelSearchButton.isEnabled = enable
   }
 }

@@ -23,7 +23,19 @@ extension UICollectionView {
     }
   }
   
-  func dequeue<Header>(_ reusableHeader: Header.Type, indexPath: IndexPath) -> Header where Header: UICollectionReusableView {
+  func register<Header>(
+    header: Header.Type
+  ) where Header: UICollectionReusableView {
+    register(
+      header,
+      forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+      withReuseIdentifier: Header.identifier
+    )
+  }
+  
+  func dequeue<Header>(
+    _ reusableHeader: Header.Type,
+    indexPath: IndexPath) -> Header where Header: UICollectionReusableView {
     if let cell = dequeueReusableSupplementaryView(
       ofKind: UICollectionView.elementKindSectionHeader,
       withReuseIdentifier: reusableHeader.identifier,

@@ -12,24 +12,6 @@ import UIKit
 class SearchViewController: UIViewController {
   // MARK: - Properties
   
-  class Product {
-    let name: String
-    let imageURL: URL
-    let originalPrice: Int?
-    let currentPrice: Int
-    let additionalInfo: [String]
-    
-    init(
-      name: String, imageURL: URL, originalPrice: Int?, currentPrice: Int, additionalInfo: [String]
-    ) {
-      self.name = name
-      self.imageURL = imageURL
-      self.originalPrice = originalPrice
-      self.currentPrice = currentPrice
-      self.additionalInfo = additionalInfo
-    }
-  }
-  
   private var isShowingPopularSearchWords = true
   
   private let popularSearchWords = ["사골곰탕", "마스크팩", "베트남 용과", "로트벡쉔", "한돈 등심", "자몽", "손질새우"]
@@ -39,30 +21,6 @@ class SearchViewController: UIViewController {
       if recentSearchWords.count > 10 { recentSearchWords.removeLast() }
     }
   }
-  
-  private var productDummy: [Product] = [
-    Product(
-      name: "[바다원] 추자도 돌미역(산모미역) 150g",
-      imageURL: URL(string: "https://img-cf.kurly.com/shop/data/goods/1510708692930y0.jpg")!,
-      originalPrice: 8200,
-      currentPrice: 7380,
-      additionalInfo: ["Kurly Only", "한정수량"]
-    ),
-    Product(
-      name: "[바다원] 추자도 돌미역(산모미역) 150g",
-      imageURL: URL(string: "https://img-cf.kurly.com/shop/data/goods/1510708692930y0.jpg")!,
-      originalPrice: nil,
-      currentPrice: 7380,
-      additionalInfo: ["Kurly Only"]
-    ),
-    Product(
-      name: "[바다원] 추자도 돌미역(산모미역) 150g",
-      imageURL: URL(string: "https://img-cf.kurly.com/shop/data/goods/1510708692930y0.jpg")!,
-      originalPrice: nil,
-      currentPrice: 7380,
-      additionalInfo: []
-    )
-  ]
   
   private lazy var searchView = SearchView().then {
     $0.dataSource = self
@@ -82,7 +40,14 @@ class SearchViewController: UIViewController {
     self.setupBroccoliNavigationBar(title: "검색")
     searchWordTableViewWillFollowKeyboard()
     
-    for _ in 1...5 { productDummy += productDummy }
+    productDummy.append(DummyProduct(
+      name: "[선물세트] 박찬회화과자 명장 양갱 종합 25구",
+      imageURL: URL(string: "https://img-cf.kurly.com/shop/data/goods/1577172106761y0.jpg") ?? URL(fileURLWithPath: ""),
+      price: 70_000,
+      discount: 0,
+      additionalInfo: ["Kurly Only"],
+      isSoldOut: true
+    ))
   }
 }
 
@@ -112,9 +77,10 @@ extension SearchViewController: SearchViewDataSource {
   func collectionView(
     _ collectionView: UICollectionView,
     viewForSupplementaryElementOfKind kind: String,
-    at indexPath: IndexPath) -> UICollectionReusableView {
+    at indexPath: IndexPath
+  ) -> UICollectionReusableView {
     collectionView.dequeue(ProductCollectionHeader.self, indexPath: indexPath).then {
-      print($0)
+      $0.configure(hideOrderTypeButton: true)
     }
   }
   
@@ -129,9 +95,10 @@ extension SearchViewController: SearchViewDataSource {
       $0.configure(
         productName: product.name,
         productImage: ImageResource(downloadURL: product.imageURL),
-        originalPrice: product.originalPrice,
-        currentPrice: product.currentPrice,
+        price: product.price,
+        discount: product.discount,
         additionalInfo: product.additionalInfo,
+        isSoldOut: product.isSoldOut,
         productIndexPath: indexPath
       )
     }
@@ -150,6 +117,7 @@ extension SearchViewController: SearchViewDelegate {
     searchView.resignSearchProductTextFieldFirstResponder()
     searchView.hideSearchResultCollectionView(false)
     searchView.hideSearchWordTableView(true)
+    searchView.activateCancelSearchButton(true)
     
     tableView.deselectRow(at: indexPath, animated: true)
   }
@@ -187,6 +155,13 @@ extension SearchViewController: SearchViewDelegate {
     searchView.hideSearchResultCollectionView(true)
   }
   
+  func searchingRefreshControlValueChanged(_ refreshControl: UIRefreshControl, _ tableView: UITableView) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+      tableView.reloadData()
+      refreshControl.endRefreshing()
+    }
+  }
+  
   private func searchWordTableViewWillFollowKeyboard() {
     _ = NotificationCenter.default.addObserver(
       forName: UIResponder.keyboardDidShowNotification,
@@ -211,4 +186,7 @@ extension SearchViewController: SearchViewDelegate {
 }
 
 extension SearchViewController: ProductCollectionCellDelegate {
+  func cartOrAlarmButtonTouched(_ button: UIButton, _ productIndexPath: IndexPath) {
+    print("cartOrAlarmButtonTouched(_ button: \(button), _ productIndexPath: \(productIndexPath)")
+  }
 }
