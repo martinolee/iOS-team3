@@ -88,6 +88,59 @@ class SignUpViewController: UIViewController {
 
 // MARK: - Action
 extension SignUpViewController: SignupViewDelegate {
+  func signupButtonTouched(button: UIButton) {
+    if !essentialInfo.values.contains(false) {
+      alert(message: "회원가입을 축하드립니다!\n당신의 일상에 컬리를 더해 보세요")
+      
+      let user = User(
+        userName: "jobs123",
+        email: "dsafasdf@icloud.com",
+        name: "Steve Jobs",
+        password: "steve12345",
+        address: User.Address(
+          jibunAddress: "서울 강남구 일원동 700-1",
+          roadAddress: "California",
+          zipCode: "123456"),
+        mobile: "01011112222",
+        agreed: true
+      )
+
+      let encoder = JSONEncoder()
+      guard let encodedData = try? encoder.encode(user) else { return }
+      print(encodedData)
+      print()
+      AF.request(
+        "http://15.164.49.32/accounts/",
+        method: .post,
+        parameters: user,
+        encoder: JSONParameterEncoder.default
+        //      headers: ["Content-Type": "application/json",
+        //      "Accept": "application/json"]
+        ).responseJSON { response in
+          print(response)
+      }
+    } else if essentialInfo[.identification] == false {
+      alert(message: "아이디를 입력해주세요")
+    } else if essentialInfo[.password] == false {
+      alert(message: "비밀번호를 입력해주세요")
+    } else if essentialInfo[.passwordCheck] == false {
+      alert(message: "비밀번호확인이 일치하지 않습니다")
+    } else if essentialInfo[.name] == false {
+      alert(message: "(필수)이름을(를) 입력하세요.")
+    } else if essentialInfo[.email] == false {
+      alert(message: "(필수)이메일을(를) 입력하세요.")
+    } else if essentialInfo[.cellphone] == false {
+      alert(message: "(필수)휴대폰을(를) 입력하세요.")
+    } else if essentialInfo[.cellphoneCheck] == false {
+      alert(message: "(필수)인증번호을(를) 입력하세요.")
+    } else if essentialInfo[.usingLaw] == false {
+      alert(message: "필수 이용약관에 동의해주세요")
+    } else if essentialInfo[.personalInfo] == false {
+      alert(message: "개인정보처리방침에 동의해주세요")
+    } else if essentialInfo[.ageLimit] == false {
+      alert(message: "만 14세 이상에 동의해주세요")
+    }
+  }
   func addressTextField(
     _ addressTextField: UITextField,
     _ detailAddressTextField: UITextField,
@@ -133,51 +186,6 @@ extension SignUpViewController: SignupViewDelegate {
     }
     alertController.addAction(warning)
     present(alertController, animated: true)
-  }
-  
-  func signupButtonTouched(button: UIButton) {
-    if !essentialInfo.values.contains(false) {
-      alert(message: "회원가입을 축하드립니다!\n당신의 일상에 컬리를 더해 보세요")
-      
-      let user = User(
-        userName: "Steve Jobs",
-        email: "steve@icloud.com",
-        password: "steve12345",
-        mobile: "01012345678",
-        address: User.Address(
-          jibunAddress: "California",
-          roadAddress: "California",
-          zipCode: "123456")
-        )
-      
-//      AF.request(
-//        "http://15.164.49.32/accounts/create/",
-//        method: .post,
-//        parameters: user,
-//        encoding: JSONEncoding.default,
-//        headers: ["Content-Type":"application/json", "Accept":"application/json"]
-//      )
-    } else if essentialInfo[.identification] == false {
-      alert(message: "아이디를 입력해주세요")
-    } else if essentialInfo[.password] == false {
-      alert(message: "비밀번호를 입력해주세요")
-    } else if essentialInfo[.passwordCheck] == false {
-      alert(message: "비밀번호확인이 일치하지 않습니다")
-    } else if essentialInfo[.name] == false {
-      alert(message: "(필수)이름을(를) 입력하세요.")
-    } else if essentialInfo[.email] == false {
-      alert(message: "(필수)이메일을(를) 입력하세요.")
-    } else if essentialInfo[.cellphone] == false {
-      alert(message: "(필수)휴대폰을(를) 입력하세요.")
-    } else if essentialInfo[.cellphoneCheck] == false {
-      alert(message: "(필수)인증번호을(를) 입력하세요.")
-    } else if essentialInfo[.usingLaw] == false {
-      alert(message: "필수 이용약관에 동의해주세요")
-    } else if essentialInfo[.personalInfo] == false {
-      alert(message: "개인정보처리방침에 동의해주세요")
-    } else if essentialInfo[.ageLimit] == false {
-      alert(message: "만 14세 이상에 동의해주세요")
-    }
   }
 
   func squareButtonTouched(button: UIButton, leftButtons leftButton: [UIButton]) {
