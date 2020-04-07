@@ -12,11 +12,16 @@ import SnapKit
 class CategoryTableViewCell: UITableViewCell {
   static let identifier = "categoryCell"
   
-  let tableView = UITableView()
-  private let iconImage = UIImageView()
-  private let title = UILabel()
-  private let arrowImage = UIImageView()
-  private let subCategoryView = UIView()
+  private let iconImage = UIImageView().then {
+    $0.image = UIImage(named: "icon_sauce")
+    $0.contentMode = .scaleAspectFit
+  }
+  private let title = UILabel() 
+  private let arrowImage = UIImageView().then {
+    $0.image = UIImage(systemName: "chevron.down")
+    $0.contentMode = .scaleAspectFit
+    $0.tintColor = .darkGray
+  }
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -24,39 +29,21 @@ class CategoryTableViewCell: UITableViewCell {
     setupLayout()
   }
   
-  func subCategory(data: CategoryModel) {
-    if data.select == false {
-      arrowImage.image = UIImage(systemName: "chevron.down")
-      iconImageName(name: data.imageBlack)
-      title.textColor = .black
-    } else {
+  func selectState(data: CategoryModel) {
+    switch data.select {
+    case true:
       arrowImage.image = UIImage(systemName: "chevron.up")
       iconImageName(name: data.imagePurple)
       title.textColor = #colorLiteral(red: 0.3176470588, green: 0.1529411765, blue: 0.4470588235, alpha: 1)
-    }
-
-    switch data.select {
-    case true:
-      subCategoryView.isHidden = false
-    case false:
-      subCategoryView.isHidden = true
+    default:
+      arrowImage.image = UIImage(systemName: "chevron.down")
+      iconImageName(name: data.imageBlack)
+      title.textColor = .black
     }
   }
   
   private func setupUI() {
-    iconImage.image = UIImage(named: "icon_sauce")
-    iconImage.contentMode = .scaleAspectFit
-    arrowImage.image = UIImage(systemName: "chevron.down")
-    arrowImage.contentMode = .scaleAspectFit
-    arrowImage.tintColor = .darkGray
-    subCategoryView.backgroundColor = .systemTeal
-    
-//    tableView.separatorStyle = .none
-//    tableView.backgroundColor = .systemGray
-//    tableView.dataSource = self
-//    tableView.register(UITableViewCell.self, forCellReuseIdentifier: "test")
-    
-    [iconImage, title, arrowImage, subCategoryView, tableView].forEach {
+    [iconImage, title, arrowImage].forEach {
       contentView.addSubview($0)
     }
   }
@@ -77,13 +64,6 @@ class CategoryTableViewCell: UITableViewCell {
       make.trailing.equalTo(contentView.snp.trailing).offset(-20)
       make.width.height.equalTo(20)
     }
-//    subCategoryView.snp.makeConstraints { (make) -> Void in
-//      make.top.equalTo(iconImage.snp.bottom).offset(10)
-//      make.leading.equalTo(contentView.snp.leading)
-//      make.trailing.equalTo(contentView.snp.trailing)
-//      make.height.equalTo(contentView.snp.height).multipliedBy(2)
-//    }
-
   }
   
   func titleName(name: String) {
@@ -96,18 +76,5 @@ class CategoryTableViewCell: UITableViewCell {
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
-  }
-}
-
-extension CategoryTableViewCell: UITableViewDataSource {
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return categoryData.count
-  }
-  
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: "test", for: indexPath)
-    cell.textLabel?.text = categoryData[indexPath.row].title
-    cell.textLabel?.textColor = .systemPink
-    return cell
   }
 }

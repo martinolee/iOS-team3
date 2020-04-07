@@ -9,20 +9,23 @@
 import UIKit
 
 class CategoryViewController: UIViewController {
-  var tableView = UITableView(frame: .zero, style: .grouped)
-  let oftenProduct = ["자주 사는 상품"]
-  var lastSelection: IndexPath?
-  
+  // MARK: - Properties
+  private var tableView = UITableView(frame: .zero, style: .grouped)
+  private let oftenProduct = ["자주 사는 상품"]
+  private var lastSelection: IndexPath?
+  private var refreshControl = UIRefreshControl()
+// MARK: - Life Cycle
   override func viewDidLoad() {
     super.viewDidLoad()
     setupNavigation()
     setupUI()
-    setupLayout()
+    setupLayout()    
   }
+  // MARK: - Action Handler
   private func setupNavigation() {
-    self.navigationItem.title = "카테고리"
+    self.addNavigationBarCartButton()
+    self.setupBroccoliNavigationBar(title: "카테고리")
   }
-  
   private func setupUI() {
     view.backgroundColor = .white
     tableView.dataSource = self
@@ -33,10 +36,17 @@ class CategoryViewController: UIViewController {
       UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: (view.frame.height) * 0.01))
     tableView.separatorStyle = .none // 테이블 뷰 라인 없애기
     tableView.register(cell: CategoryTableViewCell.self)
+    tableView.register(cell: CategorySubTableViewCell.self)
     tableView.register(cell: UITableViewCell.self)
     [tableView].forEach {
       view.addSubview($0)
     }
+    if #available(iOS 10.0, *) {
+      tableView.refreshControl = refreshControl
+    } else {
+      tableView.addSubview(refreshControl)
+    }
+    refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
   }
   
   private func setupLayout() {
@@ -44,6 +54,22 @@ class CategoryViewController: UIViewController {
     tableView.snp.makeConstraints { (make) -> Void in
       make.edges.equalTo(guide)
     }
+  }
+//  private func downloadData(success: @escaping ()->()){
+//    Alamofire.request(URL).responseJSON{ (response) in
+//    /*
+//       Download Data
+//      */
+//      success()
+//    }
+//  }
+   @objc private func refresh() {
+//    downloadData {
+      /*
+      success 메소드 정의
+      */
+      self.refreshControl.endRefreshing()
+//    }
   }
 }
 
@@ -55,7 +81,7 @@ extension CategoryViewController: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     switch section {
-    case 0, 16:
+    case 0, categoryData.count + 1:
       return 1
     default:
       if categoryData[section - 1].select {
@@ -69,30 +95,34 @@ extension CategoryViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     switch indexPath.section {
     case 0:
-      let cell = tableView.dequeue(UITableViewCell.self)
-      cell.textLabel?.text = oftenProduct[indexPath.section]
-      cell.textLabel?.textColor = #colorLiteral(red: 0.3176470588, green: 0.1529411765, blue: 0.4470588235, alpha: 1)
       let image = UIImageView(image: UIImage(systemName: "chevron.right"))
-      cell.accessoryView = image
-      cell.accessoryView?.tintColor = #colorLiteral(red: 0.3176470588, green: 0.1529411765, blue: 0.4470588235, alpha: 1)
+      let cell = tableView.dequeue(UITableViewCell.self).then {
+        $0.textLabel?.text = oftenProduct[indexPath.section]
+        $0.textLabel?.textColor = #colorLiteral(red: 0.3176470588, green: 0.1529411765, blue: 0.4470588235, alpha: 1)
+        $0.accessoryView = image
+        $0.accessoryView?.tintColor = #colorLiteral(red: 0.3176470588, green: 0.1529411765, blue: 0.4470588235, alpha: 1)
+      }
       return cell
-    case 16:
-      let cell = tableView.dequeue(UITableViewCell.self)
-      cell.textLabel?.text = "컬리의 추천"
+    case categoryData.count + 1:
+      let cell = tableView.dequeue(UITableViewCell.self).then {
+       $0.textLabel?.text = "컬리의 추천"
+      }
       return cell
     default:
       if indexPath.row == 0 {
-        let cell = tableView.dequeue(CategoryTableViewCell.self)
         let data = categoryData[indexPath.section - 1]
-        cell.titleName(name: data.title)
-        cell.subCategory(data: data)
+        let cell = tableView.dequeue(CategoryTableViewCell.self).then {
+          $0.titleName(name: data.title)
+          $0.selectState(data: data)
+        }
         return cell
       } else {
-        let cell = tableView.dequeue(UITableViewCell.self)
         let data =
-          categoryData[indexPath.section - 1].row[indexPath.row - 1]
-        cell.textLabel?.text = data
-        cell.backgroundColor = #colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.968627451, alpha: 1)
+        categoryData[indexPath.section - 1].row[indexPath.row - 1]
+        let cell = tableView.dequeue(CategorySubTableViewCell.self).then {
+          $0.titleName(name: data)
+          $0.backgroundColor = #colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.968627451, alpha: 1)
+        }
         return cell
       }
     }
@@ -103,7 +133,10 @@ extension CategoryViewController: UITableViewDataSource {
 extension CategoryViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     switch indexPath.section {
-    case 0, 16:
+    case 0:
+      let buyOftenViewController = BuyOftenViewController()
+      self.navigationController?.pushViewController(buyOftenViewController, animated: true)
+    case categoryData.count + 1:
       print(indexPath.section)
     default:
       if indexPath.row == 0 {
@@ -141,7 +174,7 @@ extension CategoryViewController: UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     switch section {
-    case 16:
+    case categoryData.count + 1:
       return 10
     default:
       return 0
