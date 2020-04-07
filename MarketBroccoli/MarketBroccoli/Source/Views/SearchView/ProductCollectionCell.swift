@@ -49,6 +49,22 @@ class ProductCollectionCell: UICollectionViewCell {
     $0.setContentHuggingPriority(.fittingSizeLevel, for: .horizontal)
   }
   
+  private let firstAdditionalInfoLabel = UILabel().then {
+    $0.layer.borderColor = UIColor.kurlyMainPurple.cgColor
+    $0.layer.borderWidth = 1
+    $0.textColor = .kurlyMainPurple
+    $0.textAlignment = .center
+    $0.font = .systemFont(ofSize: 12)
+  }
+  
+  private let secondAdditionalInfoLabel = UILabel().then {
+    $0.layer.borderColor = UIColor.kurlyMainPurple.cgColor
+    $0.layer.borderWidth = 1
+    $0.textColor = .kurlyMainPurple
+    $0.textAlignment = .center
+    $0.font = .systemFont(ofSize: 12)
+  }
+  
   // MARK: - Life Cycle
   
   override init(frame: CGRect) {
@@ -77,7 +93,10 @@ class ProductCollectionCell: UICollectionViewCell {
     
     productInfoView.addSubviews([
       productNameLabel,
-      currentPriceLabel
+      originalPriceLabel,
+      currentPriceLabel,
+      firstAdditionalInfoLabel,
+      secondAdditionalInfoLabel
     ])
   }
   
@@ -98,9 +117,26 @@ class ProductCollectionCell: UICollectionViewCell {
       $0.top.leading.trailing.equalToSuperview().inset(8)
     }
     
+    originalPriceLabel.snp.makeConstraints {
+      $0.leading.equalTo(productNameLabel)
+      $0.bottom.equalTo(currentPriceLabel)
+    }
+    
     currentPriceLabel.snp.makeConstraints {
-      $0.top.equalTo(productNameLabel.snp.bottom).offset(6)
-      $0.leading.trailing.equalTo(productNameLabel)
+      $0.top.equalTo(productNameLabel.snp.bottom).offset(4)
+      $0.leading.equalTo(originalPriceLabel.snp.trailing).offset(4)
+    }
+    
+    firstAdditionalInfoLabel.snp.makeConstraints {
+      $0.top.equalTo(originalPriceLabel.snp.bottom).offset(6)
+      $0.leading.equalTo(productNameLabel)
+    }
+    
+    secondAdditionalInfoLabel.snp.makeConstraints {
+      $0.top.bottom.equalTo(firstAdditionalInfoLabel)
+      $0.leading.equalTo(firstAdditionalInfoLabel.snp.trailing).offset(4)
+      $0.trailing.equalTo(productNameLabel)
+      $0.width.equalTo(firstAdditionalInfoLabel)
     }
   }
 }
@@ -115,7 +151,8 @@ extension ProductCollectionCell {
 extension ProductCollectionCell {
   func configure(
     productName: String, productImage: ImageResource,
-    originalPrice: Int?, currentPrice: Int, productIndexPath: IndexPath
+    originalPrice: Int?, currentPrice: Int,
+    additionalInfo: [String], productIndexPath: IndexPath
   ) {
     if let originalPrice = originalPrice {
       let originalPrice = moneyFormatter(won: originalPrice, hasUnit: true)
@@ -124,16 +161,40 @@ extension ProductCollectionCell {
                                    range: NSRange(location: 0, length: attributeString.length))
       originalPriceLabel.attributedText = attributeString
       
-      productInfoView.addSubview(originalPriceLabel)
-      originalPriceLabel.snp.makeConstraints {
-        $0.leading.equalTo(productNameLabel)
-        $0.bottom.equalTo(currentPriceLabel)
-      }
-      
-      currentPriceLabel.snp.remakeConstraints {
-        $0.top.equalTo(productNameLabel.snp.bottom).offset(4)
+      currentPriceLabel.snp.updateConstraints {
         $0.leading.equalTo(originalPriceLabel.snp.trailing).offset(4)
       }
+    } else {
+      originalPriceLabel.text = ""
+      
+      currentPriceLabel.snp.updateConstraints {
+        $0.leading.equalTo(originalPriceLabel.snp.trailing)
+      }
+    }
+    
+    if !additionalInfo.isEmpty {
+      for infoIndex in additionalInfo.indices {
+        switch infoIndex {
+        case 0:
+          firstAdditionalInfoLabel.isHidden = false
+          secondAdditionalInfoLabel.isHidden = true
+          
+          firstAdditionalInfoLabel.text = additionalInfo[0]
+          secondAdditionalInfoLabel.text = ""
+        case 1:
+          secondAdditionalInfoLabel.isHidden = false
+          
+          secondAdditionalInfoLabel.text = additionalInfo[1]
+        default:
+          print("extra info")
+        }
+      }
+    } else {
+      firstAdditionalInfoLabel.text = ""
+      secondAdditionalInfoLabel.text = ""
+      
+      firstAdditionalInfoLabel.isHidden = true
+      secondAdditionalInfoLabel.isHidden = true
     }
     
     let currentPrice = moneyFormatter(won: currentPrice, hasUnit: true)

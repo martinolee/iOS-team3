@@ -24,7 +24,6 @@ import SnapKit
     window = UIWindow(frame: UIScreen.main.bounds)
     
     let marketBroccoliTabBarController = MartketBroccoliTabBarController()
-//    let hong3TestVC = DetailViewController()
     window?.rootViewController = marketBroccoliTabBarController
     window?.makeKeyAndVisible()
   }

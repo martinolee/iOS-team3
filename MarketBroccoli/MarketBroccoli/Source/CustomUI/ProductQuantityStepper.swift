@@ -26,8 +26,8 @@ class ProductQuantityStepper: UIView {
   
   private lazy var subtractionButton = UIButton(type: .system).then {
     $0.contentMode = .scaleAspectFit
-    $0.tintColor = .purple
-    $0.backgroundColor = .lightGray
+    $0.tintColor = .kurlyMainPurple
+    $0.backgroundColor = .kurlyGray3
     $0.setImage(UIImage(systemName: "minus"), for: .normal)
     
     $0.addTarget(self, action: #selector(subtractValue), for: .touchUpInside)
@@ -36,13 +36,13 @@ class ProductQuantityStepper: UIView {
   private lazy var valueLabel = UILabel().then {
     $0.textAlignment = .center
     $0.layer.borderWidth = 1
-    $0.layer.borderColor = UIColor.gray.cgColor
+    $0.layer.borderColor = UIColor.kurlyGray2.cgColor
   }
   
   private lazy var additionButton = UIButton(type: .system).then {
     $0.contentMode = .scaleAspectFit
-    $0.tintColor = .purple
-    $0.backgroundColor = .lightGray
+    $0.tintColor = .kurlyMainPurple
+    $0.backgroundColor = .kurlyGray3
     $0.setImage(UIImage(systemName: "plus"), for: .normal)
     
     $0.addTarget(self, action: #selector(addValue), for: .touchUpInside)
@@ -66,7 +66,7 @@ class ProductQuantityStepper: UIView {
   
   private func setupAttribute() {
     self.do {
-      $0.layer.borderColor = UIColor.gray.cgColor
+      $0.layer.borderColor = UIColor.kurlyGray2.cgColor
       $0.layer.borderWidth = 1
     }
   }
