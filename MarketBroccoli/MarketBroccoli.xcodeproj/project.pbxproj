@@ -87,7 +87,8 @@
 		FA48FBD824345AE800E53EB5 /* SignupButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA48FBD724345AE800E53EB5 /* SignupButton.swift */; };
 		FA48FBDA2434648E00E53EB5 /* SignupUnderLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA48FBD92434648E00E53EB5 /* SignupUnderLineView.swift */; };
 		FA48FBDC2434792100E53EB5 /* Signup.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA48FBDB2434792100E53EB5 /* Signup.swift */; };
-		FA9AD74224287F51002D3504 /* SignupVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9AD74124287F51002D3504 /* SignupVIew.swift */; };
+		FA48FBFF24385A2D00E53EB5 /* AddressWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA48FBFE24385A2D00E53EB5 /* AddressWebView.swift */; };
+		FA9AD74224287F51002D3504 /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9AD74124287F51002D3504 /* SignupView.swift */; };
 		FAAE2E572424E3C400ACC5D3 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAE2E562424E3C400ACC5D3 /* SignUpViewController.swift */; };
 		FAAFEB612424A77900452977 /* LogOutTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAFEB602424A77900452977 /* LogOutTableViewCell.swift */; };
 		FAAFEB632424A79200452977 /* TypeConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAFEB622424A79200452977 /* TypeConverter.swift */; };
@@ -177,7 +178,8 @@
 		FA48FBD724345AE800E53EB5 /* SignupButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupButton.swift; sourceTree = "<group>"; };
 		FA48FBD92434648E00E53EB5 /* SignupUnderLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupUnderLineView.swift; sourceTree = "<group>"; };
 		FA48FBDB2434792100E53EB5 /* Signup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signup.swift; sourceTree = "<group>"; };
-		FA9AD74124287F51002D3504 /* SignupVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupVIew.swift; sourceTree = "<group>"; };
+		FA48FBFE24385A2D00E53EB5 /* AddressWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressWebView.swift; sourceTree = "<group>"; };
+		FA9AD74124287F51002D3504 /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
 		FAAE2E562424E3C400ACC5D3 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		FAAFEB5E2424A74900452977 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		FAAFEB602424A77900452977 /* LogOutTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogOutTableViewCell.swift; sourceTree = "<group>"; };
@@ -411,7 +413,8 @@
 				72EB58D12431D618001C4CCF /* SearchView */,
 				FAAFEB602424A77900452977 /* LogOutTableViewCell.swift */,
 				7050F31D242A3BB300B8E13B /* CategoryTableViewCell.swift */,
-				FA9AD74124287F51002D3504 /* SignupVIew.swift */,
+				FA9AD74124287F51002D3504 /* SignupView.swift */,
+				FA48FBFE24385A2D00E53EB5 /* AddressWebView.swift */,
 				FA48FBD3243319DE00E53EB5 /* SignupCheckBox.swift */,
 			);
 			path = Views;
@@ -671,7 +674,7 @@
 				7C16CEF02435D725007CD954 /* DetailViewController.swift in Sources */,
 				727F093524287C4F00584A40 /* UITableViewExtension.swift in Sources */,
 				7050F3122424BA3800B8E13B /* LoginViewController.swift in Sources */,
-				FA9AD74224287F51002D3504 /* SignupVIew.swift in Sources */,
+				FA9AD74224287F51002D3504 /* SignupView.swift in Sources */,
 				7CCD64962428DABA00FC671B /* HomeBannerCollectionCell.swift in Sources */,
 				7CFCE96B24320AFF00E067AD /* CategorySelected.swift in Sources */,
 				7C5A889624343F41006361AC /* SignupLabel.swift in Sources */,
@@ -695,6 +698,7 @@
 				7050F31A2429CEBB00B8E13B /* CategoryViewController.swift in Sources */,
 				7268B6FC242E173300DE95CB /* UIDeviceExtension.swift in Sources */,
 				72EB58D32431D629001C4CCF /* SearchView.swift in Sources */,
+				FA48FBFF24385A2D00E53EB5 /* AddressWebView.swift in Sources */,
 				7C212DB324337DE100025869 /* UIScrollViewExtension.swift in Sources */,
 				7C8C4A28242B0DFC00FA912B /* UIButtonExtension.swift in Sources */,
 				7C8991FF243715770058BF9E /* MakeCategoryConstraint.swift in Sources */,
