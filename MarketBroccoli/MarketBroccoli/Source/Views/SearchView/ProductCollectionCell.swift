@@ -82,7 +82,6 @@ class ProductCollectionCell: UICollectionViewCell {
   // MARK: - Setup UI
   
   private func setupAttribute() {
-    self.backgroundColor = .green
   }
   
   private func addAllView() {

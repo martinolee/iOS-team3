@@ -9,9 +9,17 @@
 import UIKit
 
 protocol SearchViewDataSource: class {
+  func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView
+  
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
+  
+  func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
+  
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+  
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
 }
 
 protocol SearchViewDelegate: class {
@@ -21,7 +29,11 @@ protocol SearchViewDelegate: class {
   
   func searchProductTextFieldEditingChanged(_ textField: UITextField, _ text: String)
   
+  func searchProductTextFieldSearchButtonTouched(_ textField: UITextField, _ text: String)
+  
   func cancelSearchButtonTouched(_ button: UIButton, _ textField: UITextField)
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
 }
 
 class SearchView: UIView {
@@ -32,7 +44,7 @@ class SearchView: UIView {
   weak var delegate: SearchViewDelegate?
   
   private lazy var searchView = UIView().then {
-    $0.backgroundColor = .lightGray
+    $0.backgroundColor = .kurlyGray3
   }
   
   private lazy var searchProductTextField = UITextField().then {
@@ -54,12 +66,14 @@ class SearchView: UIView {
     $0.layer.cornerRadius = 6
     $0.leftViewMode = .always
     $0.leftView = containerView
+    $0.enablesReturnKeyAutomatically = true
     $0.returnKeyType = .search
     $0.placeholder = "검색어를 입력해 주세요"
     $0.setContentHuggingPriority(.fittingSizeLevel, for: .horizontal)
     
     $0.addTarget(self, action: #selector(searchProductTextFieldEditingDidBegin(_:)), for: .editingDidBegin)
     $0.addTarget(self, action: #selector(searchProductTextFieldEditingChanged(_:)), for: .editingChanged)
+    $0.addTarget(self, action: #selector(searchProductTextFieldSearchButtonTouched(_:)), for: .primaryActionTriggered)
   }
   
   private lazy var cancelSearchButton = UIButton(type: .system).then {
@@ -72,13 +86,24 @@ class SearchView: UIView {
     $0.addTarget(self, action: #selector(cancelSearchButtonTouched(_:)), for: .touchUpInside)
   }
   
+  private lazy var searchWordTableView = UITableView().then {
+    $0.tableFooterView = UIView()
+    $0.backgroundColor = .kurlyGray3
+    
+    $0.register(cell: PopularSearchWordCell.self)
+    $0.register(cell: RecentSearchWordCell.self)
+    
+    $0.dataSource = self
+    $0.delegate = self
+  }
+  
   private lazy var searchResultCollectionViewFlowLayout = UICollectionViewFlowLayout()
   
   private lazy var searchResultCollectionView = UICollectionView(
     frame: .zero,
     collectionViewLayout: searchResultCollectionViewFlowLayout
   ).then {
-    $0.backgroundColor = .lightGray
+    $0.backgroundColor = .kurlyGray3
     
     $0.register(cell: ProductCollectionCell.self)
     
@@ -113,7 +138,8 @@ class SearchView: UIView {
   private func addAllView() {
     self.addSubviews([
       searchView,
-      searchResultCollectionView
+      searchResultCollectionView,
+      searchWordTableView
     ])
     
     searchView.addSubviews([
@@ -146,6 +172,11 @@ class SearchView: UIView {
       $0.leading.trailing.equalTo(searchView)
       $0.bottom.equalTo(safeArea)
     }
+    
+    searchWordTableView.snp.makeConstraints {
+      $0.top.leading.trailing.equalTo(searchResultCollectionView)
+      $0.bottom.equalToSuperview()
+    }
   }
   
   private func setupFlowLayout() {
@@ -169,22 +200,6 @@ class SearchView: UIView {
   }
 }
 
-extension SearchView: UICollectionViewDataSource {
-  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    dataSource?.collectionView(collectionView, numberOfItemsInSection: section) ?? 0
-  }
-  
-  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    dataSource?.collectionView(collectionView, cellForItemAt: indexPath) ?? UICollectionViewCell()
-  }
-}
-
-extension SearchView: UICollectionViewDelegate {
-  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    delegate?.collectionView(collectionView, didSelectItemAt: indexPath)
-  }
-}
-
 // MARK: - Action Handler
 
 extension SearchView {
@@ -202,9 +217,85 @@ extension SearchView {
   private func cancelSearchButtonTouched(_ button: UIButton) {
     delegate?.cancelSearchButtonTouched(button, searchProductTextField)
   }
+  
+  @objc
+  private func searchProductTextFieldSearchButtonTouched(_ textField: UITextField) {
+    delegate?.searchProductTextFieldSearchButtonTouched(textField, textField.text ?? "")
+  }
+}
+
+extension SearchView: UITableViewDataSource {
+  func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    dataSource?.tableView(tableView, titleForHeaderInSection: section)
+  }
+  
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    dataSource?.tableView(tableView, numberOfRowsInSection: section) ?? 0
+  }
+  
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    dataSource?.tableView(tableView, cellForRowAt: indexPath) ?? UITableViewCell()
+  }
+}
+
+extension SearchView: UITableViewDelegate {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    delegate?.tableView(tableView, didSelectRowAt: indexPath)
+  }
+}
+
+extension SearchView: UICollectionViewDataSource {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    viewForSupplementaryElementOfKind kind: String,
+    at indexPath: IndexPath
+  ) -> UICollectionReusableView {
+    dataSource?
+      .collectionView(collectionView, viewForSupplementaryElementOfKind: kind, at: indexPath)
+      ?? UICollectionReusableView()
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    dataSource?.collectionView(collectionView, numberOfItemsInSection: section) ?? 0
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    dataSource?.collectionView(collectionView, cellForItemAt: indexPath) ?? UICollectionViewCell()
+  }
+}
+
+extension SearchView: UICollectionViewDelegate {
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    delegate?.collectionView(collectionView, didSelectItemAt: indexPath)
+  }
 }
 
 // MARK: - Element Control
 
 extension SearchView {
+  func reloadSearchWordTableViewData() {
+    searchWordTableView.reloadData()
+  }
+  
+  func hideSearchResultCollectionView(_ hide: Bool) {
+    searchResultCollectionView.isHidden = hide
+  }
+  
+  func hideSearchWordTableView(_ hide: Bool) {
+    searchWordTableView.isHidden = hide
+  }
+  
+  func updateSearchWordTableViewBottomConstraint(_ amount: CGFloat) {
+    searchWordTableView.snp.updateConstraints {
+      $0.bottom.equalToSuperview().inset(amount)
+    }
+  }
+  
+  func setSearchProductTextField(text: String) {
+    searchProductTextField.text = text
+  }
+  
+  func resignSearchProductTextFieldFirstResponder() {
+    searchProductTextField.resignFirstResponder()
+  }
 }

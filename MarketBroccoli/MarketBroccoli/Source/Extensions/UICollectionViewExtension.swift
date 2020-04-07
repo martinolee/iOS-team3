@@ -23,6 +23,17 @@ extension UICollectionView {
     }
   }
   
+  func dequeue<Header>(_ reusableHeader: Header.Type, indexPath: IndexPath) -> Header where Header: UICollectionReusableView {
+    if let cell = dequeueReusableSupplementaryView(
+      ofKind: UICollectionView.elementKindSectionHeader,
+      withReuseIdentifier: reusableHeader.identifier,
+      for: indexPath) as? Header {
+      return cell
+    } else {
+      fatalError("Identifier required")
+    }
+  }
+  
   func sectionWidth(at section: Int) -> CGFloat {
     var width = self.frame.width
     width -= self.contentInset.left
