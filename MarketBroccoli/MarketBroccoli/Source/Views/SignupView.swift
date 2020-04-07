@@ -8,6 +8,7 @@ import UIKit
 import WebKit
 
 class SignupView: UIView, UITextFieldDelegate {
+  // MARK: - 프로퍼티
   weak var delegate: SignupViewDelegate?
   private lazy var idLabel = SignupLabel().then {
     $0.text = "아이디"
@@ -390,6 +391,7 @@ class SignupView: UIView, UITextFieldDelegate {
     setupUI()
     layoutSubviews()
   }
+  // MARK: - UIConstraint
   override func layoutSubviews() {
     [femaleRoundButton, maleRoundButton, noChoiceRoundButton, recoRoundButton, eventNameRoundButton].forEach {
       $0.makeCircleButton()
@@ -872,6 +874,7 @@ class SignupView: UIView, UITextFieldDelegate {
     fatalError("init(coder:) has not been implemented")
   }
 }
+// MARK: - Extension, Delegate
 extension SignupView {
   func textField(_ textField: UITextField,
                  shouldChangeCharactersIn range: NSRange,

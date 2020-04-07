@@ -67,6 +67,8 @@ extension LoginViewController {
   private func setupAttr() {
     view.backgroundColor = .white
     signUpBtn.addTarget(self, action: #selector(didTapsignUpButton(_:)), for: .touchUpInside)
+    idFindBtn.addTarget(self, action: #selector(didtapFindButton(_:)), for: .touchUpInside)
+    pwFindBtn.addTarget(self, action: #selector(didtapFindButton(_:)), for: .touchUpInside)
   }
   
   private func setupUI() {
@@ -95,7 +97,6 @@ extension LoginViewController {
       $0.top.equalTo(logInbtn.snp.bottom).offset(UI.btnTopMargin)
       $0.centerX.equalTo(guide.snp.centerX).offset(-UI.btnBetweenMargin)
     }
-    
     pwFindBtn.snp.makeConstraints {
       $0.top.equalTo(logInbtn.snp.bottom).offset(UI.btnTopMargin)
       $0.leading.equalTo(idFindBtn.snp.trailing).offset(4)
@@ -116,7 +117,16 @@ extension LoginViewController {
     self.dismiss(animated: true, completion: nil)
   }
   
-  @objc private func didtapFindButton() {}
+  @objc private func didtapFindButton(_ sender: UIButton) {
+    let idFindVC = IDFindViewController()
+    let pwFindVC = PWFindViewController()
+    switch sender {
+    case idFindBtn:
+      self.navigationController?.pushViewController(idFindVC, animated: true)
+    default:
+      self.navigationController?.pushViewController(pwFindVC, animated: true)
+    }
+  }
   
   @objc private func didTapsignUpButton(_ sender: UIButton) {
     let nextVC = SignUpViewController()
