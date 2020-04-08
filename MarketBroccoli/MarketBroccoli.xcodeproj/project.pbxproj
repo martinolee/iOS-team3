@@ -91,6 +91,12 @@
 		FA48FBDC2434792100E53EB5 /* Signup.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA48FBDB2434792100E53EB5 /* Signup.swift */; };
 		FA48FBFF24385A2D00E53EB5 /* AddressWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA48FBFE24385A2D00E53EB5 /* AddressWebView.swift */; };
 		FA9AD74224287F51002D3504 /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9AD74124287F51002D3504 /* SignupView.swift */; };
+		FA9DA95A243DA9F600929A98 /* UserName.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9DA959243DA9F600929A98 /* UserName.swift */; };
+		FA9DA95C243DACB900929A98 /* UserNameResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9DA95B243DACB900929A98 /* UserNameResponse.swift */; };
+		FA9DA95E243DBF1C00929A98 /* UserMobile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9DA95D243DBF1C00929A98 /* UserMobile.swift */; };
+		FA9DA960243DC03C00929A98 /* UserMobileResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9DA95F243DC03C00929A98 /* UserMobileResponse.swift */; };
+		FA9DA962243DC11F00929A98 /* UserMobileCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9DA961243DC11F00929A98 /* UserMobileCode.swift */; };
+		FA9DA964243DC2E700929A98 /* UserMobileCodeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9DA963243DC2E700929A98 /* UserMobileCodeResponse.swift */; };
 		FAAE2E572424E3C400ACC5D3 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAE2E562424E3C400ACC5D3 /* SignUpViewController.swift */; };
 		FAAFEB612424A77900452977 /* LogOutTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAFEB602424A77900452977 /* LogOutTableViewCell.swift */; };
 		FAAFEB632424A79200452977 /* TypeConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAFEB622424A79200452977 /* TypeConverter.swift */; };
@@ -184,6 +190,12 @@
 		FA48FBDB2434792100E53EB5 /* Signup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signup.swift; sourceTree = "<group>"; };
 		FA48FBFE24385A2D00E53EB5 /* AddressWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressWebView.swift; sourceTree = "<group>"; };
 		FA9AD74124287F51002D3504 /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
+		FA9DA959243DA9F600929A98 /* UserName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserName.swift; sourceTree = "<group>"; };
+		FA9DA95B243DACB900929A98 /* UserNameResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNameResponse.swift; sourceTree = "<group>"; };
+		FA9DA95D243DBF1C00929A98 /* UserMobile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMobile.swift; sourceTree = "<group>"; };
+		FA9DA95F243DC03C00929A98 /* UserMobileResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMobileResponse.swift; sourceTree = "<group>"; };
+		FA9DA961243DC11F00929A98 /* UserMobileCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMobileCode.swift; sourceTree = "<group>"; };
+		FA9DA963243DC2E700929A98 /* UserMobileCodeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMobileCodeResponse.swift; sourceTree = "<group>"; };
 		FAAE2E562424E3C400ACC5D3 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		FAAFEB5E2424A74900452977 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		FAAFEB602424A77900452977 /* LogOutTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogOutTableViewCell.swift; sourceTree = "<group>"; };
@@ -407,6 +419,12 @@
 				7050F323242DDE7900B8E13B /* CategoryData.swift */,
 				FA48FBD524335BC000E53EB5 /* Agreement.swift */,
 				FA48FBDB2434792100E53EB5 /* Signup.swift */,
+				FA9DA959243DA9F600929A98 /* UserName.swift */,
+				FA9DA95B243DACB900929A98 /* UserNameResponse.swift */,
+				FA9DA95D243DBF1C00929A98 /* UserMobile.swift */,
+				FA9DA95F243DC03C00929A98 /* UserMobileResponse.swift */,
+				FA9DA961243DC11F00929A98 /* UserMobileCode.swift */,
+				FA9DA963243DC2E700929A98 /* UserMobileCodeResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -657,10 +675,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				7C89920424372D670058BF9E /* DetailDescriptionTopTableCell.swift in Sources */,
+				FA9DA962243DC11F00929A98 /* UserMobileCode.swift in Sources */,
 				7C1CEB5F243436800055A986 /* SettingsViewController.swift in Sources */,
 				7CCD64982428DB1D00FC671B /* UICollectionViewCellExtension.swift in Sources */,
 				7C65ECDA2424F0830075606A /* ShoppingView.swift in Sources */,
 				7050F324242DDE7900B8E13B /* CategoryData.swift in Sources */,
+				FA9DA95A243DA9F600929A98 /* UserName.swift in Sources */,
 				7C27D427243B0BFA0064D1BF /* UIStackViewExtension.swift in Sources */,
 				7C65ECC2242472C60075606A /* Constant.swift in Sources */,
 				72EB58D52431F935001C4CCF /* CheckBox.swift in Sources */,
@@ -678,6 +698,7 @@
 				728078682429A8A500101B7D /* ProductQuantityStepper.swift in Sources */,
 				7C7171E6242C9437009CE7D5 /* Seperator.swift in Sources */,
 				7C16CEF02435D725007CD954 /* DetailViewController.swift in Sources */,
+				FA9DA960243DC03C00929A98 /* UserMobileResponse.swift in Sources */,
 				727F093524287C4F00584A40 /* UITableViewExtension.swift in Sources */,
 				7050F3122424BA3800B8E13B /* LoginViewController.swift in Sources */,
 				FA9AD74224287F51002D3504 /* SignupView.swift in Sources */,
@@ -699,6 +720,8 @@
 				7C8C4A30242B474600FA912B /* HomeProductCollectionView.swift in Sources */,
 				7C8991F92437097E0058BF9E /* DetailDescriptionTableView.swift in Sources */,
 				7C65ECD62424F0060075606A /* NewProductView.swift in Sources */,
+				FA9DA95C243DACB900929A98 /* UserNameResponse.swift in Sources */,
+				FA9DA95E243DBF1C00929A98 /* UserMobile.swift in Sources */,
 				7CCD64942428873000FC671B /* CustomCollectionViewFlowLayout.swift in Sources */,
 				7C8C4A2C242B381F00FA912B /* UIViewExtension.swift in Sources */,
 				7C5A889124343A2E006361AC /* HomeBannerTableCell.swift in Sources */,
@@ -723,6 +746,7 @@
 				7298BEFD242DC205005B0517 /* UIViewControllerExtension.swift in Sources */,
 				7C8C4A26242B0DEE00FA912B /* UITextFieldExtension.swift in Sources */,
 				7C65ECC5242472EC0075606A /* EmptyModel.swift in Sources */,
+				FA9DA964243DC2E700929A98 /* UserMobileCodeResponse.swift in Sources */,
 				7C65ECDC2424F08C0075606A /* EventView.swift in Sources */,
 				7C65ECBE242472400075606A /* EmptyManager.swift in Sources */,
 				7C8991FD24370AB20058BF9E /* DetailInfoTableView.swift in Sources */,
