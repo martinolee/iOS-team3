@@ -14,8 +14,9 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.text = "아이디"
     $0.required = true
   }
-  private lazy var idTextField = UITextField().then {
+  lazy var idTextField = UITextField().then {
     $0.placeholder = "예: marketkurly12"
+    $0.autocapitalizationType = .none
     $0.delegate = self
     $0.addTarget(self, action: #selector(idTextFieldEditingChanged), for: .editingChanged)
     $0.signupStyle(round: .roundedRect, clearButton: .whileEditing)
@@ -40,7 +41,7 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.text = "비밀번호"
     $0.required = true
   }
-  private lazy var secretTextField = UITextField().then {
+  lazy var secretTextField = UITextField().then {
     $0.signupStyle(round: .roundedRect, clearButton: .whileEditing)
     $0.placeholder = "비밀번호를 입력해주세요"
     $0.isSecureTextEntry = true
@@ -60,7 +61,7 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.text = "비밀번호 확인"
     $0.required = true
   }
-  private lazy var checkSecretNumberTextField = UITextField().then {
+  lazy var checkSecretNumberTextField = UITextField().then {
     $0.placeholder = "비밀번호를 한번 더 입력해주세요"
     $0.delegate = self
     $0.isSecureTextEntry = true
@@ -75,8 +76,9 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.text = "이름"
     $0.required = true
   }
-  private var nameTextFeild = UITextField().then {
+  var nameTextFeild = UITextField().then {
     $0.placeholder = "고객님의 이름을 입력해주세요"
+    $0.autocapitalizationType = .none
     $0.signupStyle(round: .roundedRect, clearButton: .whileEditing)
     $0.addTarget(self, action: #selector(checkName), for: .editingChanged)
   }
@@ -84,8 +86,9 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.text = "이메일"
     $0.required = true
   }
-  private lazy var emailTextFeild = UITextField().then {
+  lazy var emailTextFeild = UITextField().then {
     $0.placeholder = "예: marketkurly@kurly.com"
+    $0.autocapitalizationType = .none
     $0.layer.borderWidth = 1
     $0.layer.borderColor = UIColor.clear.cgColor
     $0.delegate = self
@@ -96,7 +99,7 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.text = "휴대폰"
     $0.required = true
   }
-  private lazy var cellphoneTextField = UITextField().then {
+  lazy var cellphoneTextField = UITextField().then {
     $0.placeholder = "'-' 없이 숫자만"
     $0.delegate = self
     $0.addTarget(self, action: #selector(cellphoneTextFieldEditingChanged), for: .editingChanged)
@@ -111,7 +114,7 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.setTitle("인증번호 받기", for: .normal)
     $0.addTarget(self, action: #selector(getCodeButtonTouched), for: .touchUpInside)
   }
-  private lazy var checkingCodeTexField = UITextField().then {
+  lazy var checkingCodeTexField = UITextField().then {
     $0.delegate = self
     $0.signupStyle(round: .roundedRect, clearButton: .whileEditing)
   }
@@ -963,6 +966,9 @@ extension SignupView {
   func activateIdtextField(_ able: Bool) {
     idTextField.isEnabled = able
   }
+  func setCheckIDButton(_ enable: Bool) {
+    checkIDButton.isEnabled = enable
+  }
   func idTextFieldOpenHiddenMessage() {
     idLimitExplanationLabel.snp.updateConstraints {
       $0.height.equalTo(10)
@@ -1023,9 +1029,6 @@ extension SignupView {
   @objc func checkIDButtonTouched(_ button: UIButton) {
     delegate?.checkIDButtonTouched(button)
   }
-  func getIDTextFieldText() -> String {
-    idTextField.text ?? ""
-  }
   @objc func secretTextFeildEditingChanged(_ textField: UITextField, text: String) {
     guard
       let delegate = delegate,
@@ -1036,17 +1039,11 @@ extension SignupView {
   func setTenSyllableLabel(textColor: UIColor) {
     tenSyllableLabel.textColor = textColor
   }
-  func getSecretTextFieldText() -> String {
-    secretTextField.text ?? ""
-  }
   func setCombinationLabel(textColor: UIColor) {
     combinationLabel.textColor = textColor
   }
   func setnotSameTheeNumberLabel(textColor: UIColor) {
     notSameTheeNumber.textColor = textColor
-  }
-  func getCheckSecretNumberTextFeild() -> String {
-    checkSecretNumberTextField.text ?? ""
   }
   @objc func checkName(_ textField: UITextField, text: String) {
     guard
@@ -1093,9 +1090,6 @@ extension SignupView {
   func setTimerInTextField(text: String) {
     timerInTextField.text = text
   }
-  func getCellphoneTextField() -> String {
-    cellphoneTextField.text ?? ""
-  }
   func hideTimerInTextField(_ hidden: Bool) {
     timerInTextField.isHidden = hidden
   }
@@ -1109,9 +1103,6 @@ extension SignupView {
   }
   func activateCellphoneTextField(_ able: Bool) {
     cellphoneTextField.isEnabled = able
-  }
-  func getCheckingCodeTexField() -> String {
-    checkingCodeTexField.text ?? ""
   }
   @objc func checkingCodeButtonTouched() {
     delegate?.checkingCodeButtonTouched()

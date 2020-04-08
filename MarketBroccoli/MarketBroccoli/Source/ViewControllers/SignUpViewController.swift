@@ -25,7 +25,7 @@ class SignUpViewController: UIViewController {
     .personalInfo: false,
     .ageLimit: false
   ]
-
+  
   private var leftTime = 10 {
     didSet {
       signupView.setTimerInTextField(text: timeFormatted(leftTime))
@@ -39,12 +39,12 @@ class SignUpViewController: UIViewController {
   }
   private func setupUI() {
     [signupView].forEach {
-        self.view.addSubview($0)
+      self.view.addSubview($0)
     }
     
     signupView.backgroundColor = .white
     self.view.backgroundColor = .white
-//    let guide = self.view.safeAreaLayoutGuide
+    //    let guide = self.view.safeAreaLayoutGuide
     
     signupView.snp.makeConstraints {
       $0.edges.equalToSuperview()
@@ -93,31 +93,33 @@ extension SignUpViewController: SignupViewDelegate {
       alert(message: "회원가입을 축하드립니다!\n당신의 일상에 컬리를 더해 보세요")
       
       let user = User(
-        userName: "jobs123",
-        email: "dsafasdf@icloud.com",
-        name: "Steve Jobs",
-        password: "steve12345",
-        address: User.Address(
+        userName: signupView.idTextField.text ?? "",
+        email: signupView.emailTextFeild.text ?? "",
+        name: signupView.nameTextFeild.text ?? "",
+        password: signupView.secretTextField.text ?? "",
+        address: Address(
           jibunAddress: "서울 강남구 일원동 700-1",
-          roadAddress: "California",
+          roadAddress: "캘리포니아",
           zipCode: "123456"),
-        mobile: "01011112222",
-        agreed: true
+        mobile: signupView.cellphoneTextField.text ?? ""
       )
-
-      let encoder = JSONEncoder()
-      guard let encodedData = try? encoder.encode(user) else { return }
-      print(encodedData)
-      print()
+      
       AF.request(
         "http://15.164.49.32/accounts/",
         method: .post,
         parameters: user,
-        encoder: JSONParameterEncoder.default
-        //      headers: ["Content-Type": "application/json",
-        //      "Accept": "application/json"]
-        ).responseJSON { response in
-          print(response)
+        encoder: JSONParameterEncoder.default,
+        headers: ["Content-Type": "application/json"]
+      )
+        .validate(statusCode: 200..<300)
+        .responseData { response in
+          switch response.result {
+          case .success(let data):
+            print("success :", data)
+          case .failure(let error):
+            print(error.responseCode)
+            print("error :", error)
+          }
       }
     } else if essentialInfo[.identification] == false {
       alert(message: "아이디를 입력해주세요")
@@ -187,7 +189,7 @@ extension SignUpViewController: SignupViewDelegate {
     alertController.addAction(warning)
     present(alertController, animated: true)
   }
-
+  
   func squareButtonTouched(button: UIButton, leftButtons leftButton: [UIButton]) {
     if button == signupView.totalAgreeButton {
       agreement.total ? notSelectedAllButton() : selectedAllButton()
@@ -263,7 +265,7 @@ extension SignUpViewController: SignupViewDelegate {
     guard
       let url = URL(string: "https://martinolee.github.io/postcode/"),
       let addressWebView = signupView.addressWebView
-    else { return }
+      else { return }
     
     let urlRequest = URLRequest(url: url)
     
@@ -271,7 +273,10 @@ extension SignUpViewController: SignupViewDelegate {
   }
   
   func checkingCodeButtonTouched() {
-    if signupView.getCheckingCodeTexField() == "000000" {
+    let mobileNumber = signupView.cellphoneTextField.text ?? ""
+    let checkingCode = signupView.checkingCodeTexField.text ?? ""
+    
+    if signupView.checkingCodeTexField.text ?? "" == "000000" {
       signupView.activateCheckingCodeTexField(false)
       signupView.activateCheckingCodeButton(false)
       signupView.checkingCodeCompleteLabelOpenHiddenMessage(text: "인증번호 확인완료.", textColor: .green)
@@ -279,13 +284,36 @@ extension SignUpViewController: SignupViewDelegate {
       isAuthorized = false
       self.signupView.hideTimerInTextField(true)
       essentialInfo[.cellphoneCheck] = true
+     
+      AF.request(
+        "http://15.164.49.32/accounts/m-token-create/",
+        method: .post,
+        parameters: UserMobileCode(userMobile: mobileNumber, token: checkingCode),
+        encoder: JSONParameterEncoder.default,
+        headers: ["Content-Type": "application/json"]
+      )
+        .responseData { response in
+          switch response.result {
+          case .success(let data):
+            print("success")
+            print(data)
+            guard let decodedData = try? JSONDecoder().decode(
+              UserMobileCodeResponse.self,
+              from: data
+              ) else { return }
+            print(decodedData)
+          case .failure(let error):
+            print(error.localizedDescription)
+            //print("passed")
+          }
+      }
     } else {
       signupView.checkingCodeCompleteLabelOpenHiddenMessage(text: "인증번호를 확인해주세요", textColor: .orange)
       essentialInfo[.cellphoneCheck] = false
     }
   }
   func receivingCellphoneNumberButtonTouched() {
-    let text = signupView.getCellphoneTextField()
+    let text = signupView.cellphoneTextField.text ?? ""
     if hasCellphoneNumber(text: text) {
       signupView.hideTimerInTextField(false)
       signupView.activateGetCodeButton(false)
@@ -294,17 +322,40 @@ extension SignUpViewController: SignupViewDelegate {
       signupView.setGetCodeButton(buttonColor: .lightGray)
       signupView.activateCellphoneTextField(false)
       essentialInfo[.cellphone] = true
+      
+      AF.request(
+        "http://15.164.49.32/accounts/m-token-create/",
+        method: .post,
+        parameters: UserMobile(userMobile: text),
+        encoder: JSONParameterEncoder.default,
+        headers: ["Content-Type": "application/json"]
+      )
+        .responseData { response in
+          switch response.result {
+          case .success(let data):
+            print("success")
+            print(data)
+            guard let decodedData = try? JSONDecoder().decode(
+              UserMobileResponse.self,
+              from: data
+              ) else { return }
+            print(decodedData)
+          case .failure(let error):
+            print(error.localizedDescription)
+            //print("passed")
+          }
+      }
     } else {
       essentialInfo[.cellphone] = false
       alert(message: "잘못된 휴대폰 번호 입니다. 확인후 다시 시도 해 주세요")
     }
   }
   func startTimer() {
-      timer = Timer.scheduledTimer(
-        timeInterval: 1,
-        target: self,
-        selector: #selector(update),
-        userInfo: nil, repeats: true
+    timer = Timer.scheduledTimer(
+      timeInterval: 1,
+      target: self,
+      selector: #selector(update),
+      userInfo: nil, repeats: true
     )
   }
   @objc func update() {
@@ -330,13 +381,13 @@ extension SignUpViewController: SignupViewDelegate {
     }
   }
   func timeFormatted(_ totalSeconds: Int) -> String {
-      let seconds: Int = totalSeconds % 60
-      let minutes: Int = (totalSeconds / 60) % 60
-      //     let hours: Int = totalSeconds / 3600
-      return String(format: "%02d:%02d", minutes, seconds)
+    let seconds: Int = totalSeconds % 60
+    let minutes: Int = (totalSeconds / 60) % 60
+    //     let hours: Int = totalSeconds / 3600
+    return String(format: "%02d:%02d", minutes, seconds)
   }
   func endTimer() {
-      timer.invalidate()
+    timer.invalidate()
   }
   func emailTextFeildEditingChanged(_ textField: UITextField, text: String) {
     if isEmail(email: text) {
@@ -357,27 +408,27 @@ extension SignUpViewController: SignupViewDelegate {
     }
   }
   private func hasCellphoneNumber(text: String) -> Bool {
-      do {
-        let regex = try NSRegularExpression(
-          pattern: "^01([0|1|6|7|8|9]?)?([0-9]{3,4})?([0-9]{4})$",
-          options: .caseInsensitive
-        )
-        if regex.firstMatch(
-          in: text,
-          options: NSRegularExpression.MatchingOptions.reportCompletion,
-          range: NSRange(location: 0, length: text.count)) != nil {
-              return true
-          }
-      } catch {
-          print(error.localizedDescription)
-          return false
+    do {
+      let regex = try NSRegularExpression(
+        pattern: "^01([0|1|6|7|8|9]?)?([0-9]{3,4})?([0-9]{4})$",
+        options: .caseInsensitive
+      )
+      if regex.firstMatch(
+        in: text,
+        options: NSRegularExpression.MatchingOptions.reportCompletion,
+        range: NSRange(location: 0, length: text.count)) != nil {
+        return true
       }
+    } catch {
+      print(error.localizedDescription)
       return false
+    }
+    return false
   }
   func validateEmail() -> Bool {
-      let emailRegEx = "^.+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2}[A-Za-z]*$"
-      let predicate = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
-      return predicate.evaluate(with: self)
+    let emailRegEx = "^.+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2}[A-Za-z]*$"
+    let predicate = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
+    return predicate.evaluate(with: self)
   }
   func checkName(_ textField: UITextField, text: String) {
     if text.count >= 1 {
@@ -387,12 +438,12 @@ extension SignUpViewController: SignupViewDelegate {
     }
   }
   func checkSecretNumberTextFeildEditingChanged(_ textField: UITextField, text: String) {
-    if text == signupView.getSecretTextFieldText() {
+    if text == signupView.secretTextField.text ?? "" {
       signupView.setSameSecretNumberLabel(textColor: .green)
-        essentialInfo[.passwordCheck] = true
+      essentialInfo[.passwordCheck] = true
     } else {
       signupView.setSameSecretNumberLabel(textColor: .orange)
-       essentialInfo[.passwordCheck] = false
+      essentialInfo[.passwordCheck] = false
     }
   }
   func secretTextFeildEditingChanged(_ textField: UITextField, text: String) {
@@ -409,10 +460,10 @@ extension SignUpViewController: SignupViewDelegate {
     } else {
       signupView.setTenSyllableLabel(textColor: .orange)
     }
-
-     if hasSpecialWords(text: text) {
+    
+    if hasSpecialWords(text: text) {
       signupView.setCombinationLabel(textColor: .green)
-     } else {
+    } else {
       signupView.setCombinationLabel(textColor: .orange)
     }
     
@@ -423,10 +474,10 @@ extension SignUpViewController: SignupViewDelegate {
     } else {
       signupView.setnotSameTheeNumberLabel(textColor: .orange)
     }
-    if text == signupView.getCheckSecretNumberTextFeild() {
+    if text == signupView.checkSecretNumberTextField.text ?? "" {
       signupView.setSameSecretNumberLabel(textColor: .green)
     } else {
-      print(signupView.getCheckingCodeTexField())
+      print(signupView.checkingCodeTexField.text ?? "")
       signupView.setSameSecretNumberLabel(textColor: .orange)
     }
   }
@@ -446,12 +497,34 @@ extension SignUpViewController: SignupViewDelegate {
     return isContinuous
   }
   func checkIDButtonTouched(_ button: UIButton) {
-    let text = signupView.getIDTextFieldText()
+    guard let text = signupView.idTextField.text else { return }
     if text.count >= 6 && hasOnlyAlphabetAndNumber(text: text) {
       signupView.setCheckingIdLabel(.green)
       essentialInfo[.identification] = true
       signupView.activateIdtextField(false)
+      signupView.setCheckIDButton(false)
       button.backgroundColor = .lightGray
+      
+      AF.request(
+        "http://15.164.49.32/accounts/duplicates/",
+        method: .post,
+        parameters: UserName(userName: text),
+        encoder: JSONParameterEncoder.default,
+        headers: ["Content-Type": "application/json"]
+      )
+        .responseData { response in
+          switch response.result {
+          case .success(let data):
+            print("success")
+            print(data)
+            guard let decodedData = try? JSONDecoder().decode(UserNameResponse.self, from: data) else { return }
+            print(decodedData)
+          case .failure(let error):
+            print(error.localizedDescription)
+            //              print("passed")
+          }
+      }
+      
       alert(message: "사용하실 수 있는 아이디입니다!")
     } else {
       signupView.setCheckingIdLabel(.orange)
@@ -465,38 +538,38 @@ extension SignUpViewController: SignupViewDelegate {
     return emailTest.evaluate(with: email)
   }
   private func hasOnlyAlphabetAndNumber(text: String) -> Bool {
-      do {
-        let regex = try NSRegularExpression(
-          pattern: "^(?!(?:[0-9]+)$)([a-zA-Z]|[0-9a-zA-Z]){4,}$",
-          options: .caseInsensitive)
-        if regex.firstMatch(
-          in: text,
-          options: NSRegularExpression.MatchingOptions.reportCompletion,
-          range: NSRange(location: 0, length: text.count)) != nil {
-              return true
-          }
-      } catch {
-          print(error.localizedDescription)
-          return false
+    do {
+      let regex = try NSRegularExpression(
+        pattern: "^(?!(?:[0-9]+)$)([a-zA-Z]|[0-9a-zA-Z]){4,}$",
+        options: .caseInsensitive)
+      if regex.firstMatch(
+        in: text,
+        options: NSRegularExpression.MatchingOptions.reportCompletion,
+        range: NSRange(location: 0, length: text.count)) != nil {
+        return true
       }
+    } catch {
+      print(error.localizedDescription)
       return false
+    }
+    return false
   }
   private func hasSpecialWords(text: String) -> Bool {
-      do {
-        let regex = try NSRegularExpression(
-          pattern: "^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{10,16}$",
-          options: .caseInsensitive)
-        if regex.firstMatch(
-          in: text,
-          options: NSRegularExpression.MatchingOptions.reportCompletion,
-          range: NSRange(location: 0, length: text.count)) != nil {
-              return true
-          }
-      } catch {
-          print(error.localizedDescription)
-          return false
+    do {
+      let regex = try NSRegularExpression(
+        pattern: "^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{10,16}$",
+        options: .caseInsensitive)
+      if regex.firstMatch(
+        in: text,
+        options: NSRegularExpression.MatchingOptions.reportCompletion,
+        range: NSRange(location: 0, length: text.count)) != nil {
+        return true
       }
+    } catch {
+      print(error.localizedDescription)
       return false
+    }
+    return false
   }
   func idTextFieldEditingChanged(_ textField: UITextField, text: String) {
     if text.count >= 6 && hasOnlyAlphabetAndNumber(text: text) {
