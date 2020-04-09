@@ -22,7 +22,7 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.signupStyle(round: .roundedRect, clearButton: .whileEditing)
   }
   
-  private let checkIDButton = SignupButton(
+  let checkIDButton = SignupButton(
     setTitleColor: .white,
     backgroundColor: .kurlyMainPurple,
     borderWidth: nil,
@@ -31,10 +31,10 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.setTitle("중복확인", for: .normal)
     $0.addTarget(self, action: #selector(checkIDButtonTouched), for: .touchUpInside)
   }
-  private let idLimitExplanationLabel = SignupLabel(textColor: .lightGray, font: .systemFont(ofSize: 10)).then {
+  let idLimitExplanationLabel = SignupLabel(textColor: .lightGray, font: .systemFont(ofSize: 10)).then {
     $0.text = "6자 이상의 영문 혹은 영문과 숫자를 조합"
   }
-  private let checkingIdLabel = SignupLabel(textColor: .lightGray, font: .systemFont(ofSize: 10)).then {
+  let checkingIdLabel = SignupLabel(textColor: .lightGray, font: .systemFont(ofSize: 10)).then {
     $0.text = "아이디 중복확인"
   }
   private lazy var secretNumberLabel = SignupLabel().then {
@@ -48,13 +48,13 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.delegate = self
     $0.addTarget(self, action: #selector(secretTextFeildEditingChanged), for: .editingChanged)
   }
-  private let tenSyllableLabel = SignupLabel(textColor: .lightGray, font: .systemFont(ofSize: 10)).then {
+  let tenSyllableLabel = SignupLabel(textColor: .lightGray, font: .systemFont(ofSize: 10)).then {
     $0.text = "10자 이상 입력"
   }
-  private let combinationLabel = SignupLabel(textColor: .lightGray, font: .systemFont(ofSize: 10)).then {
+  let combinationLabel = SignupLabel(textColor: .lightGray, font: .systemFont(ofSize: 10)).then {
     $0.text = "영문/숫자/공백제외만 허용하며, 2개 이상 조합"
   }
-  private let notSameTheeNumber = SignupLabel(textColor: .lightGray, font: .systemFont(ofSize: 10)).then {
+  let notSameTheeNumberLabel = SignupLabel(textColor: .lightGray, font: .systemFont(ofSize: 10)).then {
     $0.text = "동일한 숫자 3개 이상 연속 사용 불가"
   }
   private lazy var checkSecretNumberLabel = SignupLabel().then {
@@ -69,7 +69,7 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.signupStyle(round: .roundedRect, clearButton: .whileEditing)
   }
   
-  private let sameSecretNumberLabel = SignupLabel(textColor: .orange, font: .systemFont(ofSize: 10)).then {
+  let sameSecretNumberLabel = SignupLabel(textColor: .orange, font: .systemFont(ofSize: 10)).then {
     $0.text = "동일한 비밀번호를 입력해주세요"
   }
   private lazy var nameLabel = SignupLabel().then {
@@ -105,7 +105,7 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.addTarget(self, action: #selector(cellphoneTextFieldEditingChanged), for: .editingChanged)
     $0.signupStyle(round: .roundedRect, clearButton: .whileEditing)
   }
-  private lazy var getCodeButton = SignupButton(
+  lazy var getCodeButton = SignupButton(
     setTitleColor: .white,
     backgroundColor: .gray,
     borderWidth: nil,
@@ -118,11 +118,11 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.delegate = self
     $0.signupStyle(round: .roundedRect, clearButton: .whileEditing)
   }
-  private let timerInTextField = SignupLabel(textColor: .orange, font: nil).then {
+  let timerInTextField = SignupLabel(textColor: .orange, font: nil).then {
     $0.isHidden = true
   }
   
-  private let checkingCodeButton = SignupButton(
+  let checkingCodeButton = SignupButton(
     setTitleColor: .gray,
     backgroundColor: .white,
     borderWidth: 1,
@@ -418,7 +418,7 @@ class SignupView: UIView, UITextFieldDelegate {
      additionalExplanationLabel, recoIDLabel, eventName, grayView,
      usingAgreement, totalAgreeButton, totalAgreeLabel, usingLawButton, usingLawLabel, sameSecretNumberLabel,
      usingLawEssentialLabel, usingLawSeeButton, personalEssentialButton, personalEssentialLabel,
-     tenSyllableLabel, combinationLabel, notSameTheeNumber,
+     tenSyllableLabel, combinationLabel, notSameTheeNumberLabel,
      personalEssentialNeedLabel, personalEssentialSeeButton, personalNotEssentialButton, personalNotEssentialLabel,
      personalNotEssentialNeedLabel, personalNotEssentialSeeButton, freeShippingButton, freeShippingLabel,
      freeShippingCheckLabel, smsButton, smsLabel, emailCheckButton, emailCheckLabel,
@@ -495,14 +495,14 @@ class SignupView: UIView, UITextFieldDelegate {
       $0.leading.trailing.equalTo(tenSyllableLabel)
       $0.height.equalTo(0)
     }
-    notSameTheeNumber.snp.makeConstraints {
+    notSameTheeNumberLabel.snp.makeConstraints {
       $0.top.equalTo(combinationLabel.snp.bottom).offset(4)
       $0.leading.trailing.equalTo(combinationLabel)
       $0.height.equalTo(0)
     }
     checkSecretNumberLabel.snp.makeConstraints {
-      $0.top.equalTo(notSameTheeNumber.snp.bottom).offset(10)
-      $0.leading.trailing.equalTo(notSameTheeNumber)
+      $0.top.equalTo(notSameTheeNumberLabel.snp.bottom).offset(10)
+      $0.leading.trailing.equalTo(notSameTheeNumberLabel)
     }
     checkSecretNumberTextField.snp.makeConstraints {
       $0.top.equalTo(checkSecretNumberLabel.snp.bottom).offset(10)
@@ -963,12 +963,7 @@ extension SignupView {
       return print("")
     }
   }
-  func activateIdtextField(_ able: Bool) {
-    idTextField.isEnabled = able
-  }
-  func setCheckIDButton(_ enable: Bool) {
-    checkIDButton.isEnabled = enable
-  }
+
   func idTextFieldOpenHiddenMessage() {
     idLimitExplanationLabel.snp.updateConstraints {
       $0.height.equalTo(10)
@@ -980,9 +975,6 @@ extension SignupView {
       $0.top.equalTo(checkingIdLabel.snp.bottom).offset(30)
     }
   }
-  func setCheckingIdLabel(_ textColor: UIColor) {
-    checkingIdLabel.textColor = textColor
-  }
   func secretTextFeildOpenHiddenMessage() {
     tenSyllableLabel.snp.updateConstraints {
       $0.height.equalTo(10)
@@ -990,11 +982,11 @@ extension SignupView {
     combinationLabel.snp.updateConstraints {
       $0.height.equalTo(10)
     }
-    notSameTheeNumber.snp.updateConstraints {
+    notSameTheeNumberLabel.snp.updateConstraints {
       $0.height.equalTo(10)
     }
     checkSecretNumberLabel.snp.updateConstraints {
-      $0.top.equalTo(notSameTheeNumber.snp.bottom).offset(30)
+      $0.top.equalTo(notSameTheeNumberLabel.snp.bottom).offset(30)
     }
   }
   func checkSecretNumberTextFeildOpenHiddenMessage() {
@@ -1023,9 +1015,7 @@ extension SignupView {
     
     delegate.idTextFieldEditingChanged(textField, text: text)
   }
-  func setIDLimitExplanationLabel(textColor: UIColor) {
-    idLimitExplanationLabel.textColor = textColor
-  }
+
   @objc func checkIDButtonTouched(_ button: UIButton) {
     delegate?.checkIDButtonTouched(button)
   }
@@ -1036,15 +1026,7 @@ extension SignupView {
       else { fatalError() }
     delegate.secretTextFeildEditingChanged(textField, text: text)
   }
-  func setTenSyllableLabel(textColor: UIColor) {
-    tenSyllableLabel.textColor = textColor
-  }
-  func setCombinationLabel(textColor: UIColor) {
-    combinationLabel.textColor = textColor
-  }
-  func setnotSameTheeNumberLabel(textColor: UIColor) {
-    notSameTheeNumber.textColor = textColor
-  }
+
   @objc func checkName(_ textField: UITextField, text: String) {
     guard
       let delegate = delegate,
@@ -1060,9 +1042,7 @@ extension SignupView {
       else { fatalError() }
     delegate.checkSecretNumberTextFeildEditingChanged(textField, text: text)
   }
-  func setSameSecretNumberLabel(textColor: UIColor) {
-    sameSecretNumberLabel.textColor = textColor
-  }
+
   @objc func cellphoneTextFieldEditingChanged(_ textField: UITextField, text: String) {
     guard
       let delegate = delegate,
@@ -1070,12 +1050,7 @@ extension SignupView {
       else { fatalError() }
     delegate.cellphoneTextFieldEditingChanged(textField, text: text)
   }
-  func setGetCodeButton(buttonColor: UIColor) {
-    getCodeButton.backgroundColor = buttonColor
-  }
-  func enableReceivingCellphoneNumberButton(_ enable: Bool) {
-    getCodeButton.isEnabled = enable
-  }
+
   @objc func emailTextFeildEditingChanged(_ textField: UITextField, text: String) {
     guard
       let delegate = delegate,
@@ -1087,12 +1062,7 @@ extension SignupView {
   @objc func getCodeButtonTouched() {
     delegate?.receivingCellphoneNumberButtonTouched()
   }
-  func setTimerInTextField(text: String) {
-    timerInTextField.text = text
-  }
-  func hideTimerInTextField(_ hidden: Bool) {
-    timerInTextField.isHidden = hidden
-  }
+
   func activateGetCodeButton(_ able: Bool) {
     getCodeButton.isEnabled = able
     able ? (getCodeButton.backgroundColor = .kurlyMainPurple) : (getCodeButton.backgroundColor = .lightGray)
@@ -1101,18 +1071,11 @@ extension SignupView {
     checkingCodeButton.layer.borderColor = buttonColor.cgColor
     checkingCodeButton.setTitleColor(buttonColor, for: .normal)
   }
-  func activateCellphoneTextField(_ able: Bool) {
-    cellphoneTextField.isEnabled = able
-  }
+
   @objc func checkingCodeButtonTouched() {
     delegate?.checkingCodeButtonTouched()
   }
-  func activateCheckingCodeTexField(_ able: Bool) {
-    checkingCodeTexField.isEnabled = able
-  }
-  func activateCheckingCodeButton(_ able: Bool) {
-    checkingCodeButton.isEnabled = able
-  }
+  
   @objc func searchingAddressButtonTouched(button: UIButton) {
     delegate?.searchingAddressButtonTouched(button)
   }
@@ -1159,9 +1122,7 @@ extension SignupView {
     
     delegate?.squareButtonTouched(button: button, leftButtons: buttons)
   }
-  func getTotalSquareButton() -> UIButton {
-    totalAgreeButton
-  }
+  
   @objc func signupButtonTouched(button: UIButton) {
     delegate?.signupButtonTouched(button: button)
   }

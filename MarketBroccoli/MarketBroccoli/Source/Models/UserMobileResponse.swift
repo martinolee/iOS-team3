@@ -13,4 +13,3 @@ struct UserMobileResponse: Decodable {
   let status: Int
   let code: String
 }
-

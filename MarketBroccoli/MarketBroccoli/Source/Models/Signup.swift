@@ -18,6 +18,9 @@ enum Signup {
   case cellphoneCheck
   case usingLaw
   case personalInfo
+  case notPersonalInfo
+  case sms
+  case emailButton
   case ageLimit
 }
 
