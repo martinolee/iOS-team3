@@ -44,11 +44,6 @@ class Agreement {
       } else {
         total = false
       }
-      
-      if freeShipping {
-        sms = true
-        emailCheck = true
-      }
     }
   }
   var sms = false {
