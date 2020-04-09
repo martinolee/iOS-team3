@@ -16,8 +16,9 @@ class RecommendationCollectionViewCell: UICollectionViewCell {
     $0.clipsToBounds = true
   }
   private let titleLabel = UILabel().then {
-    $0.textColor = .kurlyGray1
+//    $0.textColor = .kurlyGray1
     $0.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+    $0.backgroundColor = .systemPink
   }
   // MARK: - Life Cycle
   override init(frame: CGRect) {
@@ -38,8 +39,8 @@ class RecommendationCollectionViewCell: UICollectionViewCell {
     imageView.snp.makeConstraints { (make) -> Void in
       make.leading.equalToSuperview()
       make.top.equalToSuperview()
-      make.width.equalTo(100)
-      make.height.equalTo(100)
+//      make.width.equalTo(100)
+//      make.height.equalTo(100)
     }
     titleLabel.snp.makeConstraints { (make) -> Void in
       make.leading.trailing.bottom.equalToSuperview()
