@@ -35,10 +35,15 @@ class DetailDescriptionBottomTableCell: UITableViewCell {
     $0.font = .systemFont(ofSize: 16, weight: .thin)
     $0.textColor = .darkGray
   }
-  private let detailImageView = UIImageView().then {
+  private lazy var detailImageView = UIImageView().then {
+    let imageTap = UITapGestureRecognizer(target: self, action: #selector(imageTouched(_:)))
     $0.image = UIImage(named: "harman-kardon")
     $0.contentMode = .scaleAspectFill
+    $0.isUserInteractionEnabled = true
+    $0.addGestureRecognizer(imageTap)
   }
+  private let whyKurly = WhyKurlyView()
+  
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     setupUI()
@@ -50,11 +55,21 @@ class DetailDescriptionBottomTableCell: UITableViewCell {
 }
 
 extension DetailDescriptionBottomTableCell {
+  @objc private func imageTouched(_ sender: UITapGestureRecognizer) {
+    ObserverManager.shared.post(
+      observerName: .imageTouched,
+      object: nil,
+      userInfo: ["image": UIImage(named: "harman-kardon")!]
+    )
+  }
+}
+
+extension DetailDescriptionBottomTableCell {
   private func setupUI() {
     self.contentView.addSubviews(
       [
         deliveryNotice, descriptionImageView, summaryLabel, nameLabel,
-        seperator, descriptionLabel, detailImageView
+        seperator, descriptionLabel, detailImageView, whyKurly
     ])
     deliveryNotice.snp.makeConstraints {
       $0.top.leading.trailing.equalToSuperview().inset(20)
@@ -87,9 +102,14 @@ extension DetailDescriptionBottomTableCell {
     }
     
     detailImageView.snp.makeConstraints {
-      $0.top.equalTo(descriptionLabel).offset(20)
-      $0.bottom.equalToSuperview()
+      $0.top.equalTo(descriptionLabel.snp.bottom).offset(20)
       $0.leading.trailing.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
+    }
+    
+    whyKurly.snp.makeConstraints {
+      $0.top.equalTo(detailImageView.snp.bottom).offset(20)
+      $0.leading.bottom.trailing.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 20, right: 20))
+      $0.height.equalTo(600)
     }
   }
 }

@@ -30,6 +30,7 @@ excluded:
 - MarketBroccoli/Source/CustomUI/CustomCollectionViewFlowLayout.swift
 - MarketBroccoli/Source/Home/HomeViewCells/HomeMDTableCell.swift
 - MarketBroccoli/Source/Utils/Constant.swift
+- TestGround
 # Custom
 
 force_cast: warning

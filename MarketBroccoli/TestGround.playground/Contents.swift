@@ -27,9 +27,10 @@ AF.request(
       }
       
     case .failure(let error):
-      guard let data = response.data, let decodedData = try? JSONDecoder().decode(DuplicateResponse.self, from: data) else { return }
+      guard let data = response.data,
+        let decodedData = try? JSONDecoder().decode(DuplicateResponse.self, from: data)
+        else { return }
       print(response.response?.statusCode)
       print(decodedData)
       print(error.localizedDescription)
-    }
 }
