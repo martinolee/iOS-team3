@@ -60,6 +60,7 @@
 		7C65ECDC2424F08C0075606A /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C65ECDB2424F08C0075606A /* EventView.swift */; };
 		7C7171E4242C78E9009CE7D5 /* HomeMDTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7171E3242C78E9009CE7D5 /* HomeMDTableCell.swift */; };
 		7C7171E6242C9437009CE7D5 /* Seperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7171E5242C9437009CE7D5 /* Seperator.swift */; };
+		7C74E41E243D6C26001C6E4C /* WhyKurlyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C74E41D243D6C26001C6E4C /* WhyKurlyView.swift */; };
 		7C8991F92437097E0058BF9E /* DetailDescriptionTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8991F82437097E0058BF9E /* DetailDescriptionTableView.swift */; };
 		7C8991FB24370A950058BF9E /* DetailImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8991FA24370A950058BF9E /* DetailImageView.swift */; };
 		7C8991FD24370AB20058BF9E /* DetailInfoTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8991FC24370AB10058BF9E /* DetailInfoTableView.swift */; };
@@ -83,6 +84,11 @@
 		7CD9D45A242460D60091AE5B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD9D459242460D60091AE5B /* AppDelegate.swift */; };
 		7CD9D463242460DB0091AE5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7CD9D462242460DB0091AE5B /* Assets.xcassets */; };
 		7CD9D466242460DB0091AE5B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7CD9D464242460DB0091AE5B /* LaunchScreen.storyboard */; };
+		7CDD2D83243EF958008B4890 /* ObserverManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDD2D82243EF958008B4890 /* ObserverManager.swift */; };
+		7CDD2D87243F0A78008B4890 /* PopImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDD2D86243F0A78008B4890 /* PopImageViewController.swift */; };
+		7CEB86EB243C52000044ED55 /* PriceStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEB86EA243C52000044ED55 /* PriceStackView.swift */; };
+		7CEB86ED243C5C9B0044ED55 /* DetailDescriptionBottomTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEB86EC243C5C9B0044ED55 /* DetailDescriptionBottomTableCell.swift */; };
+		7CEB871B243C69A90044ED55 /* DeliveryNoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEB871A243C69A90044ED55 /* DeliveryNoticeView.swift */; };
 		7CFCE96B24320AFF00E067AD /* CategorySelected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFCE96A24320AFF00E067AD /* CategorySelected.swift */; };
 		FA48FBD4243319DE00E53EB5 /* SignupCheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA48FBD3243319DE00E53EB5 /* SignupCheckBox.swift */; };
 		FA48FBD624335BC000E53EB5 /* Agreement.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA48FBD524335BC000E53EB5 /* Agreement.swift */; };
@@ -149,6 +155,7 @@
 		7C65ECDB2424F08C0075606A /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		7C7171E3242C78E9009CE7D5 /* HomeMDTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeMDTableCell.swift; sourceTree = "<group>"; };
 		7C7171E5242C9437009CE7D5 /* Seperator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Seperator.swift; sourceTree = "<group>"; };
+		7C74E41D243D6C26001C6E4C /* WhyKurlyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhyKurlyView.swift; sourceTree = "<group>"; };
 		7C8991F82437097E0058BF9E /* DetailDescriptionTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailDescriptionTableView.swift; sourceTree = "<group>"; };
 		7C8991FA24370A950058BF9E /* DetailImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailImageView.swift; sourceTree = "<group>"; };
 		7C8991FC24370AB10058BF9E /* DetailInfoTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailInfoTableView.swift; sourceTree = "<group>"; };
@@ -174,6 +181,11 @@
 		7CD9D462242460DB0091AE5B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7CD9D465242460DB0091AE5B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7CD9D467242460DB0091AE5B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7CDD2D82243EF958008B4890 /* ObserverManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObserverManager.swift; sourceTree = "<group>"; };
+		7CDD2D86243F0A78008B4890 /* PopImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopImageViewController.swift; sourceTree = "<group>"; };
+		7CEB86EA243C52000044ED55 /* PriceStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceStackView.swift; sourceTree = "<group>"; };
+		7CEB86EC243C5C9B0044ED55 /* DetailDescriptionBottomTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailDescriptionBottomTableCell.swift; sourceTree = "<group>"; };
+		7CEB871A243C69A90044ED55 /* DeliveryNoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryNoticeView.swift; sourceTree = "<group>"; };
 		7CFCE96A24320AFF00E067AD /* CategorySelected.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelected.swift; sourceTree = "<group>"; };
 		BA3DAD3F9ADB459218F3993B /* Pods_MarketBroccoli.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MarketBroccoli.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1C8D23965CC57B3A3E2F2A7 /* Pods-MarketBroccoli.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MarketBroccoli.release.xcconfig"; path = "Target Support Files/Pods-MarketBroccoli/Pods-MarketBroccoli.release.xcconfig"; sourceTree = "<group>"; };
@@ -271,6 +283,7 @@
 			isa = PBXGroup;
 			children = (
 				7C16CEEF2435D725007CD954 /* DetailViewController.swift */,
+				7CDD2D86243F0A78008B4890 /* PopImageViewController.swift */,
 			);
 			path = DetailViewController;
 			sourceTree = "<group>";
@@ -337,6 +350,7 @@
 		7C65ECB4242470B60075606A /* CustomUI */ = {
 			isa = PBXGroup;
 			children = (
+				7CEB86E9243C51DA0044ED55 /* Details */,
 				7C65ECB9242471380075606A /* EventMark.swift */,
 				728078672429A8A500101B7D /* ProductQuantityStepper.swift */,
 				7CCD64932428873000FC671B /* CustomCollectionViewFlowLayout.swift */,
@@ -377,6 +391,7 @@
 			isa = PBXGroup;
 			children = (
 				7C65ECBD242472400075606A /* EmptyManager.swift */,
+				7CDD2D82243EF958008B4890 /* ObserverManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -465,6 +480,7 @@
 			isa = PBXGroup;
 			children = (
 				7C89920324372D670058BF9E /* DetailDescriptionTopTableCell.swift */,
+				7CEB86EC243C5C9B0044ED55 /* DetailDescriptionBottomTableCell.swift */,
 			);
 			path = DetailCells;
 			sourceTree = "<group>";
@@ -521,6 +537,16 @@
 				7C65ECAD2424677C0075606A /* Source */,
 			);
 			path = MarketBroccoli;
+			sourceTree = "<group>";
+		};
+		7CEB86E9243C51DA0044ED55 /* Details */ = {
+			isa = PBXGroup;
+			children = (
+				7CEB86EA243C52000044ED55 /* PriceStackView.swift */,
+				7CEB871A243C69A90044ED55 /* DeliveryNoticeView.swift */,
+				7C74E41D243D6C26001C6E4C /* WhyKurlyView.swift */,
+			);
+			path = Details;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -675,6 +701,7 @@
 				7C65ECCB24249B2C0075606A /* EmptyTemp.swift in Sources */,
 				7C8991FB24370A950058BF9E /* DetailImageView.swift in Sources */,
 				FA48FBD4243319DE00E53EB5 /* SignupCheckBox.swift in Sources */,
+				7CEB86ED243C5C9B0044ED55 /* DetailDescriptionBottomTableCell.swift in Sources */,
 				728078682429A8A500101B7D /* ProductQuantityStepper.swift in Sources */,
 				7C7171E6242C9437009CE7D5 /* Seperator.swift in Sources */,
 				7C16CEF02435D725007CD954 /* DetailViewController.swift in Sources */,
@@ -689,12 +716,15 @@
 				723851E124249C6400E8B206 /* UserInfoTableViewCell.swift in Sources */,
 				7C5A889424343AD9006361AC /* SignupViewProtocol.swift in Sources */,
 				FA48FBDC2434792100E53EB5 /* Signup.swift in Sources */,
+				7C74E41E243D6C26001C6E4C /* WhyKurlyView.swift in Sources */,
 				7C65ECD12424D82C0075606A /* HomeRootView.swift in Sources */,
 				70E8178324360DF70010EB4C /* CategorySubTableViewCell.swift in Sources */,
 				7C65ECCF2424B95F0075606A /* HomeViewController.swift in Sources */,
 				7291F87F242CC63C009D4E83 /* CartFooterView.swift in Sources */,
 				7C212DAF243361A900025869 /* CategoryScrollView.swift in Sources */,
 				7050F316242876AC00B8E13B /* IDFindViewController.swift in Sources */,
+				7CEB871B243C69A90044ED55 /* DeliveryNoticeView.swift in Sources */,
+				7CEB86EB243C52000044ED55 /* PriceStackView.swift in Sources */,
 				7298BEFF242DDF2E005B0517 /* MarketBroccoliTabBarController.swift in Sources */,
 				7C8C4A30242B474600FA912B /* HomeProductCollectionView.swift in Sources */,
 				7C8991F92437097E0058BF9E /* DetailDescriptionTableView.swift in Sources */,
@@ -702,6 +732,7 @@
 				7CCD64942428873000FC671B /* CustomCollectionViewFlowLayout.swift in Sources */,
 				7C8C4A2C242B381F00FA912B /* UIViewExtension.swift in Sources */,
 				7C5A889124343A2E006361AC /* HomeBannerTableCell.swift in Sources */,
+				7CDD2D87243F0A78008B4890 /* PopImageViewController.swift in Sources */,
 				FAAFEB612424A77900452977 /* LogOutTableViewCell.swift in Sources */,
 				7050F31A2429CEBB00B8E13B /* CategoryViewController.swift in Sources */,
 				7268B6FC242E173300DE95CB /* UIDeviceExtension.swift in Sources */,
@@ -735,6 +766,7 @@
 				7C65ECD82424F03D0075606A /* BestView.swift in Sources */,
 				7280786C2429CA2000101B7D /* CartViewController.swift in Sources */,
 				7C15D0B8242A2C3500ACB4C9 /* UILabelExtension.swift in Sources */,
+				7CDD2D83243EF958008B4890 /* ObserverManager.swift in Sources */,
 				7CD9D45A242460D60091AE5B /* AppDelegate.swift in Sources */,
 				7C65ECC0242472480075606A /* EmptyTC.swift in Sources */,
 				7050F31E242A3BB300B8E13B /* CategoryTableViewCell.swift in Sources */,
