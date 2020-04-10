@@ -29,6 +29,8 @@ excluded:
 - MarketBroccoli/Application/SceneDelegate.swift
 - MarketBroccoli/Source/CustomUI/CustomCollectionViewFlowLayout.swift
 - MarketBroccoli/Source/Home/HomeViewCells/HomeMDTableCell.swift
+- MarketBroccoli/Source/Utils/Constant.swift
+- TestGround
 # Custom
 
 force_cast: warning
@@ -41,3 +43,5 @@ file_length:
 type_name:
   min_length: 2
   max_length: 40
+identifier_name:
+  min_length: 2
