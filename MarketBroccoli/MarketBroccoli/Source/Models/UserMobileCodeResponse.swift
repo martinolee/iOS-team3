@@ -9,7 +9,10 @@
 import Foundation
 
 struct UserMobileCodeResponse: Decodable {
-  let detail: String
-  let status: Int
-  let code: String
+  let number: String
+  let isAuthenticated: Bool
+  private enum CodingKeys: String, CodingKey {
+    case number = "number"
+    case isAuthenticated = "is_authenticated"
+  }
 }
