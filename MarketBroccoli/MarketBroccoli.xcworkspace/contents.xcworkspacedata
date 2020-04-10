@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:/Users/hongdonghyun/projects/myapps/TeamProject/TeamDevRepo/MarketBroccoli/TestGround.playground">
+   </FileRef>
+   <FileRef
       location = "group:MarketBroccoli.xcodeproj">
    </FileRef>
    <FileRef

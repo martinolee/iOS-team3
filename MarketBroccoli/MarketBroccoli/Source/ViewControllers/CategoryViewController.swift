@@ -165,7 +165,7 @@ extension CategoryViewController: UITableViewDelegate {
    }
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-   switch section {
+    switch section {
     case categoryData.count + 1:
       let headerView = CategorySectionHeaderView()
       return headerView
@@ -184,7 +184,7 @@ extension CategoryViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     switch section {
     case categoryData.count + 1:
-      return 72
+      return 67
     default:
       return 0
     }
@@ -201,8 +201,6 @@ extension CategoryViewController: UITableViewDelegate {
     switch indexPath.section {
     case 0:
       return 52
-    case categoryData.count + 1:
-      return 800
     default:
       return UITableView.automaticDimension
     }
