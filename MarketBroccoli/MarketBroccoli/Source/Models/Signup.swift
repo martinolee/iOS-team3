@@ -18,33 +18,38 @@ enum Signup {
   case cellphoneCheck
   case usingLaw
   case personalInfo
+  case notPersonalInfo
+  case sms
+  case emailButton
   case ageLimit
 }
 
-struct User: Codable {
-  struct Address: Codable {
-    let jibunAddress: String
-    let roadAddress: String
-    let zipCode: String
-    
-    private enum AddressKeys: String, CodingKey {
-      case jibunAddress = "address_name"
-      case roadAddress = "road_address"
-      case zipCoode = "zip_code"
-    }
-  }
-  
+struct User: Encodable {
   let userName: String
   let email: String
+  let name: String
   let password: String
-  let mobile: String
   let address: Address
+  let mobile: String
   
   private enum CodingKeys: String, CodingKey {
     case userName = "username"
     case email
+    case name
     case password
     case mobile
     case address
+  }
+}
+
+struct Address: Encodable {
+  let jibunAddress: String
+  let roadAddress: String
+  let zipCode: String
+  
+  private enum CodingKeys: String, CodingKey {
+    case jibunAddress = "address_name"
+    case roadAddress = "road_address"
+    case zipCode = "zip_code"
   }
 }
