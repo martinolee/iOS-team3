@@ -12,6 +12,7 @@ import SnapKit
 
 class EventMark: UIView {
   let textLabel = UILabel().then {
+    $0.numberOfLines = 2
     $0.textColor = .white
     $0.font = .systemFont(ofSize: 15, weight: .bold)
     $0.textAlignment = .center
@@ -36,7 +37,7 @@ extension EventMark {
   private func setupUI() {
     self.addSubview(textLabel)
     textLabel.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(20)
+      $0.edges.equalToSuperview()
     }
   }
 }
