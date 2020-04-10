@@ -22,7 +22,7 @@ class DetailDescriptionTableView: UITableView {
 // MARK: - DataSource
 extension DetailDescriptionTableView: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
-    1
+    2
   }
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     1
@@ -32,6 +32,9 @@ extension DetailDescriptionTableView: UITableViewDataSource {
     switch indexPath.section {
     case 0:
       let cell = tableView.dequeue(DetailDescriptionTopTableCell.self)
+      return cell
+    case 1:
+      let cell = tableView.dequeue(DetailDescriptionBottomTableCell.self)
       return cell
     default:
       fatalError()
@@ -46,5 +49,6 @@ extension DetailDescriptionTableView {
     self.allowsSelection = false
     self.dataSource = self
     self.register(cell: DetailDescriptionTopTableCell.self)
+    self.register(cell: DetailDescriptionBottomTableCell.self)
   }
 }

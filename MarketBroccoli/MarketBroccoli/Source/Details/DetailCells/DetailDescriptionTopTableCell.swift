@@ -20,8 +20,10 @@ class DetailDescriptionTopTableCell: UITableViewCell {
     $0.textColor = .kurlyGray1
   }
   private let shareBtn = UIButton()
-  private let priceStackView = UIStackView().then {
+
+  private let priceStackView = PriceStackView(isLogin: true, isDiscount: false).then {
     $0.axis = .vertical
+    $0.spacing = 8
   }
   
   private let descriptionTopView = UIView()
@@ -48,8 +50,7 @@ class DetailDescriptionTopTableCell: UITableViewCell {
 // MARK: - UI
 extension DetailDescriptionTopTableCell {
   private func makeinfoStackView() {
-    var titles = [UILabel]()
-    let asd = infoDummy.compactMap { text -> CGFloat? in
+    let textArray = infoDummy.compactMap { text -> CGFloat? in
       let label = UILabel()
       label.text = text
       return label.getWidth()
@@ -57,85 +58,31 @@ extension DetailDescriptionTopTableCell {
     infoDummy.forEach { text in
       let infolabel = UILabel().then { lbl in
         lbl.text = text
-        titles.append(lbl)
+        lbl.snp.makeConstraints { make in
+          make.width.equalTo((textArray.max() ?? 0) + 10)
+        }
       }
       let infoTextLabel = UILabel().then { lbl in
         lbl.text = "1개"
       }
       let innerStackView = UIStackView().then {
         $0.axis = .horizontal
-        $0.spacing = 8
+        $0.spacing = 16
       }
-      titles.forEach {
-        $0.snp.makeConstraints { layout in
-          layout.width.equalTo((asd.max() ?? 0) + 10)
-        }
-      }
+
       innerStackView.addArrangedSubview(infolabel)
       innerStackView.addArrangedSubview(infoTextLabel)
       self.infoStackView.addArrangedSubview(innerStackView)
     }
   }
-  private func makePriceStackView() {
-    let descriptionLabel = UILabel().then {
-      $0.text = "회원할인가"
-      $0.accessibilityIdentifier = "discountLabel"
-    }
-    let priceLabel = UILabel().then {
-      $0.attributedText = NSMutableAttributedString()
-        .bold("2,185", fontSize: 17)
-        .normal("원 ", fontSize: 13)
-        .normal("5%", textColor: .red, fontSize: 17)
-    }
-    let beforePriceBtn = UIButton().then {
-      $0.setAttributedTitle(NSMutableAttributedString().strikethrough("2300원", textColor: .kurlyGray1), for: .normal)
-      $0.tintColor = .kurlyGray1
-      $0.setImage(UIImage(systemName: "questionmark.circle"), for: .normal)
-      $0.semanticContentAttribute = .forceRightToLeft
-      $0.contentHorizontalAlignment = .left
-    }
-    priceStackView.addArrangedSubview(descriptionLabel)
-    priceStackView.addArrangedSubview(priceLabel)
-    priceStackView.addArrangedSubview(beforePriceBtn)
-    if isLogin {
-      let loginDescription = UIStackView().then {
-        let button = UIButton().then { btn in
-          btn.setTitle(" 웰컴 5% ", for: .normal)
-          btn.setTitleColor(.gray, for: .normal)
-          btn.layer.borderWidth = 1
-          btn.layer.cornerRadius = 5
-        }
-        let mileageLabel = UILabel().then { lbl in
-          lbl.attributedText = NSMutableAttributedString()
-            .normal("개당 ", fontSize: 13)
-            .normal("109원 적립", textColor: .red, fontSize: 17)
-        }
-        mileageLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        $0.makeHorizontalStackView(items: [button, mileageLabel])
-        $0.spacing = 4
-        $0.distribution = .fill
-      }
-      priceStackView.addArrangedSubview(loginDescription)
-    } else {
-      let loginDescription = UILabel().then {
-        $0.textColor = .kurlyMainPurple
-      }
-      if isDiscount {
-        loginDescription.text = "로그인 후, 회원할인가와 적립혜택이 제공됩니다."
-      } else {
-        loginDescription.text = "로그인 후, 적립혜택이 제공됩니다."
-      }
-      priceStackView.addArrangedSubview(loginDescription)
-    }
-  }
   
   private func setupUI() {
-    self.addSubviews([mainImageView, descriptionTopView, seperator, infoStackView])
-    descriptionTopView.addSubviews([titleLabel, subtitleLabel, priceStackView])
-    makePriceStackView()
     makeinfoStackView()
+    self.addSubviews([mainImageView, descriptionTopView, priceStackView, seperator, infoStackView])
+    descriptionTopView.addSubviews([titleLabel, subtitleLabel])
     mainImageView.snp.makeConstraints {
       $0.top.leading.trailing.equalToSuperview()
+      $0.height.equalTo(400)
     }
     
     descriptionTopView.snp.makeConstraints {
@@ -155,12 +102,12 @@ extension DetailDescriptionTopTableCell {
     }
     
     priceStackView.snp.makeConstraints {
-      $0.top.equalTo(subtitleLabel.snp.bottom)
-      $0.leading.bottom.trailing.equalToSuperview()
+    $0.top.equalTo(descriptionTopView.snp.bottom)
+    $0.leading.trailing.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0))
     }
     
     seperator.snp.makeConstraints {
-      $0.top.equalTo(descriptionTopView.snp.bottom).offset(20)
+      $0.top.equalTo(priceStackView.snp.bottom).offset(20)
       $0.leading.trailing.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
       $0.height.equalTo(1)
     }

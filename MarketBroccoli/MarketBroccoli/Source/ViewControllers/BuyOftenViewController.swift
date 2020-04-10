@@ -21,6 +21,7 @@ class BuyOftenViewController: UIViewController {
     $0.circleLineBtnStyle()
   }
    // MARK: - Life Cycle
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUI()
@@ -36,6 +37,7 @@ class BuyOftenViewController: UIViewController {
     self.addNavigationBarCartButton()
   }
   // MARK: - Setup Attribute
+  
   private func setupUI() {
     view.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9529411765, alpha: 1)
     [stateLabel, bestButton] .forEach {
