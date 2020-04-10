@@ -15,6 +15,9 @@
 		7050F31E242A3BB300B8E13B /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7050F31D242A3BB300B8E13B /* CategoryTableViewCell.swift */; };
 		7050F324242DDE7900B8E13B /* CategoryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7050F323242DDE7900B8E13B /* CategoryData.swift */; };
 		70BB5438243B432F00BE81F4 /* BuyOftenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BB5437243B432F00BE81F4 /* BuyOftenViewController.swift */; };
+		70BB543C243C879D00BE81F4 /* RecommendationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BB543B243C879D00BE81F4 /* RecommendationTableViewCell.swift */; };
+		70BB5440243C979A00BE81F4 /* CategorySectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BB543F243C979A00BE81F4 /* CategorySectionHeaderView.swift */; };
+		70BB5442243CB3D200BE81F4 /* RecommendationCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BB5441243CB3D200BE81F4 /* RecommendationCollectionViewCell.swift */; };
 		70E8178324360DF70010EB4C /* CategorySubTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E8178224360DF70010EB4C /* CategorySubTableViewCell.swift */; };
 		723851E124249C6400E8B206 /* UserInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723851E024249C6400E8B206 /* UserInfoTableViewCell.swift */; };
 		7268B6FC242E173300DE95CB /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7268B6FB242E173300DE95CB /* UIDeviceExtension.swift */; };
@@ -111,6 +114,9 @@
 		7050F31D242A3BB300B8E13B /* CategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCell.swift; sourceTree = "<group>"; };
 		7050F323242DDE7900B8E13B /* CategoryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryData.swift; sourceTree = "<group>"; };
 		70BB5437243B432F00BE81F4 /* BuyOftenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyOftenViewController.swift; sourceTree = "<group>"; };
+		70BB543B243C879D00BE81F4 /* RecommendationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationTableViewCell.swift; sourceTree = "<group>"; };
+		70BB543F243C979A00BE81F4 /* CategorySectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySectionHeaderView.swift; sourceTree = "<group>"; };
+		70BB5441243CB3D200BE81F4 /* RecommendationCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationCollectionViewCell.swift; sourceTree = "<group>"; };
 		70E8178224360DF70010EB4C /* CategorySubTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySubTableViewCell.swift; sourceTree = "<group>"; };
 		723851E024249C6400E8B206 /* UserInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoTableViewCell.swift; sourceTree = "<group>"; };
 		7268B6FB242E173300DE95CB /* UIDeviceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
@@ -434,6 +440,9 @@
 				FAAFEB602424A77900452977 /* LogOutTableViewCell.swift */,
 				7050F31D242A3BB300B8E13B /* CategoryTableViewCell.swift */,
 				70E8178224360DF70010EB4C /* CategorySubTableViewCell.swift */,
+				70BB543B243C879D00BE81F4 /* RecommendationTableViewCell.swift */,
+				70BB5441243CB3D200BE81F4 /* RecommendationCollectionViewCell.swift */,
+				70BB543F243C979A00BE81F4 /* CategorySectionHeaderView.swift */,
 				FA9AD74124287F51002D3504 /* SignupView.swift */,
 				FA48FBFE24385A2D00E53EB5 /* AddressWebView.swift */,
 				FA48FBD3243319DE00E53EB5 /* SignupCheckBox.swift */,
@@ -687,6 +696,7 @@
 				7CCD64982428DB1D00FC671B /* UICollectionViewCellExtension.swift in Sources */,
 				7C65ECDA2424F0830075606A /* ShoppingView.swift in Sources */,
 				7050F324242DDE7900B8E13B /* CategoryData.swift in Sources */,
+				70BB5442243CB3D200BE81F4 /* RecommendationCollectionViewCell.swift in Sources */,
 				7C27D427243B0BFA0064D1BF /* UIStackViewExtension.swift in Sources */,
 				7C65ECC2242472C60075606A /* Constant.swift in Sources */,
 				72EB58D52431F935001C4CCF /* CheckBox.swift in Sources */,
@@ -755,12 +765,14 @@
 				7C8C4A26242B0DEE00FA912B /* UITextFieldExtension.swift in Sources */,
 				7C65ECC5242472EC0075606A /* EmptyModel.swift in Sources */,
 				7C65ECDC2424F08C0075606A /* EventView.swift in Sources */,
+				70BB543C243C879D00BE81F4 /* RecommendationTableViewCell.swift in Sources */,
 				7C65ECBE242472400075606A /* EmptyManager.swift in Sources */,
 				7C8991FD24370AB20058BF9E /* DetailInfoTableView.swift in Sources */,
 				727F09612428DFFC00584A40 /* CartView.swift in Sources */,
 				FA48FBD624335BC000E53EB5 /* Agreement.swift in Sources */,
 				7C7171E4242C78E9009CE7D5 /* HomeMDTableCell.swift in Sources */,
 				7298BF01242DE470005B0517 /* SearchViewController.swift in Sources */,
+				70BB5440243C979A00BE81F4 /* CategorySectionHeaderView.swift in Sources */,
 				7C65ECBA242471380075606A /* EventMark.swift in Sources */,
 				7C8C4A2A242B0E9100FA912B /* UIColorExtension.swift in Sources */,
 				7C65ECD82424F03D0075606A /* BestView.swift in Sources */,
