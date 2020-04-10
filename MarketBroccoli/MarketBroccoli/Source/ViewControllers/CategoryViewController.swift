@@ -201,8 +201,6 @@ extension CategoryViewController: UITableViewDelegate {
     switch indexPath.section {
     case 0:
       return 52
-    case categoryData.count + 1:
-      return 720
     default:
       return UITableView.automaticDimension
     }

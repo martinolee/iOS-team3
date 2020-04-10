@@ -12,6 +12,9 @@ class RecommendationTableViewCell: UITableViewCell {
   // MARK: - Properties
   static let identifier: String = "recommendationTableViewCell"
   private lazy var collectionViewFlowLayout = UICollectionViewFlowLayout()
+  private let recommendationTitles = [
+    "식단관리", "전자레인지 간편식", "3천원의 행복", "간편한 아침식사", "제철 음식", "오프라인 맛집", "컬리가 만든 상품", "키토제닉"
+  ]
   
   private lazy var collectionView = UICollectionView(
     frame: .zero,
@@ -34,13 +37,14 @@ class RecommendationTableViewCell: UITableViewCell {
   
   private func setupUI() {
     collectionView.dataSource = self
-    //    collectionView.delegate = self
+    collectionView.delegate = self
     [collectionView].forEach {
       contentView.addSubview($0)
     }
     
     collectionView.snp.makeConstraints {
       $0.edges.equalToSuperview()
+      $0.height.equalTo(700)
     }
   }
   
