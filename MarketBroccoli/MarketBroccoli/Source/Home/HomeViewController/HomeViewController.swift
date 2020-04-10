@@ -23,31 +23,21 @@ class HomeViewController: UIViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    registerObserver()
+    ObserverManager.shared.registerObserver(
+      target: self, selector: #selector(receiveNotification(_:)), observerName: .productTouched, object: nil)
   }
   
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
-    resignObserver()
+    ObserverManager.shared.resignObserver(
+      target: self,
+      observerName: .productTouched,
+      object: nil)
   }
 }
 
 extension HomeViewController {
-  private func registerObserver() {
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(didReceiveNotification(_:)),
-      name: NSNotification.Name("ProductTouched"),
-      object: nil)
-    print("add ProductTouched notification")
-  }
-  
-  private func resignObserver() {
-    NotificationCenter.default.removeObserver(self, name: NSNotification.Name("ProductTouched"), object: nil)
-    print("remove ProductTouched notification")
-  }
-  
-  @objc private func didReceiveNotification(_ notification: Notification) {
+  @objc private func receiveNotification(_ notification: Notification) {
     let detailVC = DetailViewController()
     let barBtnItem = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
     
