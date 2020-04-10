@@ -78,21 +78,29 @@ extension RecommendationTableViewCell: UICollectionViewDataSource {
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-    
-    cell.backgroundColor = .blue
-    
+    let cell = collectionView.dequeue(RecommendationCollectionViewCell.self, indexPath: indexPath)
+      cell.configure(
+      image: UIImage(named: recommendationTitles[indexPath.row]),
+      title: recommendationTitles[indexPath.row]
+    )
     return cell
-    
-    //    switch indexPath.row {
-    //    case 1:
-    //      let cell = collectionView.dequeue(RecommendationCollectionViewCell.self, indexPath: indexPath)
-    //      cell.configure(image: UIImage(named: "채소_검정"), title: "나와라 얍얍")
-    //      return cell
-    //    default:
-    //      let cell = collectionView.dequeue(RecommendationCollectionViewCell.self, indexPath: indexPath)
-    //      cell.configure(image: UIImage(named: "채소_보라"), title: "도데체 뭐가 다른 거니")
-    //      return cell
-    //    }
+  }
+}
+// MARK: - UICollectionViewDelegate
+extension RecommendationTableViewCell: UICollectionViewDelegate {
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    let alertController = UIAlertController(
+      title: "개발 중",
+      message: "이 기능은 현재 개발 중인 기능입니다.\n조금만 기다려주세요!",
+      preferredStyle: .alert)
+    let defaultAction = UIAlertAction(
+      title: "나중에 만나요",
+      style: .destructive,
+      handler: nil
+    )
+    alertController.addAction(defaultAction)
+    //    self.window?.rootViewController?.presentingViewController()
+//    print([indexPath.item])
+    return (self.window?.rootViewController?.present(alertController, animated: true, completion: nil))!
   }
 }
