@@ -24,6 +24,12 @@ class HomeOfferTableCell: UITableViewCell {
     collectionViewLayout: UICollectionViewFlowLayout()
   )
 
+  private var collectionViewItems: [MainItem]? {
+    didSet {
+      offerCollectionView.reloadData()
+    }
+  }
+  
   var offset: CGFloat {
     get {
       self.offerCollectionView.contentOffset.x
@@ -58,11 +64,14 @@ class HomeOfferTableCell: UITableViewCell {
 
 // MARK: - ACTION Handler
 extension HomeOfferTableCell {
-  func configure(cellTitle title: String, subtitle: String? = nil) {
+  func configure(cellTitle title: String, subtitle: String? = nil, items: [MainItem]? = nil) {
     cellTitleLabel.text = title
     if let subtitle = subtitle {
       cellSubtitleLabel.text = subtitle
       cellSubtitleLabel.isHidden = false
+    }
+    if let items = items {
+      collectionViewItems = items
     }
   }
 }
@@ -97,7 +106,7 @@ extension HomeOfferTableCell {
     offerCollectionView.snp.makeConstraints {
       $0.top.equalTo(cellSubtitleLabel.snp.bottom)
       $0.leading.bottom.trailing.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0))
-      $0.height.equalTo(200)
+      $0.height.equalTo(300)
     }
   }
 }
@@ -105,12 +114,16 @@ extension HomeOfferTableCell {
 // MARK: - DataSource
 extension HomeOfferTableCell: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    9
+    guard let counts = collectionViewItems?.count else { return 0 }
+    return counts + 1
   }
-  
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    guard let items = collectionViewItems else { return UICollectionViewCell() }
+    
     if indexPath.item <= 7 {
-      return offerCollectionView.dequeue(HomeProductCollectionCell.self, indexPath: indexPath)
+      let cell = offerCollectionView.dequeue(HomeProductCollectionCell.self, indexPath: indexPath)
+      cell.configure(item: items[indexPath.item])
+      return cell
     } else {
       let cell = offerCollectionView.dequeue(HomeReuseShowAllCollectionCell.self, indexPath: indexPath)
       return cell
@@ -129,12 +142,12 @@ extension HomeOfferTableCell: UICollectionViewDelegateFlowLayout, UICollectionVi
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     if indexPath.item == 8 {
-      return CGSize(width: 120, height: 200)
+      return CGSize(width: 120, height: 300)
     } else {
       let margin: CGFloat = 10
       let itemCount: CGFloat = 2.3
       let contentSize: CGFloat = ((self.frame.width - (margin * 2) - (10 * (itemCount - 1))) / itemCount).rounded(.down)
-      return CGSize(width: contentSize, height: 200)
+      return CGSize(width: contentSize, height: 300)
     }
   }
 }
