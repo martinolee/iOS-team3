@@ -43,3 +43,5 @@ file_length:
 type_name:
   min_length: 2
   max_length: 40
+identifier_name:
+  min_length: 2

@@ -118,7 +118,7 @@ class CartProductTableViewCell: UITableViewCell {
   
   private func setupAutoLayout() {
     containerView.snp.makeConstraints {
-      $0.top.bottom.equalToSuperview().inset(4)
+      $0.top.bottom.equalToSuperview()
       $0.leading.trailing.equalToSuperview().inset(8)
     }
     
@@ -218,19 +218,17 @@ extension CartProductTableViewCell: ProductQuantityStepperDelegate {
   
   func configure(
     name: String, productImage: ImageResource,
-    originalPrice: Int?, currentPrice: Int,
+    price: Int, discount: Double,
     quantity: Int, isChecked: Bool, shoppingItemIndexPath: IndexPath
   ) {
-    if let originalPrice = originalPrice {
-      let originalPrice = moneyFormatter(won: originalPrice, hasUnit: true)
-      let attributeString = NSMutableAttributedString(string: originalPrice)
-      attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1,
-                                   range: NSRange(location: 0, length: attributeString.length))
-      originalPriceLabel.attributedText = attributeString
+    if discount != 0 {
+      let originalPrice = moneyFormatter(won: Int(Double(price) / (1 - discount)), hasUnit: true)
+      originalPriceLabel.attributedText = NSMutableAttributedString()
+        .strikethrough(originalPrice, textColor: .kurlyGray1)
     }
     
-    let totalPrice = moneyFormatter(won: currentPrice * quantity, hasUnit: false)
-    let currentPrice = moneyFormatter(won: currentPrice, hasUnit: true)
+    let totalPrice = moneyFormatter(won: price * quantity, hasUnit: false)
+    let currentPrice = moneyFormatter(won: price, hasUnit: true)
 
     nameLabel.text = name
     productImageView.kf.setImage(with: productImage)

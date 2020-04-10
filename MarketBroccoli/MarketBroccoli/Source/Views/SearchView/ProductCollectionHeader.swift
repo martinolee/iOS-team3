@@ -9,6 +9,7 @@
 import UIKit
 
 protocol ProductCollectionHeaderDelegate: class {
+  func selectingDeliveryAreaButtonTouched(_ button: UIButton)
 }
 
 class ProductCollectionHeader: UICollectionReusableView {
@@ -19,15 +20,27 @@ class ProductCollectionHeader: UICollectionReusableView {
   private var isInitialized = false
   
   private var isSelectingDeliveryAreaViewOpen: Bool {
-    get { selectingDeliveryAreaView.isHidden }
+    get { !selectingDeliveryAreaView.isHidden }
     
-    set { selectingDeliveryAreaView.isHidden = newValue }
+    set {
+      selectingDeliveryAreaView.isHidden = !newValue
+      
+      newValue
+      ? selectingDeliveryAreaButton.setImage(UIImage(systemName: "chevron.up"), for: .normal)
+      : selectingDeliveryAreaButton.setImage(UIImage(systemName: "chevron.down"), for: .normal)
+    }
   }
   
   private var isSelectingOrderTypeViewOpen: Bool {
-    get { selectingOrderTypeView.isHidden }
+    get { !selectingOrderTypeView.isHidden }
     
-    set { selectingOrderTypeView.isHidden = newValue }
+    set {
+      selectingOrderTypeView.isHidden = !newValue
+      
+      newValue
+      ? selectingOrderTypeButton.setImage(UIImage(systemName: "chevron.up"), for: .normal)
+      : selectingOrderTypeButton.setImage(UIImage(systemName: "chevron.down"), for: .normal)
+    }
   }
   
   private lazy var selectingDeliveryAreaButton = UIButton(type: .system).then {
@@ -123,29 +136,13 @@ extension ProductCollectionHeader {
   @objc
   private func selectingDeliveryAreaButtonTouched(_ button: UIButton) {
     isSelectingDeliveryAreaViewOpen.toggle()
-    
-    selectingDeliveryAreaView.isHidden.toggle()
-    
-    let image: UIImage?
-    isSelectingDeliveryAreaViewOpen ?
-      (image = UIImage(systemName: "chevron.up")) :
-      (image = UIImage(systemName: "chevron.down"))
-    
-    selectingDeliveryAreaButton.setImage(image, for: .normal)
+    isSelectingOrderTypeViewOpen = false
   }
   
   @objc
   private func selectingOrderTypeButtonTouched(_ button: UIButton) {
     isSelectingOrderTypeViewOpen.toggle()
-    
-    selectingOrderTypeView.isHidden.toggle()
-    
-    let image: UIImage?
-    isSelectingDeliveryAreaViewOpen ?
-      (image = UIImage(systemName: "chevron.up")) :
-      (image = UIImage(systemName: "chevron.down"))
-    
-    selectingDeliveryAreaButton.setImage(image, for: .normal)
+    isSelectingDeliveryAreaViewOpen = false
   }
 }
 
@@ -162,26 +159,58 @@ extension ProductCollectionHeader {
         selectingOrderTypeButton.setTitle(orderTypeButtonTitle, for: .normal)
       }
       
-      let backgroundView = UIView().then { $0.backgroundColor = .white }
+      let deliveryAreaBackgroundView = UIView().then {
+        $0.backgroundColor = .white
+        $0.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+      }
+      selectingDeliveryAreaView.insertSubview(deliveryAreaBackgroundView, at: 0)
       
       deliveryAreas.forEach { deliveryArea in
         let button = UIButton(type: .system).then {
           $0.setTitle(deliveryArea, for: .normal)
           $0.setTitleColor(.black, for: .normal)
+          
+          $0.snp.makeConstraints {
+            $0.width.greaterThanOrEqualTo(100)
+            $0.height.greaterThanOrEqualTo(50)
+          }
         }
+        
         selectingDeliveryAreaView.addArrangedSubview(button)
       }
-      selectingDeliveryAreaView.insertSubview(backgroundView, at: 0)
+      
+      selectingDeliveryAreaView.arrangedSubviews.forEach {
+        ($0 as? UIButton)?
+          .addTarget(self, action: #selector(selectingOptionDeliveryAreaButtonTouched(_:)), for: .touchUpInside)
+      }
+      
+      addShadow(deliveryAreaBackgroundView)
+      
+      let orderTypeBackgroundView = UIView().then {
+        $0.backgroundColor = .white
+        $0.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+      }
+      selectingOrderTypeView.insertSubview(orderTypeBackgroundView, at: 0)
       
       orderTypes.forEach { orderType in
         let button = UIButton(type: .system).then {
-          $0.contentHorizontalAlignment = .right
           $0.setTitle(orderType, for: .normal)
           $0.setTitleColor(.black, for: .normal)
+           
+          $0.snp.makeConstraints {
+            $0.width.greaterThanOrEqualTo(100)
+            $0.height.greaterThanOrEqualTo(50)
+          }
         }
+        
         selectingOrderTypeView.addArrangedSubview(button)
       }
-      selectingOrderTypeView.insertSubview(backgroundView, at: 0)
+      
+      selectingOrderTypeView.arrangedSubviews.forEach {
+        ($0 as? UIButton)?.addTarget(self, action: #selector(selectingOrderTypeButtonTouched(_:)), for: .touchUpInside)
+      }
+      
+      addShadow(orderTypeBackgroundView)
       
       isInitialized = true
     }
@@ -189,6 +218,22 @@ extension ProductCollectionHeader {
 }
 
 extension ProductCollectionHeader {
-  private func toggle() {
+  @objc
+  private func selectingOptionDeliveryAreaButtonTouched(_ button: UIButton) {
+    print("selectingOptionDeliveryAreaButtonTouched")
+  }
+  
+  @objc
+  private func selectingOptionOrderTypeButtonTouched(_ button: UIButton) {
+    print("selectingOptionOrderTypeButtonTouched")
+  }
+}
+
+extension ProductCollectionHeader {
+  private func addShadow(_ view: UIView) {
+    view.layer.shadowColor = UIColor.black.cgColor
+    view.layer.shadowOpacity = 1
+    view.layer.shadowOffset = .zero
+    view.layer.shadowRadius = 10
   }
 }
