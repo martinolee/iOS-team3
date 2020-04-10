@@ -90,8 +90,8 @@ extension RecommendationTableViewCell: UICollectionViewDataSource {
 extension RecommendationTableViewCell: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let alertController = UIAlertController(
-      title: "개발 중",
-      message: "이 기능은 현재 개발 중인 기능입니다.\n조금만 기다려주세요!",
+      title: "준비 중",
+      message: "이 기능은 현재 준비 중인 기능입니다.\n조금만 기다려주세요!",
       preferredStyle: .alert)
     let defaultAction = UIAlertAction(
       title: "나중에 만나요",
@@ -99,8 +99,8 @@ extension RecommendationTableViewCell: UICollectionViewDelegate {
       handler: nil
     )
     alertController.addAction(defaultAction)
-    //    self.window?.rootViewController?.presentingViewController()
-//    print([indexPath.item])
-    return (self.window?.rootViewController?.present(alertController, animated: true, completion: nil))!
+    if let rootVC = self.window?.rootViewController {
+      rootVC.present(alertController, animated: true)
+    }
   }
 }
