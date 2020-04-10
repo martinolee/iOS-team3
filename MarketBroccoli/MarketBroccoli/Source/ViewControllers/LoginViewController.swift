@@ -15,6 +15,7 @@ class LoginViewController: UIViewController {
   }
   private var pwTextField = UITextField().then {
     $0.placeholder = "비밀번호를 입력해주세요"
+    $0.isSecureTextEntry = true
     $0.textFieldStyle()
   }
   private var logInbtn = UIButton().then {

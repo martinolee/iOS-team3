@@ -11,6 +11,7 @@ import UIKit
 class CategoryViewController: UIViewController {
   // MARK: - Properties
   private var tableView = UITableView(frame: .zero, style: .grouped)
+//  private var tableView = UITableView()
   private let oftenProduct = ["자주 사는 상품"]
   private var lastSelection: IndexPath?
   private var refreshControl = UIRefreshControl()
@@ -21,13 +22,13 @@ class CategoryViewController: UIViewController {
     setupUI()
     setupLayout()    
   }
-  // MARK: - Action Handler
+  // MARK: - Setup Attribute
   private func setupNavigation() {
     self.addNavigationBarCartButton()
     self.setupBroccoliNavigationBar(title: "카테고리")
   }
   private func setupUI() {
-    view.backgroundColor = .white
+//    view.backgroundColor = .white
     tableView.dataSource = self
     tableView.delegate = self
     tableView.tableHeaderView =
@@ -37,6 +38,7 @@ class CategoryViewController: UIViewController {
     tableView.separatorStyle = .none // 테이블 뷰 라인 없애기
     tableView.register(cell: CategoryTableViewCell.self)
     tableView.register(cell: CategorySubTableViewCell.self)
+    tableView.register(cell: RecommendationTableViewCell.self)
     tableView.register(cell: UITableViewCell.self)
     [tableView].forEach {
       view.addSubview($0)
@@ -104,9 +106,7 @@ extension CategoryViewController: UITableViewDataSource {
       }
       return cell
     case categoryData.count + 1:
-      let cell = tableView.dequeue(UITableViewCell.self).then {
-       $0.textLabel?.text = "컬리의 추천"
-      }
+      let cell = tableView.dequeue(RecommendationTableViewCell.self)
       return cell
     default:
       if indexPath.row == 0 {
@@ -161,9 +161,18 @@ extension CategoryViewController: UITableViewDelegate {
     }
   }
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-       return UIView()
+    return UIView()
    }
-
+  
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+   switch section {
+    case categoryData.count + 1:
+      let headerView = CategorySectionHeaderView()
+      return headerView
+    default:
+      return nil
+    }
+  }
   func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
     return " "
   }
@@ -175,24 +184,27 @@ extension CategoryViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     switch section {
     case categoryData.count + 1:
-      return 10
+      return 72
     default:
       return 0
     }
   }
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
     switch section {
-    case 0:
+    case 0, categoryData.count:
       return 10
     default:
       return 0
     }
   }
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-     if indexPath.section == 0 {
-       return 52
-     } else {
-       return UITableView.automaticDimension
-     }
+    switch indexPath.section {
+    case 0:
+      return 52
+    case categoryData.count + 1:
+      return 800
+    default:
+      return UITableView.automaticDimension
+    }
    }
 }
