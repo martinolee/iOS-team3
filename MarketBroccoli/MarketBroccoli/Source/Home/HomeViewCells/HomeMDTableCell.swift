@@ -132,7 +132,7 @@ extension HomeMDTableCell: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     guard let items = collectionViewItems else { return UICollectionViewCell() }
     let cell = collectionView.dequeue(HomeProductCollectionCell.self, indexPath: indexPath)
-    cell.configure(item: items[indexPath.item])
+    cell.configure(item: items[indexPath.item], width: itemWidth)
     return cell
   }
 }

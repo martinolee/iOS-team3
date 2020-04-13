@@ -21,14 +21,13 @@ class RecommendationView: UITableView {
   
   override init(frame: CGRect, style: UITableView.Style) {
     super.init(frame: frame, style: style)
-    
     setupAttr()
     RequestManager.shared.homeRequest(url: .main, method: .get) {
       switch $0 {
       case .success(let data):
         self.model = data
       case .failure(let error):
-        print(error)
+        print("error :", error.localizedDescription)
       }
     }
   }
@@ -91,7 +90,6 @@ extension RecommendationView: UITableViewDataSource {
       return cell
     case 4:
       let cell = tableView.dequeue(HomeMDTableCell.self)
-    
       cell.configure(items: model.md.flatMap { $0 })
       return cell
     case 5:

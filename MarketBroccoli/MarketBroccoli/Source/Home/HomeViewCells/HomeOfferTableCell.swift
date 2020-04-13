@@ -11,12 +11,14 @@ import UIKit
 class HomeOfferTableCell: UITableViewCell {
   private let cellTitleLabel = UILabel().then {
     $0.font = .boldSystemFont(ofSize: 20)
+    $0.text = "dummyTitle"
   }
   
   private let cellSubtitleLabel = UILabel().then {
     $0.textColor = .gray
     $0.font = .systemFont(ofSize: 14)
     $0.isHidden = false
+    $0.text = "SubTitle"
   }
   
   private let offerCollectionView = HomeProductCollectionView(
@@ -38,6 +40,8 @@ class HomeOfferTableCell: UITableViewCell {
       self.offerCollectionView.contentOffset.x = newValue
     }
   }
+  
+  private var itemWidth: CGFloat = 0
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -114,7 +118,7 @@ extension HomeOfferTableCell {
 // MARK: - DataSource
 extension HomeOfferTableCell: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    guard let counts = collectionViewItems?.count else { return 0 }
+    guard let counts = collectionViewItems?.count else { return 10 }
     return counts + 1
   }
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -122,7 +126,7 @@ extension HomeOfferTableCell: UICollectionViewDataSource {
     
     if indexPath.item <= 7 {
       let cell = offerCollectionView.dequeue(HomeProductCollectionCell.self, indexPath: indexPath)
-      cell.configure(item: items[indexPath.item])
+      cell.configure(item: items[indexPath.item], width: itemWidth)
       return cell
     } else {
       let cell = offerCollectionView.dequeue(HomeReuseShowAllCollectionCell.self, indexPath: indexPath)
@@ -146,8 +150,8 @@ extension HomeOfferTableCell: UICollectionViewDelegateFlowLayout, UICollectionVi
     } else {
       let margin: CGFloat = 10
       let itemCount: CGFloat = 2.3
-      let contentSize: CGFloat = ((self.frame.width - (margin * 2) - (10 * (itemCount - 1))) / itemCount).rounded(.down)
-      return CGSize(width: contentSize, height: 300)
+      itemWidth = ((self.frame.width - (margin * 2) - (10 * (itemCount - 1))) / itemCount).rounded(.down)
+      return CGSize(width: itemWidth, height: 300)
     }
   }
 }

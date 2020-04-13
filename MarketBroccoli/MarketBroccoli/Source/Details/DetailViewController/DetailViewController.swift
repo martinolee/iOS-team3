@@ -40,6 +40,8 @@ extension DetailViewController {
     let popupImageVC = PopImageViewController()
     popupImageVC.modalPresentationStyle = .fullScreen
     popupImageVC.configure(image: image)
+//    let testImage = UIImage(named: "cloud")!
+//    popupImageVC.configure(image: testImage)
     self.present(popupImageVC, animated: true)
   }
 }

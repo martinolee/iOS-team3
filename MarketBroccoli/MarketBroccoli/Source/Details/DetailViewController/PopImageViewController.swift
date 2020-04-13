@@ -11,7 +11,7 @@ import UIKit
 class PopImageViewController: UIViewController {
   private let customNaviView = UIView().then {
     $0.backgroundColor = .black
-    $0.alpha = 0.5
+    $0.alpha = 0.0
   }
   
   private lazy var closeBtn = UIButton().then {
@@ -31,7 +31,7 @@ class PopImageViewController: UIViewController {
     $0.showsHorizontalScrollIndicator = false
   }
   private let imageView = UIImageView().then {
-    $0.contentMode = .scaleAspectFit
+    $0.contentMode = .scaleAspectFill
   }
   
   var popupImage: UIImage? {
@@ -45,13 +45,28 @@ class PopImageViewController: UIViewController {
     setupUI()
   }
   
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    UIView.animate(withDuration: 0.2) {
+      self.customNaviView.alpha = 0.5
+    }
+  }
+  
   var ratio: CGFloat?
+  var imageSize: CGSize = .zero
   var isVertical: Bool = true
 }
 
 extension PopImageViewController: UIScrollViewDelegate {
   func viewForZooming(in scrollView: UIScrollView) -> UIView? {
     return imageView
+  }
+  func scrollViewDidZoom(_ scrollView: UIScrollView) {
+  let subView = scrollView.subviews[0]
+  let offsetX = max((scrollView.bounds.size.width - scrollView.contentSize.width) * 0.5, 0.0)
+  let offsetY = max((scrollView.bounds.size.height - scrollView.contentSize.height) * 0.5, 0.0)
+  // adjust the center of image view
+    subView.center = CGPoint(x: scrollView.contentSize.width * 0.5 + offsetX, y: scrollView.contentSize.height * 0.5 + offsetY)
   }
 }
 
@@ -63,12 +78,9 @@ extension PopImageViewController {
   
   func configure(image: UIImage) {
     popupImage = image
+    imageSize = image.size
     ratio = image.size.width / image.size.height
-    
-    let deviceSize = UIScreen.main.bounds
-    let deviceRatio = deviceSize.width / deviceSize.height
-    let imageRatio = image.size.width / image.size.height
-    isVertical = deviceRatio > imageRatio
+    isVertical = imageSize.width < imageSize.height
   }
 }
 
@@ -94,9 +106,9 @@ extension PopImageViewController {
     }
     
     imageView.snp.makeConstraints {
-      $0.width.equalTo(imageView.snp.height).multipliedBy(ratio ?? 0)
       if isVertical {
         $0.height.equalTo(UIScreen.main.bounds.height)
+        $0.center.equalToSuperview()
 //        $0.top.bottom.equalToSuperview()
 //        $0.leading.trailing.equalToSuperview()
       } else {

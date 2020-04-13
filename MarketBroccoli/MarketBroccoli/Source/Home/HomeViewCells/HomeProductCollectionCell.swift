@@ -14,18 +14,17 @@ class HomeProductCollectionCell: UICollectionViewCell {
   }
   
   private lazy var titleLabel = UILabel().then {
-    $0.text = "구름이"
-    $0.preferredMaxLayoutWidth = 165
+    $0.text = ""
     $0.numberOfLines = 2
   }
   
   private let priceLabel = UILabel().then {
-    $0.text = "비매품"
+    $0.text = ""
     $0.font = .systemFont(ofSize: 16, weight: .bold)
   }
   
   private let strikethroughPriceLabel = UILabel().then {
-    $0.text = "비매품"
+    $0.text = ""
     $0.textColor = .gray
     $0.strikethrough()
   }
@@ -35,7 +34,6 @@ class HomeProductCollectionCell: UICollectionViewCell {
     $0.addArrangedSubview(priceLabel)
     $0.addArrangedSubview(strikethroughPriceLabel)
     $0.axis = .vertical
-    
     $0.distribution = .fillEqually
   }
   
@@ -50,10 +48,11 @@ class HomeProductCollectionCell: UICollectionViewCell {
 }
 
 extension HomeProductCollectionCell {
-  func configure(item: MainItem) {
+  func configure(item: MainItem, width: CGFloat) {
     imageView.setImage(urlString: item.thumbImage)
     titleLabel.text = item.name
-    priceLabel.text = item.price.description
+    priceLabel.text = moneyFormatter(won: item.price, hasUnit: true)
+    titleLabel.preferredMaxLayoutWidth = width - 10
   }
 }
 
