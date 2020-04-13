@@ -203,6 +203,7 @@ extension HomeMDTableCell {
 // MARK: - ACTIONS
 extension HomeMDTableCell {
   private func categoryMoved(_ currentPage: Int, direction: Bool) {
+    guard categoryArray.count >= currentPage else { return }
     var MDTextWidth: CGFloat = 0
     let label = UILabel()
     for idx in 0..<currentPage {

@@ -75,7 +75,7 @@ extension RecommendationView: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    guard let model = model, !model.recommendation.isEmpty else { return UITableViewCell() }
+    guard let model = model, !model.recommendation.isEmpty, model.recommendation.count > indexPath.item else { return UITableViewCell() }
     switch indexPath.section {
     case 0:
       return tableView.dequeue(HomeBannerTableCell.self)

@@ -51,7 +51,7 @@ class HomeProductCollectionCell: UICollectionViewCell {
 
 extension HomeProductCollectionCell {
   func configure(item: MainItem) {
-    imageView.setImage(urlString: item.thumbImage.image)
+    imageView.setImage(urlString: item.thumbImage)
     titleLabel.text = item.name
     priceLabel.text = item.price.description
   }
