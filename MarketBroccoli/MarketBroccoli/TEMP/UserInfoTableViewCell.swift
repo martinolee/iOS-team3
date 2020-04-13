@@ -19,7 +19,9 @@ protocol UserInfoTableViewCellDelgate: class {
 
 final class UserInfoTableViewCell: UITableViewCell {
   // MARK: - Properties
+  static let identifier = "UserInfoTableViewCell"
   weak var delegate: UserInfoTableViewCellDelgate?
+  
   private lazy var userProfileImageView = UIImageView().then {
     $0.contentMode = .scaleAspectFit
     $0.layer.borderWidth = 1.0
@@ -27,6 +29,12 @@ final class UserInfoTableViewCell: UITableViewCell {
     $0.layer.cornerRadius = 6.0
     $0.layer.masksToBounds = true
   }
+  private lazy var welcomeLabel = UILabel().then {
+    $0.text = "웰컴"
+    $0.textColor = .lightGray
+    $0.textAlignment = .center
+  }
+  
   private lazy var userNameLabel = UILabel().then {
     $0.textAlignment = .left
     $0.numberOfLines = 1
@@ -38,6 +46,7 @@ final class UserInfoTableViewCell: UITableViewCell {
     $0.numberOfLines = 1
     $0.textColor = .label
     $0.font = .systemFont(ofSize: 16, weight: .light)
+    $0.text = "5% 적립 + 최초 1회 무료배송"
   }
   private lazy var leftButton = UIButton(type: .system).then {
     $0.layer.masksToBounds = true
@@ -92,12 +101,16 @@ final class UserInfoTableViewCell: UITableViewCell {
   
   private func addAllView() {
     contentView.addSubviews([userProfileImageView, userNameLabel, extraInfoLabel, leftButton, rightButton])
+    userProfileImageView.addSubview(welcomeLabel)
   }
   
   private func setupUserProfileImageViewAutoLayout() {
     userProfileImageView.snp.makeConstraints {
       $0.top.leading.equalTo(contentView).inset(16)
       $0.size.equalTo(50)
+    }
+    welcomeLabel.snp.makeConstraints {
+      $0.centerX.centerY.equalToSuperview()
     }
   }
   
@@ -119,11 +132,11 @@ final class UserInfoTableViewCell: UITableViewCell {
   
   private func setupLeftButtonAutoLayout() {
     leftButton.snp.makeConstraints {
-      $0.top.equalTo(userProfileImageView.snp.bottom).offset(16)
+      $0.top.equalTo(userProfileImageView.snp.bottom).offset(40)
       $0.leading.equalTo(userProfileImageView)
       $0.bottom.equalTo(contentView).inset(16)
       $0.height.equalTo(32)
-      $0.width.equalTo(150)
+      $0.width.equalTo(contentView).multipliedBy(0.44)
     }
   }
   
@@ -155,5 +168,11 @@ final class UserInfoTableViewCell: UITableViewCell {
     userProfileImageView.kf.setImage(with: userProfileImageResource)
     userNameLabel.text = "\(userName)님"
     extraInfoLabel.text = extraInfo
+  }
+}
+
+extension UserInfoTableViewCell {
+  func configure(name: String) {
+    userNameLabel.text = "\(name)님"
   }
 }
