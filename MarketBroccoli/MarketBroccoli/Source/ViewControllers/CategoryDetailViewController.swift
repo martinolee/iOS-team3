@@ -9,22 +9,27 @@
 import UIKit
 
 class CategoryDetailViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+  var categoryDetailNavigationTitle = ""
+  // MARK: - Life Cycle
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    setupUI()
+    setupNavigtion()
+  }
+  override func viewWillDisappear(_ animated: Bool) {
+    self.setupBroccoliNavigationBar(title: "카테고리")
+    self.addNavigationBarCartButton()
+  }
+  // MARK: - Setup Attribute
+  
+  private func setupUI() {
+    view.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9529411765, alpha: 1)
+    [] .forEach {
+      view.addSubview($0)
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+  }
+  private func setupNavigtion() {
+    self.addSubNavigationBarCartButton()
+    self.setupSubNavigationBar(title: categoryDetailNavigationTitle)
+  }
 }
