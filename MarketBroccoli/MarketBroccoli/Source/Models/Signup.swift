@@ -42,7 +42,7 @@ struct User: Encodable {
   }
 }
 
-struct Address: Encodable {
+struct Address: Codable {
   let jibunAddress: String
   let roadAddress: String
   let zipCode: String

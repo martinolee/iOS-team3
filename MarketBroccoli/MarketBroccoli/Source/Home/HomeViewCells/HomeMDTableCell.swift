@@ -39,6 +39,12 @@ class HomeMDTableCell: UITableViewCell {
   private let categoryArray = Categories.HomeMDCategory
   private var itemWidth: CGFloat = 0
   
+  private var collectionViewItems: [MainItem]? {
+    didSet {
+      MDProductCollectionView.reloadData()
+    }
+  }
+  
   enum UI {
     static let inset: CGFloat = 10
     static let spacing: CGFloat = 10
@@ -120,22 +126,14 @@ extension HomeMDTableCell: UIScrollViewDelegate {
 // MARK: - DataSource
 extension HomeMDTableCell: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    switch collectionView {
-    case MDProductCollectionView:
-      return 6 * categoryArray.count
-    default:
-      fatalError("CollectionView Not Found")
-    }
+    collectionViewItems?.count ?? 0
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    switch collectionView {
-    case MDProductCollectionView:
-      let cell = collectionView.dequeue(HomeProductCollectionCell.self, indexPath: indexPath)
-      return cell
-    default:
-      fatalError("CollectionView Not Found")
-    }
+    guard let items = collectionViewItems else { return UICollectionViewCell() }
+    let cell = collectionView.dequeue(HomeProductCollectionCell.self, indexPath: indexPath)
+    cell.configure(item: items[indexPath.item])
+    return cell
   }
 }
 
@@ -251,6 +249,10 @@ extension HomeMDTableCell {
   
   @objc private func categoryShowBtnTouched(_ sender: UIButton) {
     print(sender.titleLabel?.text)
+  }
+  
+  func configure(items: [MainItem]? = nil) {
+    collectionViewItems = items
   }
 }
 
