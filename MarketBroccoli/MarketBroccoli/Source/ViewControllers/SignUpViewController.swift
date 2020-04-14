@@ -33,6 +33,21 @@ class SignUpViewController: UIViewController {
   }
   private var isAuthorized = true
   private var timer = Timer()
+  
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+      self.view.endEditing(true)
+    signupView.idTextField.resignFirstResponder()
+    signupView.secretTextField.resignFirstResponder()
+    signupView.checkSecretNumberTextField.resignFirstResponder()
+    signupView.nameTextFeild.resignFirstResponder()
+    signupView.emailTextFeild.resignFirstResponder()
+    signupView.cellphoneTextField.resignFirstResponder()
+    signupView.checkingCodeTexField.resignFirstResponder()
+    signupView.birthdayYearTextField.resignFirstResponder()
+    signupView.birthdayMonthTextField.resignFirstResponder()
+    signupView.birthdayDayTextField.resignFirstResponder()
+  } // 이거 작동 안함 왜 안되는지??
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUI()
@@ -88,6 +103,20 @@ class SignUpViewController: UIViewController {
 
 // MARK: - Action
 extension SignUpViewController: SignupViewDelegate {
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    signupView.idTextField.resignFirstResponder()
+    signupView.secretTextField.resignFirstResponder()
+    signupView.checkSecretNumberTextField.resignFirstResponder()
+    signupView.nameTextFeild.resignFirstResponder()
+    signupView.emailTextFeild.resignFirstResponder()
+    signupView.cellphoneTextField.resignFirstResponder()
+    signupView.checkingCodeTexField.resignFirstResponder()
+    signupView.birthdayYearTextField.resignFirstResponder()
+    signupView.birthdayMonthTextField.resignFirstResponder()
+    signupView.birthdayDayTextField.resignFirstResponder()
+    return true
+  }
+  
   func signupButtonTouched(button: UIButton) {
     print(essentialInfo)
     if !essentialInfo.values.contains(false) {
@@ -114,36 +143,15 @@ extension SignUpViewController: SignupViewDelegate {
         .responseData { response in
           switch response.result {
           case .success(let data):
-            print("들어오긴함:\(data)")
+            print("회원가입 누르기:\(data)")
+            
             let alertController = UIAlertController(
               title: nil,
               message: "회원가입을 축하드립니다!\n당신의 일상에 컬리를 더해 보세요",
               preferredStyle: .alert
             )
-            
             let alert = UIAlertAction(title: "확인", style: .default) { _ in
-              AF.request(
-                "http://15.164.49.32/accounts/auth-token/",
-                method: .post,
-                parameters: UserAuthToken(
-                  userName: self.signupView.idTextField.text ?? "",
-                  password: self.signupView.secretTextField.text ?? ""),
-                encoder: JSONParameterEncoder.default,
-                headers: ["Content-Type": "application/json"]
-              ).validate(statusCode: 200..<300)
-                .responseData { response in
-                  switch response.result {
-                  case .success(let data):
-                    guard let decodedData = try? JSONDecoder().decode(
-                      UserAuthTokenResponse.self,
-                      from: data
-                      ) else { return }
-                    print(decodedData)
-                    print("success")
-                  case .failure(let error):
-                    print(error.localizedDescription)
-                  }
-              }
+            self.navigationController?.popViewController(animated: true)
             }
             alertController.addAction(alert)
             self.present(alertController, animated: true)
@@ -307,7 +315,7 @@ extension SignUpViewController: SignupViewDelegate {
       let mobileNumber = signupView.cellphoneTextField.text ?? ""
       let checkingCode = signupView.checkingCodeTexField.text ?? ""
       
-      AF.request(
+      AF.request(                                             
         "http://15.164.49.32/accounts/m-token-auth/",
         method: .post,
         parameters: UserMobileCode(userMobile: mobileNumber, token: checkingCode),
@@ -325,8 +333,6 @@ extension SignUpViewController: SignupViewDelegate {
             self.signupView.timerInTextField.isHidden = true
             self.essentialInfo[.cellphoneCheck] = true
             
-            print("success")
-            print(data)
             guard let decodedData = try? JSONDecoder().decode(
               UserMobileCodeResponse.self,
               from: data
@@ -336,7 +342,6 @@ extension SignUpViewController: SignupViewDelegate {
             self.signupView.checkingCodeCompleteLabelOpenHiddenMessage(text: "인증번호를 확인해주세요", textColor: .orange)
             self.essentialInfo[.cellphoneCheck] = false
             print(error.localizedDescription)
-            //print("passed")
           }
       }
     }
@@ -360,8 +365,6 @@ extension SignUpViewController: SignupViewDelegate {
               self.signupView.getCodeButton.backgroundColor = .lightGray
               self.signupView.cellphoneTextField.isEnabled = false
               self.essentialInfo[.cellphone] = true
-              print("success")
-              print(data)
               guard let decodedData = try? JSONDecoder().decode(
                 UserMobileResponse.self,
                 from: data
@@ -370,7 +373,6 @@ extension SignUpViewController: SignupViewDelegate {
             case .failure(let error):
               self.alert(message: "이미 가입된 번호입니다.")
               print(error.localizedDescription)
-              //print("passed")
             }
         }
       } else {
@@ -468,8 +470,6 @@ extension SignUpViewController: SignupViewDelegate {
     func checkSecretNumberTextFeildEditingChanged(_ textField: UITextField, text: String) {
       print("checkSecretNumberTextFeildEditingChanged")
       if text == (signupView.secretTextField.text ?? "") {
-        print(text)
-        print(signupView.secretTextField.text)
         signupView.sameSecretNumberLabel.textColor = .green
         essentialInfo[.passwordCheck] = true
       } else {
@@ -545,8 +545,6 @@ extension SignUpViewController: SignupViewDelegate {
               self.signupView.idTextField.isEnabled = false
               self.signupView.checkIDButton.isEnabled = false
               button.backgroundColor = .lightGray
-              print("success")
-              print(data)
               self.alert(message: "사용하실 수 있는 아이디입니다!")
               guard let decodedData = try? JSONDecoder().decode(UserNameResponse.self, from: data) else { return }
               print(decodedData)

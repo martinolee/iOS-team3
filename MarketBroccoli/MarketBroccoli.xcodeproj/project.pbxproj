@@ -121,6 +121,7 @@
 		FAAE2E572424E3C400ACC5D3 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAE2E562424E3C400ACC5D3 /* SignUpViewController.swift */; };
 		FAAFEB612424A77900452977 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAFEB602424A77900452977 /* SettingsTableViewCell.swift */; };
 		FAAFEB632424A79200452977 /* TypeConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAFEB622424A79200452977 /* TypeConverter.swift */; };
+		FAB1FA4624458B2800100C74 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1FA4524458B2800100C74 /* ProfileViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -242,6 +243,7 @@
 		FAAFEB5E2424A74900452977 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		FAAFEB602424A77900452977 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		FAAFEB622424A79200452977 /* TypeConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeConverter.swift; sourceTree = "<group>"; };
+		FAB1FA4524458B2800100C74 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -383,6 +385,7 @@
 				7050F3192429CEBB00B8E13B /* CategoryViewController.swift */,
 				70BB5437243B432F00BE81F4 /* BuyOftenViewController.swift */,
 				FAAFEB5E2424A74900452977 /* SettingsViewController.swift */,
+				FAB1FA4524458B2800100C74 /* ProfileViewController.swift */,
 				FAAE2E562424E3C400ACC5D3 /* SignUpViewController.swift */,
 				7050F3112424BA3800B8E13B /* LoginViewController.swift */,
 				7050F315242876AC00B8E13B /* IDFindViewController.swift */,
@@ -855,6 +858,7 @@
 				7C65ECBA242471380075606A /* EventMark.swift in Sources */,
 				7C8C4A2A242B0E9100FA912B /* UIColorExtension.swift in Sources */,
 				7C65ECD82424F03D0075606A /* BestView.swift in Sources */,
+				FAB1FA4624458B2800100C74 /* ProfileViewController.swift in Sources */,
 				7280786C2429CA2000101B7D /* CartViewController.swift in Sources */,
 				7C15D0B8242A2C3500ACB4C9 /* UILabelExtension.swift in Sources */,
 				7CDD2D83243EF958008B4890 /* ObserverManager.swift in Sources */,

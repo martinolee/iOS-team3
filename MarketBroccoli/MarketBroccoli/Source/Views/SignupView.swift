@@ -189,7 +189,7 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.layer.borderWidth = 1
     $0.layer.borderColor = UIColor.lightGray.cgColor
   }
-  private lazy var birthdayYearTextField = UITextField().then {
+  lazy var birthdayYearTextField = UITextField().then {
     $0.placeholder = "YYYY"
     $0.borderStyle = .none
     $0.textAlignment = .center
@@ -198,7 +198,7 @@ class SignupView: UIView, UITextFieldDelegate {
   private let firstSlashLabel = SignupLabel(textColor: nil, font: nil).then {
     $0.text = "/"
   }
-  private lazy var birthdayMonthTextField = UITextField().then {
+  lazy var birthdayMonthTextField = UITextField().then {
     $0.placeholder = "MM"
     $0.borderStyle = .none
     $0.textAlignment = .center
@@ -207,7 +207,7 @@ class SignupView: UIView, UITextFieldDelegate {
   private let secondSlashLabel = SignupLabel(textColor: nil, font: nil).then {
     $0.text = "/"
   }
-  private lazy var birthdayDayTextField = UITextField().then {
+  lazy var birthdayDayTextField = UITextField().then {
     $0.placeholder = "DD"
     $0.borderStyle = .none
     $0.textAlignment = .center
@@ -444,6 +444,7 @@ class SignupView: UIView, UITextFieldDelegate {
     }
     
     setupAddressWebView()
+
     if let addressWebView = addressWebView {
       addressWebViewContainer.addSubview(addressWebView)
     }
@@ -854,7 +855,7 @@ class SignupView: UIView, UITextFieldDelegate {
       if let addressWebView = addressWebView {
         $0.top.equalTo(safeAreaLayoutGuide).inset(30)
         $0.leading.trailing.equalTo(addressWebView)
-        $0.bottom.equalTo(addressWebView.snp.top)
+        $0.height.equalTo(30)
       }
     }
     
@@ -863,7 +864,7 @@ class SignupView: UIView, UITextFieldDelegate {
         $0.trailing.equalTo(addressCloseView.snp.trailing)
       }
     }
-
+    
     if let addressWebView = addressWebView {
       let safeArea = addressWebViewContainer.safeAreaLayoutGuide
       addressWebView.snp.makeConstraints {
@@ -873,9 +874,7 @@ class SignupView: UIView, UITextFieldDelegate {
       }
     }
   }
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
+  required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 }
 // MARK: - Extension, Delegate
 extension SignupView {
@@ -1146,6 +1145,10 @@ extension SignupView {
   }
   @objc func addressCloseButton(button: UIButton) {
     delegate?.addressCloseButton(button: button)
+  }
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    delegate?.textFieldShouldReturn(textField)
+    return true
   }
 }
 

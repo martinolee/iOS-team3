@@ -24,15 +24,7 @@ class SettingsViewController: UIViewController {
     ["배송 안내", "공지사항", "자주하는 질문", "고객센터", "이용안내", "컬리소개"],
     ["알림설정"]
   ]
-  private let settingOptAfterLogin = [
-    ["유저 정보"],
-    ["적립금", "쿠폰", "친구초대"],
-    ["주문 내역", "상품 후기", "상품 문의", "1:1 문의", "대량주문 문의"],
-    ["배송 안내", "공지사항", "자주하는 질문", "고객센터", "이용안내", "컬리소개", "자주하는 질문", "고객센터", "이용안내", "컬리소개", "컬리패스"],
-    ["개인정보 수정", "알림설정"],
-    ["로그아웃"]
-  ]
-  private let isLogin = false
+
   private let myCurlyTableView = UITableView().then {
     $0.sectionFooterHeight = 10
   }
@@ -76,32 +68,12 @@ extension SettingsViewController {
 
 extension SettingsViewController: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
-    if isLogin {
-      return settingOptAfterLogin.count
-    } else {
       return settingOptBeforeLogin.count
-    }
   }
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    if isLogin {
-      return settingOptAfterLogin[section].count
-    } else {
       return settingOptBeforeLogin[section].count
-    }
   }
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    if isLogin {
-      switch indexPath.section {
-      case 0:
-        let cell = tableView.dequeue(UserInfoTableViewCell.self)
-        cell.configure(name: "스티브잡스")
-        return cell
-      default:
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Detail", for: indexPath)
-        cell.textLabel?.text = settingOptAfterLogin[indexPath.section][indexPath.row]
-        return cell
-      }
-    } else {
       switch indexPath.section {
       case 0:
         let cell = tableView.dequeue(SettingsTableViewCell.self)
@@ -112,7 +84,6 @@ extension SettingsViewController: UITableViewDataSource {
         cell.textLabel?.text = settingOptBeforeLogin[indexPath.section][indexPath.row]
         return cell
       }
-    }
   }
 }
 extension SettingsViewController: UITableViewDelegate {
