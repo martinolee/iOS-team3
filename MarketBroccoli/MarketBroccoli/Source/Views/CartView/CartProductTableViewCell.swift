@@ -47,7 +47,7 @@ class CartProductTableViewCell: UITableViewCell {
   }
   
   private let productImageView = UIImageView().then {
-    $0.contentMode = .scaleAspectFit
+    $0.contentMode = .scaleToFill
   }
   
   private let originalPriceLabel = UILabel().then {

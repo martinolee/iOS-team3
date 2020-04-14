@@ -13,7 +13,11 @@ import UIKit
 class CartViewController: UIViewController {
   // MARK: - Properties
   
-  private var cart = Cart()
+  private var cart: Cart? {
+    didSet {
+      cartView.reloadCartTableViewData()
+    }
+  }
   
   private lazy var cartView = CartView().then {
     $0.dataSource = self
@@ -33,11 +37,11 @@ class CartViewController: UIViewController {
     setupLeftBarButtonItem()
     setCorrectSelectAllProductCheckBoxStatus()
     
-    fetchCart("http://15.164.49.32/kurly/cart/") { response in
+    fetchCart("http://15.164.49.32/kurly/cart/") { [weak self] response in
       switch response {
       case .success(let data):
-        guard let cartData = try? JSONDecoder().decode(Cart.self, from: data) else { return }
-        print(cartData.debugDescription)
+        guard let backendCart = try? JSONDecoder().decode(BackendCart.self, from: data) else { return }
+        self?.cart = convertToCart(from: backendCart)
       case .failure(let error):
         print(error.localizedDescription)
       }
@@ -76,37 +80,35 @@ class CartViewController: UIViewController {
 
 extension CartViewController: CartViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
-    1
-  }
-  
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    if cart.isEmpty {
-      return 1
-    }
+    guard let cart = cart, !cart.isEmpty else { return 1 }
     
     return cart.count
   }
   
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    if cart.isEmpty {
-      let cell = tableView.dequeue(EmptyCartTableViewCell.self)
-      
-      return cell
-    }
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    guard let cart = cart, !cart.isEmpty else { return 1 }
     
-    let product = productDummy[indexPath.row]
+    return cart[section].wishProducts.count
+  }
+  
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    guard let cart = cart, !cart.isEmpty else { return tableView.dequeue(EmptyCartTableViewCell.self) }
+    
+    let wishProduct = cart[indexPath.section].wishProducts[indexPath.row]
     let cell = tableView.dequeue(CartProductTableViewCell.self).then {
       $0.deleagte = self
       
-      $0.configure(
-        name: product.name,
-        productImage: ImageResource(downloadURL: product.imageURL),
-        price: product.price,
-        discount: product.discount,
-        quantity: 4,
-        isChecked: true,
-        shoppingItemIndexPath: indexPath
-      )
+      if let imageURL = URL(string: wishProduct.product.imageURL) {
+        $0.configure(
+          name: wishProduct.product.name,
+          productImage: ImageResource(downloadURL: imageURL),
+          price: wishProduct.product.price,
+          discount: cart[indexPath.section].discountRate,
+          quantity: wishProduct.quantity,
+          isChecked: wishProduct.isChecked,
+          shoppingItemIndexPath: indexPath
+        )
+      }
     }
     
     return cell
@@ -117,14 +119,22 @@ extension CartViewController: CartViewDataSource {
 
 extension CartViewController: CartProductTableViewCellDelegate {  
   func checkBoxTouched(_ checkBox: CheckBox, _ isChecked: Bool, _ shoppingItemIndexPath: IndexPath) {
+    guard var cart = cart else { return }
+    
+    cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].isChecked = isChecked
+
+    self.cart = cart
     setCorrectSelectAllProductCheckBoxStatus()
   }
   
   func productRemoveButtonTouched(_ button: UIButton, _ shoppingItemIndexPath: IndexPath) {
     let removeShoppingItemAlert = UIAlertController(title: nil, message: "삭제하시겠습니까?", preferredStyle: .alert).then {
       $0.addAction(UIAlertAction(title: "취소", style: .cancel))
-      $0.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { _ in
-        self.cartView.reloadCartTableViewData()
+      $0.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { [weak self] _ in
+        guard let self = self, var cart = self.cart else { return }
+        cart[shoppingItemIndexPath.section].wishProducts.remove(at: shoppingItemIndexPath.row)
+        
+        self.cart = cart
       }))
     }
     
@@ -132,19 +142,37 @@ extension CartViewController: CartProductTableViewCellDelegate {
   }
   
   func productQuantityStepperValueChanged(_ value: Int, _ shoppingItemIndexPath: IndexPath) {
-    cartView.reloadCartTableViewData()
+    guard var cart = cart else { return }
+    
+    cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].quantity = value
+    
+    self.cart = cart
   }
 }
 
 extension CartViewController: CartViewDelegate {
   func selectAllProductCheckBoxTouched(_ checkBox: CheckBox, _ isChecked: Bool) {
+    guard var cart = cart else { return }
+    
+    for cartIndex in cart.indices {
+      for productIndex in cart[cartIndex].wishProducts.indices {
+        cart[cartIndex].wishProducts[productIndex].isChecked = isChecked
+      }
+    }
+    
+    self.cart = cart
   }
   
   func removeSelectedProductButton(_ button: UIButton) {
     let message = "선택된 상품을 삭제하시겠습니까?"
     let removeShoppingItemAlert = UIAlertController(title: nil, message: message, preferredStyle: .alert).then {
       $0.addAction(UIAlertAction(title: "취소", style: .cancel))
-      $0.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { _ in
+      $0.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { [weak self] _ in
+        guard let self = self, var cart = self.cart else { return }
+        for index in cart.indices {
+          cart[index].wishProducts = cart[index].wishProducts.filter { !$0.isChecked }
+        }
+        self.cart = cart.filter { !$0.wishProducts.isEmpty }
       }))
     }
     
@@ -155,14 +183,20 @@ extension CartViewController: CartViewDelegate {
 // MARK: - Function
 
 extension CartViewController {
-  private func isAllShoppingItemsChecked() -> Bool {
-//    var isChecked: Bool?
+  private var isAllShoppingItemsChecked: Bool {
+    guard let cart = cart else { return true }
+    
+    for cart in cart {
+      for product in cart.wishProducts where !product.isChecked {
+        return product.isChecked
+      }
+    }
     
     return true
   }
   
   private func setCorrectSelectAllProductCheckBoxStatus() {
-    isAllShoppingItemsChecked()
+    isAllShoppingItemsChecked
       ? cartView.setSelectAllProductCheckBoxStatus(true)
       : cartView.setSelectAllProductCheckBoxStatus(false)
   }
@@ -181,5 +215,4 @@ extension CartViewController {
         }
     }
   }
-
 }
