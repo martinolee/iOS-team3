@@ -7,10 +7,9 @@
 //
 
 import UIKit
-import Then
-import SnapKit
 
 class NewProduct: UICollectionView {
+  var collectionName = ""
   override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
     super.init(frame: frame, collectionViewLayout: layout)
     self.backgroundColor = .clear
@@ -31,13 +30,6 @@ class NewProduct: UICollectionView {
 extension NewProduct {
   private func setupLayout() {
     guard let layout = self.collectionViewLayout as? CustomCollectionViewFlowLayout else { return }
-    let margin: CGFloat = 20
-    let itemCount: CGFloat = 2
-    let width: CGFloat = self.frame.width
-    layout.sectionInset = UIEdgeInsets(top: 0, left: margin, bottom: 0, right: margin)
-    let contentWidth: CGFloat = width - (margin * 2) - (10 * (itemCount - 1))
-    let itemWidth: CGFloat = (contentWidth / itemCount).rounded(.down)
-    layout.itemSize = CGSize(width: itemWidth, height: 200)
     layout.scrollDirection = .vertical
   }
 }

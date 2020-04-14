@@ -30,8 +30,14 @@ class PopImageViewController: UIViewController {
     $0.showsVerticalScrollIndicator = false
     $0.showsHorizontalScrollIndicator = false
   }
-  private let imageView = UIImageView().then {
+  private lazy var imageView = UIImageView().then {
     $0.contentMode = .scaleAspectFill
+    $0.isUserInteractionEnabled = true
+    $0.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(imageTouched(_:))))
+  }
+  
+  override var preferredStatusBarStyle: UIStatusBarStyle {
+    return .lightContent
   }
   
   var popupImage: UIImage? {
@@ -52,7 +58,6 @@ class PopImageViewController: UIViewController {
     }
   }
   
-  var ratio: CGFloat?
   var imageSize: CGSize = .zero
   var isVertical: Bool = true
 }
@@ -65,7 +70,6 @@ extension PopImageViewController: UIScrollViewDelegate {
   let subView = scrollView.subviews[0]
   let offsetX = max((scrollView.bounds.size.width - scrollView.contentSize.width) * 0.5, 0.0)
   let offsetY = max((scrollView.bounds.size.height - scrollView.contentSize.height) * 0.5, 0.0)
-  // adjust the center of image view
     subView.center = CGPoint(x: scrollView.contentSize.width * 0.5 + offsetX, y: scrollView.contentSize.height * 0.5 + offsetY)
   }
 }
@@ -76,10 +80,21 @@ extension PopImageViewController {
     dismiss(animated: true)
   }
   
+  @objc private func imageTouched(_ sender: UITapGestureRecognizer) {
+    UIView.animate(withDuration: 0.2) {
+      self.customNaviView.alpha = self.customNaviView.alpha > 0 ?  0.0 : 0.5
+    }
+  }
+  
+  @objc private func imageDissmiss(_ sender: UISwipeGestureRecognizer) {
+    if sender.direction == .down {
+      print("down")
+    }
+  }
+  
   func configure(image: UIImage) {
     popupImage = image
     imageSize = image.size
-    ratio = image.size.width / image.size.height
     isVertical = imageSize.width < imageSize.height
   }
 }
@@ -109,15 +124,11 @@ extension PopImageViewController {
       if isVertical {
         $0.height.equalTo(UIScreen.main.bounds.height)
         $0.center.equalToSuperview()
-//        $0.top.bottom.equalToSuperview()
-//        $0.leading.trailing.equalToSuperview()
       } else {
         $0.width.equalTo(UIScreen.main.bounds.width)
       }
       $0.top.bottom.equalToSuperview()
       $0.leading.trailing.equalToSuperview()
-//      $0.width.equalToSuperview().multipliedBy(0.8)
-//      $0.center.equalToSuperview()
     }
   }
 }

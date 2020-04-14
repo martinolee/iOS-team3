@@ -7,8 +7,7 @@
 //
 
 import UIKit
-import Then
-import SnapKit
+import Kingfisher
 
 class HomeRootView: UIView {
   private let selectedCategory = CategorySelected()
@@ -23,6 +22,9 @@ class HomeRootView: UIView {
   private let stackView = CategoryStackView(categories: Categories.HomeCategory, distribution: .fillProportionally)
   
   private let menuTextArray = Categories.HomeCategory
+  private var newModel: [MainItem] = []
+  private var bestModel: [MainItem] = []
+  private var discountModel: [MainItem] = []
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -116,7 +118,9 @@ extension HomeRootView {
       case 1...categoryCnt - 2:
         let product = NewProduct(frame: .zero, collectionViewLayout: CustomCollectionViewFlowLayout())
         product.dataSource = self
-        product.register(cell: HomeReuseCollectionCell.self)
+        product.delegate = self
+        product.register(cell: ProductCollectionCell.self)
+        product.collectionName = ""
         categoryArray.append(product)
       case categoryCnt - 1:
         categoryArray.append(RecommendationView())
@@ -139,13 +143,55 @@ extension HomeRootView: UIScrollViewDelegate {
   }
 }
 
+extension HomeRootView: UICollectionViewDelegateFlowLayout {
+  func collectionView(_ collectionView: UICollectionView,
+                      layout collectionViewLayout: UICollectionViewLayout,
+                      minimumLineSpacingForSectionAt section: Int) -> CGFloat { 8 }
+  
+  // 최소 아이템 간격
+  func collectionView(
+    _ collectionView: UICollectionView,
+    layout collectionViewLayout: UICollectionViewLayout,
+    minimumInteritemSpacingForSectionAt section: Int) -> CGFloat { 8 }
+  
+  // 컬렉션 뷰 인셋
+  func collectionView(_ collectionView: UICollectionView,
+                      layout collectionViewLayout: UICollectionViewLayout,
+                      insetForSectionAt section: Int) -> UIEdgeInsets {
+    UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+  }
+  
+  // 아이템 사이즈
+  func collectionView(_ collectionView: UICollectionView,
+                      layout collectionViewLayout: UICollectionViewLayout,
+                      sizeForItemAt indexPath: IndexPath) -> CGSize {
+    let itemWidth = ((self.frame.width - (8 * 2) - (8 * (2 - 1))) / 2).rounded(.down)
+    return CGSize(width: itemWidth, height: itemWidth * 1.8)
+  }
+}
 // MARK: - CollectionViewDataSource
 extension HomeRootView: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 20
+    productDummy.count
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    return collectionView.dequeue(HomeReuseCollectionCell.self, indexPath: indexPath)
+    let product = productDummy[indexPath.row]
+    switch collectionView {
+    case is NewProduct:
+      let cell = collectionView.dequeue(ProductCollectionCell.self, indexPath: indexPath)
+      cell.configure(
+        productName: product.name,
+        productImage: ImageResource(downloadURL: product.imageURL),
+        price: product.price,
+        discount: product.discount,
+        additionalInfo: product.additionalInfo,
+        isSoldOut: product.isSoldOut,
+        productIndexPath: indexPath
+      )
+      return cell
+    default:
+      return collectionView.dequeue(HomeReuseCollectionCell.self, indexPath: indexPath)
+    }
   }
 }

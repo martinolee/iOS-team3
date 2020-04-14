@@ -16,17 +16,18 @@ class HomeProductCollectionCell: UICollectionViewCell {
   private lazy var titleLabel = UILabel().then {
     $0.text = ""
     $0.numberOfLines = 2
+    $0.font = .systemFont(ofSize: 14)
   }
   
   private let priceLabel = UILabel().then {
     $0.text = ""
-    $0.font = .systemFont(ofSize: 16, weight: .bold)
+    $0.font = .systemFont(ofSize: 14, weight: .bold)
   }
   
   private let strikethroughPriceLabel = UILabel().then {
     $0.text = ""
-    $0.textColor = .gray
-    $0.strikethrough()
+    $0.textColor = .kurlyGray1
+    $0.font = .systemFont(ofSize: 12)
   }
   
   private lazy var descriptionView = UIStackView().then {
@@ -34,9 +35,10 @@ class HomeProductCollectionCell: UICollectionViewCell {
     $0.addArrangedSubview(priceLabel)
     $0.addArrangedSubview(strikethroughPriceLabel)
     $0.axis = .vertical
-    $0.distribution = .fillEqually
+//    $0.alignment = .top
+    $0.distribution = .fillProportionally
   }
-  
+ 
   override init(frame: CGRect) {
     super.init(frame: frame)
     setupUI()
@@ -50,9 +52,16 @@ class HomeProductCollectionCell: UICollectionViewCell {
 extension HomeProductCollectionCell {
   func configure(item: MainItem, width: CGFloat) {
     imageView.setImage(urlString: item.thumbImage)
+    titleLabel.preferredMaxLayoutWidth = width
     titleLabel.text = item.name
-    priceLabel.text = moneyFormatter(won: item.price, hasUnit: true)
-    titleLabel.preferredMaxLayoutWidth = width - 10
+    if item.discountRate > 0 {
+      priceLabel.text = moneyFormatter(won: Float(item.price) * (1 - item.discountRate), hasUnit: true)
+      strikethroughPriceLabel.text = moneyFormatter(won: item.price, hasUnit: true)
+      strikethroughPriceLabel.strikethrough()
+    } else {
+      priceLabel.text = moneyFormatter(won: item.price, hasUnit: true)
+      strikethroughPriceLabel.text = ""
+    }
   }
 }
 
@@ -62,13 +71,13 @@ extension HomeProductCollectionCell {
     
     imageView.snp.makeConstraints {
       $0.top.leading.trailing.equalToSuperview()
-      $0.height.equalToSuperview().multipliedBy(0.7)
+      $0.height.equalToSuperview().multipliedBy(0.65)
     }
     
     descriptionView.snp.makeConstraints {
       $0.top.equalTo(imageView.snp.bottom)
       $0.leading.bottom.trailing.equalToSuperview()
-      $0.height.equalToSuperview().multipliedBy(0.3)
+      $0.height.equalToSuperview().multipliedBy(0.35)
     }
   }
 }

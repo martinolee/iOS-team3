@@ -22,10 +22,9 @@ import SnapKit
   private func setupRootViewController() {
     window = UIWindow(frame: UIScreen.main.bounds)
     
-//    let marketBroccoliTabBarController = MartketBroccoliTabBarController()
+    let marketBroccoliTabBarController = MartketBroccoliTabBarController()
 
-//    window?.rootViewController = marketBroccoliTabBarController
-    window?.rootViewController = DetailViewController()
+    window?.rootViewController = marketBroccoliTabBarController
     window?.makeKeyAndVisible()
   }
 }

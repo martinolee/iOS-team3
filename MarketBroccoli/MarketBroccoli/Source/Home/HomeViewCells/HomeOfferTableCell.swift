@@ -18,7 +18,7 @@ class HomeOfferTableCell: UITableViewCell {
     $0.textColor = .gray
     $0.font = .systemFont(ofSize: 14)
     $0.isHidden = false
-    $0.text = "SubTitle"
+    $0.text = ""
   }
   
   private let offerCollectionView = HomeProductCollectionView(
@@ -118,7 +118,7 @@ extension HomeOfferTableCell {
 // MARK: - DataSource
 extension HomeOfferTableCell: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    guard let counts = collectionViewItems?.count else { return 10 }
+    guard let counts = collectionViewItems?.count else { return 0 }
     return counts + 1
   }
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

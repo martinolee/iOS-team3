@@ -15,6 +15,7 @@ protocol MDCategoryTouchProtocol: class {
 class HomeMDTableCell: UITableViewCell {
   private let cellTitleLabel = UILabel().then {
     $0.text = "MD의 추천"
+    $0.font = .boldSystemFont(ofSize: 20)
   }
   private let seperatorTop = Seperator()
   private let selectedCategory = CategorySelected()
@@ -36,9 +37,9 @@ class HomeMDTableCell: UITableViewCell {
     $0.backgroundColor = .kurlyGray3
     $0.addTarget(self, action: #selector(categoryShowBtnTouched(_:)), for: .touchUpInside)
   }
+  
   private let categoryArray = Categories.HomeMDCategory
   private var itemWidth: CGFloat = 0
-  
   private var collectionViewItems: [MainItem]? {
     didSet {
       MDProductCollectionView.reloadData()
@@ -94,7 +95,7 @@ extension HomeMDTableCell: UICollectionViewDelegateFlowLayout {
     case MDProductCollectionView:
       return CGSize(
         width: itemWidth,
-        height: 200
+        height: 240
       )
     default:
       fatalError("CollectionView Not Found")
@@ -188,7 +189,7 @@ extension HomeMDTableCell {
     MDProductCollectionView.snp.makeConstraints {
       $0.top.equalTo(MDCategoryScrollView.snp.bottom).offset(20)
       $0.leading.trailing.equalToSuperview()
-      $0.height.equalTo(410)
+      $0.height.equalTo(500)
     }
     
     categoryShowBtn.snp.makeConstraints {

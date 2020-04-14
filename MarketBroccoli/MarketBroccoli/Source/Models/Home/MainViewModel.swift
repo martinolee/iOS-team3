@@ -8,12 +8,6 @@
 
 import Foundation
 
-// MARK: - Welcome
-struct MainModel: Decodable {
-  let md: [[MainItem]]
-  let recommendation, discount, new, best: [MainItem]
-}
-
 // MARK: - Best
 struct MainItem: Decodable {
   let id: Int
@@ -31,3 +25,6 @@ struct MainItem: Decodable {
     case summary
   }
 }
+typealias HomeImages = [String]
+typealias MDItems = [[MainItem]]
+typealias HomeItems = [MainItem]
