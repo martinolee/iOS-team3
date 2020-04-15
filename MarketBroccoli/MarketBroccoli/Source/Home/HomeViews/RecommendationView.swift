@@ -50,6 +50,13 @@ class RecommendationView: UITableView {
     dataRequest()
   }
   
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+}
+
+// MARK: - ACTIONS
+extension RecommendationView {
   private func dataRequest() {
     DispatchQueue.global().async { [weak self] in
       guard let self = self else { return }
@@ -88,10 +95,6 @@ class RecommendationView: UITableView {
         print("error :", error.localizedDescription)
       }
     }
-  }
-  
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
   }
 }
 

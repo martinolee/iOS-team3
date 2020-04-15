@@ -9,12 +9,13 @@
 import UIKit
 
 class NewProduct: UICollectionView {
-  var collectionName = ""
+  var collectionName: RequestHome?
   override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
     super.init(frame: frame, collectionViewLayout: layout)
-    self.backgroundColor = .clear
+    self.backgroundColor = .kurlyGray3
     self.decelerationRate = UIScrollView.DecelerationRate.fast
     self.showsHorizontalScrollIndicator = false
+    self.reloadData()
   }
   
   override func layoutSubviews() {
