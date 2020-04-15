@@ -49,11 +49,11 @@ class CartFooterView: UIView {
     $0.backgroundColor = .lightGray
   }
   
-  private let staticExpectedAmountPayment = UILabel().then {
+  private let staticExpectedAmountPaymentLabel = UILabel().then {
     $0.text = "결제예정금액"
   }
   
-  private let expectedAmountPayment = UILabel().then {
+  private let expectedAmountPaymentLabel = UILabel().then {
     $0.textAlignment = .right
     $0.setContentHuggingPriority(.fittingSizeLevel, for: .horizontal)
   }
@@ -66,6 +66,7 @@ class CartFooterView: UIView {
     setupAttribute()
     addAllView()
     setupAutoLayout()
+    configure(totalProductPrice: 0, discountProductPrice: 0, shippingFee: 0, expectedAmountPayment: 0)
   }
   
   required init?(coder: NSCoder) {
@@ -87,8 +88,8 @@ class CartFooterView: UIView {
       staticShippingFeeLabel,
       shippingFeeLabel,
       separator,
-      staticExpectedAmountPayment,
-      expectedAmountPayment
+      staticExpectedAmountPaymentLabel,
+      expectedAmountPaymentLabel
     ])
   }
   
@@ -132,16 +133,36 @@ class CartFooterView: UIView {
       $0.height.equalTo(1)
     }
     
-    staticExpectedAmountPayment.snp.makeConstraints {
+    staticExpectedAmountPaymentLabel.snp.makeConstraints {
       $0.top.equalTo(separator.snp.bottom).offset(16)
       $0.leading.equalTo(separator)
       $0.bottom.equalToSuperview().inset(24)
     }
     
-    expectedAmountPayment.snp.makeConstraints {
-      $0.leading.equalTo(staticExpectedAmountPayment.snp.trailing)
-      $0.bottom.equalTo(staticExpectedAmountPayment)
+    expectedAmountPaymentLabel.snp.makeConstraints {
+      $0.leading.equalTo(staticExpectedAmountPaymentLabel.snp.trailing)
+      $0.bottom.equalTo(staticExpectedAmountPaymentLabel)
       $0.trailing.equalTo(separator)
     }
+  }
+}
+
+extension CartFooterView {
+  func configure(totalProductPrice: Int, discountProductPrice: Int, shippingFee: Int, expectedAmountPayment: Int) {
+    totalProductPriceLabel.attributedText = NSMutableAttributedString()
+      .bold("\(moneyFormatter(won: totalProductPrice, hasUnit: false))", fontSize: 17)
+      .normal(" 원", fontSize: 17)
+
+    discountProductPriceLabel.attributedText = NSMutableAttributedString()
+      .bold("\(moneyFormatter(won: discountProductPrice, hasUnit: false))", fontSize: 17)
+      .normal(" 원", fontSize: 17)
+
+    shippingFeeLabel.attributedText = NSMutableAttributedString()
+      .bold("\(moneyFormatter(won: shippingFee, hasUnit: false))", fontSize: 17)
+      .normal(" 원", fontSize: 17)
+
+    expectedAmountPaymentLabel.attributedText = NSMutableAttributedString()
+      .bold("\(moneyFormatter(won: expectedAmountPayment, hasUnit: false))", fontSize: 24)
+      .normal(" 원", fontSize: 17)
   }
 }

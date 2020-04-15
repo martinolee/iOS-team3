@@ -11,7 +11,8 @@ import UIKit
 class CategorySectionHeaderView: UIView {
   private let title = UILabel().then {
     $0.text = "컬리의 추천"
-    $0.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+    $0.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+    $0.textColor = .black
   }
   
   override init(frame: CGRect) {
@@ -25,7 +26,7 @@ class CategorySectionHeaderView: UIView {
   }
   
   private func setupUI() {
-    self.backgroundColor = .systemTeal
+    self.backgroundColor = .white
     self.addSubview(title)
   }
   private func setupLayout() {
