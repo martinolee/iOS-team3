@@ -4,19 +4,8 @@
 //
 //  Created by macbook on 2020/03/20.
 //  Copyright © 2020 Team3. All rights reserved.
-//
 
 import UIKit
-//enum SettingViewProperties : Int {
-//  case login
-//  case noMemberSearching
-//  case shippingExplanation
-//  case noticeBoard
-//  case questionBoard
-//  case warranty
-//  case utilityBoard
-//  case marketIntroducing
-//}
 class SettingsViewController: UIViewController {
   private let settingOptBeforeLogin = [
     ["Login"],

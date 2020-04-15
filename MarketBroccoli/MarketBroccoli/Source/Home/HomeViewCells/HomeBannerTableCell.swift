@@ -11,13 +11,11 @@ import Then
 import SnapKit
 
 class HomeBannerTableCell: UITableViewCell {
-  private let dummyData = Array(repeating: ["cloud", "cloud3"], count: 3).flatMap { $0 }
   private lazy var bannerCountLabel = UILabel().then {
     $0.backgroundColor = UIColor.gray.withAlphaComponent(0.4)
     $0.textColor = .white
     $0.layer.cornerRadius = 5
     $0.layer.masksToBounds = true
-    $0.text = " 1 / \(dummyData.count) "
   }
   private let bannerCollectionView = UICollectionView(
     frame: .zero,
@@ -27,6 +25,13 @@ class HomeBannerTableCell: UITableViewCell {
     $0.bounces = false
     $0.showsHorizontalScrollIndicator = false
   }
+  
+  private var dummyData: [String]? {
+    didSet {
+      bannerCountLabel.text = " \(currentPage) / \(dummyData?.count ?? 0) "
+    }
+  }
+  private var currentPage = 1
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -40,6 +45,12 @@ class HomeBannerTableCell: UITableViewCell {
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+}
+
+extension HomeBannerTableCell {
+  func configure(items: [String]) {
+    dummyData = items
   }
 }
 
@@ -78,14 +89,15 @@ extension HomeBannerTableCell {
 // MARK: - CollectionView DataSource
 extension HomeBannerTableCell: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return dummyData.count
+    return dummyData?.count ?? 0
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     switch indexPath.section {
     case 0:
+      guard let model = dummyData else { return UICollectionViewCell() }
       let cell = collectionView.dequeue(BannerCollectionCell.self, indexPath: indexPath)
-      cell.configure(image: dummyData[indexPath.item])
+      cell.configure(image: model[indexPath.item])
       return cell
     default:
       return UICollectionViewCell()
@@ -97,10 +109,9 @@ extension HomeBannerTableCell: UICollectionViewDataSource {
 extension HomeBannerTableCell: UICollectionViewDelegate {
   func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
     let bannerWidth = bannerCollectionView.frame.size.width
-    let currentPage = Int(bannerCollectionView.contentOffset.x / bannerWidth)
-    
+    currentPage = Int(bannerCollectionView.contentOffset.x / bannerWidth) + 1
     DispatchQueue.main.async {
-      self.bannerCountLabel.text = " \(currentPage + 1) / \(self.dummyData.count) "
+      self.bannerCountLabel.text = " \(self.currentPage) / \(self.dummyData?.count ?? 0) "
     }
   }
 }

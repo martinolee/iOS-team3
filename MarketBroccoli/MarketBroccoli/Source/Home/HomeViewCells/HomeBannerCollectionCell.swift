@@ -26,7 +26,7 @@ class BannerCollectionCell: UICollectionViewCell {
 //MARk: - ACTIONS
 extension BannerCollectionCell {
   func configure(image: String) {
-    imageView.image = UIImage(named: image) ?? UIImage(named: "cloud")
+    imageView.setImage(urlString: image)
   }
 }
 
