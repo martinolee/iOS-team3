@@ -27,7 +27,8 @@ class HomeRootView: UIView {
   private var discountModel: [MainItem] = []
   private var model = [
     RequestHome.new: [MainItem](),
-    RequestHome.best: [MainItem]()
+    RequestHome.best: [MainItem](),
+    RequestHome.discount: [MainItem]()
   ]
   
   override init(frame: CGRect) {
@@ -49,7 +50,7 @@ extension HomeRootView {
     guard let endPoint = [RequestHome.new, RequestHome.best, RequestHome.discount].first(
       where: { $0 == type })
       else { return }
-    RequestManager.shared.homeRequest(url: endPoint, method: .get, count: 50) { [weak self] res in
+    RequestManager.shared.homeRequest(url: endPoint, method: .get, count: 100) { [weak self] res in
       guard let self = self else { return }
       switch res {
       case .success(let data):

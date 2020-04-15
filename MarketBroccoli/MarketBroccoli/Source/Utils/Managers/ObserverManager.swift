@@ -14,6 +14,7 @@ class ObserverManager {
   
   enum NotiNames: String {
     case productTouched = "ProductTouched"
+    case showAllBtnTouched = "ShowAllBtnTouched"
     case imageTouched = "ImageTouched"
   }
   

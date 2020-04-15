@@ -15,7 +15,6 @@ class NewProduct: UICollectionView {
     self.backgroundColor = .kurlyGray3
     self.decelerationRate = UIScrollView.DecelerationRate.fast
     self.showsHorizontalScrollIndicator = false
-    self.reloadData()
   }
   
   override func layoutSubviews() {
