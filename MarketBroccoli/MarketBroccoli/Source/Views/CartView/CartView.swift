@@ -35,14 +35,13 @@ class CartView: UIView {
     $0.delegate = self
   }
   
-  private lazy var cartFooterView = CartFooterView().then {
-    $0.dataSource = self
-  }
+//  private lazy var cartFooterView = CartFooterView().then {
+//    $0.dataSource = self
+//  }
   
   private lazy var cartTableView = UITableView().then {
     $0.separatorStyle = .none
     $0.backgroundColor = .kurlyGray3
-    $0.tableFooterView = cartFooterView
     
     $0.dataSource = self
     
@@ -109,10 +108,10 @@ class CartView: UIView {
   }
   
   private func setupCartFooterViewSize() {
-    cartTableView.tableFooterView = cartFooterView.then {
-      $0.frame = CGRect(x: 0, y: 0, width: cartTableView.frame.width, height: 200)
-      $0.backgroundColor = .white
-    }
+//    cartTableView.tableFooterView = cartFooterView.then {
+//      $0.frame = CGRect(x: 0, y: 0, width: cartTableView.frame.width, height: 200)
+//      $0.backgroundColor = .white
+//    }
   }
   
   // MARK: - Element Control
