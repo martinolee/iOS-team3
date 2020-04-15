@@ -47,6 +47,7 @@ class CartView: UIView {
     $0.dataSource = self
     
     $0.register(cell: CartProductTableViewCell.self)
+    $0.register(cell: EmptyCartTableViewCell.self)
   }
   
   private lazy var orderButton = UIButton(type: .system).then {
@@ -61,6 +62,7 @@ class CartView: UIView {
     setupAttribute()
     addAllView()
     setupCartTableViewAutoLayout()
+    setOrderButtonText(totalPrice: 0)
   }
   
   required init?(coder: NSCoder) {

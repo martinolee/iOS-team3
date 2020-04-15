@@ -15,7 +15,18 @@ func moneyFormatter(won: Int, hasUnit: Bool) -> String {
   
   guard let converted = numberFormatter.string(from: NSNumber(value: won))
     else { fatalError("Currency Convert Error") }
-  let result = hasUnit ? converted+"원" : converted
+  let result = hasUnit ? converted + "원" : converted
+  return result
+}
+
+func moneyFormatter(won: Float, hasUnit: Bool) -> String {
+  let numberFormatter = NumberFormatter().then {
+    $0.numberStyle = .decimal
+  }
+  
+  guard let converted = numberFormatter.string(from: NSNumber(value: won))
+    else { fatalError("Currency Convert Error") }
+  let result = hasUnit ? converted + "원" : converted
   return result
 }
 

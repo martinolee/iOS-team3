@@ -80,7 +80,11 @@ extension SearchViewController: SearchViewDataSource {
     at indexPath: IndexPath
   ) -> UICollectionReusableView {
     collectionView.dequeue(ProductCollectionHeader.self, indexPath: indexPath).then {
-      $0.configure(hideOrderTypeButton: true)
+      $0.configure(
+        hideOrderTypeButton: false,
+        deliveryAreas: ["샛별지역상품", "택배지역상품"],
+        orderTypes: ["신상품순", "인기상품", "낮은 가격순", "높은 가격순"]
+      )
     }
   }
   

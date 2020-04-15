@@ -12,59 +12,8 @@ import UIKit
 
 class CartViewController: UIViewController {
   // MARK: - Properties
-  class Product {
-    let name: String
-    let imageURL: URL
-    let originalPrice: Int?
-    let currentPrice: Int
-    
-    init(name: String, imageURL: URL, originalPrice: Int?, currentPrice: Int) {
-      self.name = name
-      self.imageURL = imageURL
-      self.originalPrice = originalPrice
-      self.currentPrice = currentPrice
-    }
-  }
   
-  class WishProduct {
-    let product: Product
-    var quantity: Int
-    var isChecked: Bool
-    
-    init(product: Product, quantity: Int, isChecked: Bool) {
-      self.product = product
-      self.quantity = quantity
-      self.isChecked = isChecked
-    }
-  }
-  
-  private var cartDummy: [[WishProduct]] = [
-    [WishProduct(
-      product: .init(name: "[선물세트][안국건강] 안심도 종합건강 4구세트",
-                     imageURL: URL(string: "https://img-cf.kurly.com/shop/data/goods/1579595888120y0.jpg")!,
-                     originalPrice: 190000, currentPrice: 95000),
-      quantity: 3, isChecked: true)],
-    [WishProduct(
-      product: .init(name: "[베르나르도] 에퀴메 한식 1인 세트",
-                     imageURL: URL(string: "https://img-cf.kurly.com/shop/data/goods/1584327333312y0.jpg")!,
-                     originalPrice: nil, currentPrice: 390000),
-      quantity: 2, isChecked: true)],
-    [WishProduct(
-      product: .init(name: "[JBL] PULSE4_블랙",
-                     imageURL: URL(string: "https://img-cf.kurly.com/shop/data/goods/1584688100156y0.jpg")!,
-                     originalPrice: nil, currentPrice: 269000),
-      quantity: 1, isChecked: true)],
-    [WishProduct(
-      product: .init(name: "[김구원선생] 무농약 콩나물 200g",
-                     imageURL: URL(string: "https://img-cf.kurly.com/shop/data/goods/15675741261y0.jpg")!,
-                     originalPrice: nil, currentPrice: 1300),
-      quantity: 7, isChecked: true)],
-    [WishProduct(
-      product: .init(name: "[제주창해수산] 제주 옥돔 250~290g(냉동)",
-                     imageURL: URL(string: "https://img-cf.kurly.com/shop/data/goods/1510708692930y0.jpg")!,
-                     originalPrice: 19800, currentPrice: 17820),
-      quantity: 5, isChecked: false)]
-    ]
+  private var cart = Cart()
   
   private lazy var cartView = CartView().then {
     $0.dataSource = self
@@ -82,8 +31,17 @@ class CartViewController: UIViewController {
     
     setupAttribute()
     setupLeftBarButtonItem()
-    print("isCheckedAll:", isAllShoppingItemsChecked())
     setCorrectSelectAllProductCheckBoxStatus()
+    
+    fetchCart("http://15.164.49.32/kurly/cart/") { response in
+      switch response {
+      case .success(let data):
+        guard let cartData = try? JSONDecoder().decode(Cart.self, from: data) else { return }
+        print(cartData.debugDescription)
+      case .failure(let error):
+        print(error.localizedDescription)
+      }
+    }
   }
   
   // MARK: - Setup Attribute
@@ -118,23 +76,36 @@ class CartViewController: UIViewController {
 
 extension CartViewController: CartViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
-    cartDummy.count
+    1
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    cartDummy[section].count
+    if cart.isEmpty {
+      return 1
+    }
+    
+    return cart.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let wishProduct = cartDummy[indexPath.section][indexPath.row]
-    let product = cartDummy[indexPath.section][indexPath.row].product
-    let image = ImageResource(downloadURL: product.imageURL)
+    if cart.isEmpty {
+      let cell = tableView.dequeue(EmptyCartTableViewCell.self)
+      
+      return cell
+    }
+    
+    let product = productDummy[indexPath.row]
     let cell = tableView.dequeue(CartProductTableViewCell.self).then {
       $0.deleagte = self
+      
       $0.configure(
-        name: product.name, productImage: image, originalPrice: product.originalPrice,
-        currentPrice: product.currentPrice, quantity: wishProduct.quantity,
-        isChecked: wishProduct.isChecked, shoppingItemIndexPath: indexPath
+        name: product.name,
+        productImage: ImageResource(downloadURL: product.imageURL),
+        price: product.price,
+        discount: product.discount,
+        quantity: 4,
+        isChecked: true,
+        shoppingItemIndexPath: indexPath
       )
     }
     
@@ -146,7 +117,6 @@ extension CartViewController: CartViewDataSource {
 
 extension CartViewController: CartProductTableViewCellDelegate {  
   func checkBoxTouched(_ checkBox: CheckBox, _ isChecked: Bool, _ shoppingItemIndexPath: IndexPath) {
-    cartDummy[shoppingItemIndexPath.section][shoppingItemIndexPath.row].isChecked = isChecked
     setCorrectSelectAllProductCheckBoxStatus()
   }
   
@@ -154,7 +124,6 @@ extension CartViewController: CartProductTableViewCellDelegate {
     let removeShoppingItemAlert = UIAlertController(title: nil, message: "삭제하시겠습니까?", preferredStyle: .alert).then {
       $0.addAction(UIAlertAction(title: "취소", style: .cancel))
       $0.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { _ in
-        self.cartDummy[shoppingItemIndexPath.section].remove(at: shoppingItemIndexPath.row)
         self.cartView.reloadCartTableViewData()
       }))
     }
@@ -163,19 +132,12 @@ extension CartViewController: CartProductTableViewCellDelegate {
   }
   
   func productQuantityStepperValueChanged(_ value: Int, _ shoppingItemIndexPath: IndexPath) {
-    cartDummy[shoppingItemIndexPath.section][shoppingItemIndexPath.row].quantity = value
     cartView.reloadCartTableViewData()
   }
 }
 
 extension CartViewController: CartViewDelegate {
   func selectAllProductCheckBoxTouched(_ checkBox: CheckBox, _ isChecked: Bool) {
-    for category in cartDummy {
-      for product in category {
-        product.isChecked = isChecked
-        cartView.reloadCartTableViewData()
-      }
-    }
   }
   
   func removeSelectedProductButton(_ button: UIButton) {
@@ -183,14 +145,6 @@ extension CartViewController: CartViewDelegate {
     let removeShoppingItemAlert = UIAlertController(title: nil, message: message, preferredStyle: .alert).then {
       $0.addAction(UIAlertAction(title: "취소", style: .cancel))
       $0.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { _ in
-        for categoryIndex in self.cartDummy.indices.reversed() {
-          for productIndex in self.cartDummy[categoryIndex].indices.reversed()
-            where self.cartDummy[categoryIndex][productIndex].isChecked {
-              self.cartDummy[categoryIndex].remove(at: productIndex)
-              if self.cartDummy[categoryIndex].isEmpty { self.cartDummy.remove(at: categoryIndex) }
-              self.cartView.reloadCartTableViewData()
-          }
-        }
       }))
     }
     
@@ -202,26 +156,30 @@ extension CartViewController: CartViewDelegate {
 
 extension CartViewController {
   private func isAllShoppingItemsChecked() -> Bool {
-    var isChecked: Bool?
-    
-    for category in cartDummy {
-      for product in category {
-        if isChecked != nil {
-          if isChecked != product.isChecked {
-            return false
-          }
-        } else {
-          isChecked = product.isChecked
-        }
-      }
-    }
+//    var isChecked: Bool?
     
     return true
   }
   
   private func setCorrectSelectAllProductCheckBoxStatus() {
-    isAllShoppingItemsChecked() ?
-      cartView.setSelectAllProductCheckBoxStatus(true) :
-      cartView.setSelectAllProductCheckBoxStatus(false)
+    isAllShoppingItemsChecked()
+      ? cartView.setSelectAllProductCheckBoxStatus(true)
+      : cartView.setSelectAllProductCheckBoxStatus(false)
   }
+}
+
+extension CartViewController {
+  private func fetchCart(_ url: String, completionHandler: @escaping (Result<Data, Error>) -> Void) {
+    AF.request(url)
+      .validate()
+      .responseData { response in
+        switch response.result {
+        case .success(let data):
+          completionHandler(.success(data))
+        case .failure(let error):
+          completionHandler(.failure(error))
+        }
+    }
+  }
+
 }

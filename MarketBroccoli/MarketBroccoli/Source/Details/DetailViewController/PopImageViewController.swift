@@ -11,7 +11,7 @@ import UIKit
 class PopImageViewController: UIViewController {
   private let customNaviView = UIView().then {
     $0.backgroundColor = .black
-    $0.alpha = 0.5
+    $0.alpha = 0.0
   }
   
   private lazy var closeBtn = UIButton().then {
@@ -30,8 +30,14 @@ class PopImageViewController: UIViewController {
     $0.showsVerticalScrollIndicator = false
     $0.showsHorizontalScrollIndicator = false
   }
-  private let imageView = UIImageView().then {
-    $0.contentMode = .scaleAspectFit
+  private lazy var imageView = UIImageView().then {
+    $0.contentMode = .scaleAspectFill
+    $0.isUserInteractionEnabled = true
+    $0.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(imageTouched(_:))))
+  }
+  
+  override var preferredStatusBarStyle: UIStatusBarStyle {
+    return .lightContent
   }
   
   var popupImage: UIImage? {
@@ -45,13 +51,26 @@ class PopImageViewController: UIViewController {
     setupUI()
   }
   
-  var ratio: CGFloat?
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    UIView.animate(withDuration: 0.2) {
+      self.customNaviView.alpha = 0.5
+    }
+  }
+  
+  var imageSize: CGSize = .zero
   var isVertical: Bool = true
 }
 
 extension PopImageViewController: UIScrollViewDelegate {
   func viewForZooming(in scrollView: UIScrollView) -> UIView? {
     return imageView
+  }
+  func scrollViewDidZoom(_ scrollView: UIScrollView) {
+  let subView = scrollView.subviews[0]
+  let offsetX = max((scrollView.bounds.size.width - scrollView.contentSize.width) * 0.5, 0.0)
+  let offsetY = max((scrollView.bounds.size.height - scrollView.contentSize.height) * 0.5, 0.0)
+    subView.center = CGPoint(x: scrollView.contentSize.width * 0.5 + offsetX, y: scrollView.contentSize.height * 0.5 + offsetY)
   }
 }
 
@@ -61,14 +80,22 @@ extension PopImageViewController {
     dismiss(animated: true)
   }
   
+  @objc private func imageTouched(_ sender: UITapGestureRecognizer) {
+    UIView.animate(withDuration: 0.2) {
+      self.customNaviView.alpha = self.customNaviView.alpha > 0 ?  0.0 : 0.5
+    }
+  }
+  
+  @objc private func imageDissmiss(_ sender: UISwipeGestureRecognizer) {
+    if sender.direction == .down {
+      print("down")
+    }
+  }
+  
   func configure(image: UIImage) {
     popupImage = image
-    ratio = image.size.width / image.size.height
-    
-    let deviceSize = UIScreen.main.bounds
-    let deviceRatio = deviceSize.width / deviceSize.height
-    let imageRatio = image.size.width / image.size.height
-    isVertical = deviceRatio > imageRatio
+    imageSize = image.size
+    isVertical = imageSize.width < imageSize.height
   }
 }
 
@@ -94,18 +121,14 @@ extension PopImageViewController {
     }
     
     imageView.snp.makeConstraints {
-      $0.width.equalTo(imageView.snp.height).multipliedBy(ratio ?? 0)
       if isVertical {
         $0.height.equalTo(UIScreen.main.bounds.height)
-//        $0.top.bottom.equalToSuperview()
-//        $0.leading.trailing.equalToSuperview()
+        $0.center.equalToSuperview()
       } else {
         $0.width.equalTo(UIScreen.main.bounds.width)
       }
       $0.top.bottom.equalToSuperview()
       $0.leading.trailing.equalToSuperview()
-//      $0.width.equalToSuperview().multipliedBy(0.8)
-//      $0.center.equalToSuperview()
     }
   }
 }
