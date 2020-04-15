@@ -98,17 +98,15 @@ extension CartViewController: CartViewDataSource {
     let cell = tableView.dequeue(CartProductTableViewCell.self).then {
       $0.deleagte = self
       
-      if let imageURL = URL(string: wishProduct.product.imageURL) {
-        $0.configure(
-          name: wishProduct.product.name,
-          productImage: ImageResource(downloadURL: imageURL),
-          price: wishProduct.product.price,
-          discount: cart[indexPath.section].discountRate,
-          quantity: wishProduct.quantity,
-          isChecked: wishProduct.isChecked,
-          shoppingItemIndexPath: indexPath
-        )
-      }
+      $0.configure(
+        name: wishProduct.product.name,
+        imageURL: wishProduct.product.imageURL,
+        price: wishProduct.product.price,
+        discount: cart[indexPath.section].discountRate,
+        quantity: wishProduct.quantity,
+        isChecked: wishProduct.isChecked,
+        shoppingItemIndexPath: indexPath
+      )
     }
     
     return cell
@@ -143,8 +141,36 @@ extension CartViewController: CartProductTableViewCellDelegate {
   
   func productQuantityStepperValueChanged(_ value: Int, _ shoppingItemIndexPath: IndexPath) {
     guard var cart = cart else { return }
-    
+    let product: UpdatedProduct
     cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].quantity = value
+    
+    if cart[shoppingItemIndexPath.section].name != nil {
+      product = UpdatedProduct(
+        product: cart[shoppingItemIndexPath.section].id,
+        option: cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].product.id,
+        quantity: cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].quantity
+      )
+    } else {
+      product = UpdatedProduct(
+        product: cart[shoppingItemIndexPath.section].headID,
+        option: nil,
+        quantity: cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].quantity
+      )
+    }
+    
+    patchProductQuntity(
+      id: cart[shoppingItemIndexPath.section].headID,
+      product: product
+    ) { response in
+      switch response {
+      case .success(let data):
+        guard let product = try? JSONDecoder().decode(BackendCartElement.self, from: data) else { return }
+        
+        print(product)
+      case .failure(let error):
+        print(error.localizedDescription)
+      }
+    }
     
     self.cart = cart
   }
@@ -214,5 +240,32 @@ extension CartViewController {
           completionHandler(.failure(error))
         }
     }
+  }
+  
+  private func patchProductQuntity(id: Int, product: UpdatedProduct,
+                                   completionHandler: @escaping (Result<Data, Error>) -> Void) {
+    AF.request(
+      "http://15.164.49.32/kurly/cart/\(id)/",
+      method: .patch,
+      parameters: product,
+      encoder: JSONParameterEncoder.default,
+      headers: ["Content-Type": "application/json"]
+      )
+      .validate()
+      .responseData { response in
+        switch response.result {
+        case .success(let data):
+          completionHandler(.success(data))
+        case .failure(let error):
+          completionHandler(.failure(error))
+        }
+    }
+  }
+  
+  private func removeProduct(id: Int) {
+    AF.request(
+      "http://15.164.49.32/kurly/cart/\(id)/",
+      method: .delete
+    )
   }
 }
