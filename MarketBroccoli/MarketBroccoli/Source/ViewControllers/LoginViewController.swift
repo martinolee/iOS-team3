@@ -9,7 +9,7 @@
 import UIKit
 import Alamofire
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, UITextFieldDelegate {
    let profileVC = ProfileViewController()
   private let signupView = SignupView()
   
@@ -51,7 +51,7 @@ class LoginViewController: UIViewController {
   }
   
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-      self.view.endEditing(true)
+    self.view.endEditing(true)
     idTextField.resignFirstResponder()
     pwTextField.resignFirstResponder()
   }
@@ -61,10 +61,20 @@ class LoginViewController: UIViewController {
     setupNavigation()
     setupUI()
   }
+//  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+//     idTextField.resignFirstResponder()
+//     pwTextField.resignFirstResponder()
+//    return true
+//  }
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-     idTextField.resignFirstResponder()
-     pwTextField.resignFirstResponder()
-    return true // 작동안하고있음 하는법 배워야함
+    if textField == idTextField {
+      idTextField.becomeFirstResponder()
+      pwTextField.becomeFirstResponder()
+    } else {
+      idTextField.resignFirstResponder()
+      pwTextField.resignFirstResponder()
+    }
+    return true
   }
 }
 

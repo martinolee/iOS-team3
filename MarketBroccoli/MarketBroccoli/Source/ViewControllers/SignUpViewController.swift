@@ -35,7 +35,8 @@ class SignUpViewController: UIViewController {
   private var timer = Timer()
   
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-      self.view.endEditing(true)
+    print("in")
+    self.view.endEditing(true)
     signupView.idTextField.resignFirstResponder()
     signupView.secretTextField.resignFirstResponder()
     signupView.checkSecretNumberTextField.resignFirstResponder()
@@ -46,8 +47,7 @@ class SignUpViewController: UIViewController {
     signupView.birthdayYearTextField.resignFirstResponder()
     signupView.birthdayMonthTextField.resignFirstResponder()
     signupView.birthdayDayTextField.resignFirstResponder()
-  } // 이거 작동 안함 왜 안되는지??
-  
+  }// 안됨
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUI()
@@ -100,20 +100,50 @@ class SignUpViewController: UIViewController {
     signupView.ageCheckButton.setStatus(false)
   }
 }
-
 // MARK: - Action
 extension SignUpViewController: SignupViewDelegate {
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    signupView.idTextField.resignFirstResponder()
-    signupView.secretTextField.resignFirstResponder()
-    signupView.checkSecretNumberTextField.resignFirstResponder()
-    signupView.nameTextFeild.resignFirstResponder()
-    signupView.emailTextFeild.resignFirstResponder()
-    signupView.cellphoneTextField.resignFirstResponder()
-    signupView.checkingCodeTexField.resignFirstResponder()
-    signupView.birthdayYearTextField.resignFirstResponder()
-    signupView.birthdayMonthTextField.resignFirstResponder()
-    signupView.birthdayDayTextField.resignFirstResponder()
+    if textField == signupView.idTextField {
+      signupView.secretTextField.becomeFirstResponder()
+    } else {
+      signupView.secretTextField.resignFirstResponder()
+    }
+    
+    if textField == signupView.secretTextField {
+      signupView.checkSecretNumberTextField.becomeFirstResponder()
+    } else {
+      signupView.checkSecretNumberTextField.resignFirstResponder()
+    }
+    
+    if textField == signupView.checkSecretNumberTextField {
+      signupView.nameTextFeild.becomeFirstResponder()
+    } else {
+      signupView.nameTextFeild.resignFirstResponder()
+    }
+    
+    if textField == signupView.nameTextFeild {
+      signupView.emailTextFeild.becomeFirstResponder()
+    } else {
+      signupView.emailTextFeild.resignFirstResponder()
+    }
+    
+    if textField == signupView.emailTextFeild {
+      signupView.cellphoneTextField.becomeFirstResponder()
+    } else {
+      signupView.cellphoneTextField.resignFirstResponder()
+    }
+    
+    if textField == signupView.birthdayYearTextField {
+      signupView.birthdayMonthTextField.becomeFirstResponder()
+    } else {
+      signupView.birthdayMonthTextField.resignFirstResponder()
+    }
+    
+    if textField == signupView.birthdayMonthTextField {
+      signupView.birthdayDayTextField.becomeFirstResponder()
+    } else {
+      signupView.birthdayDayTextField.resignFirstResponder()
+    }
     return true
   }
   
@@ -297,6 +327,7 @@ extension SignUpViewController: SignupViewDelegate {
     }
     func addressCloseButton(button: UIButton) {
       signupView.addressWebViewContainer.isHidden = true
+      view.endEditing(true)
     }
     func searchingAddressButtonTouched(_ button: UIButton) {
       signupView.addressWebViewContainer.isHidden = false

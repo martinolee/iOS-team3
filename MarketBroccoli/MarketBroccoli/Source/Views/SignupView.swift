@@ -282,7 +282,9 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.text = "참여 이벤트명"
   }
   private let eventNameUnderline = SignupUnderLineView(borderWidth: 0.2, borderColor: UIColor.lightGray.cgColor)
-  private let scrollView = UIScrollView()
+  private lazy var scrollView = UIScrollView().then {
+    $0.delegate = self
+  }
   private let grayView = UIView().then {
     $0.backgroundColor = .gray
   }
@@ -1157,3 +1159,5 @@ extension SignupView: WKScriptMessageHandler {
     delegate?.userContentController(userContentController, didReceive: message)
   }
 }
+
+extension SignupView: UIScrollViewDelegate {}
