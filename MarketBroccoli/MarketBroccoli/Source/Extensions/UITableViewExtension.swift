@@ -9,6 +9,10 @@
 import UIKit
 
 extension UITableView {
+  func register<HeaderFooter>(headerFooter: HeaderFooter.Type) where HeaderFooter: UITableViewHeaderFooterView {
+    register(headerFooter, forHeaderFooterViewReuseIdentifier: headerFooter.identifier)
+  }
+  
   func register<Cell>(cell: Cell.Type,
                       forCellReuseIdentifier reuseIdentifier: String = Cell.identifier) where Cell: UITableViewCell {
     register(cell, forCellReuseIdentifier: reuseIdentifier)

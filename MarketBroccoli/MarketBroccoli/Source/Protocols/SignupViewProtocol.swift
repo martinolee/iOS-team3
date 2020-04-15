@@ -100,4 +100,5 @@ protocol SignupViewDelegate: class {
     _ detailAddress: String
   )
   func addressCloseButton(button: UIButton)
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool
 }

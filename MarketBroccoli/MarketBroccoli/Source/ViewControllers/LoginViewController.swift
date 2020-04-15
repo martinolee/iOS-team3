@@ -7,13 +7,18 @@
 //
 
 import UIKit
+import Alamofire
 
-class LoginViewController: UIViewController {
-  private var idTextField = UITextField().then {
+class LoginViewController: UIViewController, UITextFieldDelegate {
+   let profileVC = ProfileViewController()
+  private let signupView = SignupView()
+  
+  private lazy var idTextField = UITextField().then {
     $0.placeholder = "아이디를 입력해주세요"
     $0.textFieldStyle()
+    $0.autocapitalizationType = .none
   }
-  private var pwTextField = UITextField().then {
+  private lazy var pwTextField = UITextField().then {
     $0.placeholder = "비밀번호를 입력해주세요"
     $0.isSecureTextEntry = true
     $0.textFieldStyle()
@@ -45,10 +50,31 @@ class LoginViewController: UIViewController {
     static let btnTopMargin: CGFloat = 12
   }
   
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    self.view.endEditing(true)
+    idTextField.resignFirstResponder()
+    pwTextField.resignFirstResponder()
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     setupNavigation()
     setupUI()
+  }
+//  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+//     idTextField.resignFirstResponder()
+//     pwTextField.resignFirstResponder()
+//    return true
+//  }
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    if textField == idTextField {
+      idTextField.becomeFirstResponder()
+      pwTextField.becomeFirstResponder()
+    } else {
+      idTextField.resignFirstResponder()
+      pwTextField.resignFirstResponder()
+    }
+    return true
   }
 }
 
@@ -74,7 +100,9 @@ extension LoginViewController {
   }
   
   private func setupUI() {
-    view.addSubviews([idTextField, pwTextField, logInButton, idFindButton, pwFindButton, signUpButton])
+    view.addSubviews(
+      [idTextField, pwTextField, logInButton, idFindButton, pwFindButton, signUpButton ])
+    
     let guide = view.safeAreaLayoutGuide
     
     idTextField.snp.makeConstraints {
@@ -109,6 +137,7 @@ extension LoginViewController {
       $0.trailing.equalTo(guide.snp.trailing).offset(-UI.margin)
       $0.height.equalTo(guide.snp.height).dividedBy(UI.height)
     }
+    
     setupAttr()
   }
 }
@@ -135,5 +164,33 @@ extension LoginViewController {
     self.navigationController?.pushViewController(nextVC, animated: true)
   }
   @objc private func logInButtonTouched() {
+    //    guard let key = UserDefaults.standard.value(forKey: "Token") else { settingVC.isLogin = false }
+    
+    AF.request(
+      "http://15.164.49.32/accounts/auth-token/",
+      method: .post,
+      parameters: UserAuthToken(
+        userName: idTextField.text ?? "",
+        password: pwTextField.text ?? ""),
+      encoder: JSONParameterEncoder.default,
+      headers: ["Content-Type": "application/json"]
+    ).validate(statusCode: 200..<300)
+      .responseData { response in
+        switch response.result {
+        case .success(let data):
+          self.navigationController?.pushViewController(ProfileViewController(), animated: true)
+          
+          guard let decodedData = try? JSONDecoder().decode(
+            UserAuthTokenResponse.self,
+            from: data
+            ) else { return }
+          UserDefaults.standard.set(decodedData.token, forKey: "Token")
+          print(decodedData)
+          
+        case .failure(let error):
+          print(error.localizedDescription)
+          // 아이디, 비밀번호를 확인해주세요. 알람 넣어야함
+        }
+    }
   }
 }

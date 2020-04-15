@@ -21,15 +21,21 @@
  }
  
  enum RequestHome: RequestProtocol {
-  case main
+  case mainImages
+  case md
+  case recommendation
   case new
   case best
   case discount
   
   var endPoint: String {
     switch self {
-    case .main:
-      return baseUrl + "/kurly/main/"
+    case .mainImages:
+      return baseUrl + "/kurly/images/"
+    case .md:
+      return baseUrl + "/kurly/md/"
+    case .recommendation:
+      return baseUrl + "/kurly/recommend/"
     case .new:
       return baseUrl + "/kurly/new/"
     case .best:
@@ -43,16 +49,106 @@
  class RequestManager {
   static let shared = RequestManager()
   
-  func homeRequest(
-    url: RequestHome,
-    method requestMethod: HTTPMethod,
-    completion: @escaping (Result<MainModel, AFError>) -> Void) {
-    AF.request(url.endPoint, method: requestMethod)
-      .validate(statusCode: [200])
-      .responseDecodable(of: MainModel.self) { res in
+  func homeImageRequest(
+    completion: @escaping (Result<HomeImages, AFError>) -> Void) {
+    AF.request(
+      RequestHome.mainImages.endPoint,
+      method: .get
+    ).validate(statusCode: [200])
+      .responseDecodable(of: HomeImages.self) { res in
         completion(res.result)
     }
   }
   
+  func MDRequest(
+    count: Int? = nil,
+    completion: @escaping (Result<MDItems, AFError>) -> Void) {
+    if let count = count {
+      AF.request(
+        RequestHome.md.endPoint,
+        method: .get,
+        parameters: HomeGetQueryModel(count: count),
+        encoder: URLEncodedFormParameterEncoder.default
+      ).validate(statusCode: [200])
+        .responseDecodable(of: MDItems.self) { res in
+          completion(res.result)
+      }
+    } else {
+      AF.request(
+        RequestHome.md.endPoint,
+        method: .get
+      ).validate(statusCode: [200])
+        .responseDecodable(of: MDItems.self) { res in
+          completion(res.result)
+      }
+    }
+  }
+  
+  func homeRequest(
+    url: RequestHome,
+    method requestMethod: HTTPMethod,
+    count: Int? = nil,
+    completion: @escaping (Result<HomeItems, AFError>) -> Void) {
+    if let count = count {
+      AF.request(
+        url.endPoint,
+        method: requestMethod,
+        parameters: HomeGetQueryModel(count: count),
+        encoder: URLEncodedFormParameterEncoder.default
+      ).validate(statusCode: [200])
+        .responseDecodable(of: HomeItems.self) { res in
+          completion(res.result)
+      }
+    } else {
+      AF.request(
+        url.endPoint,
+        method: requestMethod
+      ).validate(statusCode: [200])
+        .responseDecodable(of: HomeItems.self) { res in
+          completion(res.result)
+      }
+    }
+  }
   private init() {}
  }
+
+ enum RequestSignup: RequestProtocol {
+  case duplicate
+  case MTokenCreate
+  case MTokenAuth
+  case accounts
+  case authToken
+  
+  var endPoint: String {
+    switch self {
+    case .duplicate:
+      return baseUrl + "/accounts/duplicates/"
+    case .MTokenCreate:
+      return baseUrl + "/accounts/m-token-create/"
+    case .MTokenAuth:
+      return baseUrl + "/accounts/m-token-auth/"
+    case .accounts:
+      return baseUrl + "/accounts/"
+    case .authToken:
+      return baseUrl + "/accounts/auth-token/"
+    }
+  }
+ }
+ 
+// class SignupRequestManager {
+//  static let shared = SignupRequestManager()
+//  
+//  func signUpRequest(
+//    url: RequestSignup,
+//    method requestMethod: HTTPMethod,
+//    encoder: ParameterEncoder,
+//    headers: [String: String],
+//    completion: @escaping (Result<MainModel, AFError>) -> Void) {
+//    AF.request(url.endPoint, method: requestMethod)
+//      .validate(statusCode: [200])
+//      .responseDecodable { res in
+//        completion(res.result)
+//    }
+//  }
+//    private init() {}
+// }

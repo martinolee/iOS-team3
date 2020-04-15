@@ -13,8 +13,7 @@ struct UserAuthTokenResponse: Decodable {
   let user: LoginUser
   
   private enum CodingKeys: String, CodingKey {
-    case token
-    case user
+    case token, user 
   }
 }
 
@@ -26,7 +25,7 @@ struct LoginUser: Decodable {
   let mobile: UserMobileCodeResponse
   let birthday: String?
   let gender: String
-  let lastLogin: String
+  let lastLogin: String?
   
   private enum CodingKeys: String, CodingKey {
     case identification = "id"
@@ -39,3 +38,5 @@ struct LoginUser: Decodable {
     case lastLogin = "last_login"
   }
 }
+
+

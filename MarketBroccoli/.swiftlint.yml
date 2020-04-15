@@ -29,8 +29,10 @@ excluded:
 - MarketBroccoli/Application/SceneDelegate.swift
 - MarketBroccoli/Source/CustomUI/CustomCollectionViewFlowLayout.swift
 - MarketBroccoli/Source/Home/HomeViewCells/HomeMDTableCell.swift
+- MarketBroccoli/Source/Home/HomeViewCells/HomeOfferTableCell.swift
 - MarketBroccoli/Source/Utils/Constant.swift
 - MarketBroccoli/Source/Models
+- MarketBroccoli/Source/Home/HomeViews/RecommendationView.swift
 - TestGround
 # Custom
 
