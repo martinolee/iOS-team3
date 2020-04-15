@@ -201,7 +201,7 @@ extension ProductCollectionCell {
 
 extension ProductCollectionCell {
   func configure(
-    productName: String, productImage: ImageResource,
+    productName: String, productImage: String,
     price: Int, discount: Double,
     additionalInfo: [String], isSoldOut: Bool,
     productIndexPath: IndexPath
@@ -271,7 +271,7 @@ extension ProductCollectionCell {
     let currentPrice = moneyFormatter(won: price, hasUnit: true)
     
     productNameLabel.text = productName
-    productImageView.kf.setImage(with: productImage)
+    productImageView.setImage(urlString: productImage)
     currentPriceLabel.text = currentPrice
     self.productIndexPath = productIndexPath
   }

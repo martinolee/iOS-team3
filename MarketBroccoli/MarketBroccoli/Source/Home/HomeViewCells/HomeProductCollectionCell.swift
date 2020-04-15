@@ -55,7 +55,7 @@ extension HomeProductCollectionCell {
     titleLabel.preferredMaxLayoutWidth = width
     titleLabel.text = item.name
     if item.discountRate > 0 {
-      priceLabel.text = moneyFormatter(won: Float(item.price) * (1 - item.discountRate), hasUnit: true)
+      priceLabel.text = moneyFormatter(won: Double(item.price) * (1 - item.discountRate), hasUnit: true)
       strikethroughPriceLabel.text = moneyFormatter(won: item.price, hasUnit: true)
       strikethroughPriceLabel.strikethrough()
     } else {

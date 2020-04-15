@@ -219,9 +219,9 @@ extension HomeRootView: UICollectionViewDataSource {
     
     cell.configure(
       productName: asd.name,
-      productImage: ImageResource(downloadURL: product.imageURL),
-      price: product.price,
-      discount: product.discount,
+      productImage: asd.thumbImage,
+      price: asd.price,
+      discount: asd.discountRate,
       additionalInfo: product.additionalInfo,
       isSoldOut: product.isSoldOut,
       productIndexPath: indexPath
