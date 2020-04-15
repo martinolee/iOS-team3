@@ -54,6 +54,7 @@ class DetailDescriptionBottomTableCell: UITableViewCell {
   }
 }
 
+// MARK: - ACTIONS
 extension DetailDescriptionBottomTableCell {
   @objc private func imageTouched(_ sender: UITapGestureRecognizer) {
     ObserverManager.shared.post(
