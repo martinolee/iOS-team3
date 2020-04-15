@@ -7,3 +7,20 @@
 //
 
 import Foundation
+
+struct UpdatedProduct: Encodable {
+  let product: Int
+  let option: Int?
+  let quantity: Int
+  
+  private enum CodingKeys: String, CodingKey {
+    case product, option, quantity
+  }
+  
+  func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    try container.encode(product, forKey: .product)
+    try container.encode(option, forKey: .option)
+    try container.encode(quantity, forKey: .quantity)
+  }
+}
