@@ -27,7 +27,8 @@ class HomeRootView: UIView {
   private var discountModel: [MainItem] = []
   private var model = [
     RequestHome.new: [MainItem](),
-    RequestHome.best: [MainItem]()
+    RequestHome.best: [MainItem](),
+    RequestHome.discount: [MainItem]()
   ]
   
   override init(frame: CGRect) {
@@ -49,7 +50,8 @@ extension HomeRootView {
     guard let endPoint = [RequestHome.new, RequestHome.best, RequestHome.discount].first(
       where: { $0 == type })
       else { return }
-    RequestManager.shared.homeRequest(url: endPoint, method: .get, count: 100) { res in
+    RequestManager.shared.homeRequest(url: endPoint, method: .get, count: 100) { [weak self] res in
+      guard let self = self else { return }
       switch res {
       case .success(let data):
         self.model[endPoint] = data
@@ -201,6 +203,17 @@ extension HomeRootView: UICollectionViewDelegateFlowLayout {
     return CGSize(width: itemWidth, height: itemWidth * 1.8)
   }
 }
+
+// MARK: - CollectionViewDelegate
+extension HomeRootView: UICollectionViewDelegate {
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    ObserverManager.shared.post(
+      observerName: .productTouched,
+      object: nil,
+      userInfo: ["indexPath": indexPath])
+  }
+}
+
 // MARK: - CollectionViewDataSource
 extension HomeRootView: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -210,7 +223,6 @@ extension HomeRootView: UICollectionViewDataSource {
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let product = productDummy[indexPath.row]
     guard let collectionView = collectionView as? NewProduct,
     let name = collectionView.collectionName else { return UICollectionViewCell() }
     let cellItem = model[name] ?? [MainItem]()
@@ -219,11 +231,11 @@ extension HomeRootView: UICollectionViewDataSource {
     
     cell.configure(
       productName: asd.name,
-      productImage: ImageResource(downloadURL: product.imageURL),
-      price: product.price,
-      discount: product.discount,
-      additionalInfo: product.additionalInfo,
-      isSoldOut: product.isSoldOut,
+      productImage: asd.thumbImage,
+      price: asd.price,
+      discount: asd.discountRate,
+      additionalInfo: [],
+      isSoldOut: false,
       productIndexPath: indexPath
     )
     return cell

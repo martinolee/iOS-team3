@@ -47,7 +47,7 @@ class CartProductTableViewCell: UITableViewCell {
   }
   
   private let productImageView = UIImageView().then {
-    $0.contentMode = .scaleAspectFit
+    $0.contentMode = .scaleToFill
   }
   
   private let originalPriceLabel = UILabel().then {
@@ -217,7 +217,7 @@ extension CartProductTableViewCell: ProductQuantityStepperDelegate {
   // MARK: - Element Control
   
   func configure(
-    name: String, productImage: ImageResource,
+    name: String, imageURL: String,
     price: Int, discount: Double,
     quantity: Int, isChecked: Bool, shoppingItemIndexPath: IndexPath
   ) {
@@ -231,7 +231,7 @@ extension CartProductTableViewCell: ProductQuantityStepperDelegate {
     let currentPrice = moneyFormatter(won: price, hasUnit: true)
 
     nameLabel.text = name
-    productImageView.kf.setImage(with: productImage)
+    productImageView.setImage(urlString: imageURL)
     currentPriceLabel.text = currentPrice
     totalProductPriceLabel.text = totalPrice
     productQuantityStepper.setValue(quantity)
