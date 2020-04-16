@@ -25,6 +25,8 @@ class HomeViewController: UIViewController {
     super.viewWillAppear(animated)
     ObserverManager.shared.registerObserver(
       target: self, selector: #selector(receiveNotification(_:)), observerName: .productTouched, object: nil)
+    ObserverManager.shared.registerObserver(
+      target: self, selector: #selector(receiveNotificationShowAll(_:)), observerName: .showAllBtnTouched, object: nil)
   }
   
   override func viewDidDisappear(_ animated: Bool) {
@@ -33,6 +35,10 @@ class HomeViewController: UIViewController {
       target: self,
       observerName: .productTouched,
       object: nil)
+    ObserverManager.shared.resignObserver(
+    target: self,
+    observerName: .showAllBtnTouched,
+    object: nil)
   }
 }
 
@@ -44,5 +50,11 @@ extension HomeViewController {
     detailVC.hidesBottomBarWhenPushed = true
     navigationItem.backBarButtonItem = barBtnItem
     navigationController?.pushViewController(detailVC, animated: true)
+  }
+  
+  @objc private func receiveNotificationShowAll(_ notification: Notification) {
+    let showAllVC = ShowAllProductViewController()
+    showAllVC.hidesBottomBarWhenPushed = true
+    navigationController?.pushViewController(showAllVC, animated: true)
   }
 }

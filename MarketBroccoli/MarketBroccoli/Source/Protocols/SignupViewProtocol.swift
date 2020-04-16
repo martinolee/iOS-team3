@@ -101,4 +101,5 @@ protocol SignupViewDelegate: class {
   )
   func addressCloseButton(button: UIButton)
   func textFieldShouldReturn(_ textField: UITextField) -> Bool
+  func toucheBegan()
 }

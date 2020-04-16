@@ -18,6 +18,8 @@ class ProductQuantityStepper: UIView {
   
   weak var delegate: ProductQuantityStepperDelegate?
   
+  private var minimum: Int
+  
   private var value = 0 {
     didSet {
       valueLabel.text = "\(value)"
@@ -51,6 +53,7 @@ class ProductQuantityStepper: UIView {
   // MARK: - Life Cycle
   
   private override init(frame: CGRect) {
+    minimum = 0
     super.init(frame: frame)
     
     setupAttribute()
@@ -60,6 +63,12 @@ class ProductQuantityStepper: UIView {
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  convenience init(minimum: Int) {
+    self.init()
+    
+    self.minimum = minimum
   }
   
   // MARK: - Setup UI
@@ -101,7 +110,7 @@ class ProductQuantityStepper: UIView {
   
   @objc
   private func subtractValue() {
-    if value > 1 {
+    if value > minimum {
       value -= 1
       
       delegate?.valueChanged(value)
