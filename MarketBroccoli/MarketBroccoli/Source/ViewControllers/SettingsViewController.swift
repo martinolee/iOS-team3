@@ -7,15 +7,36 @@
 
 import UIKit
 class SettingsViewController: UIViewController {
+  var isLogin = false {
+    didSet {
+      myCurlyTableView.reloadData()
+    }
+  }
   private let settingOptBeforeLogin = [
     ["Login"],
     ["비회원 주문 조회"],
     ["배송 안내", "공지사항", "자주하는 질문", "고객센터", "이용안내", "컬리소개"],
     ["알림설정"]
   ]
-
-  private let myCurlyTableView = UITableView().then {
+  
+  private let settingOptAfterLogin = [
+    ["유저 정보"],
+    ["적립금", "쿠폰", "친구초대"],
+    ["주문 내역", "상품 후기", "상품 문의", "1:1 문의", "대량주문 문의"],
+    ["배송 안내", "공지사항", "자주하는 질문", "고객센터", "이용안내", "컬리소개", "자주하는 질문", "고객센터", "이용안내", "컬리소개", "컬리패스"],
+    ["개인정보 수정", "알림설정"],
+    ["로그아웃"]
+  ]
+  
+  private lazy var myCurlyTableView = UITableView(frame: .zero, style: .grouped).then {
     $0.sectionFooterHeight = 10
+    $0.allowsSelection = true
+    $0.dataSource = self
+    $0.delegate = self
+    $0.register(cell: SettingsTableViewCell.self)
+    $0.register(cell: UserInfoTableViewCell.self)
+    $0.register(UITableViewCell.self, forCellReuseIdentifier: "Detail")
+    $0.backgroundColor = .kurlyGray3
   }
   
   override func viewDidLoad() {
@@ -29,58 +50,75 @@ class SettingsViewController: UIViewController {
 
 // MARK: - UI
 extension SettingsViewController {
-  private func setupAttr() {
-    myCurlyTableView.allowsSelection = false
-    myCurlyTableView.dataSource = self
-    myCurlyTableView.delegate = self
-    myCurlyTableView.register(cell: SettingsTableViewCell.self)
-    myCurlyTableView.register(cell: UserInfoTableViewCell.self)
-    myCurlyTableView.register(UITableViewCell.self, forCellReuseIdentifier: "Detail")
-    self.myCurlyTableView.backgroundColor = .lightGray
-  }
-  
   private func setupUI() {
     view.addSubviews([myCurlyTableView])
     myCurlyTableView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
-    setupAttr()
   }
-    
+  
   @objc func didTapSingUpInButton() {
-        let loginVC = UINavigationController(rootViewController: LoginViewController())
-        loginVC.modalPresentationStyle = .fullScreen
-        loginVC.navigationBar.tintColor = .black
-        self.present(loginVC, animated: true, completion: nil)
-    }
+    let loginVC = UINavigationController(rootViewController: LoginViewController())
+    loginVC.modalPresentationStyle = .fullScreen
+    loginVC.navigationBar.tintColor = .black
+    self.present(loginVC, animated: true, completion: nil)
+  }
 }
 
 extension SettingsViewController: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
-      return settingOptBeforeLogin.count
+    isLogin ? settingOptAfterLogin.count : settingOptBeforeLogin.count
   }
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-      return settingOptBeforeLogin[section].count
+    isLogin ? settingOptAfterLogin[section].count : settingOptBeforeLogin[section].count
   }
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-      switch indexPath.section {
-      case 0:
-        let cell = tableView.dequeue(SettingsTableViewCell.self)
-        cell.delegate = self
-        return cell
-      default:
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Detail", for: indexPath)
-        cell.textLabel?.text = settingOptBeforeLogin[indexPath.section][indexPath.row]
-        return cell
-      }
+    switch indexPath.section {
+    case 0:
+      return isLogin
+        ? tableView.dequeue(UserInfoTableViewCell.self).then {
+            if let userName = UserDefaults.standard.value(forKey: "UserName") {
+              $0.configure(name: "\(userName)" )
+            }
+          }
+        : tableView.dequeue(SettingsTableViewCell.self).then({
+            $0.delegate = self
+          })
+      
+    default:
+      let cell = tableView.dequeueReusableCell(withIdentifier: "Detail", for: indexPath)
+      let text = isLogin
+        ? settingOptAfterLogin[indexPath.section][indexPath.row]
+        : settingOptBeforeLogin[indexPath.section][indexPath.row]
+      
+      cell.textLabel?.text = text
+      cell.accessoryType = .disclosureIndicator
+      return cell
+    }
   }
 }
 extension SettingsViewController: UITableViewDelegate {
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    nil
+  }
+  
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    0
+  }
+  
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: tableView.rowHeight))
-    footerView.backgroundColor = .lightGray
-    
-    return footerView
+    nil
+  }
+  
+  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    8
+  }
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    tableView.deselectRow(at: indexPath, animated: true)
+    if indexPath.section == 5 && indexPath.row == 0 {
+      isLogin = false
+    }
   }
 }
 
