@@ -74,7 +74,7 @@ class RecommendationTableViewCell: UITableViewCell {
 // MARK: - UICollectionViewDataSource
 extension RecommendationTableViewCell: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 8
+    return recommendationTitles.count
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
