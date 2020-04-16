@@ -14,7 +14,7 @@ struct MainItem: Decodable {
   let thumbImage: String
   let name: String
   let price: Int
-  let discountRate: Float
+  let discountRate: Double
   let summary: String
   
   enum CodingKeys: String, CodingKey {

@@ -19,7 +19,7 @@ func moneyFormatter(won: Int, hasUnit: Bool) -> String {
   return result
 }
 
-func moneyFormatter(won: Float, hasUnit: Bool) -> String {
+func moneyFormatter(won: Double, hasUnit: Bool) -> String {
   let numberFormatter = NumberFormatter().then {
     $0.numberStyle = .decimal
   }
