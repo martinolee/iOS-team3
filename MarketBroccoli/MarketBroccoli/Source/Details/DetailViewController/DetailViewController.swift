@@ -14,10 +14,11 @@ class DetailViewController: UIViewController {
   private var productId: Int? {
     willSet {
       if let productId = newValue {
-        RequestManager.shared.detailRequest(url: .detail, method: .get, productId: productId) {
+        RequestManager.shared.detailRequest(url: .detail, method: .get, productId: productId) { [weak self] in
+          guard let self = self else { return }
           switch $0 {
           case .success(let data):
-            print(data)
+            self.model = data
           case .failure(let error):
             print(error)
           }
@@ -25,7 +26,12 @@ class DetailViewController: UIViewController {
       }
     }
   }
-  private var model: ProductModel?
+  private var model: ProductModel? {
+    didSet {
+      guard let tableView = self.rootView.scrollView.subviews.first as? DetailDescriptionTableView else { return }
+      tableView.reloadData()
+    }
+  }
   
   override func loadView() {
     view = rootView
@@ -73,6 +79,7 @@ extension DetailViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     switch indexPath.section {
     case 0:
+      print(model)
       let cell = tableView.dequeue(DetailDescriptionTopTableCell.self)
       return cell
     case 1:
