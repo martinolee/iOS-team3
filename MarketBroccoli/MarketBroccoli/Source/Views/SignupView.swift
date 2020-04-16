@@ -76,9 +76,10 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.text = "이름"
     $0.required = true
   }
-  var nameTextFeild = UITextField().then {
+  lazy var nameTextField = UITextField().then {
     $0.placeholder = "고객님의 이름을 입력해주세요"
     $0.autocapitalizationType = .none
+    $0.delegate = self
     $0.signupStyle(round: .roundedRect, clearButton: .whileEditing)
     $0.addTarget(self, action: #selector(checkName), for: .editingChanged)
   }
@@ -282,7 +283,7 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.text = "참여 이벤트명"
   }
   private let eventNameUnderline = SignupUnderLineView(borderWidth: 0.2, borderColor: UIColor.lightGray.cgColor)
-  private lazy var scrollView = UIScrollView().then {
+  lazy var scrollView = UIScrollView().then {
     $0.delegate = self
   }
   private let grayView = UIView().then {
@@ -406,7 +407,7 @@ class SignupView: UIView, UITextFieldDelegate {
   private func setupUI() {
     [idLabel, idTextField, checkIDButton,
      secretNumberLabel, secretTextField, checkSecretNumberLabel,
-     checkSecretNumberTextField, nameLabel, nameTextFeild,
+     checkSecretNumberTextField, nameLabel, nameTextField,
      emailLabel, emailTextFeild, cellphoneLabel,
      cellphoneTextField, getCodeButton, checkingCodeCompleteLabel,
      checkingCodeTexField, timerInTextField, checkingCodeButton,
@@ -520,13 +521,13 @@ class SignupView: UIView, UITextFieldDelegate {
       $0.top.equalTo(sameSecretNumberLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(checkSecretNumberTextField)
     }
-    nameTextFeild.snp.makeConstraints {
+    nameTextField.snp.makeConstraints {
       $0.top.equalTo(nameLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(nameLabel)
     }
     emailLabel.snp.makeConstraints {
-      $0.top.equalTo(nameTextFeild.snp.bottom).offset(20)
-      $0.leading.trailing.equalTo(nameTextFeild)
+      $0.top.equalTo(nameTextField.snp.bottom).offset(20)
+      $0.leading.trailing.equalTo(nameTextField)
     }
     emailTextFeild.snp.makeConstraints {
       $0.top.equalTo(emailLabel.snp.bottom).offset(10)
@@ -900,7 +901,7 @@ extension SignupView {
         shouldChangeCharactersIn: range,
         replacementString: string
       )
-    case nameTextFeild:
+    case nameTextField:
       return delegate.nameTextField(
         textField,
         shouldChangeCharactersIn: range,

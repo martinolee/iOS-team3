@@ -124,6 +124,15 @@ extension HomeMDTableCell: UIScrollViewDelegate {
   }
 }
 
+extension HomeMDTableCell: UICollectionViewDelegate {
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    ObserverManager.shared.post(
+      observerName: .productTouched,
+      object: nil,
+      userInfo: ["indexPath": indexPath])
+  }
+}
+
 // MARK: - DataSource
 extension HomeMDTableCell: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
