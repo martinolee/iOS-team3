@@ -227,13 +227,13 @@ extension HomeRootView: UICollectionViewDataSource {
     let name = collectionView.collectionName else { return UICollectionViewCell() }
     let cellItem = model[name] ?? [MainItem]()
     let cell = collectionView.dequeue(ProductCollectionCell.self, indexPath: indexPath)
-    let asd = cellItem[indexPath.item]
+    let item = cellItem[indexPath.item]
     
     cell.configure(
-      productName: asd.name,
-      productImage: asd.thumbImage,
-      price: asd.price,
-      discount: asd.discountRate,
+      productName: item.name,
+      productImage: item.thumbImage,
+      price: item.price,
+      discount: item.discountRate,
       additionalInfo: [],
       isSoldOut: false,
       productIndexPath: indexPath

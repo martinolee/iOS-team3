@@ -55,6 +55,7 @@
 		7C212DB324337DE100025869 /* UIScrollViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C212DB224337DE100025869 /* UIScrollViewExtension.swift */; };
 		7C27D427243B0BFA0064D1BF /* UIStackViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C27D426243B0BFA0064D1BF /* UIStackViewExtension.swift */; };
 		7C27D429243B3CD40064D1BF /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C27D428243B3CD40064D1BF /* StringExtension.swift */; };
+		7C49C9E024481DC200FE9B04 /* ShowAllView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C49C9DF24481DC200FE9B04 /* ShowAllView.swift */; };
 		7C4A77262435FE950033F4D5 /* CategoryStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4A77252435FE950033F4D5 /* CategoryStackView.swift */; };
 		7C5A889124343A2E006361AC /* HomeBannerTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5A889024343A2E006361AC /* HomeBannerTableCell.swift */; };
 		7C5A889424343AD9006361AC /* SignupViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5A889324343AD9006361AC /* SignupViewProtocol.swift */; };
@@ -179,6 +180,7 @@
 		7C212DB224337DE100025869 /* UIScrollViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollViewExtension.swift; sourceTree = "<group>"; };
 		7C27D426243B0BFA0064D1BF /* UIStackViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackViewExtension.swift; sourceTree = "<group>"; };
 		7C27D428243B3CD40064D1BF /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		7C49C9DF24481DC200FE9B04 /* ShowAllView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowAllView.swift; sourceTree = "<group>"; };
 		7C4A77252435FE950033F4D5 /* CategoryStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryStackView.swift; sourceTree = "<group>"; };
 		7C5A889024343A2E006361AC /* HomeBannerTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeBannerTableCell.swift; sourceTree = "<group>"; };
 		7C5A889324343AD9006361AC /* SignupViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewProtocol.swift; sourceTree = "<group>"; };
@@ -563,6 +565,7 @@
 				7C65ECD72424F03D0075606A /* BestView.swift */,
 				7C65ECD92424F0830075606A /* ShoppingView.swift */,
 				7C65ECDB2424F08C0075606A /* EventView.swift */,
+				7C49C9DF24481DC200FE9B04 /* ShowAllView.swift */,
 			);
 			path = HomeViews;
 			sourceTree = "<group>";
@@ -858,6 +861,7 @@
 				FA9DA95C243DACB900929A98 /* UserNameResponse.swift in Sources */,
 				FA9DA95E243DBF1C00929A98 /* UserMobile.swift in Sources */,
 				7CCD64942428873000FC671B /* CustomCollectionViewFlowLayout.swift in Sources */,
+				7C49C9E024481DC200FE9B04 /* ShowAllView.swift in Sources */,
 				7C8C4A2C242B381F00FA912B /* UIViewExtension.swift in Sources */,
 				7C5A889124343A2E006361AC /* HomeBannerTableCell.swift in Sources */,
 				7CE4A08424403BA7002FD43B /* RequestManager.swift in Sources */,

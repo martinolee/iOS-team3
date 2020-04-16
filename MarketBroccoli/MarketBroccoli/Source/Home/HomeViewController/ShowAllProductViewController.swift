@@ -9,31 +9,101 @@
 import UIKit
 
 class ShowAllProductViewController: UIViewController {
+  private let rootView = ShowAllView()
+  
+  private var requestKey: RequestHome? {
+    willSet {
+      if let url = newValue {
+        RequestManager.shared.homeRequest(url: url, method: .get, count: 100) {
+          switch $0 {
+          case .success(let data):
+            self.model = data
+          case .failure(let error):
+            print(error)
+          }
+        }
+      }
+    }
+  }
+  private var model: HomeItems? {
+    didSet {
+      rootView.collectionView.reloadData()
+    }
+  }
+  
   override func loadView() {
-    view = ShowAllView()
+    view = rootView
   }
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    setupAttr()
   }
 }
 
+// MARK: - ACTIONS
 extension ShowAllProductViewController {
-  private func setupUI() {
-    
+  func configure(requestKey key: RequestHome) {
+    requestKey = key
   }
 }
 
-class ShowAllView: UIView {
-  private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout()).then {
-    $0.backgroundColor = .kurlyGray3
+// MARK: - UI
+extension ShowAllProductViewController {
+  private func setupAttr() {
+    rootView.collectionView.dataSource = self
+    rootView.collectionView.delegate = self
+    rootView.collectionView.register(cell: ProductCollectionCell.self)
+  }
+}
+
+// MARK: - CollectionViewDelegate
+extension ShowAllProductViewController: UICollectionViewDelegateFlowLayout {
+  func collectionView(_ collectionView: UICollectionView,
+                      layout collectionViewLayout: UICollectionViewLayout,
+                      minimumLineSpacingForSectionAt section: Int) -> CGFloat { 20 }
+  
+  // 최소 아이템 간격
+  func collectionView(
+    _ collectionView: UICollectionView,
+    layout collectionViewLayout: UICollectionViewLayout,
+    minimumInteritemSpacingForSectionAt section: Int) -> CGFloat { 8 }
+  
+  // 컬렉션 뷰 인셋
+  func collectionView(_ collectionView: UICollectionView,
+                      layout collectionViewLayout: UICollectionViewLayout,
+                      insetForSectionAt section: Int) -> UIEdgeInsets {
+    UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
   }
   
-  override init(frame: CGRect) {
-    super.init(frame: frame)
+  // 아이템 사이즈
+  func collectionView(_ collectionView: UICollectionView,
+                      layout collectionViewLayout: UICollectionViewLayout,
+                      sizeForItemAt indexPath: IndexPath) -> CGSize {
+    let itemWidth = ((rootView.frame.width - (8 * 2) - (8 * (2 - 1))) / 2).rounded(.down)
+    return CGSize(width: itemWidth, height: itemWidth * 1.8)
+  }
+}
+
+// MARK: - CollectionViewDataSource
+extension ShowAllProductViewController: UICollectionViewDataSource {
+  func numberOfSections(in collectionView: UICollectionView) -> Int { 1 }
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    model?.count ?? 0
   }
   
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    guard let model = model else { return UICollectionViewCell() }
+    let cell = collectionView.dequeue(ProductCollectionCell.self, indexPath: indexPath)
+    let item = model[indexPath.item]
+    cell.configure(
+      productName: item.name,
+      productImage: item.thumbImage,
+      price: item.price,
+      discount: item.discountRate,
+      additionalInfo: [],
+      isSoldOut: false,
+      productIndexPath: indexPath)
+    return cell
   }
 }

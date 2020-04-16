@@ -53,8 +53,13 @@ extension HomeViewController {
   }
   
   @objc private func receiveNotificationShowAll(_ notification: Notification) {
+    guard let userInfo = notification.userInfo as? [String: Any],
+    let requestKey = userInfo["requestKey"] as? RequestHome
+    else { return }
     let showAllVC = ShowAllProductViewController()
+    
     showAllVC.hidesBottomBarWhenPushed = true
+    showAllVC.configure(requestKey: requestKey)
     navigationController?.pushViewController(showAllVC, animated: true)
   }
 }
