@@ -119,4 +119,8 @@ extension CartViewHeader {
   func setSelectAllProductCheckBoxStatus(_ checked: Bool) {
     selectAllProductCheckBox.setStatus(checked)
   }
+  
+  func configure(selectedProductCount: Int, totalProductsCount: Int) {
+    selectingStatusLabel.text = "전체선택 (\(selectedProductCount)/\(totalProductsCount))"
+  }
 }

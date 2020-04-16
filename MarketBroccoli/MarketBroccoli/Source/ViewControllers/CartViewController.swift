@@ -16,6 +16,9 @@ class CartViewController: UIViewController {
   private var cart: Cart? {
     didSet {
       cartView.reloadCartTableViewData()
+//      cartView.beginCartTableViewUpdates()
+//      cartView.endCartTableViewUpdates()
+      updateHeaderFooter()
     }
   }
   
@@ -40,8 +43,8 @@ class CartViewController: UIViewController {
     fetchCart("http://15.164.49.32/kurly/cart/") { [weak self] response in
       switch response {
       case .success(let data):
-        guard let backendCart = try? JSONDecoder().decode(BackendCart.self, from: data) else { return }
-        self?.cart = convertToCart(from: backendCart)
+        guard let self = self, let backendCart = try? JSONDecoder().decode(BackendCart.self, from: data) else { return }
+        self.cart = convertToCart(from: backendCart)
       case .failure(let error):
         print(error.localizedDescription)
       }
@@ -130,9 +133,12 @@ extension CartViewController: CartProductTableViewCellDelegate {
       $0.addAction(UIAlertAction(title: "취소", style: .cancel))
       $0.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { [weak self] _ in
         guard let self = self, var cart = self.cart else { return }
+        
         cart[shoppingItemIndexPath.section].wishProducts.remove(at: shoppingItemIndexPath.row)
         
         self.removeProduct(id: cart[shoppingItemIndexPath.section].headID)
+        
+        if cart[shoppingItemIndexPath.section].wishProducts.isEmpty { cart.remove(at: shoppingItemIndexPath.section) }
         
         self.cart = cart
       }))
@@ -179,6 +185,28 @@ extension CartViewController: CartProductTableViewCellDelegate {
 }
 
 extension CartViewController: CartViewDelegate {
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    guard let cart = cart, !cart.isEmpty, cart[section].name != nil else { return 0 }
+    
+    return 38
+  }
+  
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    guard let cart = cart, !cart.isEmpty, cart[section].name != nil else { return nil }
+    
+    return tableView.dequeue(ProductCategoryHeader.self).then {
+      $0.configure(productCategoryName: cart[section].name)
+    }
+  }
+  
+  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    nil
+  }
+  
+  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    8
+  }
+  
   func selectAllProductCheckBoxTouched(_ checkBox: CheckBox, _ isChecked: Bool) {
     guard var cart = cart else { return }
     
@@ -274,5 +302,42 @@ extension CartViewController {
 //      "http://15.164.49.32/kurly/cart/\(id)/",
 //      method: .delete
 //    )
+  }
+  
+  private func updateHeaderFooter() {
+    guard let cart = cart else { return }
+    
+    var selectedProductCount = 0
+    var totalProductsCount = 0
+    var totalProductPrice = 0
+    var discountProductPrice = 0
+    var expectedAmountPayment = 0
+    
+    for productCategory in cart {
+      for wishProduct in productCategory.wishProducts {
+        totalProductsCount += 1
+        if wishProduct.isChecked {
+          selectedProductCount += 1
+          totalProductPrice +=
+            Int(Double(wishProduct.product.price) / (1 - productCategory.discountRate)) * wishProduct.quantity
+          expectedAmountPayment += wishProduct.product.price * wishProduct.quantity
+        }
+      }
+    }
+    discountProductPrice = totalProductPrice - expectedAmountPayment
+    
+    cartView.configureHeader(
+      selectedProductCount: selectedProductCount,
+      totalProductsCount: totalProductsCount
+    )
+    
+    cartView.configureFooter(
+      totalProductPrice: totalProductPrice,
+      discountProductPrice: discountProductPrice,
+      shippingFee: 0,
+      expectedAmountPayment: expectedAmountPayment
+    )
+    
+    cartView.setOrderButtonText(totalPrice: expectedAmountPayment)
   }
 }

@@ -144,7 +144,7 @@ class CartProductTableViewCell: UITableViewCell {
       $0.leading.equalTo(nameLabel)
       $0.width.equalTo(50)
       $0.height.equalTo(productImageView.snp.width).multipliedBy(1.2)
-    }; productImageView.backgroundColor = .gray
+    }
     
     originalPriceLabel.snp.makeConstraints {
       $0.leading.trailing.equalTo(currentPriceLabel)
