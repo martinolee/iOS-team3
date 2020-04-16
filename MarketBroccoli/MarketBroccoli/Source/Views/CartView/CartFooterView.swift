@@ -10,13 +10,9 @@ import SnapKit
 import Then
 import UIKit
 
-protocol CartFooterViewDataSource: class {
-}
 
 class CartFooterView: UIView {
   // MARK: - Properties
-  
-  weak var dataSource: CartFooterViewDataSource?
   
   private let staticTotalProductPriceLabel = UILabel().then {
     $0.text = "상품금액"
@@ -141,7 +137,7 @@ class CartFooterView: UIView {
     
     expectedAmountPaymentLabel.snp.makeConstraints {
       $0.leading.equalTo(staticExpectedAmountPaymentLabel.snp.trailing)
-      $0.bottom.equalTo(staticExpectedAmountPaymentLabel)
+      $0.bottom.greaterThanOrEqualTo(staticExpectedAmountPaymentLabel)
       $0.trailing.equalTo(separator)
     }
   }

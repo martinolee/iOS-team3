@@ -19,6 +19,14 @@ protocol CartViewDataSource: class {
 }
 
 protocol CartViewDelegate: class {
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
+  
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
+  
+  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView?
+  
+  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
+  
   func selectAllProductCheckBoxTouched(_ checkBox: CheckBox, _ isChecked: Bool)
   
   func removeSelectedProductButton(_ button: UIButton)
@@ -35,16 +43,16 @@ class CartView: UIView {
     $0.delegate = self
   }
   
-//  private lazy var cartFooterView = CartFooterView().then {
-//    $0.dataSource = self
-//  }
+  private lazy var cartFooterView = CartFooterView()
   
-  private lazy var cartTableView = UITableView().then {
+  private lazy var cartTableView = UITableView(frame: .zero, style: .grouped).then {
     $0.separatorStyle = .none
     $0.backgroundColor = .kurlyGray3
     
     $0.dataSource = self
+    $0.delegate = self
     
+    $0.register(headerFooter: ProductCategoryHeader.self)
     $0.register(cell: CartProductTableViewCell.self)
     $0.register(cell: EmptyCartTableViewCell.self)
   }
@@ -108,13 +116,31 @@ class CartView: UIView {
   }
   
   private func setupCartFooterViewSize() {
-//    cartTableView.tableFooterView = cartFooterView.then {
-//      $0.frame = CGRect(x: 0, y: 0, width: cartTableView.frame.width, height: 200)
-//      $0.backgroundColor = .white
-//    }
+    cartTableView.tableFooterView = cartFooterView.then {
+      $0.frame = CGRect(x: 0, y: 0, width: cartTableView.frame.width, height: 200)
+      $0.backgroundColor = .white
+    }
   }
   
   // MARK: - Element Control
+  
+  func configureHeader(selectedProductCount: Int, totalProductsCount: Int) {
+    cartViewHeader.configure(
+      selectedProductCount: selectedProductCount,
+      totalProductsCount: totalProductsCount
+    )
+  }
+  
+  func configureFooter(
+    totalProductPrice: Int, discountProductPrice: Int, shippingFee: Int, expectedAmountPayment: Int
+  ) {
+    cartFooterView.configure(
+      totalProductPrice: totalProductPrice,
+      discountProductPrice: discountProductPrice,
+      shippingFee: shippingFee,
+      expectedAmountPayment: expectedAmountPayment
+    )
+  }
   
   func setSelectAllProductCheckBoxStatus(_ checked: Bool) {
     cartViewHeader.setSelectAllProductCheckBoxStatus(checked)
@@ -122,6 +148,14 @@ class CartView: UIView {
   
   func reloadCartTableViewData() {
     cartTableView.reloadData()
+  }
+  
+  func beginCartTableViewUpdates() {
+    cartTableView.beginUpdates()
+  }
+  
+  func endCartTableViewUpdates() {
+    cartTableView.endUpdates()
   }
   
   func setOrderButtonText(totalPrice: Int) {
@@ -161,6 +195,24 @@ extension CartView: UITableViewDataSource {
   }
 }
 
+extension CartView: UITableViewDelegate {
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    delegate?.tableView(tableView, viewForHeaderInSection: section)
+  }
+  
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    delegate?.tableView(tableView, heightForHeaderInSection: section) ?? 0
+  }
+  
+  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    delegate?.tableView(tableView, viewForFooterInSection: section)
+  }
+  
+  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    delegate?.tableView(tableView, heightForFooterInSection: section) ?? 0
+  }
+}
+
 extension CartView: CartViewHeaderDelegate {
   func selectAllProductCheckBoxTouched(_ checkBox: CheckBox, isChecked: Bool) {
     delegate?.selectAllProductCheckBoxTouched(checkBox, isChecked)
@@ -169,7 +221,4 @@ extension CartView: CartViewHeaderDelegate {
   func removeSelectedProductButton(_ button: UIButton) {
     delegate?.removeSelectedProductButton(button)
   }
-}
-
-extension CartView: CartFooterViewDataSource {
 }

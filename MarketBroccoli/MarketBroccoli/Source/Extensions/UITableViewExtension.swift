@@ -25,4 +25,14 @@ extension UITableView {
       fatalError("Identifier required")
     }
   }
+  
+  func dequeue<HeaderFooter>(_ reusableHeaderFooter: HeaderFooter.Type)
+    -> HeaderFooter where HeaderFooter: UITableViewHeaderFooterView {
+    if let headerFooter =
+      dequeueReusableHeaderFooterView(withIdentifier: reusableHeaderFooter.identifier) as? HeaderFooter {
+      return headerFooter
+    } else {
+      fatalError("Identifier required")
+    }
+  }
 }

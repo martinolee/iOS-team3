@@ -34,7 +34,8 @@ extension UIViewController {
   @objc
   fileprivate func presentCartViewController() {
     let cartViewController = UINavigationController(rootViewController: CartViewController()).then {
-      $0.modalPresentationStyle = .overFullScreen
+      $0.modalPresentationStyle = .fullScreen
+      $0.modalTransitionStyle = .coverVertical
     }
     
     present(cartViewController, animated: true)
