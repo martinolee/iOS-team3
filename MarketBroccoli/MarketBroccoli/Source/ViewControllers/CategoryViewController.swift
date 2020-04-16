@@ -156,7 +156,7 @@ extension CategoryViewController: UITableViewDelegate {
         tableView.reloadSections(sections, with: .none)
       case 1:
         let catogoryDetailVC = CategoryDetailViewController()
-        let naviagationTitle = categoryData[indexPath.section - 1].row[indexPath.row - 1]
+        let naviagationTitle = categoryData[indexPath.section - 1].title
         catogoryDetailVC.categoryDetailNavigationTitle = naviagationTitle
         self.navigationController?.pushViewController(catogoryDetailVC, animated: true)
       default:
