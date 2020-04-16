@@ -44,7 +44,11 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController {
   @objc private func receiveNotification(_ notification: Notification) {
+    guard let userInfo = notification.userInfo as? [String: Int],
+      let ID = userInfo["productId"] else { return }
+    
     let detailVC = DetailViewController()
+    detailVC.configure(productId: ID)
     let barBtnItem = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
     
     detailVC.hidesBottomBarWhenPushed = true

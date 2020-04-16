@@ -150,11 +150,12 @@ extension HomeOfferTableCell: UICollectionViewDataSource {
 // MARK: - Delegate
 extension HomeOfferTableCell: UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    if let _ = collectionView.cellForItem(at: indexPath) as? HomeProductCollectionCell {
+    if let item = collectionView.cellForItem(at: indexPath) as? HomeProductCollectionCell, let ID = item.productId {
+      
       ObserverManager.shared.post(
         observerName: .productTouched,
         object: nil,
-        userInfo: ["indexPath": indexPath])
+        userInfo: ["productId": ID])
     } else {
       ObserverManager.shared.post(
         observerName: .showAllBtnTouched,

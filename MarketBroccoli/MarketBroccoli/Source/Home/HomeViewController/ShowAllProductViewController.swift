@@ -58,7 +58,8 @@ extension ShowAllProductViewController {
 }
 
 // MARK: - CollectionViewDelegate
-extension ShowAllProductViewController: UICollectionViewDelegateFlowLayout {
+extension ShowAllProductViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
+  // FlowLayoutDelegate Start
   func collectionView(_ collectionView: UICollectionView,
                       layout collectionViewLayout: UICollectionViewLayout,
                       minimumLineSpacingForSectionAt section: Int) -> CGFloat { 20 }
@@ -83,6 +84,16 @@ extension ShowAllProductViewController: UICollectionViewDelegateFlowLayout {
     let itemWidth = ((rootView.frame.width - (8 * 2) - (8 * (2 - 1))) / 2).rounded(.down)
     return CGSize(width: itemWidth, height: itemWidth * 1.8)
   }
+  // FlowLayoutDelegate End
+  
+  // CollectionViewDelegate Start
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    guard let item = model?[indexPath.item] else { return }
+    let detailVC = DetailViewController()
+    detailVC.configure(productId: item.id)
+    self.navigationController?.pushViewController(detailVC, animated: true)
+  }
+  // CollectionViewDelegate End
 }
 
 // MARK: - CollectionViewDataSource
@@ -97,6 +108,7 @@ extension ShowAllProductViewController: UICollectionViewDataSource {
     let cell = collectionView.dequeue(ProductCollectionCell.self, indexPath: indexPath)
     let item = model[indexPath.item]
     cell.configure(
+      productId: item.id,
       productName: item.name,
       productImage: item.thumbImage,
       price: item.price,

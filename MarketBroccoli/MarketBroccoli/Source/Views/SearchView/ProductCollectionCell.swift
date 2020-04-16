@@ -84,6 +84,8 @@ class ProductCollectionCell: UICollectionViewCell {
     $0.font = .systemFont(ofSize: 12)
   }
   
+  var productId: Int?
+  
   // MARK: - Life Cycle
   
   override init(frame: CGRect) {
@@ -199,11 +201,12 @@ extension ProductCollectionCell {
 
 extension ProductCollectionCell {
   func configure(
-    productName: String, productImage: String,
+    productId id: Int, productName: String, productImage: String,
     price: Int, discount: Double,
     additionalInfo: [String], isSoldOut: Bool,
     productIndexPath: IndexPath
   ) {
+    productId = id
     if discount != 0 {
       eventMark.isHidden = false
       let eventMarkAttributeString = NSMutableAttributedString()
