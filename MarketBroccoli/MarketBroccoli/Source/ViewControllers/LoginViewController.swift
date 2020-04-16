@@ -4,22 +4,21 @@
 //
 //  Created by Hailey Lee on 2020/03/20.
 //  Copyright © 2020 Team3. All rights reserved.
-//
 
 import UIKit
 import Alamofire
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
-   let profileVC = ProfileViewController()
   private let signupView = SignupView()
-  
   private lazy var idTextField = UITextField().then {
     $0.placeholder = "아이디를 입력해주세요"
     $0.textFieldStyle()
+    $0.delegate = self
     $0.autocapitalizationType = .none
   }
   private lazy var pwTextField = UITextField().then {
     $0.placeholder = "비밀번호를 입력해주세요"
+    $0.delegate = self
     $0.isSecureTextEntry = true
     $0.textFieldStyle()
   }
@@ -46,14 +45,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
   private enum UI {
     static let margin: CGFloat = 32
     static let height: CGFloat = 14
-    static let btnBetweenMargin: CGFloat = 40
-    static let btnTopMargin: CGFloat = 12
+    static let buttonBetweenMargin: CGFloat = 40
+    static let buttonTopMargin: CGFloat = 12
   }
   
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     self.view.endEditing(true)
-    idTextField.resignFirstResponder()
-    pwTextField.resignFirstResponder()
   }
   
   override func viewDidLoad() {
@@ -61,17 +58,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     setupNavigation()
     setupUI()
   }
-//  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-//     idTextField.resignFirstResponder()
-//     pwTextField.resignFirstResponder()
-//    return true
-//  }
+
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     if textField == idTextField {
-      idTextField.becomeFirstResponder()
       pwTextField.becomeFirstResponder()
     } else {
-      idTextField.resignFirstResponder()
       pwTextField.resignFirstResponder()
     }
     return true
@@ -112,7 +103,7 @@ extension LoginViewController {
       $0.height.equalTo(guide.snp.height).dividedBy(UI.height)
     }
     pwTextField.snp.makeConstraints {
-      $0.top.equalTo(idTextField.snp.bottom).offset(UI.btnTopMargin)
+      $0.top.equalTo(idTextField.snp.bottom).offset(UI.buttonTopMargin)
       $0.leading.equalTo(guide.snp.leading).offset(UI.margin)
       $0.trailing.equalTo(guide.snp.trailing).offset(-UI.margin)
       $0.height.equalTo(guide.snp.height).dividedBy(UI.height)
@@ -124,20 +115,19 @@ extension LoginViewController {
       $0.height.equalTo(guide.snp.height).dividedBy(UI.height)
     }
     idFindButton.snp.makeConstraints {
-      $0.top.equalTo(logInButton.snp.bottom).offset(UI.btnTopMargin)
-      $0.centerX.equalTo(guide.snp.centerX).offset(-UI.btnBetweenMargin)
+      $0.top.equalTo(logInButton.snp.bottom).offset(UI.buttonTopMargin)
+      $0.centerX.equalTo(guide.snp.centerX).offset(-UI.buttonBetweenMargin)
     }
     pwFindButton.snp.makeConstraints {
-      $0.top.equalTo(logInButton.snp.bottom).offset(UI.btnTopMargin)
+      $0.top.equalTo(logInButton.snp.bottom).offset(UI.buttonTopMargin)
       $0.leading.equalTo(idFindButton.snp.trailing).offset(4)
     }
     signUpButton.snp.makeConstraints {
-      $0.top.equalTo(idFindButton.snp.bottom).offset(UI.btnBetweenMargin)
+      $0.top.equalTo(idFindButton.snp.bottom).offset(UI.buttonBetweenMargin)
       $0.leading.equalTo(guide.snp.leading).offset(UI.margin)
       $0.trailing.equalTo(guide.snp.trailing).offset(-UI.margin)
       $0.height.equalTo(guide.snp.height).dividedBy(UI.height)
     }
-    
     setupAttr()
   }
 }
@@ -164,8 +154,6 @@ extension LoginViewController {
     self.navigationController?.pushViewController(nextVC, animated: true)
   }
   @objc private func logInButtonTouched() {
-    //    guard let key = UserDefaults.standard.value(forKey: "Token") else { settingVC.isLogin = false }
-    
     AF.request(
       "http://15.164.49.32/accounts/auth-token/",
       method: .post,
