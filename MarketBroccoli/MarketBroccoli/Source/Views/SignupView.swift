@@ -1,6 +1,5 @@
 //  testUIView.swift
 //  20200112ScrollViewPractice
-//
 //  Created by macbook on 2020/03/23.
 //  Copyright © 2020 Lance. All rights reserved.
 
@@ -877,7 +876,7 @@ class SignupView: UIView, UITextFieldDelegate {
       addressWebView.snp.makeConstraints {
         $0.top.equalTo(safeArea).inset(50)
         $0.leading.trailing.equalTo(safeArea).inset(30)
-        $0.bottom.equalTo(safeArea).inset(20)
+        $0.height.equalToSuperview().multipliedBy(0.8)
       }
     }
   }
@@ -1166,5 +1165,4 @@ extension SignupView: WKScriptMessageHandler {
     delegate?.userContentController(userContentController, didReceive: message)
   }
 }
-
 extension SignupView: UIScrollViewDelegate {}

@@ -66,14 +66,14 @@ extension LoginViewController: LoginViewDelegate {
           .responseData { response in
             switch response.result {
             case .success(let data):
-//              self.navigationController?.pushViewController(ProfileViewController(), animated: true)
     
               guard let decodedData = try? JSONDecoder().decode(
                 UserAuthTokenResponse.self,
                 from: data
                 ) else { return }
-              UserDefaults.standard.set(decodedData.token, forKey: "Token")
-              UserDefaults.standard.set(decodedData.user.userName, forKey: "UserName")
+              
+              UserDefaultManager.shared.set(decodedData.token, for: .token)
+              UserDefaultManager.shared.set(decodedData.user.userName, for: .userName)
               print(decodedData)
               
               guard
@@ -89,7 +89,8 @@ extension LoginViewController: LoginViewDelegate {
     
             case .failure(let error):
               print(error.localizedDescription)
-              // 아이디, 비밀번호를 확인해주세요. 알람 넣어야함
+              let warning = KurlyNotification.shared
+              warning.notification(text: "아이디, 비밀번호를 확인해주세요.")
             }
         }
   }
