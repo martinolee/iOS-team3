@@ -129,6 +129,10 @@
 		FAAFEB612424A77900452977 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAFEB602424A77900452977 /* SettingsTableViewCell.swift */; };
 		FAAFEB632424A79200452977 /* TypeConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAAFEB622424A79200452977 /* TypeConverter.swift */; };
 		FAB1FA48244819F900100C74 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1FA47244819F900100C74 /* LoginView.swift */; };
+		FAB1FA4A2449612B00100C74 /* IDFindView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1FA492449612B00100C74 /* IDFindView.swift */; };
+		FAB1FA4C24496CF900100C74 /* PWFindView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1FA4B24496CF900100C74 /* PWFindView.swift */; };
+		FAB1FA4E24497C7300100C74 /* UserDefaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1FA4D24497C7300100C74 /* UserDefaultManager.swift */; };
+		FAB1FA502449827100100C74 /* KurlyNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB1FA4F2449827100100C74 /* KurlyNotification.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -258,6 +262,10 @@
 		FAAFEB602424A77900452977 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		FAAFEB622424A79200452977 /* TypeConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeConverter.swift; sourceTree = "<group>"; };
 		FAB1FA47244819F900100C74 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		FAB1FA492449612B00100C74 /* IDFindView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDFindView.swift; sourceTree = "<group>"; };
+		FAB1FA4B24496CF900100C74 /* PWFindView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PWFindView.swift; sourceTree = "<group>"; };
+		FAB1FA4D24497C7300100C74 /* UserDefaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultManager.swift; sourceTree = "<group>"; };
+		FAB1FA4F2449827100100C74 /* KurlyNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KurlyNotification.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -478,6 +486,8 @@
 				7C65ECBD242472400075606A /* EmptyManager.swift */,
 				7CDD2D82243EF958008B4890 /* ObserverManager.swift */,
 				7CE4A08324403BA7002FD43B /* RequestManager.swift */,
+				FAB1FA4D24497C7300100C74 /* UserDefaultManager.swift */,
+				FAB1FA4F2449827100100C74 /* KurlyNotification.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -530,6 +540,7 @@
 				727F095F2428DCE700584A40 /* CartView */,
 				72EB58D12431D618001C4CCF /* SearchView */,
 				FAAFEB602424A77900452977 /* SettingsTableViewCell.swift */,
+				723851E024249C6400E8B206 /* UserInfoTableViewCell.swift */,
 				7050F31D242A3BB300B8E13B /* CategoryTableViewCell.swift */,
 				70E8178224360DF70010EB4C /* CategorySubTableViewCell.swift */,
 				70BB543B243C879D00BE81F4 /* RecommendationTableViewCell.swift */,
@@ -537,6 +548,8 @@
 				70BB543F243C979A00BE81F4 /* CategorySectionHeaderView.swift */,
 				FA9AD74124287F51002D3504 /* SignupView.swift */,
 				FAB1FA47244819F900100C74 /* LoginView.swift */,
+				FAB1FA492449612B00100C74 /* IDFindView.swift */,
+				FAB1FA4B24496CF900100C74 /* PWFindView.swift */,
 				FA48FBFE24385A2D00E53EB5 /* AddressWebView.swift */,
 				FA48FBD3243319DE00E53EB5 /* SignupCheckBox.swift */,
 			);
@@ -547,7 +560,6 @@
 			isa = PBXGroup;
 			children = (
 				7C65ECCA24249B2C0075606A /* EmptyTemp.swift */,
-				723851E024249C6400E8B206 /* UserInfoTableViewCell.swift */,
 				FAAFEB622424A79200452977 /* TypeConverter.swift */,
 			);
 			path = TEMP;
@@ -803,6 +815,7 @@
 				70BB5442243CB3D200BE81F4 /* RecommendationCollectionViewCell.swift in Sources */,
 				7C27D427243B0BFA0064D1BF /* UIStackViewExtension.swift in Sources */,
 				7C65ECC2242472C60075606A /* Constant.swift in Sources */,
+				FAB1FA4E24497C7300100C74 /* UserDefaultManager.swift in Sources */,
 				72EB58D52431F935001C4CCF /* CheckBox.swift in Sources */,
 				7CBB7349242E2E9F0078B363 /* MDCategoryCollectionCell.swift in Sources */,
 				7C65ECD42424EFE60075606A /* RecommendationView.swift in Sources */,
@@ -893,12 +906,15 @@
 				7C65ECDC2424F08C0075606A /* EventView.swift in Sources */,
 				70BB543C243C879D00BE81F4 /* RecommendationTableViewCell.swift in Sources */,
 				7C65ECBE242472400075606A /* EmptyManager.swift in Sources */,
+				FAB1FA4A2449612B00100C74 /* IDFindView.swift in Sources */,
 				7C8991FD24370AB20058BF9E /* DetailInfoTableView.swift in Sources */,
 				727F09612428DFFC00584A40 /* CartView.swift in Sources */,
 				FA48FBD624335BC000E53EB5 /* Agreement.swift in Sources */,
 				7C7171E4242C78E9009CE7D5 /* HomeMDTableCell.swift in Sources */,
 				7298BF01242DE470005B0517 /* SearchViewController.swift in Sources */,
+				FAB1FA502449827100100C74 /* KurlyNotification.swift in Sources */,
 				70BB5440243C979A00BE81F4 /* CategorySectionHeaderView.swift in Sources */,
+				FAB1FA4C24496CF900100C74 /* PWFindView.swift in Sources */,
 				7C65ECBA242471380075606A /* EventMark.swift in Sources */,
 				7C8C4A2A242B0E9100FA912B /* UIColorExtension.swift in Sources */,
 				7C763A7C2447339F00A8F01D /* ShowAllProductViewController.swift in Sources */,

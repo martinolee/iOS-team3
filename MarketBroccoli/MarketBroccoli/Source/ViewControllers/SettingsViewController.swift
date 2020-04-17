@@ -77,7 +77,7 @@ extension SettingsViewController: UITableViewDataSource {
     case 0:
       return isLogin
         ? tableView.dequeue(UserInfoTableViewCell.self).then {
-            if let userName = UserDefaults.standard.value(forKey: "UserName") {
+            if let userName = UserDefaultManager.shared.get(for: .userName) {
               $0.configure(name: "\(userName)" )
             }
           }

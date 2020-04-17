@@ -1,6 +1,5 @@
 //  SignUpViewController.swift
 //  MarketBroccoli
-//
 //  Created by macbook on 2020/03/20.
 //  Copyright © 2020 Team3. All rights reserved.
 
@@ -13,10 +12,6 @@ class SignUpViewController: UIViewController {
     $0.delegate = self
   }
   let agreement = Agreement()
-  //  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-  //    self.signupView.scrollView.endEditing(true)
-  //
-  //  }
   var essentialInfo: [Signup: Bool] = [
     .identification: false,
     .password: false,
@@ -118,7 +113,6 @@ extension SignUpViewController: SignupViewDelegate {
     return true
   }
   func signupButtonTouched(button: UIButton) {
-    print(essentialInfo)
     if !essentialInfo.values.contains(false) {
       let user = User(
         userName: signupView.idTextField.text ?? "",
@@ -199,6 +193,7 @@ extension SignUpViewController: SignupViewDelegate {
       let jibunAddress = addressData["jibunAddress"]
       else { return signupView.addressWebViewContainer.isHidden = true }
     
+    print(zonecode)
     print(addressData)
     
     signupView.addressWebViewContainer.isHidden = true
