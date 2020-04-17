@@ -28,7 +28,9 @@ class CategoryDetailViewController: UIViewController {
     setupNavigtion()
   }
 //  override func viewWillLayoutSubviews() {
-//    setupFlowLayout()
+//    super.viewWillLayoutSubviews()
+//    customMenuBar.layer.borderWidth = 1
+//    customMenuBar.layer.borderColor = CGColor.init(srgbRed: 0, green: 0, blue: 0, alpha: 1)
 //  }
   override func viewWillAppear(_ animated: Bool) {
     setupFlowLayout()
@@ -42,16 +44,19 @@ class CategoryDetailViewController: UIViewController {
     view.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9529411765, alpha: 1)
     collectionView.dataSource = self
 //    collectionView.delegate = self
-    [collectionView] .forEach {
+    [collectionView, customMenuBar] .forEach {
       view.addSubview($0)
     }
   }
   private func setupLayout() {
     let guide = view.safeAreaLayoutGuide
+    customMenuBar.snp.makeConstraints {
+      $0.top.leading.trailing.equalToSuperview()
+      $0.height.equalTo(customMenuBarheigt)
+    }
     collectionView.snp.makeConstraints {
-      $0.edges.equalTo(guide.snp.edges)
-      $0.width.equalTo(guide.snp.width)
-      $0.height.equalTo(guide.snp.height)
+      $0.top.equalTo(guide.snp.top).offset(customMenuBarheigt)
+      $0.leading.trailing.bottom.equalToSuperview()
     }
   }
   private func setupNavigtion() {
@@ -59,33 +64,28 @@ class CategoryDetailViewController: UIViewController {
     self.setupSubNavigationBar(title: categoryDetailNavigationTitle)
   }
   private func setupFlowLayout() {
-     let minimumLineSpacing: CGFloat = 10.0
-     let minimumInteritemSpacing: CGFloat = 10.0
-     let insets = UIEdgeInsets(top: 0, left: 16, bottom: 16, right: 16)
-     let itemsForLine: CGFloat = 2
-     let itemSizeWidth = (
-       (
-         collectionView.frame.width - (
-           insets.left + insets.right + minimumInteritemSpacing * (itemsForLine - 1))
-         ) / itemsForLine
-       ).rounded(.down)
-     let itemSize = CGSize(width: itemSizeWidth, height: itemSizeWidth - 8)
-     collectionViewFlowLayout.sectionInset = insets
-     collectionViewFlowLayout.minimumLineSpacing = minimumLineSpacing
-     collectionViewFlowLayout.minimumInteritemSpacing = minimumInteritemSpacing
-     collectionViewFlowLayout.itemSize = itemSize
-     collectionViewFlowLayout.scrollDirection = .vertical
-   }
+    let insets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    collectionViewFlowLayout.sectionInset = insets
+    collectionViewFlowLayout.minimumLineSpacing = 0
+    collectionViewFlowLayout.minimumInteritemSpacing = 0
+    collectionViewFlowLayout.itemSize = CGSize(
+      width: collectionView.frame.width,
+      height: collectionView.frame.height - customMenuBarheigt
+    )
+    collectionViewFlowLayout.scrollDirection = .horizontal
+  }
 }
 
 // MARK: - UICollectionViewDataSource
 extension CategoryDetailViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//    return categoryDetatilMenuBarTitle.count
     return 8
   }
+  
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-    cell.backgroundColor = .systemPink
+    let cell = collectionView.dequeue(CategoryDetailCollectionViewCell.self, indexPath: indexPath)
+    print(categoryDetatilMenuBarTitle)
     return cell
   }
 }
