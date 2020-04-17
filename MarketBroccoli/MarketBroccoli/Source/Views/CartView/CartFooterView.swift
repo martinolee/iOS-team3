@@ -10,9 +10,18 @@ import SnapKit
 import Then
 import UIKit
 
-
 class CartFooterView: UIView {
   // MARK: - Properties
+  
+  enum UI {
+    static var superviewSpacing: CGFloat {
+      24
+    }
+    
+    static var subviewSpacing: CGFloat {
+      16
+    }
+  }
   
   private let staticTotalProductPriceLabel = UILabel().then {
     $0.text = "상품금액"
@@ -61,7 +70,7 @@ class CartFooterView: UIView {
     
     setupAttribute()
     addAllView()
-    setupAutoLayout()
+    setupStaticViewSize()
     configure(totalProductPrice: 0, discountProductPrice: 0, shippingFee: 0, expectedAmountPayment: 0)
   }
   
@@ -89,57 +98,72 @@ class CartFooterView: UIView {
     ])
   }
   
-  private func setupAutoLayout() {
-    staticTotalProductPriceLabel.snp.makeConstraints {
-      $0.top.leading.equalToSuperview().inset(24)
+  private func setupStaticViewSize() {
+    [staticTotalProductPriceLabel,
+     staticDiscountProductPriceLabel,
+     staticShippingFeeLabel,
+     staticExpectedAmountPaymentLabel].forEach {
+      $0.frame.size = CGSize(width: $0.intrinsicContentSize.width, height: $0.intrinsicContentSize.height)
+    }
+  }
+  
+  private func updateLayout() {
+    setupViewOrigin()
+    setupViewSize()
+  }
+  
+  private func setupViewOrigin() {
+    let staticLabels = [staticTotalProductPriceLabel, staticDiscountProductPriceLabel,
+                        staticShippingFeeLabel, separator, staticExpectedAmountPaymentLabel]
+    let labels = [totalProductPriceLabel, discountProductPriceLabel, shippingFeeLabel,
+                  separator, expectedAmountPaymentLabel]
+    
+    for index in 0 ..< labels.count {
+      if index == 0 {
+        staticLabels[index].frame.origin = CGPoint(x: UI.superviewSpacing, y: UI.superviewSpacing)
+        
+        labels[index].frame.origin = CGPoint(
+          x: staticLabels[index].frame.maxX,
+          y: staticLabels[index].frame.minY
+        )
+      } else if index == labels.count - 1 {
+        labels[index].frame.origin = CGPoint(
+          x: staticLabels[index].frame.maxX,
+          y: self.bounds.maxY - (UI.superviewSpacing + labels[index].frame.height)
+        )
+        
+        staticLabels[index].frame.origin = CGPoint(
+          x: staticLabels[index - 1].frame.minX,
+          y: self.bounds.maxY - (UI.superviewSpacing + staticLabels[index].frame.height)
+        )
+      } else {
+        labels[index].frame.origin = CGPoint(
+          x: staticLabels[index].frame.maxX,
+          y: staticLabels[index].frame.minY
+        )
+        
+        staticLabels[index].frame.origin = CGPoint(
+          x: staticLabels[index - 1].frame.minX,
+          y: staticLabels[index - 1].frame.maxY + UI.subviewSpacing
+        )
+      }
+    }
+  }
+  
+  private func setupViewSize() {
+    let staticLabels = [staticTotalProductPriceLabel, staticDiscountProductPriceLabel,
+                        staticShippingFeeLabel, staticExpectedAmountPaymentLabel]
+    let labels = [totalProductPriceLabel, discountProductPriceLabel, shippingFeeLabel, expectedAmountPaymentLabel]
+    
+    for index in 0 ..< labels.count {
+      labels[index].frame.size =
+        CGSize(
+          width: self.frame.width - (UI.superviewSpacing * 2 + staticLabels[index].frame.width),
+          height: labels[index].intrinsicContentSize.height
+      )
     }
     
-    totalProductPriceLabel.snp.makeConstraints {
-      $0.top.bottom.equalTo(staticTotalProductPriceLabel)
-      $0.leading.equalTo(staticTotalProductPriceLabel.snp.trailing)
-      $0.trailing.equalToSuperview().inset(24)
-    }
-    
-    staticDiscountProductPriceLabel.snp.makeConstraints {
-      $0.top.equalTo(staticTotalProductPriceLabel.snp.bottom).offset(16)
-      $0.leading.equalTo(staticTotalProductPriceLabel)
-    }
-    
-    discountProductPriceLabel.snp.makeConstraints {
-      $0.top.bottom.equalTo(staticDiscountProductPriceLabel)
-      $0.leading.equalTo(staticDiscountProductPriceLabel.snp.trailing)
-      $0.trailing.equalTo(totalProductPriceLabel)
-    }
-    
-    staticShippingFeeLabel.snp.makeConstraints {
-      $0.top.equalTo(staticDiscountProductPriceLabel.snp.bottom).offset(16)
-      $0.leading.equalTo(staticDiscountProductPriceLabel)
-    }
-    
-    shippingFeeLabel.snp.makeConstraints {
-      $0.top.bottom.equalTo(staticShippingFeeLabel)
-      $0.leading.equalTo(staticShippingFeeLabel.snp.trailing)
-      $0.trailing.equalTo(discountProductPriceLabel)
-    }
-    
-    separator.snp.makeConstraints {
-      $0.top.equalTo(staticShippingFeeLabel.snp.bottom).offset(16)
-      $0.leading.equalTo(staticShippingFeeLabel)
-      $0.trailing.equalTo(shippingFeeLabel)
-      $0.height.equalTo(1)
-    }
-    
-    staticExpectedAmountPaymentLabel.snp.makeConstraints {
-      $0.top.equalTo(separator.snp.bottom).offset(16)
-      $0.leading.equalTo(separator)
-      $0.bottom.equalToSuperview().inset(24)
-    }
-    
-    expectedAmountPaymentLabel.snp.makeConstraints {
-      $0.leading.equalTo(staticExpectedAmountPaymentLabel.snp.trailing)
-      $0.bottom.greaterThanOrEqualTo(staticExpectedAmountPaymentLabel)
-      $0.trailing.equalTo(separator)
-    }
+    separator.frame.size = CGSize(width: self.frame.width - UI.superviewSpacing * 2, height: 1)
   }
 }
 
@@ -160,5 +184,7 @@ extension CartFooterView {
     expectedAmountPaymentLabel.attributedText = NSMutableAttributedString()
       .bold("\(moneyFormatter(won: expectedAmountPayment, hasUnit: false))", fontSize: 24)
       .normal(" 원", fontSize: 17)
+    
+    updateLayout()
   }
 }

@@ -48,6 +48,9 @@ class CartView: UIView {
   private lazy var cartTableView = UITableView(frame: .zero, style: .grouped).then {
     $0.separatorStyle = .none
     $0.backgroundColor = .kurlyGray3
+    $0.tableHeaderView = UIView(frame: .zero)
+    $0.tableFooterView = cartFooterView
+    $0.tableFooterView?.backgroundColor = .white
     
     $0.dataSource = self
     $0.delegate = self
@@ -70,6 +73,7 @@ class CartView: UIView {
     addAllView()
     setupCartTableViewAutoLayout()
     setOrderButtonText(totalPrice: 0)
+    setCartTableHeaderSize()
   }
   
   required init?(coder: NSCoder) {
@@ -77,7 +81,9 @@ class CartView: UIView {
   }
   
   override func layoutSubviews() {
-    setupCartFooterViewSize()
+    super.layoutSubviews()
+    
+    setCartTableFooterSize()
   }
   
   // MARK: - Setup UI
@@ -115,11 +121,20 @@ class CartView: UIView {
     }
   }
   
-  private func setupCartFooterViewSize() {
-    cartTableView.tableFooterView = cartFooterView.then {
-      $0.frame = CGRect(x: 0, y: 0, width: cartTableView.frame.width, height: 200)
-      $0.backgroundColor = .white
-    }
+  private func setCartTableHeaderSize() {
+    guard let header = cartTableView.tableHeaderView else { return }
+    
+    header.frame = .zero
+    
+    cartTableView.tableHeaderView = header
+  }
+  
+  private func setCartTableFooterSize() {
+    guard let footer = cartTableView.tableFooterView else { return }
+    
+    footer.frame = CGRect(x: 0, y: 0, width: cartTableView.frame.width, height: 200)
+    
+    cartTableView.tableFooterView = footer
   }
   
   // MARK: - Element Control

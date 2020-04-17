@@ -16,8 +16,6 @@ class CartViewController: UIViewController {
   private var cart: Cart? {
     didSet {
       cartView.reloadCartTableViewData()
-//      cartView.beginCartTableViewUpdates()
-//      cartView.endCartTableViewUpdates()
       updateHeaderFooter()
     }
   }

@@ -68,7 +68,6 @@ class ProductCategoryHeader: UITableViewHeaderFooterView {
     seperator.snp.makeConstraints {
       $0.leading.trailing.equalTo(productCategoryLabel)
       $0.bottom.equalToSuperview()
-//      $0.width.equalTo(productCategoryLabel)
       $0.height.equalTo(1)
     }
   }
