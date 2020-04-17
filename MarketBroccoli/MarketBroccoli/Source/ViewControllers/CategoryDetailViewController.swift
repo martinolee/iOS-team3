@@ -11,15 +11,22 @@ import SnapKit
 
 class CategoryDetailViewController: UIViewController {
   // MARK: - Properties
+  private var customMenuBar = CategoryDetailHeaderView()
+  let customMenuBarheigt: CGFloat = 52
   private lazy var collectionViewFlowLayout = UICollectionViewFlowLayout()
   private lazy var collectionView = UICollectionView(
-    frame: .init(x: 0, y: 0, width: 300, height: 800), // .zero로 했을 때 안나오는 문제 해결 할 것
+    frame: .init(
+      x: 0, y: customMenuBarheigt,
+      width: view.frame.width,
+      height: view.frame.height - customMenuBarheigt), // .zero로 했을 때 안나오는 문제 해결 할 것
     collectionViewLayout: collectionViewFlowLayout)
     .then {
-      $0.backgroundColor = .systemBlue
+      $0.isPagingEnabled = true
       $0.register(cell: UICollectionViewCell.self, forCellReuseIdentifier: "cell")
+      $0.register(cell: CategoryDetailCollectionViewCell.self)
   }
   var categoryDetailNavigationTitle = ""
+  var categoryDetatilMenuBarTitle = ""
   // MARK: - Life Cycle
   override func viewDidLoad() {
     super.viewDidLoad()
