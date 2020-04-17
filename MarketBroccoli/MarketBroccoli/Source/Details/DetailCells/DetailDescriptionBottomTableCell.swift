@@ -7,12 +7,14 @@
 //
 
 import UIKit
+import Kingfisher
 
 class DetailDescriptionBottomTableCell: UITableViewCell {
   private let deliveryNotice = DeliveryNoticeView()
-  private let descriptionImageView = UIImageView().then {
-    $0.image = UIImage(named: "cloud")
+  let descriptionImageView = UIImageView().then {
+    $0.contentMode = .scaleAspectFit
   }
+  
   private let summaryLabel = UILabel().then {
     $0.text = "무엇 하나 빠지지 않는 스피커"
     $0.font = .systemFont(ofSize: 22, weight: .semibold)
@@ -37,8 +39,8 @@ class DetailDescriptionBottomTableCell: UITableViewCell {
   }
   private lazy var detailImageView = UIImageView().then {
     let imageTap = UITapGestureRecognizer(target: self, action: #selector(imageTouched(_:)))
-    $0.image = UIImage(named: "harman-kardon")
-    $0.contentMode = .scaleAspectFill
+    
+    $0.contentMode = .scaleAspectFit
     $0.isUserInteractionEnabled = true
     $0.addGestureRecognizer(imageTap)
   }
@@ -46,7 +48,12 @@ class DetailDescriptionBottomTableCell: UITableViewCell {
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
+    print(#function)
     setupUI()
+  }
+  
+  override func prepareForReuse() {
+    super.prepareForReuse()
   }
   
   required init?(coder: NSCoder) {
@@ -56,11 +63,33 @@ class DetailDescriptionBottomTableCell: UITableViewCell {
 
 // MARK: - ACTIONS
 extension DetailDescriptionBottomTableCell {
+  func configure(detail model: ProductModel) {
+    guard let thumbImage = model.images.first(where: { $0.name == "main" }),
+      let detailImage = model.images.first(where: { $0.name == "detail" })
+      else { return }
+    summaryLabel.text = model.summary
+    nameLabel.text = model.name
+    descriptionLabel.text = model.productModelDescription
+    descriptionImageView.setImage(urlString: thumbImage.image)
+    detailImageView.setImage(urlString: detailImage.image)
+    
+//    print("Image Size :", self.detailImageView.image?.size)
+//    if let size = self.detailImageView.image?.size {
+//      let ratio = UIScreen.main.bounds.width / size.width
+//      let height = size.height * ratio
+      detailImageView.snp.makeConstraints {
+        $0.height.equalTo(800)
+      }
+//    } else {
+//      print("else")
+//    }
+  }
+  
   @objc private func imageTouched(_ sender: UITapGestureRecognizer) {
     ObserverManager.shared.post(
       observerName: .imageTouched,
       object: nil,
-      userInfo: ["image": UIImage(named: "harman-kardon")!]
+      userInfo: ["image": detailImageView.image]
     )
   }
 }
@@ -78,7 +107,7 @@ extension DetailDescriptionBottomTableCell {
     descriptionImageView.snp.makeConstraints {
       $0.top.equalTo(deliveryNotice.snp.bottom).offset(40)
       $0.leading.trailing.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
-      $0.height.equalTo(200)
+      $0.height.equalTo(300)
     }
     
     summaryLabel.snp.makeConstraints {
@@ -103,12 +132,13 @@ extension DetailDescriptionBottomTableCell {
     }
     
     detailImageView.snp.makeConstraints {
-      $0.top.equalTo(descriptionLabel.snp.bottom).offset(20)
-      $0.leading.trailing.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
+      $0.top.equalTo(descriptionLabel.snp.bottom)
+      $0.leading.trailing.equalToSuperview()
+//      $0.height.equalTo(0)
     }
     
     whyKurly.snp.makeConstraints {
-      $0.top.equalTo(detailImageView.snp.bottom).offset(20)
+      $0.top.equalTo(detailImageView.snp.bottom)
       $0.leading.bottom.trailing.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 20, right: 20))
       $0.height.equalTo(600)
     }

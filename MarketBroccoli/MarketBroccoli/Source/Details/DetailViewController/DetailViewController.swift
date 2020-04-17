@@ -30,6 +30,7 @@ class DetailViewController: UIViewController {
     didSet {
       guard let tableView = self.rootView.scrollView.subviews.first as? DetailDescriptionTableView else { return }
       tableView.reloadData()
+      print("reload")
     }
   }
   
@@ -77,13 +78,15 @@ extension DetailViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { 1 }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    guard let model = model else { return UITableViewCell() }
     switch indexPath.section {
     case 0:
-      print(model)
       let cell = tableView.dequeue(DetailDescriptionTopTableCell.self)
+      cell.configure(detail: model)
       return cell
     case 1:
       let cell = tableView.dequeue(DetailDescriptionBottomTableCell.self)
+      cell.configure(detail: model)
       return cell
     default:
       fatalError()
