@@ -76,9 +76,10 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.text = "이름"
     $0.required = true
   }
-  var nameTextFeild = UITextField().then {
+  lazy var nameTextField = UITextField().then {
     $0.placeholder = "고객님의 이름을 입력해주세요"
     $0.autocapitalizationType = .none
+    $0.delegate = self
     $0.signupStyle(round: .roundedRect, clearButton: .whileEditing)
     $0.addTarget(self, action: #selector(checkName), for: .editingChanged)
   }
@@ -189,7 +190,7 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.layer.borderWidth = 1
     $0.layer.borderColor = UIColor.lightGray.cgColor
   }
-  private lazy var birthdayYearTextField = UITextField().then {
+  lazy var birthdayYearTextField = UITextField().then {
     $0.placeholder = "YYYY"
     $0.borderStyle = .none
     $0.textAlignment = .center
@@ -198,7 +199,7 @@ class SignupView: UIView, UITextFieldDelegate {
   private let firstSlashLabel = SignupLabel(textColor: nil, font: nil).then {
     $0.text = "/"
   }
-  private lazy var birthdayMonthTextField = UITextField().then {
+  lazy var birthdayMonthTextField = UITextField().then {
     $0.placeholder = "MM"
     $0.borderStyle = .none
     $0.textAlignment = .center
@@ -207,7 +208,7 @@ class SignupView: UIView, UITextFieldDelegate {
   private let secondSlashLabel = SignupLabel(textColor: nil, font: nil).then {
     $0.text = "/"
   }
-  private lazy var birthdayDayTextField = UITextField().then {
+  lazy var birthdayDayTextField = UITextField().then {
     $0.placeholder = "DD"
     $0.borderStyle = .none
     $0.textAlignment = .center
@@ -282,7 +283,9 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.text = "참여 이벤트명"
   }
   private let eventNameUnderline = SignupUnderLineView(borderWidth: 0.2, borderColor: UIColor.lightGray.cgColor)
-  private let scrollView = UIScrollView()
+  lazy var scrollView = UIScrollView().then {
+    $0.delegate = self
+  }
   private let grayView = UIView().then {
     $0.backgroundColor = .gray
   }
@@ -404,7 +407,7 @@ class SignupView: UIView, UITextFieldDelegate {
   private func setupUI() {
     [idLabel, idTextField, checkIDButton,
      secretNumberLabel, secretTextField, checkSecretNumberLabel,
-     checkSecretNumberTextField, nameLabel, nameTextFeild,
+     checkSecretNumberTextField, nameLabel, nameTextField,
      emailLabel, emailTextFeild, cellphoneLabel,
      cellphoneTextField, getCodeButton, checkingCodeCompleteLabel,
      checkingCodeTexField, timerInTextField, checkingCodeButton,
@@ -444,6 +447,7 @@ class SignupView: UIView, UITextFieldDelegate {
     }
     
     setupAddressWebView()
+
     if let addressWebView = addressWebView {
       addressWebViewContainer.addSubview(addressWebView)
     }
@@ -517,13 +521,13 @@ class SignupView: UIView, UITextFieldDelegate {
       $0.top.equalTo(sameSecretNumberLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(checkSecretNumberTextField)
     }
-    nameTextFeild.snp.makeConstraints {
+    nameTextField.snp.makeConstraints {
       $0.top.equalTo(nameLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(nameLabel)
     }
     emailLabel.snp.makeConstraints {
-      $0.top.equalTo(nameTextFeild.snp.bottom).offset(20)
-      $0.leading.trailing.equalTo(nameTextFeild)
+      $0.top.equalTo(nameTextField.snp.bottom).offset(20)
+      $0.leading.trailing.equalTo(nameTextField)
     }
     emailTextFeild.snp.makeConstraints {
       $0.top.equalTo(emailLabel.snp.bottom).offset(10)
@@ -854,7 +858,7 @@ class SignupView: UIView, UITextFieldDelegate {
       if let addressWebView = addressWebView {
         $0.top.equalTo(safeAreaLayoutGuide).inset(30)
         $0.leading.trailing.equalTo(addressWebView)
-        $0.bottom.equalTo(addressWebView.snp.top)
+        $0.height.equalTo(30)
       }
     }
     
@@ -863,7 +867,7 @@ class SignupView: UIView, UITextFieldDelegate {
         $0.trailing.equalTo(addressCloseView.snp.trailing)
       }
     }
-
+    
     if let addressWebView = addressWebView {
       let safeArea = addressWebViewContainer.safeAreaLayoutGuide
       addressWebView.snp.makeConstraints {
@@ -873,9 +877,7 @@ class SignupView: UIView, UITextFieldDelegate {
       }
     }
   }
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
+  required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 }
 // MARK: - Extension, Delegate
 extension SignupView {
@@ -899,7 +901,7 @@ extension SignupView {
         shouldChangeCharactersIn: range,
         replacementString: string
       )
-    case nameTextFeild:
+    case nameTextField:
       return delegate.nameTextField(
         textField,
         shouldChangeCharactersIn: range,
@@ -1147,6 +1149,10 @@ extension SignupView {
   @objc func addressCloseButton(button: UIButton) {
     delegate?.addressCloseButton(button: button)
   }
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    delegate?.textFieldShouldReturn(textField)
+    return true
+  }
 }
 
 extension SignupView: WKScriptMessageHandler {
@@ -1154,3 +1160,5 @@ extension SignupView: WKScriptMessageHandler {
     delegate?.userContentController(userContentController, didReceive: message)
   }
 }
+
+extension SignupView: UIScrollViewDelegate {}

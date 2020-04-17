@@ -7,13 +7,11 @@
 //
 
 import UIKit
-import Then
-import SnapKit
+import Kingfisher
 
 class HomeRootView: UIView {
   private let selectedCategory = CategorySelected()
   private let scrollView = UIScrollView().then {
-    $0.backgroundColor = .gray
     $0.isPagingEnabled = true
     $0.showsVerticalScrollIndicator = false
     $0.showsHorizontalScrollIndicator = false
@@ -22,10 +20,22 @@ class HomeRootView: UIView {
   
   private let stackView = CategoryStackView(categories: Categories.HomeCategory, distribution: .fillProportionally)
   
+  private var categoryArray: [UIView] = []
   private let menuTextArray = Categories.HomeCategory
+  private var newModel: [MainItem] = []
+  private var bestModel: [MainItem] = []
+  private var discountModel: [MainItem] = []
+  private var model = [
+    RequestHome.new: [MainItem](),
+    RequestHome.best: [MainItem](),
+    RequestHome.discount: [MainItem]()
+  ]
   
   override init(frame: CGRect) {
     super.init(frame: frame)
+    dataRequest(type: .new)
+    dataRequest(type: .best)
+    dataRequest(type: .discount)
     setupUI()
   }
   
@@ -36,6 +46,27 @@ class HomeRootView: UIView {
 
 // MARK: - ACTIONS
 extension HomeRootView {
+  private func dataRequest(type: RequestHome) {
+    guard let endPoint = [RequestHome.new, RequestHome.best, RequestHome.discount].first(
+      where: { $0 == type })
+      else { return }
+    RequestManager.shared.homeRequest(url: endPoint, method: .get, count: 100) { [weak self] res in
+      guard let self = self else { return }
+      switch res {
+      case .success(let data):
+        self.model[endPoint] = data
+        self.categoryArray.forEach {
+          guard let category = ($0 as? NewProduct),
+            let name = category.collectionName,
+            name == endPoint else { return }
+          category.reloadData()
+        }
+      case .failure(let error):
+        print(error)
+      }
+    }
+  }
+  
   private func scrollMoved(_ currentPage: Int, scroll: Bool = false) {
     guard let label = stackView.arrangedSubviews[currentPage] as? UILabel else { return }
     stackView.arrangedSubviews.forEach {
@@ -107,7 +138,6 @@ extension HomeRootView {
       $0.leading.bottom.trailing.equalTo(safeArea)
     }
     
-    var categoryArray: [UIView] = []
     let categoryCnt = menuTextArray.count
     for idx in menuTextArray.indices {
       switch idx {
@@ -116,7 +146,15 @@ extension HomeRootView {
       case 1...categoryCnt - 2:
         let product = NewProduct(frame: .zero, collectionViewLayout: CustomCollectionViewFlowLayout())
         product.dataSource = self
-        product.register(cell: HomeReuseCollectionCell.self)
+        product.delegate = self
+        product.register(cell: ProductCollectionCell.self)
+        switch menuTextArray[idx] {
+        case "알뜰쇼핑": product.collectionName = RequestHome.discount
+        case "베스트": product.collectionName = RequestHome.best
+        case "신상품": product.collectionName = RequestHome.new
+        default:
+          print("pass")
+        }
         categoryArray.append(product)
       case categoryCnt - 1:
         categoryArray.append(RecommendationView())
@@ -139,13 +177,67 @@ extension HomeRootView: UIScrollViewDelegate {
   }
 }
 
+extension HomeRootView: UICollectionViewDelegateFlowLayout {
+  func collectionView(_ collectionView: UICollectionView,
+                      layout collectionViewLayout: UICollectionViewLayout,
+                      minimumLineSpacingForSectionAt section: Int) -> CGFloat { 20 }
+  
+  // 최소 아이템 간격
+  func collectionView(
+    _ collectionView: UICollectionView,
+    layout collectionViewLayout: UICollectionViewLayout,
+    minimumInteritemSpacingForSectionAt section: Int) -> CGFloat { 8 }
+  
+  // 컬렉션 뷰 인셋
+  func collectionView(_ collectionView: UICollectionView,
+                      layout collectionViewLayout: UICollectionViewLayout,
+                      insetForSectionAt section: Int) -> UIEdgeInsets {
+    UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+  }
+  
+  // 아이템 사이즈
+  func collectionView(_ collectionView: UICollectionView,
+                      layout collectionViewLayout: UICollectionViewLayout,
+                      sizeForItemAt indexPath: IndexPath) -> CGSize {
+    let itemWidth = ((self.frame.width - (8 * 2) - (8 * (2 - 1))) / 2).rounded(.down)
+    return CGSize(width: itemWidth, height: itemWidth * 1.8)
+  }
+}
+
+// MARK: - CollectionViewDelegate
+extension HomeRootView: UICollectionViewDelegate {
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    ObserverManager.shared.post(
+      observerName: .productTouched,
+      object: nil,
+      userInfo: ["indexPath": indexPath])
+  }
+}
+
 // MARK: - CollectionViewDataSource
 extension HomeRootView: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 20
+    guard let collectionView = collectionView as? NewProduct,
+      let name = collectionView.collectionName else { return 0 }
+    return model[name]?.count ?? 0
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    return collectionView.dequeue(HomeReuseCollectionCell.self, indexPath: indexPath)
+    guard let collectionView = collectionView as? NewProduct,
+    let name = collectionView.collectionName else { return UICollectionViewCell() }
+    let cellItem = model[name] ?? [MainItem]()
+    let cell = collectionView.dequeue(ProductCollectionCell.self, indexPath: indexPath)
+    let asd = cellItem[indexPath.item]
+    
+    cell.configure(
+      productName: asd.name,
+      productImage: asd.thumbImage,
+      price: asd.price,
+      discount: asd.discountRate,
+      additionalInfo: [],
+      isSoldOut: false,
+      productIndexPath: indexPath
+    )
+    return cell
   }
 }

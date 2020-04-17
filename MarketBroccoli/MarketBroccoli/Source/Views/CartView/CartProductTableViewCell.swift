@@ -47,7 +47,7 @@ class CartProductTableViewCell: UITableViewCell {
   }
   
   private let productImageView = UIImageView().then {
-    $0.contentMode = .scaleAspectFit
+    $0.contentMode = .scaleToFill
   }
   
   private let originalPriceLabel = UILabel().then {
@@ -60,7 +60,7 @@ class CartProductTableViewCell: UITableViewCell {
     $0.textAlignment = .left
   }
   
-  private lazy var productQuantityStepper = ProductQuantityStepper().then {
+  private lazy var productQuantityStepper = ProductQuantityStepper(minimum: 1).then {
     $0.delegate = self
   }
   
@@ -118,7 +118,7 @@ class CartProductTableViewCell: UITableViewCell {
   
   private func setupAutoLayout() {
     containerView.snp.makeConstraints {
-      $0.top.bottom.equalToSuperview().inset(4)
+      $0.top.bottom.equalToSuperview()
       $0.leading.trailing.equalToSuperview().inset(8)
     }
     
@@ -217,23 +217,21 @@ extension CartProductTableViewCell: ProductQuantityStepperDelegate {
   // MARK: - Element Control
   
   func configure(
-    name: String, productImage: ImageResource,
-    originalPrice: Int?, currentPrice: Int,
+    name: String, imageURL: String,
+    price: Int, discount: Double,
     quantity: Int, isChecked: Bool, shoppingItemIndexPath: IndexPath
   ) {
-    if let originalPrice = originalPrice {
-      let originalPrice = moneyFormatter(won: originalPrice, hasUnit: true)
-      let attributeString = NSMutableAttributedString(string: originalPrice)
-      attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1,
-                                   range: NSRange(location: 0, length: attributeString.length))
-      originalPriceLabel.attributedText = attributeString
+    if discount != 0 {
+      let originalPrice = moneyFormatter(won: Int(Double(price) / (1 - discount)), hasUnit: true)
+      originalPriceLabel.attributedText = NSMutableAttributedString()
+        .strikethrough(originalPrice, textColor: .kurlyGray1)
     }
     
-    let totalPrice = moneyFormatter(won: currentPrice * quantity, hasUnit: false)
-    let currentPrice = moneyFormatter(won: currentPrice, hasUnit: true)
+    let totalPrice = moneyFormatter(won: price * quantity, hasUnit: false)
+    let currentPrice = moneyFormatter(won: price, hasUnit: true)
 
     nameLabel.text = name
-    productImageView.kf.setImage(with: productImage)
+    productImageView.setImage(urlString: imageURL)
     currentPriceLabel.text = currentPrice
     totalProductPriceLabel.text = totalPrice
     productQuantityStepper.setValue(quantity)

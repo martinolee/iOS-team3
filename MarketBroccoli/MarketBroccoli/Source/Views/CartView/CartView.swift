@@ -35,18 +35,18 @@ class CartView: UIView {
     $0.delegate = self
   }
   
-  private lazy var cartFooterView = CartFooterView().then {
-    $0.dataSource = self
-  }
+//  private lazy var cartFooterView = CartFooterView().then {
+//    $0.dataSource = self
+//  }
   
   private lazy var cartTableView = UITableView().then {
     $0.separatorStyle = .none
     $0.backgroundColor = .kurlyGray3
-    $0.tableFooterView = cartFooterView
     
     $0.dataSource = self
     
     $0.register(cell: CartProductTableViewCell.self)
+    $0.register(cell: EmptyCartTableViewCell.self)
   }
   
   private lazy var orderButton = UIButton(type: .system).then {
@@ -61,6 +61,7 @@ class CartView: UIView {
     setupAttribute()
     addAllView()
     setupCartTableViewAutoLayout()
+    setOrderButtonText(totalPrice: 0)
   }
   
   required init?(coder: NSCoder) {
@@ -107,10 +108,10 @@ class CartView: UIView {
   }
   
   private func setupCartFooterViewSize() {
-    cartTableView.tableFooterView = cartFooterView.then {
-      $0.frame = CGRect(x: 0, y: 0, width: cartTableView.frame.width, height: 200)
-      $0.backgroundColor = .white
-    }
+//    cartTableView.tableFooterView = cartFooterView.then {
+//      $0.frame = CGRect(x: 0, y: 0, width: cartTableView.frame.width, height: 200)
+//      $0.backgroundColor = .white
+//    }
   }
   
   // MARK: - Element Control

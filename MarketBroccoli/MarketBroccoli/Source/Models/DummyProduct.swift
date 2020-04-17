@@ -10,14 +10,14 @@ import Foundation
 
 class DummyProduct {
   let name: String
-  let imageURL: URL
+  let imageURL: String
   let price: Int
   let discount: Double
   let additionalInfo: [String]
   let isSoldOut: Bool
   
   init(
-    name: String, imageURL: URL, price: Int, discount: Double, additionalInfo: [String], isSoldOut: Bool
+    name: String, imageURL: String, price: Int, discount: Double, additionalInfo: [String], isSoldOut: Bool
   ) {
     self.name = name
     self.imageURL = imageURL
@@ -31,7 +31,7 @@ class DummyProduct {
 var productDummy: [DummyProduct] = [
   DummyProduct(
     name: "[LOTS OF LOVE] 차돌듬뿍 묵은지볶음밥",
-    imageURL: URL(string: "https://img-cf.kurly.com/shop/data/goods/1530775904381y0.jpg") ?? URL(fileURLWithPath: ""),
+    imageURL: "https://img-cf.kurly.com/shop/data/goods/1530775904381y0.jpg",
     price: 7_800,
     discount: 0,
     additionalInfo: [],
@@ -39,7 +39,7 @@ var productDummy: [DummyProduct] = [
   ),
   DummyProduct(
     name: "[리터스포트] 4입 기획세트",
-    imageURL: URL(string: "https://img-cf.kurly.com/shop/data/goods/157948947221y0.jpg") ?? URL(fileURLWithPath: ""),
+    imageURL: "https://img-cf.kurly.com/shop/data/goods/157948947221y0.jpg",
     price: 12_000,
     discount: 0.5,
     additionalInfo: ["Kurly Only"],
@@ -47,7 +47,7 @@ var productDummy: [DummyProduct] = [
   ),
   DummyProduct(
     name: "[히스파수르] 골드 엑스트라 버진 피쿠알 2종 (2019-2020햇올리브)",
-    imageURL: URL(string: "https://img-cf.kurly.com/shop/data/goods/1578294213131y0.jpg") ?? URL(fileURLWithPath: ""),
+    imageURL: "https://img-cf.kurly.com/shop/data/goods/1578294213131y0.jpg",
     price: 20_400,
     discount: 0.4,
     additionalInfo: ["Kurly Only", "한정수량"],
@@ -55,7 +55,7 @@ var productDummy: [DummyProduct] = [
   ),
   DummyProduct(
     name: "[바켄] 바스크 치즈 케이크",
-    imageURL: URL(string: "https://img-cf.kurly.com/shop/data/goods/1574752934698y0.jpg") ?? URL(fileURLWithPath: ""),
+    imageURL: "https://img-cf.kurly.com/shop/data/goods/1574752934698y0.jpg",
     price: 25_000,
     discount: 0,
     additionalInfo: ["Kurly Only"],

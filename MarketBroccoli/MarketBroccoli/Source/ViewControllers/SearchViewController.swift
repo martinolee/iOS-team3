@@ -42,7 +42,7 @@ class SearchViewController: UIViewController {
     
     productDummy.append(DummyProduct(
       name: "[선물세트] 박찬회화과자 명장 양갱 종합 25구",
-      imageURL: URL(string: "https://img-cf.kurly.com/shop/data/goods/1577172106761y0.jpg") ?? URL(fileURLWithPath: ""),
+      imageURL: "https://img-cf.kurly.com/shop/data/goods/1577172106761y0.jpg",
       price: 70_000,
       discount: 0,
       additionalInfo: ["Kurly Only"],
@@ -80,7 +80,11 @@ extension SearchViewController: SearchViewDataSource {
     at indexPath: IndexPath
   ) -> UICollectionReusableView {
     collectionView.dequeue(ProductCollectionHeader.self, indexPath: indexPath).then {
-      $0.configure(hideOrderTypeButton: true)
+      $0.configure(
+        hideOrderTypeButton: false,
+        deliveryAreas: ["샛별지역상품", "택배지역상품"],
+        orderTypes: ["신상품순", "인기상품", "낮은 가격순", "높은 가격순"]
+      )
     }
   }
   
@@ -94,7 +98,7 @@ extension SearchViewController: SearchViewDataSource {
       $0.delegate = self
       $0.configure(
         productName: product.name,
-        productImage: ImageResource(downloadURL: product.imageURL),
+        productImage: product.imageURL,
         price: product.price,
         discount: product.discount,
         additionalInfo: product.additionalInfo,

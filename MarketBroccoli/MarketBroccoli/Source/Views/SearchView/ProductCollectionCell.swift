@@ -20,9 +20,7 @@ class ProductCollectionCell: UICollectionViewCell {
   
   private var productIndexPath: IndexPath!
   
-  private let eventMark = EventMark().then {
-    $0.backgroundColor = UIColor.kurlyPurple1.withAlphaComponent(0.5)
-  }
+  private let eventMark = EventMark()
   
   private lazy var cartOrAlarmButton = UIButton(type: .system).then {
     $0.clipsToBounds = true
@@ -42,7 +40,7 @@ class ProductCollectionCell: UICollectionViewCell {
   
   private let productImageView = UIImageView().then {
     $0.contentMode = .scaleAspectFit
-    $0.backgroundColor = .brown
+    $0.backgroundColor = .kurlyGray3
   }
   
   private let productInfoView = UIView().then {
@@ -201,7 +199,7 @@ extension ProductCollectionCell {
 
 extension ProductCollectionCell {
   func configure(
-    productName: String, productImage: ImageResource,
+    productName: String, productImage: String,
     price: Int, discount: Double,
     additionalInfo: [String], isSoldOut: Bool,
     productIndexPath: IndexPath
@@ -271,7 +269,7 @@ extension ProductCollectionCell {
     let currentPrice = moneyFormatter(won: price, hasUnit: true)
     
     productNameLabel.text = productName
-    productImageView.kf.setImage(with: productImage)
+    productImageView.setImage(urlString: productImage)
     currentPriceLabel.text = currentPrice
     self.productIndexPath = productIndexPath
   }

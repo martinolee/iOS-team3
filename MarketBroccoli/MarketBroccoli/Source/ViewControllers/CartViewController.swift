@@ -12,59 +12,12 @@ import UIKit
 
 class CartViewController: UIViewController {
   // MARK: - Properties
-  class Product {
-    let name: String
-    let imageURL: URL
-    let originalPrice: Int?
-    let currentPrice: Int
-    
-    init(name: String, imageURL: URL, originalPrice: Int?, currentPrice: Int) {
-      self.name = name
-      self.imageURL = imageURL
-      self.originalPrice = originalPrice
-      self.currentPrice = currentPrice
+  
+  private var cart: Cart? {
+    didSet {
+      cartView.reloadCartTableViewData()
     }
   }
-  
-  class WishProduct {
-    let product: Product
-    var quantity: Int
-    var isChecked: Bool
-    
-    init(product: Product, quantity: Int, isChecked: Bool) {
-      self.product = product
-      self.quantity = quantity
-      self.isChecked = isChecked
-    }
-  }
-  
-  private var cartDummy: [[WishProduct]] = [
-    [WishProduct(
-      product: .init(name: "[선물세트][안국건강] 안심도 종합건강 4구세트",
-                     imageURL: URL(string: "https://img-cf.kurly.com/shop/data/goods/1579595888120y0.jpg")!,
-                     originalPrice: 190000, currentPrice: 95000),
-      quantity: 3, isChecked: true)],
-    [WishProduct(
-      product: .init(name: "[베르나르도] 에퀴메 한식 1인 세트",
-                     imageURL: URL(string: "https://img-cf.kurly.com/shop/data/goods/1584327333312y0.jpg")!,
-                     originalPrice: nil, currentPrice: 390000),
-      quantity: 2, isChecked: true)],
-    [WishProduct(
-      product: .init(name: "[JBL] PULSE4_블랙",
-                     imageURL: URL(string: "https://img-cf.kurly.com/shop/data/goods/1584688100156y0.jpg")!,
-                     originalPrice: nil, currentPrice: 269000),
-      quantity: 1, isChecked: true)],
-    [WishProduct(
-      product: .init(name: "[김구원선생] 무농약 콩나물 200g",
-                     imageURL: URL(string: "https://img-cf.kurly.com/shop/data/goods/15675741261y0.jpg")!,
-                     originalPrice: nil, currentPrice: 1300),
-      quantity: 7, isChecked: true)],
-    [WishProduct(
-      product: .init(name: "[제주창해수산] 제주 옥돔 250~290g(냉동)",
-                     imageURL: URL(string: "https://img-cf.kurly.com/shop/data/goods/1510708692930y0.jpg")!,
-                     originalPrice: 19800, currentPrice: 17820),
-      quantity: 5, isChecked: false)]
-    ]
   
   private lazy var cartView = CartView().then {
     $0.dataSource = self
@@ -82,8 +35,17 @@ class CartViewController: UIViewController {
     
     setupAttribute()
     setupLeftBarButtonItem()
-    print("isCheckedAll:", isAllShoppingItemsChecked())
     setCorrectSelectAllProductCheckBoxStatus()
+    
+    fetchCart("http://15.164.49.32/kurly/cart/") { [weak self] response in
+      switch response {
+      case .success(let data):
+        guard let backendCart = try? JSONDecoder().decode(BackendCart.self, from: data) else { return }
+        self?.cart = convertToCart(from: backendCart)
+      case .failure(let error):
+        print(error.localizedDescription)
+      }
+    }
   }
   
   // MARK: - Setup Attribute
@@ -118,23 +80,32 @@ class CartViewController: UIViewController {
 
 extension CartViewController: CartViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
-    cartDummy.count
+    guard let cart = cart, !cart.isEmpty else { return 1 }
+    
+    return cart.count
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    cartDummy[section].count
+    guard let cart = cart, !cart.isEmpty else { return 1 }
+    
+    return cart[section].wishProducts.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let wishProduct = cartDummy[indexPath.section][indexPath.row]
-    let product = cartDummy[indexPath.section][indexPath.row].product
-    let image = ImageResource(downloadURL: product.imageURL)
+    guard let cart = cart, !cart.isEmpty else { return tableView.dequeue(EmptyCartTableViewCell.self) }
+    
+    let wishProduct = cart[indexPath.section].wishProducts[indexPath.row]
     let cell = tableView.dequeue(CartProductTableViewCell.self).then {
       $0.deleagte = self
+      
       $0.configure(
-        name: product.name, productImage: image, originalPrice: product.originalPrice,
-        currentPrice: product.currentPrice, quantity: wishProduct.quantity,
-        isChecked: wishProduct.isChecked, shoppingItemIndexPath: indexPath
+        name: wishProduct.product.name,
+        imageURL: wishProduct.product.imageURL,
+        price: wishProduct.product.price,
+        discount: cart[indexPath.section].discountRate,
+        quantity: wishProduct.quantity,
+        isChecked: wishProduct.isChecked,
+        shoppingItemIndexPath: indexPath
       )
     }
     
@@ -146,16 +117,24 @@ extension CartViewController: CartViewDataSource {
 
 extension CartViewController: CartProductTableViewCellDelegate {  
   func checkBoxTouched(_ checkBox: CheckBox, _ isChecked: Bool, _ shoppingItemIndexPath: IndexPath) {
-    cartDummy[shoppingItemIndexPath.section][shoppingItemIndexPath.row].isChecked = isChecked
+    guard var cart = cart else { return }
+    
+    cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].isChecked = isChecked
+
+    self.cart = cart
     setCorrectSelectAllProductCheckBoxStatus()
   }
   
   func productRemoveButtonTouched(_ button: UIButton, _ shoppingItemIndexPath: IndexPath) {
     let removeShoppingItemAlert = UIAlertController(title: nil, message: "삭제하시겠습니까?", preferredStyle: .alert).then {
       $0.addAction(UIAlertAction(title: "취소", style: .cancel))
-      $0.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { _ in
-        self.cartDummy[shoppingItemIndexPath.section].remove(at: shoppingItemIndexPath.row)
-        self.cartView.reloadCartTableViewData()
+      $0.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { [weak self] _ in
+        guard let self = self, var cart = self.cart else { return }
+        cart[shoppingItemIndexPath.section].wishProducts.remove(at: shoppingItemIndexPath.row)
+        
+        self.removeProduct(id: cart[shoppingItemIndexPath.section].headID)
+        
+        self.cart = cart
       }))
     }
     
@@ -163,34 +142,69 @@ extension CartViewController: CartProductTableViewCellDelegate {
   }
   
   func productQuantityStepperValueChanged(_ value: Int, _ shoppingItemIndexPath: IndexPath) {
-    cartDummy[shoppingItemIndexPath.section][shoppingItemIndexPath.row].quantity = value
-    cartView.reloadCartTableViewData()
+    guard var cart = cart else { return }
+    let product: UpdatedProduct
+    cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].quantity = value
+    
+    if cart[shoppingItemIndexPath.section].name != nil {
+      product = UpdatedProduct(
+        product: cart[shoppingItemIndexPath.section].id,
+        option: cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].product.id,
+        quantity: cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].quantity
+      )
+    } else {
+      product = UpdatedProduct(
+        product: cart[shoppingItemIndexPath.section].headID,
+        option: nil,
+        quantity: cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].quantity
+      )
+    }
+    
+    patchProductQuntity(
+      id: cart[shoppingItemIndexPath.section].headID,
+      product: product
+    ) { response in
+      switch response {
+      case .success(let data):
+        guard let product = try? JSONDecoder().decode(BackendCartElement.self, from: data) else { return }
+        
+        print(product)
+      case .failure(let error):
+        print(error.localizedDescription)
+      }
+    }
+    
+    self.cart = cart
   }
 }
 
 extension CartViewController: CartViewDelegate {
   func selectAllProductCheckBoxTouched(_ checkBox: CheckBox, _ isChecked: Bool) {
-    for category in cartDummy {
-      for product in category {
-        product.isChecked = isChecked
-        cartView.reloadCartTableViewData()
+    guard var cart = cart else { return }
+    
+    for cartIndex in cart.indices {
+      for productIndex in cart[cartIndex].wishProducts.indices {
+        cart[cartIndex].wishProducts[productIndex].isChecked = isChecked
       }
     }
+    
+    self.cart = cart
   }
   
   func removeSelectedProductButton(_ button: UIButton) {
     let message = "선택된 상품을 삭제하시겠습니까?"
     let removeShoppingItemAlert = UIAlertController(title: nil, message: message, preferredStyle: .alert).then {
       $0.addAction(UIAlertAction(title: "취소", style: .cancel))
-      $0.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { _ in
-        for categoryIndex in self.cartDummy.indices.reversed() {
-          for productIndex in self.cartDummy[categoryIndex].indices.reversed()
-            where self.cartDummy[categoryIndex][productIndex].isChecked {
-              self.cartDummy[categoryIndex].remove(at: productIndex)
-              if self.cartDummy[categoryIndex].isEmpty { self.cartDummy.remove(at: categoryIndex) }
-              self.cartView.reloadCartTableViewData()
+      $0.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { [weak self] _ in
+        guard let self = self, var cart = self.cart else { return }
+        for index in cart.indices {
+          for product in cart[index].wishProducts where product.isChecked {
+            self.removeProduct(id: cart[index].headID)
           }
+          
+          cart[index].wishProducts = cart[index].wishProducts.filter { !$0.isChecked }
         }
+        self.cart = cart.filter { !$0.wishProducts.isEmpty }
       }))
     }
     
@@ -201,18 +215,12 @@ extension CartViewController: CartViewDelegate {
 // MARK: - Function
 
 extension CartViewController {
-  private func isAllShoppingItemsChecked() -> Bool {
-    var isChecked: Bool?
+  private var isAllShoppingItemsChecked: Bool {
+    guard let cart = cart else { return true }
     
-    for category in cartDummy {
-      for product in category {
-        if isChecked != nil {
-          if isChecked != product.isChecked {
-            return false
-          }
-        } else {
-          isChecked = product.isChecked
-        }
+    for cart in cart {
+      for product in cart.wishProducts where !product.isChecked {
+        return product.isChecked
       }
     }
     
@@ -220,8 +228,51 @@ extension CartViewController {
   }
   
   private func setCorrectSelectAllProductCheckBoxStatus() {
-    isAllShoppingItemsChecked() ?
-      cartView.setSelectAllProductCheckBoxStatus(true) :
-      cartView.setSelectAllProductCheckBoxStatus(false)
+    isAllShoppingItemsChecked
+      ? cartView.setSelectAllProductCheckBoxStatus(true)
+      : cartView.setSelectAllProductCheckBoxStatus(false)
+  }
+}
+
+extension CartViewController {
+  private func fetchCart(_ url: String, completionHandler: @escaping (Result<Data, Error>) -> Void) {
+    AF.request(url)
+      .validate()
+      .responseData { response in
+        switch response.result {
+        case .success(let data):
+          completionHandler(.success(data))
+        case .failure(let error):
+          completionHandler(.failure(error))
+        }
+    }
+  }
+  
+  private func patchProductQuntity(id: Int, product: UpdatedProduct,
+                                   completionHandler: @escaping (Result<Data, Error>) -> Void) {
+    AF.request(
+      "http://15.164.49.32/kurly/cart/\(id)/",
+      method: .patch,
+      parameters: product,
+      encoder: JSONParameterEncoder.default,
+      headers: ["Content-Type": "application/json"]
+      )
+      .validate()
+      .responseData { response in
+        switch response.result {
+        case .success(let data):
+          completionHandler(.success(data))
+        case .failure(let error):
+          completionHandler(.failure(error))
+        }
+    }
+  }
+  
+  private func removeProduct(id: Int) {
+    print("remove http://15.164.49.32/kurly/cart/\(id)/")
+//    AF.request(
+//      "http://15.164.49.32/kurly/cart/\(id)/",
+//      method: .delete
+//    )
   }
 }
