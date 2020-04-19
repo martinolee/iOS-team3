@@ -12,7 +12,7 @@ import SnapKit
 class CategoryDetailViewController: UIViewController {
   // MARK: - Properties
   private var customMenuBar = CategoryDetailHeaderView()
-  let customMenuBarheigt: CGFloat = 52
+  let customMenuBarheigt: CGFloat = 50
   private lazy var collectionViewFlowLayout = UICollectionViewFlowLayout()
   private lazy var collectionView = UICollectionView(
     frame: .init(
@@ -51,6 +51,7 @@ class CategoryDetailViewController: UIViewController {
     view.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9529411765, alpha: 1)
     collectionView.dataSource = self
 //    collectionView.delegate = self
+    customMenuBar.title(name: "채소야 나와라 이렇게 길게 텍스트가 길어진다면 어떻게 나올지 너무 궁금한데 스크롤 뷰가 되는지 안되는지 말이야")
     [collectionView, customMenuBar] .forEach {
       view.addSubview($0)
     }
@@ -58,12 +59,14 @@ class CategoryDetailViewController: UIViewController {
   private func setupLayout() {
     let guide = view.safeAreaLayoutGuide
     customMenuBar.snp.makeConstraints {
-      $0.top.leading.trailing.equalToSuperview()
+      $0.top.leading.equalToSuperview()
+      $0.width.equalTo(800)
       $0.height.equalTo(customMenuBarheigt)
     }
     collectionView.snp.makeConstraints {
       $0.top.equalTo(guide.snp.top).offset(customMenuBarheigt)
-      $0.leading.trailing.bottom.equalToSuperview()
+      $0.leading.trailing.equalToSuperview()
+      $0.bottom.equalTo(guide.snp.bottom)
     }
   }
   private func setupNavigtion() {

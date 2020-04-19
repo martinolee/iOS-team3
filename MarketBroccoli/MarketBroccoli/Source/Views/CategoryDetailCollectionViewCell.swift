@@ -32,7 +32,7 @@ class CategoryDetailCollectionViewCell: UICollectionViewCell {
   }
   // MARK: - Setup Attribute
   private func setupUI() {
-    collectionView.backgroundColor = #colorLiteral(red: 0.9411764706, green: 0.9411764706, blue: 0.9411764706, alpha: 1)
+    collectionView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.8470588235)
     collectionView.dataSource = self
     //    collectionView.delegate = self
     [collectionView] .forEach {
@@ -48,7 +48,7 @@ class CategoryDetailCollectionViewCell: UICollectionViewCell {
   private func setupFlowLayout() {
     let minimumLineSpacing: CGFloat = 20.0
     let minimumInteritemSpacing: CGFloat = 14.0
-    let insets = UIEdgeInsets(top: 120, left: 14, bottom: 80, right: 14)
+    let insets = UIEdgeInsets(top: 112, left: 14, bottom: 80, right: 14)
     let itemsForLine: CGFloat = 2
     let itemSizeWidth = (
       (
@@ -56,7 +56,7 @@ class CategoryDetailCollectionViewCell: UICollectionViewCell {
           insets.left + insets.right + minimumInteritemSpacing * (itemsForLine - 1))
         ) / itemsForLine
       ).rounded(.down)
-    let itemSize = CGSize(width: itemSizeWidth, height: itemSizeWidth + 100)
+    let itemSize = CGSize(width: itemSizeWidth, height: itemSizeWidth + 146)
     collectionViewFlowLayout.sectionInset = insets
     collectionViewFlowLayout.minimumLineSpacing = minimumLineSpacing
     collectionViewFlowLayout.minimumInteritemSpacing = minimumInteritemSpacing
