@@ -87,6 +87,9 @@ extension DetailViewController: UITableViewDataSource {
     case 1:
       let cell = tableView.dequeue(DetailDescriptionBottomTableCell.self)
       cell.configure(detail: model)
+      tableView.beginUpdates()
+      tableView.reloadRows(at: [indexPath], with: .none)
+      tableView.endUpdates()
       return cell
     default:
       fatalError()

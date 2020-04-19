@@ -37,6 +37,11 @@ class DetailDescriptionBottomTableCell: UITableViewCell {
     $0.font = .systemFont(ofSize: 16, weight: .thin)
     $0.textColor = .darkGray
   }
+  
+  private let checkPointImageView = UIImageView().then {
+    $0.contentMode = . scaleAspectFit
+  }
+  
   private lazy var detailImageView = UIImageView().then {
     let imageTap = UITapGestureRecognizer(target: self, action: #selector(imageTouched(_:)))
     
@@ -64,24 +69,34 @@ class DetailDescriptionBottomTableCell: UITableViewCell {
 // MARK: - ACTIONS
 extension DetailDescriptionBottomTableCell {
   func configure(detail model: ProductModel) {
+    print(#function)
     guard let thumbImage = model.images.first(where: { $0.name == "main" }),
       let detailImage = model.images.first(where: { $0.name == "detail" })
       else { return }
+//    if let checkImage = model.images.first(where: { $0.name == "check" } ) {
+//      checkPointImageView.setImage(urlString: checkImage.image)
+//      print(checkImage)
+//      if let size = checkPointImageView.image?.size {
+//        let ratio = UIScreen.main.bounds.width / size.width
+//        let height = size.height * ratio
+//        print(size)
+//        checkPointImageView.snp.updateConstraints {
+//          $0.height.equalTo(height)
+//        }
+//      }
+//    }
     summaryLabel.text = model.summary
     nameLabel.text = model.name
     descriptionLabel.text = model.productModelDescription
     descriptionImageView.setImage(urlString: thumbImage.image)
     detailImageView.setImage(urlString: detailImage.image)
     
-//    print("Image Size :", self.detailImageView.image?.size)
 //    if let size = self.detailImageView.image?.size {
 //      let ratio = UIScreen.main.bounds.width / size.width
 //      let height = size.height * ratio
-      detailImageView.snp.makeConstraints {
-        $0.height.equalTo(800)
-      }
-//    } else {
-//      print("else")
+//      detailImageView.snp.remakeConstraints {
+//        $0.height.equalTo(height)
+//      }
 //    }
   }
   
@@ -99,7 +114,7 @@ extension DetailDescriptionBottomTableCell {
     self.contentView.addSubviews(
       [
         deliveryNotice, descriptionImageView, summaryLabel, nameLabel,
-        seperator, descriptionLabel, detailImageView, whyKurly
+        seperator, descriptionLabel, checkPointImageView, detailImageView, whyKurly
     ])
     deliveryNotice.snp.makeConstraints {
       $0.top.leading.trailing.equalToSuperview().inset(20)
@@ -131,10 +146,16 @@ extension DetailDescriptionBottomTableCell {
       $0.leading.trailing.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
     }
     
-    detailImageView.snp.makeConstraints {
+    checkPointImageView.snp.makeConstraints {
       $0.top.equalTo(descriptionLabel.snp.bottom)
+      $0.leading.trailing.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
+      $0.height.equalTo(0)
+    }
+    
+    detailImageView.snp.makeConstraints {
+      $0.top.equalTo(checkPointImageView.snp.bottom)
       $0.leading.trailing.equalToSuperview()
-//      $0.height.equalTo(0)
+      $0.height.equalTo(800)
     }
     
     whyKurly.snp.makeConstraints {
