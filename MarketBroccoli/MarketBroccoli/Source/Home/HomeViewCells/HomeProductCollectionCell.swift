@@ -37,6 +37,8 @@ class HomeProductCollectionCell: UICollectionViewCell {
     $0.distribution = .fillProportionally
   }
  
+  var productId: Int?
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
     setupUI()
@@ -49,6 +51,7 @@ class HomeProductCollectionCell: UICollectionViewCell {
 
 extension HomeProductCollectionCell {
   func configure(item: MainItem, width: CGFloat) {
+    productId = item.id
     imageView.setImage(urlString: item.thumbImage)
     titleLabel.preferredMaxLayoutWidth = width
     titleLabel.text = item.name

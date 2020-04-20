@@ -61,6 +61,9 @@ class CartProductTableViewCell: UITableViewCell {
   }
   
   private lazy var productQuantityStepper = ProductQuantityStepper(minimum: 1).then {
+    $0.layer.masksToBounds = true
+    $0.layer.cornerRadius = 3.0
+    
     $0.delegate = self
   }
   
@@ -91,10 +94,6 @@ class CartProductTableViewCell: UITableViewCell {
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
-  }
-  
-  override func layoutSubviews() {
-    makeRoundProductQunantityStepper()
   }
   
   // MARK: - Setup UI
@@ -144,7 +143,7 @@ class CartProductTableViewCell: UITableViewCell {
       $0.leading.equalTo(nameLabel)
       $0.width.equalTo(50)
       $0.height.equalTo(productImageView.snp.width).multipliedBy(1.2)
-    }; productImageView.backgroundColor = .gray
+    }
     
     originalPriceLabel.snp.makeConstraints {
       $0.leading.trailing.equalTo(currentPriceLabel)
@@ -188,11 +187,6 @@ class CartProductTableViewCell: UITableViewCell {
   
   private func setupSelectedBackgroundView() {
     selectedBackgroundView = UIView()
-  }
-  
-  private func makeRoundProductQunantityStepper() {
-    productQuantityStepper.layer.masksToBounds = true
-    productQuantityStepper.layer.cornerRadius = 3.0
   }
 }
 
