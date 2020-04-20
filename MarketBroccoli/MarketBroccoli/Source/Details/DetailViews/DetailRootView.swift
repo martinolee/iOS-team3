@@ -10,13 +10,7 @@ import UIKit
 
 class DetailRootView: UIView {
   private let selectedCategory = CategorySelected()
-  private let scrollView = UIScrollView().then {
-    $0.isPagingEnabled = true
-    $0.showsHorizontalScrollIndicator = false
-    $0.bounces = false
-  }
   private let stackView = CategoryStackView(categories: Categories.DetailCategory, distribution: .fillProportionally)
-  
   private let purchaseBtn = UIButton().then {
     $0.setTitle("구매하기", for: .normal)
     $0.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
@@ -25,10 +19,20 @@ class DetailRootView: UIView {
     $0.backgroundColor = .kurlyMainPurple
     $0.contentVerticalAlignment = .top
   }
+  let scrollView = UIScrollView().then {
+    $0.isPagingEnabled = true
+    $0.showsHorizontalScrollIndicator = false
+    $0.bounces = false
+  }
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
     setupAttr()
     setupUI()
+  }
+  
+  override func layoutSubviews() {
+    super.layoutSubviews()
   }
   
   required init?(coder: NSCoder) {
