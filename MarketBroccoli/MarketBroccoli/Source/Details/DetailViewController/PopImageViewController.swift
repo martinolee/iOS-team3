@@ -24,7 +24,7 @@ class PopImageViewController: UIViewController {
     $0.delegate = self
     $0.bounces = false
     $0.minimumZoomScale = 1.0
-    $0.maximumZoomScale = 2.0
+    $0.maximumZoomScale = 3.0
     $0.alwaysBounceVertical = false
     $0.alwaysBounceHorizontal = false
     $0.showsVerticalScrollIndicator = false

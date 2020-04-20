@@ -104,6 +104,7 @@ extension HomeOfferTableCell {
     offerCollectionView.register(cell: HomeReuseShowAllCollectionCell.self)
     offerCollectionView.dataSource = self
     offerCollectionView.delegate = self
+    self.backgroundColor = .kurlyGray3
   }
   
   private func setupUI() {
