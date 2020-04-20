@@ -193,5 +193,8 @@ extension SearchViewController: SearchViewDelegate {
 extension SearchViewController: ProductCollectionCellDelegate {
   func cartOrAlarmButtonTouched(_ button: UIButton, _ productIndexPath: IndexPath) {
     print("cartOrAlarmButtonTouched(_ button: \(button), _ productIndexPath: \(productIndexPath)")
+    
+    let addProductCartViewController = UINavigationController(rootViewController: AddProductCartViewController())
+    present(addProductCartViewController, animated: true)
   }
 }
