@@ -74,7 +74,7 @@ extension WhyKurlyView {
       title: WhyKurly.titles,
       description: WhyKurly.descriptions
     )
-
+    
     self.addSubviews([whyKurly, seperator])
     whyKurly.snp.makeConstraints {
       $0.top.leading.equalToSuperview()
@@ -90,14 +90,14 @@ extension WhyKurlyView {
     for (idx, innerView) in innerViews.enumerated() {
       self.addSubview(innerView)
       innerView.snp.makeConstraints {
-      if idx == 0 {
+        if idx == 0 {
           $0.top.equalTo(whyKurly.snp.bottom).offset(20)
-      } else if idx == innerViews.count {
-            $0.top.equalTo(innerViews[idx - 1].snp.bottom).offset(20)
-            $0.bottom.equalToSuperview()
-      } else {
+        } else if idx == innerViews.count {
           $0.top.equalTo(innerViews[idx - 1].snp.bottom).offset(20)
-      }
+          $0.bottom.equalToSuperview()
+        } else {
+          $0.top.equalTo(innerViews[idx - 1].snp.bottom).offset(20)
+        }
         $0.leading.trailing.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 20))
       }
     }
