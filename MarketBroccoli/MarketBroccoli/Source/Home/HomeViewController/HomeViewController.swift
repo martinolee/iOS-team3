@@ -25,6 +25,8 @@ class HomeViewController: UIViewController {
     super.viewWillAppear(animated)
     ObserverManager.shared.registerObserver(
       target: self, selector: #selector(receiveNotification(_:)), observerName: .productTouched, object: nil)
+    ObserverManager.shared.registerObserver(
+      target: self, selector: #selector(receiveNotificationShowAll(_:)), observerName: .showAllBtnTouched, object: nil)
   }
   
   override func viewDidDisappear(_ animated: Bool) {
@@ -33,16 +35,35 @@ class HomeViewController: UIViewController {
       target: self,
       observerName: .productTouched,
       object: nil)
+    ObserverManager.shared.resignObserver(
+    target: self,
+    observerName: .showAllBtnTouched,
+    object: nil)
   }
 }
 
 extension HomeViewController {
   @objc private func receiveNotification(_ notification: Notification) {
+    guard let userInfo = notification.userInfo as? [String: Int],
+      let ID = userInfo["productId"] else { return }
+    
     let detailVC = DetailViewController()
+    detailVC.configure(productId: ID)
     let barBtnItem = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
     
     detailVC.hidesBottomBarWhenPushed = true
     navigationItem.backBarButtonItem = barBtnItem
     navigationController?.pushViewController(detailVC, animated: true)
+  }
+  
+  @objc private func receiveNotificationShowAll(_ notification: Notification) {
+    guard let userInfo = notification.userInfo as? [String: Any],
+    let requestKey = userInfo["requestKey"] as? RequestHome
+    else { return }
+    let showAllVC = ShowAllProductViewController()
+    
+    showAllVC.hidesBottomBarWhenPushed = true
+    showAllVC.configure(requestKey: requestKey)
+    navigationController?.pushViewController(showAllVC, animated: true)
   }
 }

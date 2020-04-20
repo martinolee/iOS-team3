@@ -15,6 +15,7 @@ protocol MDCategoryTouchProtocol: class {
 class HomeMDTableCell: UITableViewCell {
   private let cellTitleLabel = UILabel().then {
     $0.text = "MD의 추천"
+    $0.font = .boldSystemFont(ofSize: 20)
   }
   private let seperatorTop = Seperator()
   private let selectedCategory = CategorySelected()
@@ -36,8 +37,14 @@ class HomeMDTableCell: UITableViewCell {
     $0.backgroundColor = .kurlyGray3
     $0.addTarget(self, action: #selector(categoryShowBtnTouched(_:)), for: .touchUpInside)
   }
+  
   private let categoryArray = Categories.HomeMDCategory
   private var itemWidth: CGFloat = 0
+  private var collectionViewItems: [MainItem]? {
+    didSet {
+      MDProductCollectionView.reloadData()
+    }
+  }
   
   enum UI {
     static let inset: CGFloat = 10
@@ -88,7 +95,7 @@ extension HomeMDTableCell: UICollectionViewDelegateFlowLayout {
     case MDProductCollectionView:
       return CGSize(
         width: itemWidth,
-        height: 200
+        height: 240
       )
     default:
       fatalError("CollectionView Not Found")
@@ -117,25 +124,28 @@ extension HomeMDTableCell: UIScrollViewDelegate {
   }
 }
 
+extension HomeMDTableCell: UICollectionViewDelegate {
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    guard let item = collectionView.cellForItem(at: indexPath) as? HomeProductCollectionCell,
+      let ID = item.productId else { return }
+    ObserverManager.shared.post(
+      observerName: .productTouched,
+      object: nil,
+      userInfo: ["productId": ID])
+  }
+}
+
 // MARK: - DataSource
 extension HomeMDTableCell: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    switch collectionView {
-    case MDProductCollectionView:
-      return 6 * categoryArray.count
-    default:
-      fatalError("CollectionView Not Found")
-    }
+    collectionViewItems?.count ?? 0
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    switch collectionView {
-    case MDProductCollectionView:
-      let cell = collectionView.dequeue(HomeProductCollectionCell.self, indexPath: indexPath)
-      return cell
-    default:
-      fatalError("CollectionView Not Found")
-    }
+    guard let items = collectionViewItems else { return UICollectionViewCell() }
+    let cell = collectionView.dequeue(HomeProductCollectionCell.self, indexPath: indexPath)
+    cell.configure(item: items[indexPath.item], width: itemWidth)
+    return cell
   }
 }
 
@@ -190,7 +200,7 @@ extension HomeMDTableCell {
     MDProductCollectionView.snp.makeConstraints {
       $0.top.equalTo(MDCategoryScrollView.snp.bottom).offset(20)
       $0.leading.trailing.equalToSuperview()
-      $0.height.equalTo(410)
+      $0.height.equalTo(500)
     }
     
     categoryShowBtn.snp.makeConstraints {
@@ -205,6 +215,7 @@ extension HomeMDTableCell {
 // MARK: - ACTIONS
 extension HomeMDTableCell {
   private func categoryMoved(_ currentPage: Int, direction: Bool) {
+    guard categoryArray.count >= currentPage else { return }
     var MDTextWidth: CGFloat = 0
     let label = UILabel()
     for idx in 0..<currentPage {
@@ -251,6 +262,10 @@ extension HomeMDTableCell {
   
   @objc private func categoryShowBtnTouched(_ sender: UIButton) {
     print(sender.titleLabel?.text)
+  }
+  
+  func configure(items: [MainItem]? = nil) {
+    collectionViewItems = items
   }
 }
 

@@ -9,17 +9,22 @@
 import UIKit
 
 class HomeReuseShowAllCollectionCell: UICollectionViewCell {
-  private lazy var moreBtn = UIButton().then {
-    $0.setTitle(">", for: .normal)
+  private lazy var moreBtn = UILabel().then {
+    $0.text = ">"
+    $0.textColor = .kurlyMainPurple
+    $0.textAlignment = .center
     $0.layer.borderColor = UIColor.kurlyGray2.cgColor
     $0.layer.borderWidth = 1
-    $0.setTitleColor(.kurlyMainPurple, for: .normal)
-    $0.addTarget(self, action: #selector(moreBtnTouched(_:)), for: .touchUpInside)
+    $0.layer.masksToBounds = true
   }
   
   private let btnLabel = UILabel().then {
     $0.text = "전체 보기"
     $0.textAlignment = .center
+  }
+  
+  enum UI {
+    static let height: CGFloat = 50
   }
   
   override init(frame: CGRect) {
@@ -29,18 +34,11 @@ class HomeReuseShowAllCollectionCell: UICollectionViewCell {
   
   override func layoutSubviews() {
     super.layoutSubviews()
-    moreBtn.layer.cornerRadius = moreBtn.bounds.size.width / 2
+    moreBtn.layer.cornerRadius = UI.height / 2
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
-  }
-}
-
-// MARK: - ACTIONS
-extension HomeReuseShowAllCollectionCell {
-  @objc private func moreBtnTouched(_ sender: UIButton) {
-    print("moreBtn Click")
   }
 }
 
@@ -51,7 +49,7 @@ extension HomeReuseShowAllCollectionCell {
     moreBtn.snp.makeConstraints {
       $0.bottom.equalTo(self.contentView.snp.centerY)
       $0.centerX.equalTo(self.contentView.snp.centerX)
-      $0.width.height.equalTo(50)
+      $0.width.height.equalTo(UI.height)
     }
     btnLabel.snp.makeConstraints {
       $0.top.equalTo(self.contentView.snp.centerY).offset(4)

@@ -4,16 +4,15 @@
 //
 //  Created by macbook on 2020/03/20.
 //  Copyright © 2020 Team3. All rights reserved.
-//
 
 import UIKit
 
-protocol LogOutTableViewCellDelegate: class {
+protocol SettingsTableViewCellDelegate: class {
   func signInBonusButtonTouched(_ button: UIButton)
   func logInButtonDidTouched(_ button: UIButton)
 }
 
-class LogOutTableViewCell: UITableViewCell {
+class SettingsTableViewCell: UITableViewCell {
   private let signInLabel = UILabel().then {
     $0.text = "회원 가입하고 \n다양한혜택을 받아보세요"
     $0.numberOfLines = 0
@@ -29,13 +28,13 @@ class LogOutTableViewCell: UITableViewCell {
     $0.setTitle("로그인/회원가입", for: .normal)
     $0.setTitleColor(.white, for: .normal)
     $0.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .bold)
-    $0.backgroundColor = #colorLiteral(red: 0.3176470588, green: 0.1529411765, blue: 0.4470588235, alpha: 1)
+    $0.backgroundColor = .kurlyMainPurple
     $0.layer.cornerRadius = 4
     
     $0.addTarget(self, action: #selector(whenLogInButtonDidTouchUpInside(_:)), for: .touchUpInside)
   }
   
-  weak var delegate: LogOutTableViewCellDelegate?
+  weak var delegate: SettingsTableViewCellDelegate?
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -48,7 +47,7 @@ class LogOutTableViewCell: UITableViewCell {
 }
 
 // MARK: - ACTIONS
-extension LogOutTableViewCell {
+extension SettingsTableViewCell {
   @objc private func whenSignInBounsButtonDidTouchUpInside(_ button: UIButton) {
     delegate?.signInBonusButtonTouched(button)
   }
@@ -59,7 +58,7 @@ extension LogOutTableViewCell {
 }
 
 // MARK: - UI
-extension LogOutTableViewCell {
+extension SettingsTableViewCell {
   private func setupUI() {
     contentView.addSubviews([signInLabel, signInBonusButton, logInButton])
     constraints()

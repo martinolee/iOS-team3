@@ -26,11 +26,11 @@ class CartViewHeader: UIView {
   }
   
   private lazy var selectingStatusLabel = UILabel().then {
-    $0.text = "전체선택 (6/6)"
+    $0.text = "전체선택 (0/0)"
   }
   
   private lazy var removeProductButton = UIButton(type: .system).then {
-    $0.layer.borderColor = UIColor.kurlyGray3.cgColor
+    $0.layer.borderColor = UIColor.kurlyGray1.cgColor
     $0.layer.borderWidth = 1
     $0.titleLabel?.font = .systemFont(ofSize: 15, weight: .light)
     $0.setTitleColor(.black, for: .normal)
@@ -83,7 +83,7 @@ class CartViewHeader: UIView {
     
     selectingStatusLabel.snp.makeConstraints {
       $0.centerY.equalTo(selectAllProductCheckBox)
-      $0.leading.equalTo(selectAllProductCheckBox.snp.trailing).offset(20)
+      $0.leading.equalTo(selectAllProductCheckBox.snp.trailing).offset(16)
     }
     
     removeProductButton.snp.makeConstraints {
@@ -118,5 +118,9 @@ extension CartViewHeader: CheckBoxDelegate {
 extension CartViewHeader {
   func setSelectAllProductCheckBoxStatus(_ checked: Bool) {
     selectAllProductCheckBox.setStatus(checked)
+  }
+  
+  func configure(selectedProductCount: Int, totalProductsCount: Int) {
+    selectingStatusLabel.text = "전체선택 (\(selectedProductCount)/\(totalProductsCount))"
   }
 }

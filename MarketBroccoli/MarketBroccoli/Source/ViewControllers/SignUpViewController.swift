@@ -1,6 +1,5 @@
 //  SignUpViewController.swift
 //  MarketBroccoli
-//
 //  Created by macbook on 2020/03/20.
 //  Copyright © 2020 Team3. All rights reserved.
 
@@ -23,9 +22,6 @@ class SignUpViewController: UIViewController {
     .cellphoneCheck: false,
     .usingLaw: false,
     .personalInfo: false,
-    .notPersonalInfo: false,
-    .sms: false,
-    .emailButton: false,
     .ageLimit: false
   ]
   
@@ -36,6 +32,7 @@ class SignUpViewController: UIViewController {
   }
   private var isAuthorized = true
   private var timer = Timer()
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUI()
@@ -88,23 +85,47 @@ class SignUpViewController: UIViewController {
     signupView.ageCheckButton.setStatus(false)
   }
 }
-
 // MARK: - Action
 extension SignUpViewController: SignupViewDelegate {
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    switch textField {
+    case signupView.idTextField:
+      signupView.secretTextField.becomeFirstResponder()
+    case signupView.secretTextField:
+      signupView.checkSecretNumberTextField.becomeFirstResponder()
+    case signupView.checkSecretNumberTextField:
+      signupView.nameTextField.becomeFirstResponder()
+    case signupView.nameTextField:
+      signupView.emailTextFeild.becomeFirstResponder()
+    case signupView.emailTextFeild:
+      signupView.cellphoneTextField.becomeFirstResponder()
+    case signupView.addressDetailTextField:
+      signupView.addressDetailTextField.resignFirstResponder()
+    case signupView.birthdayYearTextField:
+      signupView.birthdayMonthTextField.becomeFirstResponder()
+    case signupView.birthdayMonthTextField:
+      signupView.birthdayDayTextField.becomeFirstResponder()
+    case signupView.birthdayDayTextField:
+      signupView.birthdayDayTextField.resignFirstResponder()
+    default:
+      break
+    }
+    return true
+  }
   func signupButtonTouched(button: UIButton) {
     if !essentialInfo.values.contains(false) {
       let user = User(
         userName: signupView.idTextField.text ?? "",
         email: signupView.emailTextFeild.text ?? "",
-        name: signupView.nameTextFeild.text ?? "",
+        name: signupView.nameTextField.text ?? "",
         password: signupView.secretTextField.text ?? "",
         address: Address(
           jibunAddress: signupView.addressTextField.text ?? "",
-          roadAddress: signupView.addressTextField.text ?? "",
+          roadAddress: signupView.showAddressLabel.text ?? "",
           zipCode: "123456"),
         mobile: signupView.cellphoneTextField.text ?? ""
       )
-      
+      print(user)
       AF.request(
         "http://15.164.49.32/accounts/",
         method: .post,
@@ -116,15 +137,25 @@ extension SignUpViewController: SignupViewDelegate {
         .responseData { response in
           switch response.result {
           case .success(let data):
-            print("success :", data)
-            self.alert(message: "회원가입을 축하드립니다!\n당신의 일상에 컬리를 더해 보세요")
+            print("회원가입 누르기:\(data)")
+            let alertController = UIAlertController(
+              title: nil,
+              message: "회원가입을 축하드립니다!\n당신의 일상에 컬리를 더해 보세요",
+              preferredStyle: .alert
+            )
+            let alert = UIAlertAction(title: "확인", style: .default) { _ in
+              self.navigationController?.popViewController(animated: true)
+            }
+            alertController.addAction(alert)
+            self.present(alertController, animated: true)
           case .failure(let error):
-//            print(error.responseCode)
             print("error :", error)
           }
       }
+    } else if essentialInfo[.identification] == false && (signupView.idTextField.text ?? "").isEmpty {
+      alert(message: "아이디를 입력해 주세요")
     } else if essentialInfo[.identification] == false {
-      alert(message: "아이디를 입력해주세요")
+      alert(message: "아이디를 확인해 주세요")
     } else if essentialInfo[.password] == false {
       alert(message: "비밀번호를 입력해주세요")
     } else if essentialInfo[.passwordCheck] == false {
@@ -162,6 +193,7 @@ extension SignUpViewController: SignupViewDelegate {
       let jibunAddress = addressData["jibunAddress"]
       else { return signupView.addressWebViewContainer.isHidden = true }
     
+    print(zonecode)
     print(addressData)
     
     signupView.addressWebViewContainer.isHidden = true
@@ -259,6 +291,7 @@ extension SignUpViewController: SignupViewDelegate {
   }
   func addressCloseButton(button: UIButton) {
     signupView.addressWebViewContainer.isHidden = true
+    view.endEditing(true)
   }
   func searchingAddressButtonTouched(_ button: UIButton) {
     signupView.addressWebViewContainer.isHidden = false
@@ -295,8 +328,6 @@ extension SignUpViewController: SignupViewDelegate {
           self.signupView.timerInTextField.isHidden = true
           self.essentialInfo[.cellphoneCheck] = true
           
-          print("success")
-          print(data)
           guard let decodedData = try? JSONDecoder().decode(
             UserMobileCodeResponse.self,
             from: data
@@ -306,7 +337,6 @@ extension SignUpViewController: SignupViewDelegate {
           self.signupView.checkingCodeCompleteLabelOpenHiddenMessage(text: "인증번호를 확인해주세요", textColor: .orange)
           self.essentialInfo[.cellphoneCheck] = false
           print(error.localizedDescription)
-          //print("passed")
         }
     }
   }
@@ -330,8 +360,6 @@ extension SignUpViewController: SignupViewDelegate {
             self.signupView.getCodeButton.backgroundColor = .lightGray
             self.signupView.cellphoneTextField.isEnabled = false
             self.essentialInfo[.cellphone] = true
-            print("success")
-            print(data)
             guard let decodedData = try? JSONDecoder().decode(
               UserMobileResponse.self,
               from: data
@@ -340,7 +368,6 @@ extension SignUpViewController: SignupViewDelegate {
           case .failure(let error):
             self.alert(message: "이미 가입된 번호입니다.")
             print(error.localizedDescription)
-            //print("passed")
           }
       }
     } else {
@@ -436,7 +463,8 @@ extension SignUpViewController: SignupViewDelegate {
     }
   }
   func checkSecretNumberTextFeildEditingChanged(_ textField: UITextField, text: String) {
-    if text == signupView.secretTextField.text ?? "" {
+    print("checkSecretNumberTextFeildEditingChanged")
+    if text == (signupView.secretTextField.text ?? "") {
       signupView.sameSecretNumberLabel.textColor = .green
       essentialInfo[.passwordCheck] = true
     } else {
@@ -512,8 +540,6 @@ extension SignUpViewController: SignupViewDelegate {
             self.signupView.idTextField.isEnabled = false
             self.signupView.checkIDButton.isEnabled = false
             button.backgroundColor = .lightGray
-            print("success")
-            print(data)
             self.alert(message: "사용하실 수 있는 아이디입니다!")
             guard let decodedData = try? JSONDecoder().decode(UserNameResponse.self, from: data) else { return }
             print(decodedData)
@@ -582,6 +608,9 @@ extension SignUpViewController: SignupViewDelegate {
   }
   func idTextFieldDidBeginEditing(_ textField: UITextField) {
     signupView.idTextFieldOpenHiddenMessage()
+  }
+  func toucheBegan() {
+    self.view.endEditing(true)
   }
   func idTextField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {

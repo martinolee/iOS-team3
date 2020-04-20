@@ -16,11 +16,14 @@ class EventMark: UIView {
     $0.textColor = .white
     $0.font = .systemFont(ofSize: 15, weight: .bold)
     $0.textAlignment = .center
+    $0.adjustsFontSizeToFitWidth = true
+    $0.minimumScaleFactor = 0.2
   }
 
   override init(frame: CGRect) {
     super.init(frame: frame)
     setupUI()
+    setAttr()
   }
   
   convenience init(text: String) {
@@ -34,6 +37,9 @@ class EventMark: UIView {
 }
 
 extension EventMark {
+  private func setAttr() {
+    self.backgroundColor = UIColor.kurlyPurple1.withAlphaComponent(0.7)
+  }
   private func setupUI() {
     self.addSubview(textLabel)
     textLabel.snp.makeConstraints {

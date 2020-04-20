@@ -9,21 +9,32 @@
 import UIKit
 
 class HomeOfferTableCell: UITableViewCell {
-  private let cellTitleLabel = UILabel().then {
+  private lazy var cellTitleLabel = UILabel().then {
     $0.font = .boldSystemFont(ofSize: 20)
+    $0.text = "dummyTitle"
+    $0.isUserInteractionEnabled = true
+    let tap = UITapGestureRecognizer(target: self, action: #selector(titleTouched(_:)))
+    $0.addGestureRecognizer(tap)
   }
   
   private let cellSubtitleLabel = UILabel().then {
     $0.textColor = .gray
     $0.font = .systemFont(ofSize: 14)
     $0.isHidden = false
+    $0.text = ""
   }
   
   private let offerCollectionView = HomeProductCollectionView(
     frame: .zero,
     collectionViewLayout: UICollectionViewFlowLayout()
   )
-
+  
+  private var collectionViewItems: HomeItems? {
+    didSet {
+      offerCollectionView.reloadData()
+    }
+  }
+  
   var offset: CGFloat {
     get {
       self.offerCollectionView.contentOffset.x
@@ -32,6 +43,9 @@ class HomeOfferTableCell: UITableViewCell {
       self.offerCollectionView.contentOffset.x = newValue
     }
   }
+  
+  private var itemWidth: CGFloat = 0
+  private var requestKeyName: RequestHome?
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -58,12 +72,23 @@ class HomeOfferTableCell: UITableViewCell {
 
 // MARK: - ACTION Handler
 extension HomeOfferTableCell {
-  func configure(cellTitle title: String, subtitle: String? = nil) {
+  func configure(cellTitle title: String, subtitle: String? = nil, items: [RequestHome: HomeItems]? = nil) {
     cellTitleLabel.text = title
     if let subtitle = subtitle {
       cellSubtitleLabel.text = subtitle
       cellSubtitleLabel.isHidden = false
     }
+    
+    if let key = items?.keys.first, let value = items?.values.first, !value.isEmpty {
+      requestKeyName = key
+      collectionViewItems = value
+    }
+  }
+  @objc private func titleTouched(_ sender: UITapGestureRecognizer) {
+    ObserverManager.shared.post(
+      observerName: .showAllBtnTouched,
+      object: nil,
+      userInfo: ["requestKey": requestKeyName ?? RequestHome.recommendation])
   }
 }
 
@@ -97,7 +122,7 @@ extension HomeOfferTableCell {
     offerCollectionView.snp.makeConstraints {
       $0.top.equalTo(cellSubtitleLabel.snp.bottom)
       $0.leading.bottom.trailing.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0))
-      $0.height.equalTo(200)
+      $0.height.equalTo(300)
     }
   }
 }
@@ -105,12 +130,16 @@ extension HomeOfferTableCell {
 // MARK: - DataSource
 extension HomeOfferTableCell: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    9
+    guard let counts = collectionViewItems?.count else { return 0 }
+    return counts + 1
   }
-  
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    guard let items = collectionViewItems else { return UICollectionViewCell() }
+    
     if indexPath.item <= 7 {
-      return offerCollectionView.dequeue(HomeProductCollectionCell.self, indexPath: indexPath)
+      let cell = offerCollectionView.dequeue(HomeProductCollectionCell.self, indexPath: indexPath)
+      cell.configure(item: items[indexPath.item], width: itemWidth)
+      return cell
     } else {
       let cell = offerCollectionView.dequeue(HomeReuseShowAllCollectionCell.self, indexPath: indexPath)
       return cell
@@ -121,20 +150,29 @@ extension HomeOfferTableCell: UICollectionViewDataSource {
 // MARK: - Delegate
 extension HomeOfferTableCell: UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    ObserverManager.shared.post(
-      observerName: .productTouched,
-      object: nil,
-      userInfo: ["indexPath": indexPath])
+    if let item = collectionView.cellForItem(at: indexPath) as? HomeProductCollectionCell, let ID = item.productId {
+      
+      ObserverManager.shared.post(
+        observerName: .productTouched,
+        object: nil,
+        userInfo: ["productId": ID])
+    } else {
+      ObserverManager.shared.post(
+        observerName: .showAllBtnTouched,
+        object: nil,
+        userInfo: ["requestKey": requestKeyName ?? RequestHome.recommendation])
+    }
+    
   }
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     if indexPath.item == 8 {
-      return CGSize(width: 120, height: 200)
+      return CGSize(width: 120, height: 300)
     } else {
       let margin: CGFloat = 10
       let itemCount: CGFloat = 2.3
-      let contentSize: CGFloat = ((self.frame.width - (margin * 2) - (10 * (itemCount - 1))) / itemCount).rounded(.down)
-      return CGSize(width: contentSize, height: 200)
+      itemWidth = ((self.frame.width - (margin * 2) - (10 * (itemCount - 1))) / itemCount).rounded(.down)
+      return CGSize(width: itemWidth, height: 300)
     }
   }
 }
