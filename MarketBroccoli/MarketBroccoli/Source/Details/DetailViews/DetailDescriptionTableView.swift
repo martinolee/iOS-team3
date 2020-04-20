@@ -22,7 +22,7 @@ class DetailDescriptionTableView: UITableView {
   
   override func layoutSubviews() {
     super.layoutSubviews()
-    guard let VC = self.parentVC else { return }
+    guard let VC = self.viewController else { return }
     parentViewController = VC
   }
   

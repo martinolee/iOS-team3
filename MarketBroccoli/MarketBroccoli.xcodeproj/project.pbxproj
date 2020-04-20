@@ -100,6 +100,7 @@
 		7C8C4A36242B61CD00FA912B /* HomeProductCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8C4A35242B61CD00FA912B /* HomeProductCollectionCell.swift */; };
 		7C94610D2445D6AA0046E756 /* MainViewQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C94610C2445D6AA0046E756 /* MainViewQuery.swift */; };
 		7CBB7349242E2E9F0078B363 /* MDCategoryCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CBB7348242E2E9F0078B363 /* MDCategoryCollectionCell.swift */; };
+		7CC69E1E244D3AFC00BD43C4 /* DownloadImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC69E1D244D3AFC00BD43C4 /* DownloadImage.swift */; };
 		7CCD648B2428735100FC671B /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 7CCD648A2428735100FC671B /* .swiftlint.yml */; };
 		7CCD64942428873000FC671B /* CustomCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCD64932428873000FC671B /* CustomCollectionViewFlowLayout.swift */; };
 		7CCD64962428DABA00FC671B /* HomeBannerCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCD64952428DABA00FC671B /* HomeBannerCollectionCell.swift */; };
@@ -235,6 +236,7 @@
 		7C8C4A35242B61CD00FA912B /* HomeProductCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeProductCollectionCell.swift; sourceTree = "<group>"; };
 		7C94610C2445D6AA0046E756 /* MainViewQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewQuery.swift; sourceTree = "<group>"; };
 		7CBB7348242E2E9F0078B363 /* MDCategoryCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDCategoryCollectionCell.swift; sourceTree = "<group>"; };
+		7CC69E1D244D3AFC00BD43C4 /* DownloadImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadImage.swift; sourceTree = "<group>"; };
 		7CCD648A2428735100FC671B /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		7CCD64932428873000FC671B /* CustomCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		7CCD64952428DABA00FC671B /* HomeBannerCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBannerCollectionCell.swift; sourceTree = "<group>"; };
@@ -526,6 +528,7 @@
 				7C65ECC1242472C60075606A /* Constant.swift */,
 				7C8991FE243715770058BF9E /* MakeCategoryConstraint.swift */,
 				7C49C9E62448652600FE9B04 /* RequestEnum.swift */,
+				7CC69E1D244D3AFC00BD43C4 /* DownloadImage.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -910,6 +913,7 @@
 				7CDD2D87243F0A78008B4890 /* PopImageViewController.swift in Sources */,
 				FAAFEB612424A77900452977 /* SettingsTableViewCell.swift in Sources */,
 				7050F31A2429CEBB00B8E13B /* CategoryViewController.swift in Sources */,
+				7CC69E1E244D3AFC00BD43C4 /* DownloadImage.swift in Sources */,
 				7268B6FC242E173300DE95CB /* UIDeviceExtension.swift in Sources */,
 				72EB58D32431D629001C4CCF /* SearchView.swift in Sources */,
 				FA48FBFF24385A2D00E53EB5 /* AddressWebView.swift in Sources */,
