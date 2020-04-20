@@ -1,14 +1,13 @@
- //
- //  RequestManager.swift
- //  MarketBroccoli
- //
- //  Created by Hongdonghyun on 2020/04/10.
- //  Copyright © 2020 Team3. All rights reserved.
- //
+//
+//  RequestManager.swift
+//  MarketBroccoli
+//
+//  Created by Hongdonghyun on 2020/04/10.
+//  Copyright © 2020 Team3. All rights reserved.
+//
  
  import Foundation
  import Alamofire
- 
  
  class RequestManager {
   static let shared = RequestManager()
@@ -90,8 +89,6 @@
   
   private init() {}
  }
- 
- 
  
  // class SignupRequestManager {
  //  static let shared = SignupRequestManager()

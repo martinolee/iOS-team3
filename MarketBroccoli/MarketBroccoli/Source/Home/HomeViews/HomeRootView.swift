@@ -207,7 +207,8 @@ extension HomeRootView: UICollectionViewDelegateFlowLayout {
 // MARK: - CollectionViewDelegate
 extension HomeRootView: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    guard let item = collectionView.cellForItem(at: indexPath) as? ProductCollectionCell, let ID = item.productId else { return }
+    guard let item = collectionView.cellForItem(at: indexPath) as? ProductCollectionCell,
+      let ID = item.productId else { return }
     ObserverManager.shared.post(
       observerName: .productTouched,
       object: nil,
