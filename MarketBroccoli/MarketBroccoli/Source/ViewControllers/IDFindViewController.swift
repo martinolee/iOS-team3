@@ -17,6 +17,7 @@ class IDFindViewController: UIViewController {
     setNavigation()
     setupUI()
   }
+  
   func setupUI() {
     view.addSubview(IDFView)
     let guide = view.safeAreaLayoutGuide
@@ -26,6 +27,7 @@ class IDFindViewController: UIViewController {
       $0.bottom.equalToSuperview()
     }
   }
+  
   private func setNavigation() {
     self.navigationController?.navigationBar.barTintColor = .white
     self.navigationItem.title = "아이디 찾기"

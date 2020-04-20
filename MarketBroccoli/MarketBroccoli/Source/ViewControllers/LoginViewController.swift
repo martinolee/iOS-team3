@@ -25,6 +25,7 @@ class LoginViewController: UIViewController {
 // MARK: - UI
   private func setupUI() {
     view.addSubview(loginView)
+    
     let guide = view.safeAreaLayoutGuide
     loginView.snp.makeConstraints {
       $0.top.leading.trailing.equalTo(guide)
