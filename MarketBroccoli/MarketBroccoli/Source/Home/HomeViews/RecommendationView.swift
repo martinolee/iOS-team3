@@ -120,6 +120,7 @@ extension RecommendationView {
     self.register(cell: HomeOfferTableCell.self)
     self.register(cell: HomeEventTableCell.self)
     self.register(cell: HomeMDTableCell.self)
+    self.register(cell: EasterEggTableCell.self)
   }
 }
 
@@ -176,8 +177,7 @@ extension RecommendationView: UITableViewDataSource {
       cell.configure(cellTitle: "지금 가장 핫한 상품 >", items: model)
       return cell
     case 7:
-      let cell = tableView.dequeue(HomeOfferTableCell.self)
-      cell.configure(cellTitle: "컬리의 레시피 >", items: nil)
+      let cell = tableView.dequeue(EasterEggTableCell.self)
       return cell
     default:
       return UITableViewCell()
