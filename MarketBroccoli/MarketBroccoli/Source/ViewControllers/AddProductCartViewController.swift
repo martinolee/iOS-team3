@@ -117,6 +117,8 @@ extension AddProductCartViewController: AddProductCartViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeue(SelectingProductCell.self).then { _ in
+//      $0.configure(name: <#T##String#>, price: <#T##Int#>, discount: <#T##Double#>, shoppingItemIndexPath: indexPath)
     guard let dummy = dummy else { return UITableViewCell() }
     
     let product = dummy.wishProducts[indexPath.row]
