@@ -32,7 +32,7 @@ class DetailDescriptionBottomTableCell: UITableViewCell {
   }
   private let seperator = Seperator()
   private let descriptionLabel = UILabel().then {
-    $0.text = "풍부한 음감을 지녔으면서도 집에서 부담 없이 편하게 쓸 수 있는 첫 블루투스 스피커를 고심 중이었다면, 지금 소개하는 하만카돈의 오닉스 스튜디오5가 후회 없는 선택이 될 거예요. 오디오 명가 하만카돈 특유의 단단한 저음과 선명하고 깨끗한 고음을 오롯이 즐길 수 있죠."
+    $0.text = ""
     $0.numberOfLines = 0
     $0.font = .systemFont(ofSize: 16, weight: .thin)
     $0.textColor = .darkGray

@@ -139,9 +139,9 @@ extension CategoryViewController: UITableViewDelegate {
     case categoryData.count + 1:
       print(indexPath.section)
     default:
-      if indexPath.row == 0 {
+      switch indexPath.row {
+      case 0:
         var sections: IndexSet = []
-
         if let lastSection = lastSelection?.section {
           categoryData[lastSection - 1].select = false
           sections.insert(lastSection)
@@ -154,8 +154,12 @@ extension CategoryViewController: UITableViewDelegate {
           sections.insert(indexPath.section)
         }
         tableView.reloadSections(sections, with: .none)
-      } else {
-        // Todo: 다음페이지 넘김
+      case 1:
+        let catogoryDetailVC = CategoryDetailViewController()
+        let naviagationTitle = categoryData[indexPath.section - 1].title
+        catogoryDetailVC.categoryDetailNavigationTitle = naviagationTitle
+        self.navigationController?.pushViewController(catogoryDetailVC, animated: true)
+      default:
         print(indexPath.row)
       }
     }

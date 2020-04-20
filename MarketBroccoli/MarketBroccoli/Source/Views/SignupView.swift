@@ -1,6 +1,5 @@
 //  testUIView.swift
 //  20200112ScrollViewPractice
-//
 //  Created by macbook on 2020/03/23.
 //  Copyright © 2020 Lance. All rights reserved.
 
@@ -45,6 +44,7 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.signupStyle(round: .roundedRect, clearButton: .whileEditing)
     $0.placeholder = "비밀번호를 입력해주세요"
     $0.isSecureTextEntry = true
+    $0.autocapitalizationType = .none
     $0.delegate = self
     $0.addTarget(self, action: #selector(secretTextFeildEditingChanged), for: .editingChanged)
   }
@@ -65,6 +65,7 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.placeholder = "비밀번호를 한번 더 입력해주세요"
     $0.delegate = self
     $0.isSecureTextEntry = true
+    $0.autocapitalizationType = .none
     $0.addTarget(self, action: #selector(checkSecretNumberTextFeildEditingChanged), for: .editingChanged)
     $0.signupStyle(round: .roundedRect, clearButton: .whileEditing)
   }
@@ -285,6 +286,8 @@ class SignupView: UIView, UITextFieldDelegate {
   private let eventNameUnderline = SignupUnderLineView(borderWidth: 0.2, borderColor: UIColor.lightGray.cgColor)
   lazy var scrollView = UIScrollView().then {
     $0.delegate = self
+    let gesture = UITapGestureRecognizer(target: self, action: #selector(toucheBegan))
+    $0.addGestureRecognizer(gesture)
   }
   private let grayView = UIView().then {
     $0.backgroundColor = .gray
@@ -873,7 +876,7 @@ class SignupView: UIView, UITextFieldDelegate {
       addressWebView.snp.makeConstraints {
         $0.top.equalTo(safeArea).inset(50)
         $0.leading.trailing.equalTo(safeArea).inset(30)
-        $0.bottom.equalTo(safeArea).inset(20)
+        $0.height.equalToSuperview().multipliedBy(0.8)
       }
     }
   }
@@ -1150,8 +1153,10 @@ extension SignupView {
     delegate?.addressCloseButton(button: button)
   }
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    delegate?.textFieldShouldReturn(textField)
-    return true
+    delegate?.textFieldShouldReturn(textField) ?? true
+  }
+  @objc func toucheBegan() {
+    delegate?.toucheBegan()
   }
 }
 
@@ -1160,5 +1165,4 @@ extension SignupView: WKScriptMessageHandler {
     delegate?.userContentController(userContentController, didReceive: message)
   }
 }
-
 extension SignupView: UIScrollViewDelegate {}

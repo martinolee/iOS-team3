@@ -34,7 +34,8 @@ extension UIViewController {
   @objc
   fileprivate func presentCartViewController() {
     let cartViewController = UINavigationController(rootViewController: CartViewController()).then {
-      $0.modalPresentationStyle = .overFullScreen
+      $0.modalPresentationStyle = .fullScreen
+      $0.modalTransitionStyle = .coverVertical
     }
     
     present(cartViewController, animated: true)
@@ -44,6 +45,18 @@ extension UIViewController {
     let cartButton = UIButton(type: .system).then {
       $0.tintColor = .white
       $0.setImage(UIImage(systemName: "cart.fill"), for: .normal)
+      
+      $0.addTarget(self, action: #selector(presentCartViewController), for: .touchUpInside)
+    }
+    self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+    
+    self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: cartButton)
+  }
+  
+  func addSubNavigationBarCartButton() {
+    let cartButton = UIButton(type: .system).then {
+      $0.tintColor = .black
+      $0.setImage(UIImage(systemName: "cart"), for: .normal)
       
       $0.addTarget(self, action: #selector(presentCartViewController), for: .touchUpInside)
     }
