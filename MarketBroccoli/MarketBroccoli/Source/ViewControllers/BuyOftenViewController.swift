@@ -46,6 +46,7 @@ class BuyOftenViewController: UIViewController {
   }
   private func setupNavigtion() {
     self.setupSubNavigationBar(title: "자주 사는 상품")
+    self.addSubNavigationBarCartButton()
   }
   private func setupLayout() {
     let guide = view.safeAreaLayoutGuide
