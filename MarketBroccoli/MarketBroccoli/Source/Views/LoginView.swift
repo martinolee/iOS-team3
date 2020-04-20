@@ -4,8 +4,6 @@
 //
 //  Created by macbook on 2020/04/16.
 //  Copyright © 2020 Team3. All rights reserved.
-//
-
 import UIKit
 import SnapKit
 
@@ -25,23 +23,27 @@ class LoginView: UIView {
     $0.autocapitalizationType = .none
     $0.addTarget(self, action: #selector(textFieldShouldReturn), for: .primaryActionTriggered)
   }
+  
   lazy var pwTextField = UITextField().then {
     $0.placeholder = "비밀번호를 입력해주세요"
     $0.isSecureTextEntry = true
     $0.textFieldStyle()
     $0.addTarget(self, action: #selector(textFieldShouldReturn), for: .primaryActionTriggered)
   }
+  
   var logInButton = UIButton().then {
     $0.setTitle("로그인", for: .normal)
     $0.roundPurpleBtnStyle()
     $0.addTarget(self, action: #selector(loginButtonTouched), for: .touchUpInside)
   }
+  
   var idFindButton = UIButton().then {
     $0.setTitle("아이디 찾기 |", for: .normal)
     $0.setTitleColor(.darkGray, for: .normal)
     $0.titleLabel?.font = UIFont.systemFont(ofSize: 14)
     $0.addTarget(self, action: #selector(idAndSecretFindButtonTouched), for: .touchUpInside)
   }
+  
   var pwFindButton = UIButton().then {
     $0.setTitle("비밀번호 찾기", for: .normal)
     $0.setTitleColor(.darkGray, for: .normal)
@@ -75,36 +77,41 @@ class LoginView: UIView {
       [idTextField, pwTextField, logInButton, idFindButton, pwFindButton, signUpButton ])
     
     idTextField.snp.makeConstraints {
-      $0.top.equalTo(self.snp.top).offset(UI.margin)
-      $0.centerX.equalTo(self.snp.centerX)
-      $0.width.equalTo(self.snp.width).multipliedBy(0.88)
-      $0.height.equalTo(self.snp.height).dividedBy(UI.height)
+      $0.top.equalToSuperview().offset(UI.margin)
+      $0.centerX.equalToSuperview()
+      $0.width.equalToSuperview().multipliedBy(0.88)
+      $0.height.equalToSuperview().dividedBy(UI.height)
     }
+    
     pwTextField.snp.makeConstraints {
       $0.top.equalTo(idTextField.snp.bottom).offset(UI.buttonTopMargin)
-      $0.centerX.equalTo(self.snp.centerX)
-      $0.width.equalTo(self.snp.width).multipliedBy(0.88)
-      $0.height.equalTo(self.snp.height).dividedBy(UI.height)
+      $0.centerX.equalToSuperview()
+      $0.width.equalToSuperview().multipliedBy(0.88)
+      $0.height.equalToSuperview().dividedBy(UI.height)
     }
+    
     logInButton.snp.makeConstraints {
       $0.top.equalTo(pwTextField.snp.bottom).offset(24)
-      $0.centerX.equalTo(self.snp.centerX)
-      $0.width.equalTo(self.snp.width).multipliedBy(0.88)
-      $0.height.equalTo(self.snp.height).dividedBy(UI.height)
+      $0.centerX.equalToSuperview()
+      $0.width.equalToSuperview().multipliedBy(0.88)
+      $0.height.equalToSuperview().dividedBy(UI.height)
     }
+    
     idFindButton.snp.makeConstraints {
       $0.top.equalTo(logInButton.snp.bottom).offset(UI.buttonTopMargin)
-      $0.centerX.equalTo(self.snp.centerX).offset(-UI.buttonBetweenMargin)
+      $0.centerX.equalToSuperview().offset(-UI.buttonBetweenMargin)
     }
+    
     pwFindButton.snp.makeConstraints {
       $0.top.equalTo(logInButton.snp.bottom).offset(UI.buttonTopMargin)
       $0.leading.equalTo(idFindButton.snp.trailing).offset(4)
     }
+    
     signUpButton.snp.makeConstraints {
       $0.top.equalTo(idFindButton.snp.bottom).offset(UI.buttonBetweenMargin)
-      $0.centerX.equalTo(self.snp.centerX)
-      $0.width.equalTo(self.snp.width).multipliedBy(0.88)
-      $0.height.equalTo(self.snp.height).dividedBy(UI.height)
+      $0.centerX.equalToSuperview()
+      $0.width.equalToSuperview().multipliedBy(0.88)
+      $0.height.equalToSuperview().dividedBy(UI.height)
     }
   }
   required init?(coder: NSCoder) {
@@ -116,13 +123,16 @@ extension LoginView {
   @objc func loginButtonTouched() {
     delegate?.loginButtonTouched()
   }
+  
   @objc func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     guard let delegate = delegate else { fatalError() }
     return delegate.textFieldShouldReturn(textField)
   }
+  
   @objc func idAndSecretFindButtonTouched(_ sender: UIButton) {
     delegate?.idAndSecretFindButtonTouched(sender)
   }
+  
   @objc func signupButtonTouched(_ sender: UIButton) {
     delegate?.signupButtonTouched(sender)
   }

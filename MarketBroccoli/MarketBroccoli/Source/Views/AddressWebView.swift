@@ -9,7 +9,7 @@ import UIKit
 import WebKit
 
 class AddressWebView: WKWebView {
-  let indicator = UIActivityIndicatorView(style: .gray)
+  let indicator = UIActivityIndicatorView(style: .medium)
   var postCode = ""
   var address = ""
   let unwind = "unwind"

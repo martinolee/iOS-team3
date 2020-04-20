@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6465B54BFF3CD0B2CF359F2B /* Pods_MarketBroccoli.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA3DAD3F9ADB459218F3993B /* Pods_MarketBroccoli.framework */; };
+		701C74C1244485B3009276FA /* CategoryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701C74C0244485B3009276FA /* CategoryDetailViewController.swift */; };
 		7050F3122424BA3800B8E13B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7050F3112424BA3800B8E13B /* LoginViewController.swift */; };
 		7050F316242876AC00B8E13B /* IDFindViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7050F315242876AC00B8E13B /* IDFindViewController.swift */; };
 		7050F318242876B600B8E13B /* PWFindViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7050F317242876B600B8E13B /* PWFindViewController.swift */; };
@@ -62,7 +63,6 @@
 		7C49C9E52448642300FE9B04 /* RequestProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C49C9E42448642300FE9B04 /* RequestProtocol.swift */; };
 		7C49C9E72448652600FE9B04 /* RequestEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C49C9E62448652600FE9B04 /* RequestEnum.swift */; };
 		7C4A77262435FE950033F4D5 /* CategoryStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4A77252435FE950033F4D5 /* CategoryStackView.swift */; };
-		7C50D6C12449945C00D04788 /* ImageDownLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C50D6C02449945C00D04788 /* ImageDownLoader.swift */; };
 		7C5A889124343A2E006361AC /* HomeBannerTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5A889024343A2E006361AC /* HomeBannerTableCell.swift */; };
 		7C5A889424343AD9006361AC /* SignupViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5A889324343AD9006361AC /* SignupViewProtocol.swift */; };
 		7C5A889624343F41006361AC /* SignupLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5A889524343F41006361AC /* SignupLabel.swift */; };
@@ -144,6 +144,7 @@
 
 /* Begin PBXFileReference section */
 		05E73C0F0431AD204CF10586 /* Pods-MarketBroccoli.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MarketBroccoli.debug.xcconfig"; path = "Target Support Files/Pods-MarketBroccoli/Pods-MarketBroccoli.debug.xcconfig"; sourceTree = "<group>"; };
+		701C74C0244485B3009276FA /* CategoryDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDetailViewController.swift; sourceTree = "<group>"; };
 		7050F3112424BA3800B8E13B /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		7050F315242876AC00B8E13B /* IDFindViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDFindViewController.swift; sourceTree = "<group>"; };
 		7050F317242876B600B8E13B /* PWFindViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PWFindViewController.swift; sourceTree = "<group>"; };
@@ -197,7 +198,6 @@
 		7C49C9E42448642300FE9B04 /* RequestProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestProtocol.swift; sourceTree = "<group>"; };
 		7C49C9E62448652600FE9B04 /* RequestEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestEnum.swift; sourceTree = "<group>"; };
 		7C4A77252435FE950033F4D5 /* CategoryStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryStackView.swift; sourceTree = "<group>"; };
-		7C50D6C02449945C00D04788 /* ImageDownLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownLoader.swift; sourceTree = "<group>"; };
 		7C5A889024343A2E006361AC /* HomeBannerTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeBannerTableCell.swift; sourceTree = "<group>"; };
 		7C5A889324343AD9006361AC /* SignupViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewProtocol.swift; sourceTree = "<group>"; };
 		7C5A889524343F41006361AC /* SignupLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupLabel.swift; sourceTree = "<group>"; };
@@ -448,6 +448,7 @@
 			children = (
 				7298BEFE242DDF2E005B0517 /* MarketBroccoliTabBarController.swift */,
 				7050F3192429CEBB00B8E13B /* CategoryViewController.swift */,
+				701C74C0244485B3009276FA /* CategoryDetailViewController.swift */,
 				70BB5437243B432F00BE81F4 /* BuyOftenViewController.swift */,
 				FAAFEB5E2424A74900452977 /* SettingsViewController.swift */,
 				FAAE2E562424E3C400ACC5D3 /* SignUpViewController.swift */,
@@ -513,7 +514,6 @@
 				7CE4A08324403BA7002FD43B /* RequestManager.swift */,
 				FAB1FA4D24497C7300100C74 /* UserDefaultManager.swift */,
 				FAB1FA4F2449827100100C74 /* KurlyNotification.swift */,
-				7C50D6C02449945C00D04788 /* ImageDownLoader.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -917,9 +917,9 @@
 				7C212DB324337DE100025869 /* UIScrollViewExtension.swift in Sources */,
 				7CE4A08724405621002FD43B /* MainViewModel.swift in Sources */,
 				7C8C4A28242B0DFC00FA912B /* UIButtonExtension.swift in Sources */,
+				701C74C1244485B3009276FA /* CategoryDetailViewController.swift in Sources */,
 				FAB1FA48244819F900100C74 /* LoginView.swift in Sources */,
 				7C8991FF243715770058BF9E /* MakeCategoryConstraint.swift in Sources */,
-				7C50D6C12449945C00D04788 /* ImageDownLoader.swift in Sources */,
 				72852ADE24408CC9004B9AA6 /* EmptyCartTableViewCell.swift in Sources */,
 				7CCD649A2428DB2C00FC671B /* UICollectionViewExtension.swift in Sources */,
 				7C27D429243B3CD40064D1BF /* StringExtension.swift in Sources */,
@@ -955,7 +955,6 @@
 				7C763A7C2447339F00A8F01D /* ShowAllProductViewController.swift in Sources */,
 				7C65ECD82424F03D0075606A /* BestView.swift in Sources */,
 				7C49C9E72448652600FE9B04 /* RequestEnum.swift in Sources */,
-				FAB1FA4624458B2800100C74 /* ProfileViewController.swift in Sources */,
 				7280786C2429CA2000101B7D /* CartViewController.swift in Sources */,
 				7C15D0B8242A2C3500ACB4C9 /* UILabelExtension.swift in Sources */,
 				7CDD2D83243EF958008B4890 /* ObserverManager.swift in Sources */,
