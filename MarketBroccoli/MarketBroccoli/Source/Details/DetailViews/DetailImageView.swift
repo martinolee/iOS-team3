@@ -18,25 +18,7 @@ class DetailImageView: UIScrollView {
   }
   open var detailImage: String = "" {
     willSet {
-      guard let url = URL(string: newValue) else { return }
       self.detailImageView.setImage(urlString: newValue)
-//      self.detailImageView.kf.setImage(
-//        with: url,
-//        placeholder: UIImage(named: "placeholderImage"),
-//        options: []) { [weak self] res in
-//          guard let self = self else { return }
-//          switch res {
-//          case .success(let data):
-//            let size = data.image.size
-//            let ratio = UIScreen.main.bounds.width / size.width
-//            let height = size.height * ratio
-//            self.detailImageView.snp.updateConstraints {
-//              $0.height.equalTo(height)
-//            }
-//          case .failure(let error):
-//            print(error)
-//          }
-//      }
     }
   }
   
@@ -68,7 +50,6 @@ extension DetailImageView {
     detailImageView.snp.makeConstraints {
       $0.top.bottom.width.equalToSuperview()
       $0.centerY.equalToSuperview()
-//      $0.height.equalTo(0)
     }
   }
 }
