@@ -48,6 +48,18 @@ extension UIViewController {
       
       $0.addTarget(self, action: #selector(presentCartViewController), for: .touchUpInside)
     }
+    self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+    
+    self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: cartButton)
+  }
+  
+  func addSubNavigationBarCartButton() {
+    let cartButton = UIButton(type: .system).then {
+      $0.tintColor = .black
+      $0.setImage(UIImage(systemName: "cart"), for: .normal)
+      
+      $0.addTarget(self, action: #selector(presentCartViewController), for: .touchUpInside)
+    }
     
     self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: cartButton)
   }

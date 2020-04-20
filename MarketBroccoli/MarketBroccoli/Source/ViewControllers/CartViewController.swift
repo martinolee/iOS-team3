@@ -13,6 +13,8 @@ import UIKit
 class CartViewController: UIViewController {
   // MARK: - Properties
   
+  private let cartManager = CartManager.shared
+  
   private var cart: Cart? {
     didSet {
       cartView.reloadCartTableViewData()
@@ -38,11 +40,14 @@ class CartViewController: UIViewController {
     setupLeftBarButtonItem()
     setCorrectSelectAllProductCheckBoxStatus()
     
-    fetchCart("http://15.164.49.32/kurly/cart/") { [weak self] response in
+    cartManager.fetchCart("http://15.164.49.32/kurly/cart/") { [weak self] response in
       switch response {
       case .success(let data):
         guard let self = self, let backendCart = try? JSONDecoder().decode(BackendCart.self, from: data) else { return }
-        self.cart = convertToCart(from: backendCart)
+        
+        self.cart = convertCart(from: backendCart)
+        self.cartView.removeDimView()
+        self.cartView.hideAllFooterSubviews(false)
       case .failure(let error):
         print(error.localizedDescription)
       }
@@ -55,9 +60,9 @@ class CartViewController: UIViewController {
     title = "장바구니"
     
     navigationController?.do({
-      $0.navigationBar.barTintColor = .white
       $0.navigationBar.isTranslucent = false
-      $0.navigationBar.barStyle = .black
+      $0.navigationBar.tintColor = .black
+      $0.navigationBar.barTintColor = .white
       $0.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
     })
   }
@@ -134,7 +139,14 @@ extension CartViewController: CartProductTableViewCellDelegate {
         
         cart[shoppingItemIndexPath.section].wishProducts.remove(at: shoppingItemIndexPath.row)
         
-        self.removeProduct(id: cart[shoppingItemIndexPath.section].headID)
+        self.cartManager.removeProduct(id: cart[shoppingItemIndexPath.section].headID) { response in
+          switch response {
+          case .success(let data):
+            print(data)
+          case .failure(let error):
+            print(error.localizedDescription)
+          }
+        }
         
         if cart[shoppingItemIndexPath.section].wishProducts.isEmpty { cart.remove(at: shoppingItemIndexPath.section) }
         
@@ -164,7 +176,7 @@ extension CartViewController: CartProductTableViewCellDelegate {
       )
     }
     
-    patchProductQuntity(
+    cartManager.patchProductQuntity(
       id: cart[shoppingItemIndexPath.section].headID,
       product: product
     ) { response in
@@ -225,7 +237,14 @@ extension CartViewController: CartViewDelegate {
         guard let self = self, var cart = self.cart else { return }
         for index in cart.indices {
           for product in cart[index].wishProducts where product.isChecked {
-            self.removeProduct(id: cart[index].headID)
+            self.cartManager.removeProduct(id: cart[index].headID) { response in
+              switch response {
+              case .success(let data):
+                print(data)
+              case .failure(let error):
+                print(error.localizedDescription)
+              }
+            }
           }
           
           cart[index].wishProducts = cart[index].wishProducts.filter { !$0.isChecked }
@@ -261,47 +280,6 @@ extension CartViewController {
 }
 
 extension CartViewController {
-  private func fetchCart(_ url: String, completionHandler: @escaping (Result<Data, Error>) -> Void) {
-    AF.request(url)
-      .validate()
-      .responseData { response in
-        switch response.result {
-        case .success(let data):
-          completionHandler(.success(data))
-        case .failure(let error):
-          completionHandler(.failure(error))
-        }
-    }
-  }
-  
-  private func patchProductQuntity(id: Int, product: UpdatedProduct,
-                                   completionHandler: @escaping (Result<Data, Error>) -> Void) {
-    AF.request(
-      "http://15.164.49.32/kurly/cart/\(id)/",
-      method: .patch,
-      parameters: product,
-      encoder: JSONParameterEncoder.default,
-      headers: ["Content-Type": "application/json"]
-      )
-      .validate()
-      .responseData { response in
-        switch response.result {
-        case .success(let data):
-          completionHandler(.success(data))
-        case .failure(let error):
-          completionHandler(.failure(error))
-        }
-    }
-  }
-  
-  private func removeProduct(id: Int) {
-    print("remove http://15.164.49.32/kurly/cart/\(id)/")
-//    AF.request(
-//      "http://15.164.49.32/kurly/cart/\(id)/",
-//      method: .delete
-//    )
-  }
-  
   private func updateHeaderFooter() {
     guard let cart = cart else { return }
     
