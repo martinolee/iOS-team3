@@ -72,14 +72,15 @@ struct BackendOption: Codable {
   let price, product: Int
 }
 
-func convertToCart(from backendCart: BackendCart) -> Cart {
-  var index: Int?
+func convertCart(from backendCart: BackendCart) -> Cart {
   var cart = Cart()
   
   for backendProductCategory in backendCart {
     if let option = backendProductCategory.option {
-      if cart.contains(where: { $0.id == option.product }) {
-        if let index = index {
+      var hasSameCategory = false
+      
+      for index in cart.indices {
+        if cart[index].id == option.product {
           cart[index].wishProducts.append(
             WishProduct(
               product: Product(
@@ -92,8 +93,13 @@ func convertToCart(from backendCart: BackendCart) -> Cart {
               isChecked: true
             )
           )
+          
+          hasSameCategory = true
+          break
         }
-      } else {
+      }
+      
+      if !hasSameCategory {
         cart.append(
           ProductCategory(
             headID: backendProductCategory.id,
@@ -113,10 +119,6 @@ func convertToCart(from backendCart: BackendCart) -> Cart {
               )
           ])
         )
-        
-        if let tempIndex = index {
-          index = tempIndex + 1
-        } else { index = 0 }
       }
     } else {
       if let price = backendProductCategory.product.price {
@@ -146,7 +148,7 @@ func convertToCart(from backendCart: BackendCart) -> Cart {
   return cart
 }
 
-func convertToBackendCart(from cart: Cart) -> BackendCart {
+func convertBackendCart(from cart: Cart) -> BackendCart {
   var backendCart = BackendCart()
   
   for productCategory in cart {

@@ -39,11 +39,19 @@ class CartView: UIView {
   
   weak var delegate: CartViewDelegate?
   
+  private lazy var activityIndicator = UIActivityIndicatorView(style: .large).then {
+    $0.hidesWhenStopped = true
+    $0.startAnimating()
+    $0.color = .white
+  }
+  
+  private lazy var dimView = UIView().then {
+    $0.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+  }
+  
   private lazy var cartViewHeader = CartViewHeader().then {
     $0.delegate = self
   }
-  
-  private lazy var cartFooterView = CartFooterView()
   
   private lazy var cartTableView = UITableView(frame: .zero, style: .grouped).then {
     $0.separatorStyle = .none
@@ -59,6 +67,8 @@ class CartView: UIView {
     $0.register(cell: CartProductTableViewCell.self)
     $0.register(cell: EmptyCartTableViewCell.self)
   }
+  
+  private lazy var cartFooterView = CartFooterView()
   
   private lazy var orderButton = UIButton(type: .system).then {
     $0.backgroundColor = .kurlyMainPurple
@@ -94,15 +104,28 @@ class CartView: UIView {
   
   private func addAllView() {
     self.addSubviews([
+      dimView,
       cartViewHeader,
       cartTableView,
       orderButton
     ])
+    
+    dimView.addSubview(activityIndicator)
   }
   
   private func setupCartTableViewAutoLayout() {
+    let safeArea = safeAreaLayoutGuide
+    
+    dimView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
+    
+    activityIndicator.snp.makeConstraints {
+      $0.centerX.centerY.equalToSuperview()
+    }
+    
     cartViewHeader.snp.makeConstraints {
-      $0.top.equalTo(safeAreaLayoutGuide)
+      $0.top.equalTo(safeArea)
       $0.leading.trailing.equalToSuperview()
       $0.width.equalTo(cartTableView)
       $0.height.equalTo(50)
@@ -116,9 +139,11 @@ class CartView: UIView {
     orderButton.snp.makeConstraints {
       $0.top.equalTo(cartTableView.snp.bottom)
       $0.leading.trailing.equalTo(cartTableView)
-      $0.bottom.equalTo(safeAreaLayoutGuide)
+      $0.bottom.equalTo(safeArea)
       $0.height.equalTo(60)
     }
+    
+    self.bringSubviewToFront(dimView)
   }
   
   private func setCartTableHeaderSize() {
@@ -165,12 +190,15 @@ class CartView: UIView {
     cartTableView.reloadData()
   }
   
-  func beginCartTableViewUpdates() {
-    cartTableView.beginUpdates()
+  func hideAllFooterSubviews(_ hidden: Bool) {
+    cartFooterView.hideAllSubviews(hidden)
   }
   
-  func endCartTableViewUpdates() {
-    cartTableView.endUpdates()
+  func removeDimView() {
+    activityIndicator.stopAnimating()
+    activityIndicator.removeFromSuperview()
+    
+    dimView.removeFromSuperview()
   }
   
   func setOrderButtonText(totalPrice: Int) {

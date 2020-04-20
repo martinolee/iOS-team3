@@ -192,9 +192,11 @@ extension SearchViewController: SearchViewDelegate {
 
 extension SearchViewController: ProductCollectionCellDelegate {
   func cartOrAlarmButtonTouched(_ button: UIButton, _ productIndexPath: IndexPath) {
-    print("cartOrAlarmButtonTouched(_ button: \(button), _ productIndexPath: \(productIndexPath)")
+    let isSoldOut = productDummy[productIndexPath.row].isSoldOut
     
-    let addProductCartViewController = UINavigationController(rootViewController: AddProductCartViewController())
-    present(addProductCartViewController, animated: true)
+    if !isSoldOut {
+      let addProductCartViewController = UINavigationController(rootViewController: AddProductCartViewController())
+      present(addProductCartViewController, animated: true)
+    }
   }
 }
