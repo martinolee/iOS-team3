@@ -33,21 +33,7 @@ class SignUpViewController: UIViewController {
   }
   private var isAuthorized = true
   private var timer = Timer()
-  
-  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-    print("in")
-    self.view.endEditing(true)
-    signupView.idTextField.resignFirstResponder()
-    signupView.secretTextField.resignFirstResponder()
-    signupView.checkSecretNumberTextField.resignFirstResponder()
-    signupView.nameTextFeild.resignFirstResponder()
-    signupView.emailTextFeild.resignFirstResponder()
-    signupView.cellphoneTextField.resignFirstResponder()
-    signupView.checkingCodeTexField.resignFirstResponder()
-    signupView.birthdayYearTextField.resignFirstResponder()
-    signupView.birthdayMonthTextField.resignFirstResponder()
-    signupView.birthdayDayTextField.resignFirstResponder()
-  }// 안됨
+
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUI()
@@ -103,57 +89,33 @@ class SignUpViewController: UIViewController {
 // MARK: - Action
 extension SignUpViewController: SignupViewDelegate {
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    if textField == signupView.idTextField {
+    switch textField {
+    case signupView.idTextField:
       signupView.secretTextField.becomeFirstResponder()
-    } else {
-      signupView.secretTextField.resignFirstResponder()
-    }
-    
-    if textField == signupView.secretTextField {
+    case signupView.secretTextField:
       signupView.checkSecretNumberTextField.becomeFirstResponder()
-    } else {
-      signupView.checkSecretNumberTextField.resignFirstResponder()
-    }
-    
-    if textField == signupView.checkSecretNumberTextField {
-      signupView.nameTextFeild.becomeFirstResponder()
-    } else {
-      signupView.nameTextFeild.resignFirstResponder()
-    }
-    
-    if textField == signupView.nameTextFeild {
+    case signupView.checkSecretNumberTextField:
+      signupView.nameTextField.becomeFirstResponder()
+    case signupView.nameTextField:
       signupView.emailTextFeild.becomeFirstResponder()
-    } else {
-      signupView.emailTextFeild.resignFirstResponder()
-    }
-    
-    if textField == signupView.emailTextFeild {
+    case signupView.emailTextFeild:
       signupView.cellphoneTextField.becomeFirstResponder()
-    } else {
-      signupView.cellphoneTextField.resignFirstResponder()
-    }
-    
-    if textField == signupView.birthdayYearTextField {
-      signupView.birthdayMonthTextField.becomeFirstResponder()
-    } else {
-      signupView.birthdayMonthTextField.resignFirstResponder()
-    }
-    
-    if textField == signupView.birthdayMonthTextField {
+    case signupView.birthdayYearTextField:
+        signupView.birthdayMonthTextField.becomeFirstResponder()
+    case signupView.birthdayMonthTextField:
       signupView.birthdayDayTextField.becomeFirstResponder()
-    } else {
-      signupView.birthdayDayTextField.resignFirstResponder()
+    default:
+      break
     }
     return true
   }
-  
   func signupButtonTouched(button: UIButton) {
     print(essentialInfo)
     if !essentialInfo.values.contains(false) {
       let user = User(
         userName: signupView.idTextField.text ?? "",
         email: signupView.emailTextFeild.text ?? "",
-        name: signupView.nameTextFeild.text ?? "",
+        name: signupView.nameTextField.text ?? "",
         password: signupView.secretTextField.text ?? "",
         address: Address(
           jibunAddress: signupView.addressTextField.text ?? "",
@@ -174,7 +136,6 @@ extension SignUpViewController: SignupViewDelegate {
           switch response.result {
           case .success(let data):
             print("회원가입 누르기:\(data)")
-            
             let alertController = UIAlertController(
               title: nil,
               message: "회원가입을 축하드립니다!\n당신의 일상에 컬리를 더해 보세요",

@@ -97,6 +97,7 @@ extension SearchViewController: SearchViewDataSource {
     let cell = collectionView.dequeue(ProductCollectionCell.self, indexPath: indexPath).then {
       $0.delegate = self
       $0.configure(
+        productId: 1,
         productName: product.name,
         productImage: product.imageURL,
         price: product.price,

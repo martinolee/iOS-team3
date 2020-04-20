@@ -11,17 +11,20 @@ import UIKit
 class DetailDescriptionTopTableCell: UITableViewCell {
   private let mainImageView = UIImageView().then {
     $0.image = UIImage(named: "cloud")
+    $0.contentMode = .scaleToFill
   }
   private let titleLabel = UILabel().then {
     $0.text = "[앤블랭크] 노즈워크 토이 2종"
+    $0.font = .systemFont(ofSize: 20, weight: .semibold)
   }
   private let subtitleLabel = UILabel().then {
     $0.text = "활용도가 다양한 올인원 장난감"
     $0.textColor = .kurlyGray1
+    $0.numberOfLines = 2
   }
   private let shareBtn = UIButton()
 
-  private let priceStackView = PriceStackView(isLogin: true, isDiscount: false).then {
+  private let priceStackView = PriceStackView(isLogin: false, isDiscount: false).then {
     $0.axis = .vertical
     $0.spacing = 8
   }
@@ -47,6 +50,20 @@ class DetailDescriptionTopTableCell: UITableViewCell {
   }
 }
 
+// MARK: - ACTIONS
+extension DetailDescriptionTopTableCell {
+  func configure(detail model: ProductModel) {
+    guard let mainImage = model.images.first(where: { $0.name == "thumb" }) else { return }
+    titleLabel.text = model.name
+    subtitleLabel.text = model.summary
+    mainImageView.setImage(urlString: mainImage.image)
+    (infoStackView.viewWithTag(9999) as? UILabel)?.text = model.unit
+    (infoStackView.viewWithTag(9998) as? UILabel)?.text = model.amount
+    (infoStackView.viewWithTag(9997) as? UILabel)?.text = model.madeIn
+    (infoStackView.viewWithTag(9996) as? UILabel)?.text = model.package
+  }
+}
+
 // MARK: - UI
 extension DetailDescriptionTopTableCell {
   private func makeinfoStackView() {
@@ -55,21 +72,24 @@ extension DetailDescriptionTopTableCell {
       label.text = text
       return label.getWidth()
     }
-    infoDummy.forEach { text in
+    for (idx, text) in infoDummy.enumerated() {
       let infolabel = UILabel().then { lbl in
         lbl.text = text
         lbl.snp.makeConstraints { make in
           make.width.equalTo((textArray.max() ?? 0) + 10)
         }
       }
+      
       let infoTextLabel = UILabel().then { lbl in
-        lbl.text = "1개"
+        lbl.text = ""
+        lbl.tag = 9999 - idx
       }
+      
       let innerStackView = UIStackView().then {
         $0.axis = .horizontal
         $0.spacing = 16
       }
-
+      
       innerStackView.addArrangedSubview(infolabel)
       innerStackView.addArrangedSubview(infoTextLabel)
       self.infoStackView.addArrangedSubview(innerStackView)
@@ -91,14 +111,15 @@ extension DetailDescriptionTopTableCell {
     }
     
     titleLabel.snp.makeConstraints {
-      $0.top.leading.trailing.equalToSuperview()
+      $0.top.equalToSuperview().offset(8)
+      $0.leading.trailing.equalToSuperview()
       $0.height.equalTo(40)
     }
     
     subtitleLabel.snp.makeConstraints {
       $0.top.equalTo(titleLabel.snp.bottom)
       $0.leading.bottom.trailing.equalToSuperview()
-      $0.height.equalTo(40)
+      $0.height.equalTo(20)
     }
     
     priceStackView.snp.makeConstraints {

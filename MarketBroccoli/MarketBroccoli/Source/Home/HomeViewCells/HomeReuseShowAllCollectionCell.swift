@@ -16,9 +16,6 @@ class HomeReuseShowAllCollectionCell: UICollectionViewCell {
     $0.layer.borderColor = UIColor.kurlyGray2.cgColor
     $0.layer.borderWidth = 1
     $0.layer.masksToBounds = true
-//    $0.setTitleColor(.kurlyMainPurple, for: .normal)
-    //    $0.setTitle(">", for: .normal)
-//    $0.addTarget(self, action: #selector(moreBtnTouched(_:)), for: .touchUpInside)
   }
   
   private let btnLabel = UILabel().then {
@@ -43,16 +40,6 @@ class HomeReuseShowAllCollectionCell: UICollectionViewCell {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-}
-
-// MARK: - ACTIONS
-extension HomeReuseShowAllCollectionCell {
-//  @objc private func moreBtnTouched(_ sender: UIButton) {
-//    ObserverManager.shared.post(
-//      observerName: .showAllBtnTouched,
-//      object: nil,
-//      userInfo: nil)
-//  }
 }
 
 // MARK: - UI

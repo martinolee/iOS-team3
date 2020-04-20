@@ -60,7 +60,7 @@ class CartProductTableViewCell: UITableViewCell {
     $0.textAlignment = .left
   }
   
-  private lazy var productQuantityStepper = ProductQuantityStepper().then {
+  private lazy var productQuantityStepper = ProductQuantityStepper(minimum: 1).then {
     $0.delegate = self
   }
   

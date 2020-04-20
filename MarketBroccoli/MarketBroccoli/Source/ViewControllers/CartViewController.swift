@@ -132,6 +132,8 @@ extension CartViewController: CartProductTableViewCellDelegate {
         guard let self = self, var cart = self.cart else { return }
         cart[shoppingItemIndexPath.section].wishProducts.remove(at: shoppingItemIndexPath.row)
         
+        self.removeProduct(id: cart[shoppingItemIndexPath.section].headID)
+        
         self.cart = cart
       }))
     }
@@ -196,6 +198,10 @@ extension CartViewController: CartViewDelegate {
       $0.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { [weak self] _ in
         guard let self = self, var cart = self.cart else { return }
         for index in cart.indices {
+          for product in cart[index].wishProducts where product.isChecked {
+            self.removeProduct(id: cart[index].headID)
+          }
+          
           cart[index].wishProducts = cart[index].wishProducts.filter { !$0.isChecked }
         }
         self.cart = cart.filter { !$0.wishProducts.isEmpty }
@@ -263,9 +269,10 @@ extension CartViewController {
   }
   
   private func removeProduct(id: Int) {
-    AF.request(
-      "http://15.164.49.32/kurly/cart/\(id)/",
-      method: .delete
-    )
+    print("remove http://15.164.49.32/kurly/cart/\(id)/")
+//    AF.request(
+//      "http://15.164.49.32/kurly/cart/\(id)/",
+//      method: .delete
+//    )
   }
 }
