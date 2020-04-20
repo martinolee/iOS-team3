@@ -9,9 +9,12 @@
 import UIKit
 
 class HomeOfferTableCell: UITableViewCell {
-  private let cellTitleLabel = UILabel().then {
+  private lazy var cellTitleLabel = UILabel().then {
     $0.font = .boldSystemFont(ofSize: 20)
     $0.text = "dummyTitle"
+    $0.isUserInteractionEnabled = true
+    let tap = UITapGestureRecognizer(target: self, action: #selector(titleTouched(_:)))
+    $0.addGestureRecognizer(tap)
   }
   
   private let cellSubtitleLabel = UILabel().then {
@@ -25,8 +28,8 @@ class HomeOfferTableCell: UITableViewCell {
     frame: .zero,
     collectionViewLayout: UICollectionViewFlowLayout()
   )
-
-  private var collectionViewItems: [MainItem]? {
+  
+  private var collectionViewItems: HomeItems? {
     didSet {
       offerCollectionView.reloadData()
     }
@@ -42,6 +45,7 @@ class HomeOfferTableCell: UITableViewCell {
   }
   
   private var itemWidth: CGFloat = 0
+  private var requestKeyName: RequestHome?
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -68,15 +72,23 @@ class HomeOfferTableCell: UITableViewCell {
 
 // MARK: - ACTION Handler
 extension HomeOfferTableCell {
-  func configure(cellTitle title: String, subtitle: String? = nil, items: [MainItem]? = nil) {
+  func configure(cellTitle title: String, subtitle: String? = nil, items: [RequestHome: HomeItems]? = nil) {
     cellTitleLabel.text = title
     if let subtitle = subtitle {
       cellSubtitleLabel.text = subtitle
       cellSubtitleLabel.isHidden = false
     }
-    if let items = items {
-      collectionViewItems = items
+    
+    if let key = items?.keys.first, let value = items?.values.first, !value.isEmpty {
+      requestKeyName = key
+      collectionViewItems = value
     }
+  }
+  @objc private func titleTouched(_ sender: UITapGestureRecognizer) {
+    ObserverManager.shared.post(
+      observerName: .showAllBtnTouched,
+      object: nil,
+      userInfo: ["requestKey": requestKeyName ?? RequestHome.recommendation])
   }
 }
 
@@ -138,16 +150,17 @@ extension HomeOfferTableCell: UICollectionViewDataSource {
 // MARK: - Delegate
 extension HomeOfferTableCell: UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    if let product = collectionView.cellForItem(at: indexPath) as? HomeProductCollectionCell {
+    if let item = collectionView.cellForItem(at: indexPath) as? HomeProductCollectionCell, let ID = item.productId {
+      
       ObserverManager.shared.post(
-      observerName: .productTouched,
-      object: nil,
-      userInfo: ["indexPath": indexPath])
+        observerName: .productTouched,
+        object: nil,
+        userInfo: ["productId": ID])
     } else {
       ObserverManager.shared.post(
-      observerName: .showAllBtnTouched,
-      object: nil,
-      userInfo: nil)
+        observerName: .showAllBtnTouched,
+        object: nil,
+        userInfo: ["requestKey": requestKeyName ?? RequestHome.recommendation])
     }
     
   }

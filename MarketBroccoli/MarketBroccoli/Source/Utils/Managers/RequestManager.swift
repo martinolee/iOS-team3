@@ -9,42 +9,6 @@
  import Foundation
  import Alamofire
  
- protocol RequestProtocol {
-  var baseUrl: String { get }
-  var endPoint: String { get }
-  var loginToken: String? { get }
- }
- 
- extension RequestProtocol {
-  var baseUrl: String { "http://15.164.49.32" }
-  var loginToken: String? { "TOKEN" }
- }
- 
- enum RequestHome: RequestProtocol {
-  case mainImages
-  case md
-  case recommendation
-  case new
-  case best
-  case discount
-  
-  var endPoint: String {
-    switch self {
-    case .mainImages:
-      return baseUrl + "/kurly/images/"
-    case .md:
-      return baseUrl + "/kurly/md/"
-    case .recommendation:
-      return baseUrl + "/kurly/recommend/"
-    case .new:
-      return baseUrl + "/kurly/new/"
-    case .best:
-      return baseUrl + "/kurly/best/"
-    case .discount:
-      return baseUrl + "/kurly/discount/"
-    }
-  }
- }
  
  class RequestManager {
   static let shared = RequestManager()
@@ -109,46 +73,40 @@
       }
     }
   }
-  private init() {}
- }
-
- enum RequestSignup: RequestProtocol {
-  case duplicate
-  case MTokenCreate
-  case MTokenAuth
-  case accounts
-  case authToken
   
-  var endPoint: String {
-    switch self {
-    case .duplicate:
-      return baseUrl + "/accounts/duplicates/"
-    case .MTokenCreate:
-      return baseUrl + "/accounts/m-token-create/"
-    case .MTokenAuth:
-      return baseUrl + "/accounts/m-token-auth/"
-    case .accounts:
-      return baseUrl + "/accounts/"
-    case .authToken:
-      return baseUrl + "/accounts/auth-token/"
+  func detailRequest(
+    url: RequestDetail,
+    method requestMethod: HTTPMethod,
+    productId: Int,
+    completion: @escaping (Result<ProductModel, AFError>) -> Void) {
+    AF.request(
+      url.endPoint + "\(productId)/",
+      method: requestMethod)
+      .validate(statusCode: [200])
+      .responseDecodable(of: ProductModel.self) { res in
+        completion(res.result)
     }
   }
+  
+  private init() {}
  }
  
-// class SignupRequestManager {
-//  static let shared = SignupRequestManager()
-//  
-//  func signUpRequest(
-//    url: RequestSignup,
-//    method requestMethod: HTTPMethod,
-//    encoder: ParameterEncoder,
-//    headers: [String: String],
-//    completion: @escaping (Result<MainModel, AFError>) -> Void) {
-//    AF.request(url.endPoint, method: requestMethod)
-//      .validate(statusCode: [200])
-//      .responseDecodable { res in
-//        completion(res.result)
-//    }
-//  }
-//    private init() {}
-// }
+ 
+ 
+ // class SignupRequestManager {
+ //  static let shared = SignupRequestManager()
+ //
+ //  func signUpRequest(
+ //    url: RequestSignup,
+ //    method requestMethod: HTTPMethod,
+ //    encoder: ParameterEncoder,
+ //    headers: [String: String],
+ //    completion: @escaping (Result<MainModel, AFError>) -> Void) {
+ //    AF.request(url.endPoint, method: requestMethod)
+ //      .validate(statusCode: [200])
+ //      .responseDecodable { res in
+ //        completion(res.result)
+ //    }
+ //  }
+ //    private init() {}
+ // }
