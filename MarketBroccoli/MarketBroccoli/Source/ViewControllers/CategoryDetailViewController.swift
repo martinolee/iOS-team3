@@ -34,14 +34,13 @@ class CategoryDetailViewController: UIViewController {
     setupLayout()
     setupNavigtion()
   }
-//  override func viewWillLayoutSubviews() {
-//    super.viewWillLayoutSubviews()
-//    customMenuBar.layer.borderWidth = 1
-//    customMenuBar.layer.borderColor = CGColor.init(srgbRed: 0, green: 0, blue: 0, alpha: 1)
-//  }
-  override func viewWillAppear(_ animated: Bool) {
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews() // 타이밍이 컬렉션뷰 레이아웃이 잡히고
+    // 그 다음에 플로우레이아웃이 잡혀야
     setupFlowLayout()
   }
+  
   override func viewWillDisappear(_ animated: Bool) {
     self.setupBroccoliNavigationBar(title: "카테고리")
     self.addNavigationBarCartButton()
@@ -79,7 +78,7 @@ class CategoryDetailViewController: UIViewController {
     collectionViewFlowLayout.minimumInteritemSpacing = 0
     collectionViewFlowLayout.itemSize = CGSize(
       width: collectionView.frame.width,
-      height: collectionView.frame.height - customMenuBarheigt
+      height: collectionView.frame.height
     )
     collectionViewFlowLayout.scrollDirection = .horizontal
   }

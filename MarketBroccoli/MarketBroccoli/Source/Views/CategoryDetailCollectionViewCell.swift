@@ -16,7 +16,8 @@ class CategoryDetailCollectionViewCell: UICollectionViewCell {
     ,
     collectionViewLayout: collectionViewFlowLayout)
     .then {
-      $0.register(cell: UICollectionViewCell.self, forCellReuseIdentifier: "cell")
+//      $0.register(cell: UICollectionViewCell.self, forCellReuseIdentifier: "cell")
+      $0.register(cell: ProductCollectionCell.self)
   }
   
   // MARK: - Life Cycle
@@ -25,7 +26,7 @@ class CategoryDetailCollectionViewCell: UICollectionViewCell {
     setupUI()
   }
   override func layoutSubviews() {
-    setupLayout()
+    setupFlowLayout()
   }
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
@@ -38,17 +39,15 @@ class CategoryDetailCollectionViewCell: UICollectionViewCell {
     [collectionView] .forEach {
       contentView.addSubview($0)
     }
-  }
-  private func setupLayout() {
+    
     collectionView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
-    setupFlowLayout()
   }
   private func setupFlowLayout() {
     let minimumLineSpacing: CGFloat = 20.0
     let minimumInteritemSpacing: CGFloat = 14.0
-    let insets = UIEdgeInsets(top: 112, left: 14, bottom: 80, right: 14)
+    let insets = UIEdgeInsets(top: 0, left: 14, bottom: 0, right: 14)
     let itemsForLine: CGFloat = 2
     let itemSizeWidth = (
       (
