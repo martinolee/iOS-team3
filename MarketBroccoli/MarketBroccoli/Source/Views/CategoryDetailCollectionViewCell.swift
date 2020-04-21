@@ -67,15 +67,18 @@ class CategoryDetailCollectionViewCell: UICollectionViewCell {
 // MARK: - UICollectionViewDataSource
 extension CategoryDetailCollectionViewCell: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 16
+    guard let categoryProductList = categoryProductList else { return 0 }
+    return categoryProductList.count
   }
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    guard let categoryProductList = categoryProductList else { return UICollectionViewCell() }
     let cell = collectionView.dequeue(ProductCollectionCell.self, indexPath: indexPath)
+    let categoryProduct = categoryProductList[indexPath.row]
     cell.configure(
-      productName: "[함소아] 홍키통키 프라임 블루 3단계",
-      productImage: "https://wpsios-s3.s3.ap-northeast-2.amazonaws.com/media/1574668074322y0.jpg",
-      price: 91_000,
-      discount: 0.3,
+      productName: categoryProduct.name,
+      productImage: categoryProduct.image,
+      price: categoryProduct.price,
+      discount: categoryProduct.discount,
       additionalInfo: ["Kurly Only"],
       isSoldOut: false,
       productIndexPath: indexPath
