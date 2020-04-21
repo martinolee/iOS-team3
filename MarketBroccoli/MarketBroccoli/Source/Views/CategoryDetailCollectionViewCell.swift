@@ -71,8 +71,17 @@ extension CategoryDetailCollectionViewCell: UICollectionViewDataSource {
     return 16
   }
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-    cell.backgroundColor = .systemPink
+    let cell = collectionView.dequeue(ProductCollectionCell.self, indexPath: indexPath)
+    cell.configure(
+      productName: "[함소아] 홍키통키 프라임 블루 3단계",
+      productImage: "https://wpsios-s3.s3.ap-northeast-2.amazonaws.com/media/1574668074322y0.jpg",
+      price: 91_000,
+      discount: 0.3,
+      additionalInfo: ["Kurly Only"],
+      isSoldOut: false,
+      productIndexPath: indexPath
+    )
+//    cell.backgroundColor = .systemPink
     return cell
   }
 }
