@@ -58,15 +58,14 @@ class CategoryDetailViewController: UIViewController {
   }
   private func setupLayout() {
     let guide = view.safeAreaLayoutGuide
-    customMenuBar.snp.makeConstraints {
-      $0.top.leading.equalToSuperview()
-      $0.width.equalTo(800)
-      $0.height.equalTo(customMenuBarheigt)
-    }
     collectionView.snp.makeConstraints {
-      $0.top.equalTo(guide.snp.top).offset(customMenuBarheigt)
       $0.leading.trailing.equalToSuperview()
       $0.bottom.equalTo(guide.snp.bottom)
+    }
+    customMenuBar.snp.makeConstraints {
+      $0.top.leading.trailing.equalTo(guide)
+      $0.height.equalTo(customMenuBarheigt)
+      $0.bottom.equalTo(collectionView.snp.top)
     }
   }
   private func setupNavigtion() {
