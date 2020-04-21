@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class CategoryDetailCollectionViewCell: UICollectionViewCell {
   // MARK: - Properties
@@ -18,6 +19,11 @@ class CategoryDetailCollectionViewCell: UICollectionViewCell {
     .then {
 //      $0.register(cell: UICollectionViewCell.self, forCellReuseIdentifier: "cell")
       $0.register(cell: ProductCollectionCell.self)
+  }
+  private var categoryProductList: CategoryProudcutList? {
+    didSet {
+      collectionView.reloadData()
+    }
   }
   
   // MARK: - Life Cycle
@@ -47,7 +53,7 @@ class CategoryDetailCollectionViewCell: UICollectionViewCell {
   private func setupFlowLayout() {
     let minimumLineSpacing: CGFloat = 20.0
     let minimumInteritemSpacing: CGFloat = 14.0
-    let insets = UIEdgeInsets(top: 0, left: 14, bottom: 0, right: 14)
+    let insets = UIEdgeInsets(top: 60, left: 14, bottom: 20, right: 14)
     let itemsForLine: CGFloat = 2
     let itemSizeWidth = (
       (
