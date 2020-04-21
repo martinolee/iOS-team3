@@ -300,6 +300,10 @@ extension SearchView {
     searchWordTableView.reloadData()
   }
   
+  func reloadSearchResultCollectionViewData() {
+    searchResultCollectionView.reloadData()
+  }
+  
   func hideSearchResultCollectionView(_ hide: Bool) {
     searchResultCollectionView.isHidden = hide
   }

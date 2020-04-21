@@ -40,7 +40,7 @@ class CartViewController: UIViewController {
     setupLeftBarButtonItem()
     setCorrectSelectAllProductCheckBoxStatus()
     
-    cartManager.fetchCart("http://15.164.49.32/kurly/cart/") { [weak self] response in
+    cartManager.fetchCart { [weak self] response in
       switch response {
       case .success(let data):
         guard let self = self, let backendCart = try? JSONDecoder().decode(BackendCart.self, from: data) else { return }
