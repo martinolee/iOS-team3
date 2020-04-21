@@ -136,10 +136,10 @@ extension CartViewController: CartProductTableViewCellDelegate {
       $0.addAction(UIAlertAction(title: "취소", style: .cancel))
       $0.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { [weak self] _ in
         guard let self = self, var cart = self.cart else { return }
-        
+        let cartID = cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].product.cartID
         cart[shoppingItemIndexPath.section].wishProducts.remove(at: shoppingItemIndexPath.row)
         
-        self.cartManager.removeProduct(id: cart[shoppingItemIndexPath.section].headID) { response in
+        self.cartManager.removeProduct(id: cartID) { response in
           switch response {
           case .success(let data):
             print(data)
@@ -170,14 +170,14 @@ extension CartViewController: CartProductTableViewCellDelegate {
       )
     } else {
       product = UpdatedProduct(
-        product: cart[shoppingItemIndexPath.section].headID,
+        product: cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].product.cartID,
         option: nil,
         quantity: cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].quantity
       )
     }
     
     cartManager.patchProductQuntity(
-      id: cart[shoppingItemIndexPath.section].headID,
+      id: cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].product.cartID,
       product: product
     ) { response in
       switch response {
@@ -236,8 +236,8 @@ extension CartViewController: CartViewDelegate {
       $0.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { [weak self] _ in
         guard let self = self, var cart = self.cart else { return }
         for index in cart.indices {
-          for product in cart[index].wishProducts where product.isChecked {
-            self.cartManager.removeProduct(id: cart[index].headID) { response in
+          for productCategory in cart[index].wishProducts where productCategory.isChecked {
+            self.cartManager.removeProduct(id: productCategory.product.cartID) { response in
               switch response {
               case .success(let data):
                 print(data)

@@ -23,7 +23,6 @@ extension Cart {
 }
 
 struct ProductCategory {
-  let headID: Int
   let id: Int
   let name: String?
   let discountRate: Double
@@ -37,6 +36,7 @@ struct WishProduct {
 }
 
 struct Product {
+  let cartID: Int
   let id: Int
   let name: String
   let price: Int
@@ -84,6 +84,7 @@ func convertCart(from backendCart: BackendCart) -> Cart {
           cart[index].wishProducts.append(
             WishProduct(
               product: Product(
+                cartID: backendProductCategory.id,
                 id: option.pk,
                 name: option.name,
                 price: option.price,
@@ -102,13 +103,13 @@ func convertCart(from backendCart: BackendCart) -> Cart {
       if !hasSameCategory {
         cart.append(
           ProductCategory(
-            headID: backendProductCategory.id,
             id: backendProductCategory.product.pk,
             name: backendProductCategory.product.name,
             discountRate: backendProductCategory.product.discountRate,
             wishProducts: [
               WishProduct(
                 product: Product(
+                  cartID: backendProductCategory.id,
                   id: option.pk,
                   name: option.name,
                   price: option.price,
@@ -124,13 +125,13 @@ func convertCart(from backendCart: BackendCart) -> Cart {
       if let price = backendProductCategory.product.price {
         cart.append(
           ProductCategory(
-            headID: backendProductCategory.id,
             id: backendProductCategory.product.pk,
             name: nil,
             discountRate: backendProductCategory.product.discountRate,
             wishProducts: [
               WishProduct(
                 product: Product(
+                  cartID: backendProductCategory.id,
                   id: backendProductCategory.product.pk,
                   name: backendProductCategory.product.name,
                   price: price,
@@ -156,7 +157,7 @@ func convertBackendCart(from cart: Cart) -> BackendCart {
       for wishProduct in productCategory.wishProducts {
         backendCart.append(
           BackendCartElement(
-            id: productCategory.headID,
+            id: wishProduct.product.cartID,
             product: BackendProduct(
               pk: productCategory.id,
               name: categoryName,
@@ -177,7 +178,7 @@ func convertBackendCart(from cart: Cart) -> BackendCart {
     } else {
       backendCart.append(
          BackendCartElement(
-          id: productCategory.headID,
+          id: productCategory.wishProducts[0].product.cartID,
           product: BackendProduct(
             pk: productCategory.id,
             name: productCategory.wishProducts[0].product.name,
