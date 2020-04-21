@@ -341,7 +341,7 @@ class SignupView: UIView, UITextFieldDelegate {
   }
   
   private let grayView = UIView().then {
-    $0.backgroundColor = .gray
+    $0.backgroundColor = .kurlyGray3
   }
   
   private lazy var usingAgreement = SignupLabel(textColor: nil, font: .systemFont(ofSize: 15, weight: .bold)).then {
@@ -1292,7 +1292,6 @@ extension SignupView {
       emailCheckButton,
       ageCheckButton
     ]
-    
     delegate?.squareButtonTouched(button: button, leftButtons: buttons)
   }
   

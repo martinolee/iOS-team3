@@ -92,7 +92,6 @@ class SignUpViewController: UIViewController {
 }
 // MARK: - Action
 extension SignUpViewController: SignupViewDelegate {
-  
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     switch textField {
     case signupView.idTextField:
@@ -706,25 +705,35 @@ extension SignUpViewController: SignupViewDelegate {
   func birthdayYearTextField(_ textField: UITextField,
                              shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let currentText = textField.text ?? ""
+    
+      let allowedCharacters = CharacterSet.decimalDigits
+      let characterSet = CharacterSet(charactersIn: string)
+
     guard let stringRange = Range(range, in: currentText) else { return false }
     let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
-    return updatedText.count <= 4
+    return updatedText.count <= 4 && allowedCharacters.isSuperset(of: characterSet)
   }
   
   func birthdayMonthTextField(_ textField: UITextField,
                               shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let currentText = textField.text ?? ""
+    let allowedCharacters = CharacterSet.decimalDigits
+    let characterSet = CharacterSet(charactersIn: string)
+    
     guard let stringRange = Range(range, in: currentText) else { return false }
     let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
-    return updatedText.count <= 2
+    return updatedText.count <= 2 && allowedCharacters.isSuperset(of: characterSet)
   }
   
   func birthdayDayTextField(_ textField: UITextField,
                             shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    let allowedCharacters = CharacterSet.decimalDigits
+    let characterSet = CharacterSet(charactersIn: string)
+    
     let currentText = textField.text ?? ""
     guard let stringRange = Range(range, in: currentText) else { return false }
     let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
-    return updatedText.count <= 2
+    return updatedText.count <= 2 && allowedCharacters.isSuperset(of: characterSet)
   }
   
   func addressDetailTextField(_ textField: UITextField,

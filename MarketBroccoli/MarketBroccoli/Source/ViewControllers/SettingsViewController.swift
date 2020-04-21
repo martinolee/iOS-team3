@@ -45,11 +45,17 @@ class SettingsViewController: UIViewController {
     setupUI()
     self.addNavigationBarCartButton()
     self.setupBroccoliNavigationBar(title: "마이컬리")
+    autoLogin()
   }
 }
 
 // MARK: - UI
 extension SettingsViewController {
+  private func autoLogin() {
+    if UserDefaultManager.shared.get(for: .token) != nil {
+      isLogin = true
+    }
+  }
   private func setupUI() {
     view.addSubviews([myCurlyTableView])
     myCurlyTableView.snp.makeConstraints {
@@ -119,6 +125,8 @@ extension SettingsViewController: UITableViewDelegate {
     tableView.deselectRow(at: indexPath, animated: true)
     if indexPath.section == 5 && indexPath.row == 0 {
       isLogin = false
+      let emptyString: String? = nil
+      UserDefaultManager.shared.set(emptyString, for: .token)
     }
   }
 }

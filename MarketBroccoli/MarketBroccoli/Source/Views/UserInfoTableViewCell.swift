@@ -50,7 +50,7 @@ final class UserInfoTableViewCell: UITableViewCell {
   }
   private lazy var leftButton = UIButton(type: .system).then {
     $0.layer.masksToBounds = true
-    $0.backgroundColor = .lightGray
+    $0.backgroundColor = .kurlyGray3
     $0.setTitleColor(.black, for: .normal)
     $0.titleLabel?.textAlignment = .center
     $0.setTitle("전체등급 보기", for: .normal)
@@ -59,7 +59,7 @@ final class UserInfoTableViewCell: UITableViewCell {
   private lazy var rightButton = UIButton(type: .system).then {
     $0.layer.cornerRadius = $0.bounds.height / 2
     $0.layer.masksToBounds = true
-    $0.backgroundColor = .lightGray
+    $0.backgroundColor = .kurlyGray3
     $0.setTitleColor(.black, for: .normal)
     $0.titleLabel?.textAlignment = .center
     $0.setTitle("다음 달 예상등급 보기", for: .normal)
