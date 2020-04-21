@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import Alamofire
 
 class CategoryDetailViewController: UIViewController {
   // MARK: - Properties
@@ -27,6 +28,12 @@ class CategoryDetailViewController: UIViewController {
   }
   var categoryDetailNavigationTitle = ""
   var categoryDetatilMenuBarTitle = ""
+  var categoryId: Int? {
+    didSet {
+      print("didSet categoryID")
+    }
+  }
+  
   // MARK: - Life Cycle
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -92,8 +99,10 @@ extension CategoryDetailViewController: UICollectionViewDataSource {
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    guard let categoryId = categoryId else { return UICollectionViewCell() }
     let cell = collectionView.dequeue(CategoryDetailCollectionViewCell.self, indexPath: indexPath)
     print(categoryDetatilMenuBarTitle)
+    cell.configure(id: categoryId)
     return cell
   }
 }
