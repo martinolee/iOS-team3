@@ -9,7 +9,7 @@
 import Foundation
 
 struct ProductList {
-  let id: Int
+  let id: Int?
   let name: String?
   let discountRate: Double
   var productOptions: [SelectableProduct]
@@ -24,4 +24,19 @@ struct ProductOption {
   let id: Int
   let name: String
   let price: Int
+}
+
+struct BEOptions: Decodable {
+  let options: [Option]
+  
+  struct Option: Decodable {
+    let id: Int
+    let name: String
+    let price, product: Int
+    
+    private enum CodingKeys: String, CodingKey {
+      case id = "pk"
+      case name, price, product
+    }
+  }
 }

@@ -15,12 +15,17 @@ class CartManager {
   private init() { }
   
   func addProductIntoCart(_ product: UpdatedProduct, completionHandler: @escaping (Result<Data, Error>) -> Void) {
+    guard let token = UserDefaultManager.shared.get(for: .token) as? String else { return }
+    
     AF.request(
       "http://15.164.49.32/kurly/cart/",
       method: .post,
       parameters: product,
       encoder: JSONParameterEncoder.default,
-      headers: ["Content-Type": "application/json"]
+      headers: [
+        "Content-Type": "application/json",
+        "Authorization": "Token \(token)"
+      ]
     )
       .validate()
       .responseData { response in
@@ -35,15 +40,20 @@ class CartManager {
   
   func patchProductQuntity(
     id: Int, product: UpdatedProduct,
-    completionHandler: @escaping (Result<Data, Error>) -> Void) {
+    completionHandler: @escaping (Result<Data, Error>) -> Void
+  ) {
+    guard let token = UserDefaultManager.shared.get(for: .token) as? String else { return }
+    
     AF.request(
       "http://15.164.49.32/kurly/cart/\(id)/",
       method: .patch,
       parameters: product,
       encoder: JSONParameterEncoder.default,
-      headers: ["Content-Type": "application/json"]
+      headers: [
+        "Content-Type": "application/json",
+        "Authorization": "Token \(token)"
+      ]
     )
-      .authenticate(username: "admin", password: "admin123")
       .validate()
       .responseData { response in
         switch response.result {
@@ -56,9 +66,12 @@ class CartManager {
   }
   
   func removeProduct(id: Int, completionHandler: @escaping (Result<Data, Error>) -> Void) {
+    guard let token = UserDefaultManager.shared.get(for: .token) as? String else { return }
+    
     AF.request(
       "http://15.164.49.32/kurly/cart/\(id)/",
-      method: .delete
+      method: .delete,
+      headers: ["Authorization": "Token \(token)"]
     )
       .validate()
       .responseData { response in
@@ -71,8 +84,14 @@ class CartManager {
     }
   }
   
-  func fetchCart(_ url: String, completionHandler: @escaping (Result<Data, Error>) -> Void) {
-    AF.request(url)
+  func fetchCart(completionHandler: @escaping (Result<Data, Error>) -> Void) {
+    guard let token = UserDefaultManager.shared.get(for: .token) as? String else { return }
+    
+    AF.request(
+      "http://15.164.49.32/kurly/cart/",
+      method: .get,
+      headers: ["Authorization": "Token \(token)"]
+    )
       .validate()
       .responseData { response in
         switch response.result {
