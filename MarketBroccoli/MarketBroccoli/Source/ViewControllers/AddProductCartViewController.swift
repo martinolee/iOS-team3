@@ -94,7 +94,7 @@ extension AddProductCartViewController: AddProductCartViewDataSource {
     return cell
   }
 }
-  
+
 // MARK: - Action Handler
 
 extension AddProductCartViewController: AddProductCartViewDelegate {
@@ -161,16 +161,16 @@ extension AddProductCartViewController: AddProductCartViewDelegate {
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
     guard let productList = productList else { return nil }
     var totalPrice = 0
-    
+
     for product in productList.productOptions {
       totalPrice += product.product.price * product.quantity
     }
-    
+
     return tableView.dequeue(SelectingProductFooter.self).then {
       $0.configure(totalPrice: totalPrice)
     }
   }
-  
+
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
     38
   }
@@ -211,7 +211,6 @@ extension AddProductCartViewController {
         }
         
         self.productList = productList
-        
         self.addProductCartView.removeDimView()
       case .failure(let error):
         print(error.localizedDescription)
