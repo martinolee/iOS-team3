@@ -13,14 +13,17 @@ class IDFindView: UIView {
     $0.placeholder = "이름을 입력해주세요."
     $0.textFieldStyle()
   }
+  
   private var emailTextField = UITextField().then {
     $0.placeholder = "이메일을 입력해주세요."
     $0.textFieldStyle()
   }
+  
   private var submitButton = UIButton().then {
     $0.setTitle("확인", for: .normal)
     $0.roundPurpleBtnStyle()
   }
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
     setupUI()
@@ -40,20 +43,21 @@ class IDFindView: UIView {
       let buttonTopMargin: CGFloat = 12
       
       nameTextField.snp.makeConstraints {
-        $0.height.equalTo(self.snp.height).dividedBy(height)
-        $0.top.equalTo(self.snp.top).offset(margin)
+        $0.top.equalToSuperview().offset(margin)
         $0.centerX.equalToSuperview()
+        $0.height.equalToSuperview().dividedBy(height)
         $0.width.equalToSuperview().multipliedBy(0.86)
       }
+      
       emailTextField.snp.makeConstraints {
-        $0.height.equalTo(self.snp.height).dividedBy(height)
+        $0.height.equalToSuperview().dividedBy(height)
         $0.top.equalTo(nameTextField.snp.bottom).offset(buttonTopMargin)
         $0.centerX.equalToSuperview()
         $0.width.equalToSuperview().multipliedBy(0.86)
       }
       
       submitButton.snp.makeConstraints {
-        $0.height.equalTo(self.snp.height).dividedBy(height)
+        $0.height.equalToSuperview().dividedBy(height)
         $0.top.equalTo(emailTextField.snp.bottom).offset(margin)
         $0.centerX.equalToSuperview()
         $0.width.equalToSuperview().multipliedBy(0.86)

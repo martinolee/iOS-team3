@@ -9,6 +9,7 @@
 import UIKit
 
 class Categories {
+  
   static let HomeCategory = ["컬리추천", "신상품", "베스트", "알뜰쇼핑", "이벤트"]
   static let HomeMDCategory = [
     " 채소 ", " 과일･견과･쌀 ", " 수산･해산･건어물 ", " 정육･계란 ",
@@ -20,6 +21,7 @@ class Categories {
 }
 
 class WhyKurly {
+  
   static let icons: [UIImage] = [
     UIImage(named: "whykurly1")!,
     UIImage(named: "whykurly2")!,
