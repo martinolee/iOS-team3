@@ -22,7 +22,6 @@ class KurlyNotification {
   }
   
   private var activityIndicatorView = UIActivityIndicatorView()
-  private init() { }
   
   func notification(text: String) {
     guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
@@ -53,4 +52,5 @@ class KurlyNotification {
       })
     }
   }
+  private init() { }
 }

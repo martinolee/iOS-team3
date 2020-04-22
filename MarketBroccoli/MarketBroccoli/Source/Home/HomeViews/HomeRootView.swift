@@ -61,8 +61,8 @@ extension HomeRootView {
             name == endPoint else { return }
           category.reloadData()
         }
-      case .failure(let error):
-        print(error)
+      case .failure(let _):
+        KurlyNotification.shared.notification(text: "잠시후 다시 시도해주십시오.")
       }
     }
   }

@@ -98,10 +98,11 @@ extension LoginViewController: LoginViewDelegate {
   
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     if textField == loginView.idTextField {
-          loginView.pwTextField.becomeFirstResponder()
-        } else {
-          loginView.pwTextField.resignFirstResponder()
-        }
+      loginView.pwTextField.becomeFirstResponder()
+    } else {
+      loginView.pwTextField.resignFirstResponder()
+      loginButtonTouched()
+    }
     return true
   }
   
