@@ -207,10 +207,12 @@ extension HomeRootView: UICollectionViewDelegateFlowLayout {
 // MARK: - CollectionViewDelegate
 extension HomeRootView: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    guard let item = collectionView.cellForItem(at: indexPath) as? ProductCollectionCell,
+      let ID = item.productId else { return }
     ObserverManager.shared.post(
       observerName: .productTouched,
       object: nil,
-      userInfo: ["indexPath": indexPath])
+      userInfo: ["productId": ID])
   }
 }
 
@@ -224,16 +226,17 @@ extension HomeRootView: UICollectionViewDataSource {
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     guard let collectionView = collectionView as? NewProduct,
-    let name = collectionView.collectionName else { return UICollectionViewCell() }
+      let name = collectionView.collectionName else { return UICollectionViewCell() }
     let cellItem = model[name] ?? [MainItem]()
     let cell = collectionView.dequeue(ProductCollectionCell.self, indexPath: indexPath)
-    let asd = cellItem[indexPath.item]
+    let item = cellItem[indexPath.item]
     
     cell.configure(
-      productName: asd.name,
-      productImage: asd.thumbImage,
-      price: asd.price,
-      discount: asd.discountRate,
+      productId: item.id,
+      productName: item.name,
+      productImage: item.thumbImage,
+      price: item.price,
+      discount: item.discountRate,
       additionalInfo: [],
       isSoldOut: false,
       productIndexPath: indexPath

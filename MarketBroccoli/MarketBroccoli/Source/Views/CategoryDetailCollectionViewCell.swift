@@ -81,6 +81,7 @@ extension CategoryDetailCollectionViewCell: UICollectionViewDataSource {
     let cell = collectionView.dequeue(ProductCollectionCell.self, indexPath: indexPath)
     let categoryProduct = categoryProductList[indexPath.row]
     cell.configure(
+      productId: categoryProduct.id,
       productName: categoryProduct.name,
       productImage: categoryProduct.image,
       price: categoryProduct.price,

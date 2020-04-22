@@ -18,12 +18,12 @@ class RecommendationView: UITableView {
       self.reloadSections(IndexSet(integer: 0), with: .none)
     }
   }
-  private var recommendModel: HomeItems? {
+  private var recommendModel: [RequestHome: HomeItems]? = [RequestHome.recommendation: HomeItems()]{
     didSet {
       self.reloadSections(IndexSet(integer: 1), with: .none)
     }
   }
-  private var discountModel: HomeItems? {
+  private var discountModel: [RequestHome: HomeItems]? = [RequestHome.discount: HomeItems()] {
     didSet {
       self.reloadSections(IndexSet(integer: 3), with: .none)
     }
@@ -33,12 +33,12 @@ class RecommendationView: UITableView {
       self.reloadSections(IndexSet(integer: 4), with: .none)
     }
   }
-  private var newModel: HomeItems? {
+  private var newModel: [RequestHome: HomeItems]? = [RequestHome.new: HomeItems()] {
     didSet {
       self.reloadSections(IndexSet(integer: 5), with: .none)
     }
   }
-  private var bestModel: HomeItems? {
+  private var bestModel: [RequestHome: HomeItems]? = [RequestHome.best: HomeItems()] {
     didSet {
       self.reloadSections(IndexSet(integer: 6), with: .none)
     }
@@ -65,10 +65,10 @@ extension RecommendationView {
           switch res {
           case .success(let data):
             switch endPoint {
-            case .recommendation: self.recommendModel = data
-            case .new: self.newModel = data
-            case .best: self.bestModel = data
-            case .discount: self.discountModel = data
+            case .recommendation: self.recommendModel?[endPoint] = data
+            case .new: self.newModel?[endPoint] = data
+            case .best: self.bestModel?[endPoint] = data
+            case .discount: self.discountModel?[endPoint] = data
             default:
               print("Error")
             }

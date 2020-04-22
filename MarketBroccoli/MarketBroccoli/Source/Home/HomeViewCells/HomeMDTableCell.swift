@@ -126,10 +126,12 @@ extension HomeMDTableCell: UIScrollViewDelegate {
 
 extension HomeMDTableCell: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    guard let item = collectionView.cellForItem(at: indexPath) as? HomeProductCollectionCell,
+      let ID = item.productId else { return }
     ObserverManager.shared.post(
       observerName: .productTouched,
       object: nil,
-      userInfo: ["indexPath": indexPath])
+      userInfo: ["productId": ID])
   }
 }
 
