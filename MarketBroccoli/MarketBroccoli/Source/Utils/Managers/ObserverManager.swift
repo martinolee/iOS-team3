@@ -16,6 +16,7 @@ class ObserverManager {
     case productTouched = "ProductTouched"
     case showAllBtnTouched = "ShowAllBtnTouched"
     case imageTouched = "ImageTouched"
+    case bannerShared = "BannerShared"
   }
   
   func registerObserver(target: Any, selector: Selector, observerName: NotiNames, object: Any?) {

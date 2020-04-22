@@ -14,6 +14,12 @@ class UserDefaultManager {
   
   static let shared = UserDefaultManager()
   
+  func remove(for key: Key) {
+    let empty: Any? = nil
+    
+    set(empty, for: key)
+  }
+  
   func set<T>(_ value: T?, for key: Key) {
     UserDefaults.standard.set(value, forKey: key.rawValue)
     UserDefaults.standard.synchronize()
@@ -21,6 +27,10 @@ class UserDefaultManager {
   
   func get(for key: Key) -> Any? {
     UserDefaults.standard.object(forKey: key.rawValue)
+  }
+  
+  func isLogin() -> Bool {
+    UserDefaults.standard.object(forKey: Key.token.rawValue) != nil
   }
   
   private init() { }
