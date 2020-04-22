@@ -47,8 +47,6 @@ class SignUpViewController: UIViewController {
     
     signupView.backgroundColor = .white
     self.view.backgroundColor = .white
-    //    let guide = self.view.safeAreaLayoutGuide
-    
     signupView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
