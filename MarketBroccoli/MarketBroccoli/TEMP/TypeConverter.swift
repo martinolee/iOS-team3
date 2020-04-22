@@ -30,6 +30,15 @@ func moneyFormatter(won: Double, hasUnit: Bool) -> String {
   return result
 }
 
+func discountFormatter(discountRate: Double, hasUnit: Bool = true) -> String {
+  let discount = Int(discountRate * 100)
+  if hasUnit {
+    return discount.description + "%"
+  } else {
+    return discount.description
+  }
+}
+
 func dateFormat(date: Date) -> String {
   let formatter = DateFormatter().then {
     $0.dateFormat =  "yyyy년 MM월 dd일"
