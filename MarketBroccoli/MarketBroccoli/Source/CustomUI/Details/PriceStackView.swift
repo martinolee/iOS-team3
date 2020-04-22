@@ -14,9 +14,9 @@ class PriceStackView: UIStackView {
   }
   private let priceLabel = UILabel().then {
     $0.attributedText = NSMutableAttributedString()
-    .bold("2,185", fontSize: 17)
-    .normal("원 ", fontSize: 13)
-    .normal("5%", textColor: .red, fontSize: 17)
+      .bold("2,185", fontSize: 17)
+      .normal("원 ", fontSize: 13)
+      .normal("5%", textColor: .red, fontSize: 17)
   }
   private let beforePriceBtn = UIButton().then {
     $0.setAttributedTitle(NSMutableAttributedString().strikethrough("2300원", textColor: .kurlyGray1), for: .normal)
@@ -40,8 +40,8 @@ class PriceStackView: UIStackView {
   }
   private let mileageLabel = UILabel().then {
     $0.attributedText = NSMutableAttributedString()
-    .normal("개당 ", fontSize: 15)
-    .bold("109원 적립", fontSize: 15)
+      .normal("개당 ", fontSize: 15)
+      .bold("109원 적립", fontSize: 15)
   }
   private let loginDescriptionLabel = UILabel().then {
     $0.textColor = .kurlyMainPurple
@@ -78,6 +78,49 @@ class PriceStackView: UIStackView {
 }
 
 extension PriceStackView {
+  func configure(price: Int, discount: Double) {
+    let isDiscount = !discount.isZero
+    let isLogin = UserDefaultManager.shared.isLogin()
+    let priceString = NSMutableAttributedString()
+      .bold(moneyFormatter(won: price, hasUnit: false), fontSize: 17)
+      .normal("원 ", fontSize: 13)
+    if isLogin {
+      removeElement(loginDescriptionLabel)
+      mileageLabel.do {
+        $0.attributedText = NSMutableAttributedString()
+          .normal("개당 ", fontSize: 15)
+          .bold(moneyFormatter(won: Double(price) * 0.05, hasUnit: true) + " 적립", fontSize: 15)
+      }
+      if isDiscount {
+        priceString.normal(discountFormatter(discountRate: discount), textColor: .red, fontSize: 17)
+      } else {
+        removeElement([descriptionLabel, beforePriceBtn])
+      }
+    } else {
+      removeElement(welcomeStackView)
+      if isDiscount {
+        loginDescriptionLabel.text = "로그인 후, 회원할인가와 적립혜택이 제공됩니다."
+        priceString.normal(discountFormatter(discountRate: discount), textColor: .red, fontSize: 17)
+      } else {
+        removeElement([descriptionLabel, beforePriceBtn])
+        loginDescriptionLabel.text = "로그인 후, 적립혜택이 제공됩니다."
+      }
+    }
+    priceLabel.do {
+      $0.attributedText = priceString
+    }
+    beforePriceBtn.do {
+      $0.setAttributedTitle(NSMutableAttributedString()
+        .strikethrough(
+          moneyFormatter(
+            won: Double(price) / (1 - discount),
+            hasUnit: true),
+          textColor: .kurlyGray1),
+                            for: .normal
+      )
+    }
+  }
+  
   private func removeElement(_ element: UIView) {
     self.removeArrangedSubview(element)
     element.removeFromSuperview()

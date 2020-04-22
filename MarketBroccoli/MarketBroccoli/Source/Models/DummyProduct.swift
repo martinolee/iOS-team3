@@ -60,5 +60,13 @@ var productDummy: [DummyProduct] = [
     discount: 0,
     additionalInfo: ["Kurly Only"],
     isSoldOut: false
+  ),
+  DummyProduct(
+    name: "[선물세트] 박찬회화과자 명장 양갱 종합 25구",
+    imageURL: "https://img-cf.kurly.com/shop/data/goods/1577172106761y0.jpg",
+    price: 70_000,
+    discount: 0,
+    additionalInfo: ["Kurly Only"],
+    isSoldOut: true
   )
 ]

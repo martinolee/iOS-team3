@@ -59,7 +59,11 @@ extension HomeProductCollectionCell {
       priceLabel.text = moneyFormatter(won: item.price, hasUnit: true)
       strikethroughPriceLabel.text = moneyFormatter(won: Double(item.price) / (1 - item.discountRate), hasUnit: true)
       strikethroughPriceLabel.strikethrough()
-      eventMarkResize(target: imageView, add: eventMark, discount: Int(item.discountRate * 100), width: width)
+      eventMarkResize(
+        target: imageView,
+        add: eventMark,
+        discount: discountFormatter(discountRate: item.discountRate, hasUnit: false),
+        width: width)
       eventMark.isHidden = false
     } else {
       priceLabel.text = moneyFormatter(won: item.price, hasUnit: true)
@@ -68,10 +72,10 @@ extension HomeProductCollectionCell {
     }
   }
   
-  func eventMarkResize(target: UIImageView, add view: UIView, discount: Int, width: CGFloat) {
+  func eventMarkResize(target: UIImageView, add view: UIView, discount: String, width: CGFloat) {
     let eventMarkAttributeString = NSMutableAttributedString()
       .normal("SAVE\n", textColor: .white, fontSize: 12)
-      .bold("\(discount)", fontSize: 16)
+      .bold(discount, fontSize: 16)
       .normal("%", textColor: .white, fontSize: 12)
     eventMark.textLabel.attributedText = eventMarkAttributeString
     if (width / 4) < ((eventMark.textLabel.getWidth() ?? 0) + 4) {
