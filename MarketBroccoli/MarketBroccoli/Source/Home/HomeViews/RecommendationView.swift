@@ -47,6 +47,7 @@ class RecommendationView: UITableView {
   override init(frame: CGRect, style: UITableView.Style) {
     super.init(frame: frame, style: style)
     setupAttr()
+    setupUI()
     dataRequest() {}
   }
   
@@ -57,6 +58,10 @@ class RecommendationView: UITableView {
 
 // MARK: - ACTIONS
 extension RecommendationView {
+  @objc private func scrollToTop(_ sender: UIButton) {
+    self.setContentOffset(.zero, animated: true)
+  }
+  
   private func dataRequest(_ success: @escaping () -> ()) {
     DispatchQueue.global().async { [weak self] in
       guard let self = self else { return }
@@ -102,7 +107,6 @@ extension RecommendationView {
       self.refreshControl?.endRefreshing()
     }
   }
-  
 }
 
 // MARK: - UI
@@ -121,6 +125,24 @@ extension RecommendationView {
     self.register(cell: HomeEventTableCell.self)
     self.register(cell: HomeMDTableCell.self)
     self.register(cell: EasterEggTableCell.self)
+  }
+  
+  private func setupUI() {
+    let safeArea = self.safeAreaLayoutGuide
+    let scrollToTopBtn = UIButton(type: .system).then {
+      $0.addTarget(self, action: #selector(scrollToTop(_:)), for: .touchUpInside)
+      $0.backgroundColor = .white
+      $0.tintColor = .black
+      $0.layer.borderWidth = 1
+      $0.layer.borderColor = UIColor.kurlyGray2.cgColor
+      $0.layer.cornerRadius = 25
+      $0.setImage(UIImage(systemName: "arrow.up"), for: .normal)
+    }
+    self.addSubview(scrollToTopBtn)
+    scrollToTopBtn.snp.makeConstraints {
+      $0.bottom.trailing.equalTo(safeArea).offset(-20)
+      $0.width.height.equalTo(50)
+    }
   }
 }
 

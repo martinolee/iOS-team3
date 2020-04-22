@@ -44,6 +44,20 @@ class ShowAllProductViewController: UIViewController {
 // MARK: - ACTIONS
 extension ShowAllProductViewController {
   func configure(requestKey key: RequestHome) {
+    var title = ""
+    switch key {
+    case .recommendation:
+      title = "추천상품"
+    case .discount:
+      title = "알뜰쇼핑"
+    case .new:
+      title = "신상품"
+    case .best:
+      title = "지금 가장 핫한 상품"
+    default:
+      title = "마켓브로콜리"
+    }
+    self.navigationItem.title = title
     requestKey = key
   }
 }

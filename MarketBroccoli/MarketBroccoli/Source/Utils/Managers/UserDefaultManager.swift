@@ -23,5 +23,9 @@ class UserDefaultManager {
     UserDefaults.standard.object(forKey: key.rawValue)
   }
   
+  func isLogin() -> Bool {
+    UserDefaults.standard.object(forKey: Key.token.rawValue) != nil
+  }
+  
   private init() { }
 }
