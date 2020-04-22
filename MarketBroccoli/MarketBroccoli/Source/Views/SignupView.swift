@@ -90,6 +90,7 @@ class SignupView: UIView, UITextFieldDelegate {
   
   lazy var nameTextField = UITextField().then {
     $0.placeholder = "고객님의 이름을 입력해주세요"
+    $0.keyboardType = .default
     $0.autocapitalizationType = .none
     $0.delegate = self
     $0.signupStyle(round: .roundedRect, clearButton: .whileEditing)
@@ -103,6 +104,7 @@ class SignupView: UIView, UITextFieldDelegate {
   
   lazy var emailTextFeild = UITextField().then {
     $0.placeholder = "예: marketkurly@kurly.com"
+    $0.keyboardType = .emailAddress
     $0.autocapitalizationType = .none
     $0.layer.borderWidth = 1
     $0.layer.borderColor = UIColor.clear.cgColor
@@ -119,6 +121,7 @@ class SignupView: UIView, UITextFieldDelegate {
   lazy var cellphoneTextField = UITextField().then {
     $0.placeholder = "'-' 없이 숫자만"
     $0.delegate = self
+    $0.keyboardType = .phonePad
     $0.addTarget(self, action: #selector(cellphoneTextFieldEditingChanged), for: .editingChanged)
     $0.signupStyle(round: .roundedRect, clearButton: .whileEditing)
   }
@@ -135,6 +138,7 @@ class SignupView: UIView, UITextFieldDelegate {
   
   lazy var checkingCodeTexField = UITextField().then {
     $0.delegate = self
+    $0.keyboardType = .phonePad
     $0.signupStyle(round: .roundedRect, clearButton: .whileEditing)
   }
   
@@ -223,6 +227,7 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.borderStyle = .none
     $0.textAlignment = .center
     $0.delegate = self
+    $0.keyboardType = .phonePad
   }
   
   private let firstSlashLabel = SignupLabel(textColor: nil, font: nil).then {
@@ -234,6 +239,7 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.borderStyle = .none
     $0.textAlignment = .center
     $0.delegate = self
+    $0.keyboardType = .phonePad
   }
   
   private let secondSlashLabel = SignupLabel(textColor: nil, font: nil).then {
@@ -245,6 +251,7 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.borderStyle = .none
     $0.textAlignment = .center
     $0.delegate = self
+    $0.keyboardType = .phonePad
   }
   
   private let genderLabel = SignupLabel(textColor: nil, font: nil).then {
@@ -1330,7 +1337,6 @@ extension SignupView {
     delegate?.toucheBegan()
   }
 }
-
 extension SignupView: WKScriptMessageHandler {
   func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
     delegate?.userContentController(userContentController, didReceive: message)
