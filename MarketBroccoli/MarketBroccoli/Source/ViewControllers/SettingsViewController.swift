@@ -12,6 +12,7 @@ class SettingsViewController: UIViewController {
       myCurlyTableView.reloadData()
     }
   }
+  
   private let settingOptBeforeLogin = [
     ["Login"],
     ["비회원 주문 조회"],
@@ -42,14 +43,19 @@ class SettingsViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUI()
-    
     self.addNavigationBarCartButton()
     self.setupBroccoliNavigationBar(title: "마이컬리")
+    autoLogin()
   }
 }
 
 // MARK: - UI
 extension SettingsViewController {
+  private func autoLogin() {
+    if UserDefaultManager.shared.get(for: .token) != nil {
+      isLogin = true
+    }
+  }
   private func setupUI() {
     view.addSubviews([myCurlyTableView])
     myCurlyTableView.snp.makeConstraints {
@@ -69,9 +75,11 @@ extension SettingsViewController: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
     isLogin ? settingOptAfterLogin.count : settingOptBeforeLogin.count
   }
+  
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     isLogin ? settingOptAfterLogin[section].count : settingOptBeforeLogin[section].count
   }
+  
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     switch indexPath.section {
     case 0:
@@ -84,7 +92,6 @@ extension SettingsViewController: UITableViewDataSource {
         : tableView.dequeue(SettingsTableViewCell.self).then({
             $0.delegate = self
           })
-      
     default:
       let cell = tableView.dequeueReusableCell(withIdentifier: "Detail", for: indexPath)
       let text = isLogin
@@ -118,6 +125,8 @@ extension SettingsViewController: UITableViewDelegate {
     tableView.deselectRow(at: indexPath, animated: true)
     if indexPath.section == 5 && indexPath.row == 0 {
       isLogin = false
+      let emptyString: String? = nil
+      UserDefaultManager.shared.set(emptyString, for: .token)
     }
   }
 }
