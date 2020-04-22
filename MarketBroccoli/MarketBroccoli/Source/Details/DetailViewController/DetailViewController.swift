@@ -19,6 +19,8 @@ class DetailViewController: UIViewController {
           switch $0 {
           case .success(let data):
             self.model = data
+            guard let detailImage = self.model?.images.first(where: { $0.name == "detail" }) else { return }
+            self.rootView.detailImageView.detailImage = detailImage.image
           case .failure(let error):
             print(error)
           }
@@ -26,10 +28,13 @@ class DetailViewController: UIViewController {
       }
     }
   }
-  private var model: ProductModel? {
+  open var model: ProductModel? {
     didSet {
       guard let tableView = self.rootView.scrollView.subviews.first as? DetailDescriptionTableView else { return }
-      tableView.reloadData()
+      DispatchQueue.main.async {
+        self.rootView.scrollView.reloadInputViews()
+        tableView.reloadData()
+      }
       print("reload")
     }
   }
@@ -64,10 +69,10 @@ extension DetailViewController {
   }
   
   @objc private func receiveNotification(_ notification: Notification) {
-    guard let image = notification.userInfo?["image"] as? UIImage else { return }
+    guard let image = model?.images.first(where: { $0.name == "detail" }) else { return }
     let popupImageVC = PopImageViewController()
     popupImageVC.modalPresentationStyle = .fullScreen
-    popupImageVC.configure(image: image)
+    popupImageVC.configure(image: image.image)
     self.present(popupImageVC, animated: true)
   }
 }
@@ -85,11 +90,15 @@ extension DetailViewController: UITableViewDataSource {
       cell.configure(detail: model)
       return cell
     case 1:
+      var images = [String: UIImage]()
       let cell = tableView.dequeue(DetailDescriptionBottomTableCell.self)
-      cell.configure(detail: model)
-      tableView.beginUpdates()
-      tableView.reloadRows(at: [indexPath], with: .none)
-      tableView.endUpdates()
+      for image in model.images {
+        if ["detail", "thumb", "check"].contains(image.name) {
+          images[image.name] = downloadImage(imageURL: image.image)
+        }
+      }
+      cell.configure(detail: model, images: images)
+      
       return cell
     default:
       fatalError()
