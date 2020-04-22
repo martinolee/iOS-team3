@@ -10,28 +10,29 @@ import UIKit
 
 class BuyOftenViewController: UIViewController {
   // MARK: - Properties
-
   private let stateLabel = UILabel().then {
     $0.text = "아직 구매한 상품이 없습니다."
     $0.textColor = .lightGray
     $0.font = UIFont.systemFont(ofSize: 18)
   }
+  
   private lazy var bestButton = UIButton().then {
     $0.setTitle("베스트 상품 보러가기", for: .normal)
     $0.circleLineBtnStyle()
   }
    // MARK: - Life Cycle
-  
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUI()
     setupNavigtion()
     setupLayout()
   }
+  
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     bestButton.makeCircleButton()
   }
+  
   override func viewWillDisappear(_ animated: Bool) {
     self.setupBroccoliNavigationBar(title: "카테고리")
     self.addNavigationBarCartButton()
@@ -44,10 +45,12 @@ class BuyOftenViewController: UIViewController {
       view.addSubview($0)
     }
   }
+  
   private func setupNavigtion() {
     self.setupSubNavigationBar(title: "자주 사는 상품")
     self.addSubNavigationBarCartButton()
   }
+  
   private func setupLayout() {
     let guide = view.safeAreaLayoutGuide
     stateLabel.snp.makeConstraints { (make) -> Void in

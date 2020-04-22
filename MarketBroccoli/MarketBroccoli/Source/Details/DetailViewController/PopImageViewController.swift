@@ -24,14 +24,14 @@ class PopImageViewController: UIViewController {
     $0.delegate = self
     $0.bounces = false
     $0.minimumZoomScale = 1.0
-    $0.maximumZoomScale = 2.0
+    $0.maximumZoomScale = 3.0
     $0.alwaysBounceVertical = false
     $0.alwaysBounceHorizontal = false
     $0.showsVerticalScrollIndicator = false
     $0.showsHorizontalScrollIndicator = false
   }
   private lazy var imageView = UIImageView().then {
-    $0.contentMode = .scaleAspectFill
+    $0.contentMode = .scaleAspectFit
     $0.isUserInteractionEnabled = true
     $0.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(imageTouched(_:))))
   }
@@ -40,14 +40,9 @@ class PopImageViewController: UIViewController {
     return .lightContent
   }
   
-  var popupImage: UIImage? {
-    willSet {
-      imageView.image = newValue
-    }
-  }
-  
   override func viewDidLoad() {
     super.viewDidLoad()
+    self.view.backgroundColor = .black
     setupUI()
   }
   
@@ -58,7 +53,6 @@ class PopImageViewController: UIViewController {
     }
   }
   
-  var imageSize: CGSize = .zero
   var isVertical: Bool = true
 }
 
@@ -70,7 +64,8 @@ extension PopImageViewController: UIScrollViewDelegate {
   let subView = scrollView.subviews[0]
   let offsetX = max((scrollView.bounds.size.width - scrollView.contentSize.width) * 0.5, 0.0)
   let offsetY = max((scrollView.bounds.size.height - scrollView.contentSize.height) * 0.5, 0.0)
-    subView.center = CGPoint(x: scrollView.contentSize.width * 0.5 + offsetX, y: scrollView.contentSize.height * 0.5 + offsetY)
+    subView.center = CGPoint(x: scrollView.contentSize.width * 0.5 + offsetX,
+                             y: scrollView.contentSize.height * 0.5 + offsetY)
   }
 }
 
@@ -86,16 +81,11 @@ extension PopImageViewController {
     }
   }
   
-  @objc private func imageDissmiss(_ sender: UISwipeGestureRecognizer) {
-    if sender.direction == .down {
-      print("down")
+  func configure(image: String) {
+    imageView.setImage(urlString: image)
+    if let imageSize = imageView.image?.size {
+      isVertical = imageSize.width < imageSize.height
     }
-  }
-  
-  func configure(image: UIImage) {
-    popupImage = image
-    imageSize = image.size
-    isVertical = imageSize.width < imageSize.height
   }
 }
 

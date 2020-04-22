@@ -61,8 +61,8 @@ extension HomeRootView {
             name == endPoint else { return }
           category.reloadData()
         }
-      case .failure(let error):
-        print(error)
+      case .failure(let _):
+        KurlyNotification.shared.notification(text: "잠시후 다시 시도해주십시오.")
       }
     }
   }
@@ -207,7 +207,8 @@ extension HomeRootView: UICollectionViewDelegateFlowLayout {
 // MARK: - CollectionViewDelegate
 extension HomeRootView: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    guard let item = collectionView.cellForItem(at: indexPath) as? ProductCollectionCell, let ID = item.productId else { return }
+    guard let item = collectionView.cellForItem(at: indexPath) as? ProductCollectionCell,
+      let ID = item.productId else { return }
     ObserverManager.shared.post(
       observerName: .productTouched,
       object: nil,

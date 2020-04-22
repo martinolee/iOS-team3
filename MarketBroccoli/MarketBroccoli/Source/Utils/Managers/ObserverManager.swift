@@ -46,7 +46,7 @@ class ObserverManager {
     }
   }
   
-  func post(observerName: NotiNames, object: Any?, userInfo: [AnyHashable : Any]? = nil) {
+  func post(observerName: NotiNames, object: Any?, userInfo: [AnyHashable: Any]? = nil) {
     if registerArray.contains(observerName.rawValue) {
       NotificationCenter.default.post(
         name: NSNotification.Name(observerName.rawValue),

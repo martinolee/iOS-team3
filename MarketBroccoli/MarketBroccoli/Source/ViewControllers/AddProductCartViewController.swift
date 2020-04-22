@@ -10,12 +10,12 @@ import UIKit
 
 class AddProductCartViewController: UIViewController {
   // MARK: - Properties
-   
+  
   private lazy var addProductCartView = AddProductCartView().then {
-    $0.dataSource = self
+//    $0.dataSource = self
     $0.delegate = self
   }
-//  http://15.164.49.32/kurly/product/\(id)/option/
+  //  http://15.164.49.32/kurly/product/\(id)/option/
   
   private lazy var dummy: ProductCategory? = ProductCategory(
     headID: 0,
@@ -117,73 +117,70 @@ extension AddProductCartViewController: AddProductCartViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeue(SelectingProductCell.self).then { _ in
-//      $0.configure(name: <#T##String#>, price: <#T##Int#>, discount: <#T##Double#>, shoppingItemIndexPath: indexPath)
-    guard let dummy = dummy else { return UITableViewCell() }
-    
-    let product = dummy.wishProducts[indexPath.row]
-    let cell = tableView.dequeue(SelectingProductCell.self).then {
-      $0.delegate = self
+      guard let dummy = dummy else { return UITableViewCell() }
+      let product = dummy.wishProducts[indexPath.row]
+      let cell = tableView.dequeue(SelectingProductCell.self).then {
+        $0.delegate = self
+        
+        $0.configure(
+          name: product.product.name,
+          price: product.product.price,
+          discount: dummy.discountRate,
+          quantity: product.quantity,
+          productIndexPath: indexPath
+        )
+      }
       
-      $0.configure(
-        name: product.product.name,
-        price: product.product.price,
-        discount: dummy.discountRate,
-        quantity: product.quantity,
-        productIndexPath: indexPath
-      )
-    }
-    
-    return cell
-  }
-}
-
-// MARK: - Action Handler
-
-extension AddProductCartViewController: AddProductCartViewDelegate {
-  func addProductInCartButtonTouched(_ button: UIButton) {
-    print("addProductInCartButtonTouched(_ button: UIButton)")
-  }
-  
-  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    guard let dummy = dummy, !dummy.wishProducts.isEmpty, let name = dummy.name else { return nil }
-    
-    return tableView.dequeue(ProductCategoryHeader.self).then {
-      $0.configure(productCategoryName: name)
+      return cell
     }
   }
   
-  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    guard let dummy = dummy, !dummy.wishProducts.isEmpty, dummy.name != nil else { return 0 }
-    
-    return 38
-  }
+  // MARK: - Action Handler
   
-  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    guard let dummy = dummy else { return nil }
-    var totalPrice = 0
-    
-    for product in dummy.wishProducts {
-      totalPrice += product.product.price * product.quantity
+  extension AddProductCartViewController: AddProductCartViewDelegate {
+    func addProductInCartButtonTouched(_ button: UIButton) {
+      print("addProductInCartButtonTouched(_ button: UIButton)")
     }
     
-    return tableView.dequeue(SelectingProductFooter.self).then {
-      $0.configure(totalPrice: totalPrice)
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+      guard let dummy = dummy, !dummy.wishProducts.isEmpty, let name = dummy.name else { return nil }
+      
+      return tableView.dequeue(ProductCategoryHeader.self).then {
+        $0.configure(productCategoryName: name)
+      }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+      guard let dummy = dummy, !dummy.wishProducts.isEmpty, dummy.name != nil else { return 0 }
+      
+      return 38
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+      guard let dummy = dummy else { return nil }
+      var totalPrice = 0
+      
+      for product in dummy.wishProducts {
+        totalPrice += product.product.price * product.quantity
+      }
+      
+      return tableView.dequeue(SelectingProductFooter.self).then {
+        $0.configure(totalPrice: totalPrice)
+      }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+      guard let dummy = dummy, !dummy.wishProducts.isEmpty, dummy.name != nil else { return 0 }
+      
+      return 38
     }
   }
   
-  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    guard let dummy = dummy, !dummy.wishProducts.isEmpty, dummy.name != nil else { return 0 }
-    
-    return 38
-  }
-}
-
-extension AddProductCartViewController: SelectingProductCellDelegate {
-  func productQuantityStepperValueChanged(_ value: Int, _ productIndexPath: IndexPath) {
-    print("productQuantityStepperValueChanged")
-    dummy?.wishProducts[productIndexPath.row].quantity = value
-    
-    addProductCartView.reloadProductTableViewData()
-  }
+  extension AddProductCartViewController: SelectingProductCellDelegate {
+    func productQuantityStepperValueChanged(_ value: Int, _ productIndexPath: IndexPath) {
+      print("productQuantityStepperValueChanged")
+      dummy?.wishProducts[productIndexPath.row].quantity = value
+      
+      addProductCartView.reloadProductTableViewData()
+    }
 }
