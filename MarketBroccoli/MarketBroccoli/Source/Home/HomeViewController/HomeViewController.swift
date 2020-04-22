@@ -17,6 +17,7 @@ class HomeViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    self.tabBarController?.delegate = self
     self.addNavigationBarCartButton()
     self.setupBroccoliNavigationBar(title: "마켓브로콜리")
   }
@@ -36,12 +37,13 @@ class HomeViewController: UIViewController {
       observerName: .productTouched,
       object: nil)
     ObserverManager.shared.resignObserver(
-    target: self,
-    observerName: .showAllBtnTouched,
-    object: nil)
+      target: self,
+      observerName: .showAllBtnTouched,
+      object: nil)
   }
 }
 
+// MARK: - ACTIONS
 extension HomeViewController {
   @objc private func receiveNotification(_ notification: Notification) {
     guard let userInfo = notification.userInfo as? [String: Int],
@@ -58,12 +60,34 @@ extension HomeViewController {
   
   @objc private func receiveNotificationShowAll(_ notification: Notification) {
     guard let userInfo = notification.userInfo as? [String: Any],
-    let requestKey = userInfo["requestKey"] as? RequestHome
-    else { return }
+      let requestKey = userInfo["requestKey"] as? RequestHome
+      else { return }
     let showAllVC = ShowAllProductViewController()
     
     showAllVC.hidesBottomBarWhenPushed = true
     showAllVC.configure(requestKey: requestKey)
     navigationController?.pushViewController(showAllVC, animated: true)
+  }
+}
+
+extension HomeViewController: UITabBarControllerDelegate {
+  func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+    if tabBarController.selectedIndex == 0 {
+      guard let navi = viewController as? UINavigationController,
+        let VC = navi.viewControllers[0] as? HomeViewController else { return }
+      
+      let scrollView = VC.rootView.scrollView
+      
+      if scrollView.contentOffset.x != 0 {
+        scrollView.setContentOffset(.zero, animated: true)
+      } else {
+        guard let recommendationView = scrollView.subviews.first(
+          where: { $0 as? RecommendationView != nil }) as? RecommendationView
+          else { return }
+        if recommendationView.contentOffset.y != 0 {
+          recommendationView.setContentOffset(.zero, animated: true)
+        }
+      }
+    }
   }
 }

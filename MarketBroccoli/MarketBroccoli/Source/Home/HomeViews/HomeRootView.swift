@@ -11,7 +11,7 @@ import Kingfisher
 
 class HomeRootView: UIView {
   private let selectedCategory = CategorySelected()
-  private let scrollView = UIScrollView().then {
+  let scrollView = UIScrollView().then {
     $0.isPagingEnabled = true
     $0.showsVerticalScrollIndicator = false
     $0.showsHorizontalScrollIndicator = false
