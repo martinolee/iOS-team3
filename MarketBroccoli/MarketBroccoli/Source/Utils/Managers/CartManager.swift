@@ -18,7 +18,7 @@ class CartManager {
     guard let token = UserDefaultManager.shared.get(for: .token) as? String else { return }
     
     AF.request(
-      "http://15.164.49.32/kurly/cart/",
+      RequestCart.cart.endPoint,
       method: .post,
       parameters: product,
       encoder: JSONParameterEncoder.default,
@@ -45,7 +45,7 @@ class CartManager {
     guard let token = UserDefaultManager.shared.get(for: .token) as? String else { return }
     
     AF.request(
-      "http://15.164.49.32/kurly/cart/\(id)/",
+      RequestCart.updateProduct(id).endPoint,
       method: .patch,
       parameters: product,
       encoder: JSONParameterEncoder.default,
@@ -69,7 +69,7 @@ class CartManager {
     guard let token = UserDefaultManager.shared.get(for: .token) as? String else { return }
     
     AF.request(
-      "http://15.164.49.32/kurly/cart/\(id)/",
+      RequestCart.removeProduct(id).endPoint,
       method: .delete,
       headers: ["Authorization": "Token \(token)"]
     )
@@ -84,16 +84,16 @@ class CartManager {
     }
   }
   
-  func fetchCart(completionHandler: @escaping (Result<Data, Error>) -> Void) {
+  func fetchCart(completionHandler: @escaping (Result<BackendCart, Error>) -> Void) {
     guard let token = UserDefaultManager.shared.get(for: .token) as? String else { return }
     
     AF.request(
-      "http://15.164.49.32/kurly/cart/",
+      RequestCart.cart.endPoint,
       method: .get,
       headers: ["Authorization": "Token \(token)"]
     )
       .validate()
-      .responseData { response in
+      .responseDecodable(of: BackendCart.self) { response in
         switch response.result {
         case .success(let data):
           completionHandler(.success(data))

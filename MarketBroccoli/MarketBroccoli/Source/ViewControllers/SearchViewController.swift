@@ -146,7 +146,12 @@ extension SearchViewController: SearchViewDelegate {
   }
   
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    print("collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)")
+    guard let navigationController = navigationController, let searchedProducts = searchedProducts else { return }
+    let productDetailViewController = DetailViewController().then {
+      $0.configure(productId: searchedProducts[indexPath.row].id)
+    }
+    
+    navigationController.pushViewController(productDetailViewController, animated: true)
   }
   
   func searchProductTextFieldEditingDidBegin(_ textField: UITextField, _ button: UIButton) {

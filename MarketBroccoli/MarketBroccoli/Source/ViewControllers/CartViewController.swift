@@ -19,6 +19,7 @@ class CartViewController: UIViewController {
     didSet {
       cartView.reloadCartTableViewData()
       updateHeaderFooter()
+      setCorrectSelectAllProductCheckBoxStatus()
     }
   }
   
@@ -43,9 +44,9 @@ class CartViewController: UIViewController {
     cartManager.fetchCart { [weak self] response in
       switch response {
       case .success(let data):
-        guard let self = self, let backendCart = try? JSONDecoder().decode(BackendCart.self, from: data) else { return }
+        guard let self = self else { return }
         
-        self.cart = convertCart(from: backendCart)
+        self.cart = convertCart(from: data)
         self.cartView.removeDimView()
         self.cartView.hideAllFooterSubviews(false)
       case .failure(let error):
@@ -230,11 +231,17 @@ extension CartViewController: CartViewDelegate {
   }
   
   func removeSelectedProductButton(_ button: UIButton) {
+    guard
+      var cart = cart,
+      !cart.isEmpty,
+      cart.contains(where: { $0.wishProducts.contains(where: { $0.isChecked }) })
+    else { return }
+    
     let message = "선택된 상품을 삭제하시겠습니까?"
     let removeShoppingItemAlert = UIAlertController(title: nil, message: message, preferredStyle: .alert).then {
       $0.addAction(UIAlertAction(title: "취소", style: .cancel))
       $0.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { [weak self] _ in
-        guard let self = self, var cart = self.cart else { return }
+        guard let self = self else { return }
         for index in cart.indices {
           for productCategory in cart[index].wishProducts where productCategory.isChecked {
             self.cartManager.removeProduct(id: productCategory.product.cartID) { response in
@@ -262,6 +269,7 @@ extension CartViewController: CartViewDelegate {
 extension CartViewController {
   private var isAllShoppingItemsChecked: Bool {
     guard let cart = cart else { return true }
+    guard !cart.isEmpty else { return false }
     
     for cart in cart {
       for product in cart.wishProducts where !product.isChecked {
