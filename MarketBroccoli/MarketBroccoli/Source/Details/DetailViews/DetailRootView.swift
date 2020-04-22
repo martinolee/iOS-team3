@@ -24,15 +24,11 @@ class DetailRootView: UIView {
     $0.showsHorizontalScrollIndicator = false
     $0.bounces = false
   }
-  
+  let detailImageView = DetailImageView()
   override init(frame: CGRect) {
     super.init(frame: frame)
     setupAttr()
     setupUI()
-  }
-  
-  override func layoutSubviews() {
-    super.layoutSubviews()
   }
   
   required init?(coder: NSCoder) {
@@ -136,7 +132,7 @@ extension DetailRootView {
       case 0:
         categoryArray.append(DetailDescriptionTableView())
       case 1:
-        categoryArray.append(DetailImageView())
+        categoryArray.append(detailImageView)
       case 2:
         categoryArray.append(DetailInfoTableView())
       case 3...categoryCnt - 1:

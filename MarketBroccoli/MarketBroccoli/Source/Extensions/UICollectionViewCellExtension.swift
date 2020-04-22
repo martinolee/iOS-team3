@@ -8,4 +8,4 @@
 
 import UIKit
 
-extension UICollectionViewCell: Identifiable { }
+extension UICollectionViewCell: Identifiable {}
