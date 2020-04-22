@@ -42,13 +42,58 @@ extension UIViewController {
   }
   
   func addNavigationBarCartButton() {
-    let cartButton = UIButton(type: .system).then {
-      $0.tintColor = .white
-      $0.setImage(UIImage(systemName: "cart.fill"), for: .normal)
+    self.navigationItem.rightBarButtonItem = nil
+    
+    let cartButton = UIButton(type: .system).then { button in
+      button.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
+      button.imageView?.contentMode = .scaleAspectFit
       
-      $0.addTarget(self, action: #selector(presentCartViewController), for: .touchUpInside)
+      func imageWithImage(image: UIImage, scaledToSize newSize: CGSize) -> UIImage {
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0)
+        image.draw(in: CGRect(origin: CGPoint.zero, size: CGSize(width: newSize.width, height: newSize.height)))
+        guard let newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext() else { return UIImage() }
+        UIGraphicsEndImageContext()
+        return newImage
+      }
+      
+      CartManager.shared.fetchCart { result in
+        switch result {
+        case .success(let data):
+          let productCount = convertCart(from: data).size
+          let countImage = UIImage(systemName: "\(productCount).circle.fill")
+          let cartImage = UIImage(systemName: "cart")
+          
+          guard productCount > 0 else {
+            button.setImage(cartImage, for: .normal)
+            
+            return
+          }
+          
+          let size = CGSize(width: 100, height: 100)
+          UIGraphicsBeginImageContext(size)
+          
+          let cartAreaSize = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+          let cartSizeAreaSize = CGRect(
+            x: size.width - size.width / 2.1, y: 0, width: size.width / 2, height: size.height / 2
+          )
+          cartImage?.draw(in: cartAreaSize, blendMode: .normal, alpha: 1)
+          countImage?.draw(in: cartSizeAreaSize, blendMode: .clear, alpha: 1)
+          countImage?.draw(in: cartSizeAreaSize, blendMode: .normal, alpha: 1)
+
+          guard let cartWithSizeImage: UIImage = UIGraphicsGetImageFromCurrentImageContext() else { return }
+          UIGraphicsEndImageContext()
+          let resizedImage = imageWithImage(image: cartWithSizeImage, scaledToSize: CGSize(width: 30, height: 30))
+          
+          button.setImage(resizedImage, for: .normal)
+        case .failure(let error):
+          button.setImage(UIImage(systemName: "cart"), for: .normal)
+          print(error.localizedDescription)
+        }
+      }
+      
+      button.addTarget(self, action: #selector(presentCartViewController), for: .touchUpInside)
     }
-    self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+    self.navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .plain, target: self, action: nil)
     
     self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: cartButton)
   }
