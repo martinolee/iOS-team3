@@ -9,21 +9,53 @@
 import UIKit
 
 class EventView: UITableView {
+  var eventArray: HomeImages? {
+    didSet {
+      self.reloadData()
+    }
+  }
   override init(frame: CGRect, style: UITableView.Style) {
     super.init(frame: frame, style: style)
+    setupAttr()
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+  
+  deinit {
+    ObserverManager.shared.resignObserver(target: self, observerName: .bannerShared, object: nil)
+  }
 }
 
 extension EventView {
-  private func setupAttr() {
-    self.backgroundColor = .white
-//    self.register(cell: <#T##Cell.Type#>)
+  @objc private func receiveNotification(_ notification: Notification) {
+    guard let banner = notification.object as? HomeImages else { return }
+    eventArray = banner
   }
-  private func setupUI() {
-    
+}
+
+// MARK: - UI
+extension EventView {
+  private func setupAttr() {
+    ObserverManager.shared.registerObserver(
+      target: self, selector: #selector(receiveNotification(_:)), observerName: .bannerShared, object: nil)
+    self.backgroundColor = .white
+    self.dataSource = self
+    self.separatorStyle = .none
+    self.register(cell: EventTableViewCell.self)
+  }
+}
+
+extension EventView: UITableViewDataSource {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    eventArray?.count ?? 0
+  }
+  
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    guard let data = eventArray?[indexPath.row] else { return UITableViewCell() }
+    let cell = EventTableViewCell()
+    cell.configure(imageUrl: data)
+    return cell
   }
 }

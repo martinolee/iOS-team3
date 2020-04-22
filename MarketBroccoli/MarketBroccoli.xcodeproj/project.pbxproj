@@ -118,6 +118,7 @@
 		7CFCE96B24320AFF00E067AD /* CategorySelected.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFCE96A24320AFF00E067AD /* CategorySelected.swift */; };
 		7CFE4BE22450060500A25B3F /* LinkLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFE4BE12450060500A25B3F /* LinkLabel.swift */; };
 		7CFE4BE42450C40800A25B3F /* HomeEventTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFE4BE32450C40800A25B3F /* HomeEventTableCell.swift */; };
+		7CFE4BE62450C57F00A25B3F /* EventTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFE4BE52450C57F00A25B3F /* EventTableViewCell.swift */; };
 		FA48FBD4243319DE00E53EB5 /* SignupCheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA48FBD3243319DE00E53EB5 /* SignupCheckBox.swift */; };
 		FA48FBD624335BC000E53EB5 /* Agreement.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA48FBD524335BC000E53EB5 /* Agreement.swift */; };
 		FA48FBD824345AE800E53EB5 /* SignupButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA48FBD724345AE800E53EB5 /* SignupButton.swift */; };
@@ -256,6 +257,7 @@
 		7CFCE96A24320AFF00E067AD /* CategorySelected.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelected.swift; sourceTree = "<group>"; };
 		7CFE4BE12450060500A25B3F /* LinkLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkLabel.swift; sourceTree = "<group>"; };
 		7CFE4BE32450C40800A25B3F /* HomeEventTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeEventTableCell.swift; sourceTree = "<group>"; };
+		7CFE4BE52450C57F00A25B3F /* EventTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTableViewCell.swift; sourceTree = "<group>"; };
 		BA3DAD3F9ADB459218F3993B /* Pods_MarketBroccoli.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MarketBroccoli.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1C8D23965CC57B3A3E2F2A7 /* Pods-MarketBroccoli.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MarketBroccoli.release.xcconfig"; path = "Target Support Files/Pods-MarketBroccoli/Pods-MarketBroccoli.release.xcconfig"; sourceTree = "<group>"; };
 		FA48FBD3243319DE00E53EB5 /* SignupCheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupCheckBox.swift; sourceTree = "<group>"; };
@@ -658,6 +660,7 @@
 				7C5A8899243488A7006361AC /* HomeReuseShowAllCollectionCell.swift */,
 				7CC69E1F244DE04600BD43C4 /* EasterEggTableCell.swift */,
 				7CFE4BE32450C40800A25B3F /* HomeEventTableCell.swift */,
+				7CFE4BE52450C57F00A25B3F /* EventTableViewCell.swift */,
 			);
 			path = HomeViewCells;
 			sourceTree = "<group>";
@@ -857,6 +860,7 @@
 				FAB1FA4E24497C7300100C74 /* UserDefaultManager.swift in Sources */,
 				72EB58D52431F935001C4CCF /* CheckBox.swift in Sources */,
 				7CBB7349242E2E9F0078B363 /* MDCategoryCollectionCell.swift in Sources */,
+				7CFE4BE62450C57F00A25B3F /* EventTableViewCell.swift in Sources */,
 				7C65ECD42424EFE60075606A /* RecommendationView.swift in Sources */,
 				7050F318242876B600B8E13B /* PWFindViewController.swift in Sources */,
 				7200E41624470ACE00FBA43F /* SelectingProductCell.swift in Sources */,

@@ -17,6 +17,9 @@ class RecommendationView: UITableView {
     didSet {
       self.reloadSections(IndexSet(integer: 0), with: .none)
     }
+    willSet {
+      ObserverManager.shared.post(observerName: .bannerShared, object: newValue)
+    }
   }
   private var recommendModel: [RequestHome: HomeItems]? = [RequestHome.recommendation: HomeItems()] {
     didSet {

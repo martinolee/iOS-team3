@@ -22,9 +22,6 @@ class HomeRootView: UIView {
   
   private var categoryArray: [UIView] = []
   private let menuTextArray = Categories.HomeCategory
-  private var newModel: [MainItem] = []
-  private var bestModel: [MainItem] = []
-  private var discountModel: [MainItem] = []
   private var model = [
     RequestHome.new: [MainItem](),
     RequestHome.best: [MainItem](),
@@ -33,9 +30,12 @@ class HomeRootView: UIView {
   
   override init(frame: CGRect) {
     super.init(frame: frame)
-    dataRequest(type: .new)
-    dataRequest(type: .best)
-    dataRequest(type: .discount)
+    DispatchQueue.global().async { [weak self] in
+      guard let self = self else { return }
+      [RequestHome.new, RequestHome.best, RequestHome.discount].forEach { req in
+        self.dataRequest(type: req)
+      }
+    }
     setupUI()
   }
   
@@ -61,7 +61,7 @@ extension HomeRootView {
             name == endPoint else { return }
           category.reloadData()
         }
-      case .failure(let _):
+      case .failure:
         KurlyNotification.shared.notification(text: "잠시후 다시 시도해주십시오.")
       }
     }
