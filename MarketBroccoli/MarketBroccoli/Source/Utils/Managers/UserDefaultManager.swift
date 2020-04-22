@@ -13,15 +13,15 @@ class UserDefaultManager {
   }
   
   static let shared = UserDefaultManager()
-  private init() { }
   
-  @discardableResult func set<T>(_ value: T, for key: Key) -> Bool {
+  func set<T>(_ value: T?, for key: Key) {
     UserDefaults.standard.set(value, forKey: key.rawValue)
     UserDefaults.standard.synchronize()
-    guard UserDefaults.standard.object(forKey: key.rawValue) != nil else { return false }
-    return true
   }
+  
   func get(for key: Key) -> Any? {
     UserDefaults.standard.object(forKey: key.rawValue)
   }
+  
+  private init() { }
 }

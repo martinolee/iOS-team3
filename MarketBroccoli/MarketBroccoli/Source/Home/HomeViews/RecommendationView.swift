@@ -18,7 +18,7 @@ class RecommendationView: UITableView {
       self.reloadSections(IndexSet(integer: 0), with: .none)
     }
   }
-  private var recommendModel: [RequestHome: HomeItems]? = [RequestHome.recommendation: HomeItems()]{
+  private var recommendModel: [RequestHome: HomeItems]? = [RequestHome.recommendation: HomeItems()] {
     didSet {
       self.reloadSections(IndexSet(integer: 1), with: .none)
     }
@@ -47,7 +47,7 @@ class RecommendationView: UITableView {
   override init(frame: CGRect, style: UITableView.Style) {
     super.init(frame: frame, style: style)
     setupAttr()
-    dataRequest()
+    dataRequest() {}
   }
   
   required init?(coder: NSCoder) {
@@ -57,7 +57,7 @@ class RecommendationView: UITableView {
 
 // MARK: - ACTIONS
 extension RecommendationView {
-  private func dataRequest() {
+  private func dataRequest(_ success: @escaping () -> ()) {
     DispatchQueue.global().async { [weak self] in
       guard let self = self else { return }
       [RequestHome.recommendation, RequestHome.new, RequestHome.best, RequestHome.discount].forEach { endPoint in
@@ -72,7 +72,6 @@ extension RecommendationView {
             default:
               print("Error")
             }
-          
           case .failure(let error):
             print("error :", error.localizedDescription)
           }
@@ -95,12 +94,24 @@ extension RecommendationView {
         print("error :", error.localizedDescription)
       }
     }
+    success()
   }
+  
+  @objc private func refresh() {
+    dataRequest() {
+      self.refreshControl?.endRefreshing()
+    }
+  }
+  
 }
 
 // MARK: - UI
 extension RecommendationView {
   private func setupAttr() {
+    let refreshControl = UIRefreshControl().then {
+      $0.addTarget(self, action: #selector(refresh), for: .valueChanged)
+    }
+    self.refreshControl = refreshControl
     self.separatorStyle = .none
     self.dataSource = self
     self.delegate = self
@@ -109,6 +120,7 @@ extension RecommendationView {
     self.register(cell: HomeOfferTableCell.self)
     self.register(cell: HomeEventTableCell.self)
     self.register(cell: HomeMDTableCell.self)
+    self.register(cell: EasterEggTableCell.self)
   }
 }
 
@@ -163,11 +175,9 @@ extension RecommendationView: UITableViewDataSource {
       guard let model = bestModel else { return UITableViewCell() }
       let cell = tableView.dequeue(HomeOfferTableCell.self)
       cell.configure(cellTitle: "지금 가장 핫한 상품 >", items: model)
-      cell.backgroundColor = .kurlyGray3
       return cell
     case 7:
-      let cell = tableView.dequeue(HomeOfferTableCell.self)
-      cell.configure(cellTitle: "컬리의 레시피 >", items: nil)
+      let cell = tableView.dequeue(EasterEggTableCell.self)
       return cell
     default:
       return UITableViewCell()

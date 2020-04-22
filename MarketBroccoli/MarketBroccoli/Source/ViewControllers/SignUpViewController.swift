@@ -11,7 +11,9 @@ class SignUpViewController: UIViewController {
   private lazy var signupView = SignupView().then {
     $0.delegate = self
   }
+  
   let agreement = Agreement()
+  
   var essentialInfo: [Signup: Bool] = [
     .identification: false,
     .password: false,
@@ -31,6 +33,7 @@ class SignUpViewController: UIViewController {
     }
   }
   private var isAuthorized = true
+  
   private var timer = Timer()
   
   override func viewDidLoad() {
@@ -50,6 +53,7 @@ class SignUpViewController: UIViewController {
       $0.edges.equalToSuperview()
     }
   }
+  
   func selectedAllButton() {
     agreement.usingLaw = true
     agreement.personalEseesntial = true
@@ -67,6 +71,7 @@ class SignUpViewController: UIViewController {
     signupView.emailCheckButton.setStatus(true)
     signupView.ageCheckButton.setStatus(true)
   }
+  
   func notSelectedAllButton() {
     agreement.usingLaw = false
     agreement.personalEseesntial = false
@@ -112,6 +117,7 @@ extension SignUpViewController: SignupViewDelegate {
     }
     return true
   }
+  
   func signupButtonTouched(button: UIButton) {
     if !essentialInfo.values.contains(false) {
       let user = User(
@@ -176,6 +182,7 @@ extension SignUpViewController: SignupViewDelegate {
       alert(message: "만 14세 이상에 동의해주세요")
     }
   }
+  
   func addressTextField(
     _ addressTextField: UITextField,
     _ detailAddressTextField: UITextField,
@@ -192,10 +199,10 @@ extension SignUpViewController: SignupViewDelegate {
       let roadAddress = addressData["roadAddress"],
       let jibunAddress = addressData["jibunAddress"]
       else { return signupView.addressWebViewContainer.isHidden = true }
-    
+
     print(zonecode)
     print(addressData)
-    
+
     signupView.addressWebViewContainer.isHidden = true
     signupView.addressTextField.text = jibunAddress
     signupView.showAddressLabel.text = roadAddress
@@ -206,7 +213,6 @@ extension SignUpViewController: SignupViewDelegate {
     signupView.searchingAddressButton.tintColor = .kurlyPurple1
     signupView.searchingAddressButton.layer.borderColor = UIColor.kurlyPurple1.cgColor
     signupView.searchingAddressButton.layer.borderWidth = 1
-    
     let addressCount = (signupView.addressTextField.text ?? "").count
     let detailAddressCount = (signupView.addressDetailTextField.text ?? "").count
     signupView.limitAddressLabel.text = "\(addressCount + detailAddressCount)자 / 85자"
@@ -271,6 +277,7 @@ extension SignUpViewController: SignupViewDelegate {
       signupView.totalAgreeButton.setStatus(agreement.total)
     }
   }
+  
   func recoAndEventRoundButtonTouched(button: UIButton, eventButton: [UIButton]) {
     let borderWidth: CGFloat = 6
     button.layer.borderColor = UIColor.kurlyMainPurple.cgColor
@@ -280,6 +287,7 @@ extension SignUpViewController: SignupViewDelegate {
       $0.layer.borderColor = UIColor.lightGray.cgColor
     }
   }
+  
   func genderRoundButtonTouched(button: UIButton, noChoice: [UIButton]) {
     let borderWidth: CGFloat = 6
     button.layer.borderColor = UIColor.kurlyMainPurple.cgColor
@@ -289,20 +297,22 @@ extension SignUpViewController: SignupViewDelegate {
       $0.layer.borderColor = UIColor.lightGray.cgColor
     }
   }
+  
   func addressCloseButton(button: UIButton) {
     signupView.addressWebViewContainer.isHidden = true
     view.endEditing(true)
   }
+  
   func searchingAddressButtonTouched(_ button: UIButton) {
     signupView.addressWebViewContainer.isHidden = false
-    
+
     guard
       let url = URL(string: "https://martinolee.github.io/postcode/"),
       let addressWebView = signupView.addressWebView
       else { return }
-    
+
     let urlRequest = URLRequest(url: url)
-    
+
     addressWebView.load(urlRequest)
   }
   
@@ -340,6 +350,7 @@ extension SignUpViewController: SignupViewDelegate {
         }
     }
   }
+  
   func receivingCellphoneNumberButtonTouched() {
     let text = signupView.cellphoneTextField.text ?? ""
     if hasCellphoneNumber(text: text) {
@@ -375,6 +386,7 @@ extension SignUpViewController: SignupViewDelegate {
       alert(message: "잘못된 휴대폰 번호 입니다. 확인후 다시 시도 해 주세요")
     }
   }
+  
   func startTimer() {
     timer = Timer.scheduledTimer(
       timeInterval: 1,
@@ -383,6 +395,7 @@ extension SignUpViewController: SignupViewDelegate {
       userInfo: nil, repeats: true
     )
   }
+  
   @objc func update() {
     leftTime -= 1
     
@@ -405,15 +418,18 @@ extension SignUpViewController: SignupViewDelegate {
       present(alertController, animated: true)
     }
   }
+  
   func timeFormatted(_ totalSeconds: Int) -> String {
     let seconds: Int = totalSeconds % 60
     let minutes: Int = (totalSeconds / 60) % 60
     //     let hours: Int = totalSeconds / 3600
     return String(format: "%02d:%02d", minutes, seconds)
   }
+  
   func endTimer() {
     timer.invalidate()
   }
+  
   func emailTextFeildEditingChanged(_ textField: UITextField, text: String) {
     if isEmail(email: text) {
       textField.layer.borderColor = UIColor.green.cgColor
@@ -423,6 +439,7 @@ extension SignUpViewController: SignupViewDelegate {
       essentialInfo[.email] = false
     }
   }
+  
   func cellphoneTextFieldEditingChanged(_ textField: UITextField, text: String) {
     if text.count > 9 {
       signupView.getCodeButton.backgroundColor = .kurlyMainPurple
@@ -432,6 +449,7 @@ extension SignUpViewController: SignupViewDelegate {
       signupView.getCodeButton.isEnabled = false
     }
   }
+  
   private func hasCellphoneNumber(text: String) -> Bool {
     do {
       let regex = try NSRegularExpression(
@@ -450,11 +468,13 @@ extension SignUpViewController: SignupViewDelegate {
     }
     return false
   }
+  
   func validateEmail() -> Bool {
     let emailRegEx = "^.+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2}[A-Za-z]*$"
     let predicate = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
     return predicate.evaluate(with: self)
   }
+  
   func checkName(_ textField: UITextField, text: String) {
     if text.count >= 1 {
       essentialInfo[.name] = true
@@ -462,6 +482,7 @@ extension SignUpViewController: SignupViewDelegate {
       essentialInfo[.name] = false
     }
   }
+  
   func checkSecretNumberTextFeildEditingChanged(_ textField: UITextField, text: String) {
     print("checkSecretNumberTextFeildEditingChanged")
     if text == (signupView.secretTextField.text ?? "") {
@@ -472,6 +493,7 @@ extension SignUpViewController: SignupViewDelegate {
       essentialInfo[.passwordCheck] = false
     }
   }
+  
   func secretTextFeildEditingChanged(_ textField: UITextField, text: String) {
     if text.count >= 10 &&
       hasSpecialWords(text: text) &&
@@ -511,6 +533,7 @@ extension SignUpViewController: SignupViewDelegate {
   func checkWidth(_ text: String) -> Bool {
     return text.count > 9
   }
+  
   func checkContinuousNumber(_ text: String) -> Bool {
     let continuousSet = Array(0...9).map { "\($0)\($0)\($0)" }
     var isContinuous = false
@@ -522,6 +545,7 @@ extension SignUpViewController: SignupViewDelegate {
     }
     return isContinuous
   }
+  
   func checkIDButtonTouched(_ button: UIButton) {
     guard let text = signupView.idTextField.text else { return }
     if text.count >= 6 && hasOnlyAlphabetAndNumber(text: text) {
@@ -554,11 +578,13 @@ extension SignUpViewController: SignupViewDelegate {
       alert(message: "6자 이상의 영문 혹은 영문과 숫자를 조합으로 입력해 주세요")
     }
   }
+  
   private func isEmail (email: String) -> Bool {
     let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
     let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
     return emailTest.evaluate(with: email)
   }
+  
   private func hasOnlyAlphabetAndNumber(text: String) -> Bool {
     do {
       let regex = try NSRegularExpression(
@@ -576,6 +602,7 @@ extension SignUpViewController: SignupViewDelegate {
     }
     return false
   }
+  
   private func hasSpecialWords(text: String) -> Bool {
     do {
       let regex = try NSRegularExpression(
@@ -593,6 +620,7 @@ extension SignUpViewController: SignupViewDelegate {
     }
     return false
   }
+  
   func idTextFieldEditingChanged(_ textField: UITextField, text: String) {
     if text.count >= 6 && hasOnlyAlphabetAndNumber(text: text) {
       signupView.idLimitExplanationLabel.textColor = .green
@@ -600,18 +628,23 @@ extension SignUpViewController: SignupViewDelegate {
       signupView.idLimitExplanationLabel.textColor = .orange
     }
   }
+  
   func checkSecretNumberTextFeildDidBeginEditing(_ textField: UITextField) {
     signupView.checkSecretNumberTextFeildOpenHiddenMessage()
   }
+  
   func secretTextFeildDidBeginEditing(_ textField: UITextField) {
     signupView.secretTextFeildOpenHiddenMessage()
   }
+  
   func idTextFieldDidBeginEditing(_ textField: UITextField) {
     signupView.idTextFieldOpenHiddenMessage()
   }
+  
   func toucheBegan() {
     self.view.endEditing(true)
   }
+  
   func idTextField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let currentText = textField.text ?? ""
@@ -619,6 +652,7 @@ extension SignUpViewController: SignupViewDelegate {
     let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
     return updatedText.count <= 12
   }
+  
   func secretTextField(_ textField: UITextField,
                        shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let currentText = textField.text ?? ""
@@ -626,6 +660,7 @@ extension SignUpViewController: SignupViewDelegate {
     let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
     return updatedText.count <= 16
   }
+  
   func checkSecretNumberTextField(_ textField: UITextField,
                                   shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let currentText = textField.text ?? ""
@@ -633,6 +668,7 @@ extension SignUpViewController: SignupViewDelegate {
     let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
     return updatedText.count <= 16
   }
+  
   func nameTextField(_ textField: UITextField,
                      shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let currentText = textField.text ?? ""
@@ -640,6 +676,7 @@ extension SignUpViewController: SignupViewDelegate {
     let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
     return updatedText.count <= 12
   }
+  
   func emailTextField(_ textField: UITextField,
                       shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let currentText = textField.text ?? ""
@@ -647,6 +684,7 @@ extension SignUpViewController: SignupViewDelegate {
     let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
     return updatedText.count <= 30
   }
+  
   func cellphoneTextField(_ textField: UITextField,
                           shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let currentText = textField.text ?? ""
@@ -654,6 +692,7 @@ extension SignUpViewController: SignupViewDelegate {
     let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
     return updatedText.count <= 13
   }
+  
   func checkingReceivingNumberTextField(_ textField: UITextField,
                                         shouldChangeCharactersIn range: NSRange,
                                         replacementString string: String) -> Bool {
@@ -666,26 +705,37 @@ extension SignUpViewController: SignupViewDelegate {
   func birthdayYearTextField(_ textField: UITextField,
                              shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let currentText = textField.text ?? ""
+    
+      let allowedCharacters = CharacterSet.decimalDigits
+      let characterSet = CharacterSet(charactersIn: string)
+
     guard let stringRange = Range(range, in: currentText) else { return false }
     let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
-    return updatedText.count <= 4
+    return updatedText.count <= 4 && allowedCharacters.isSuperset(of: characterSet)
   }
   
   func birthdayMonthTextField(_ textField: UITextField,
                               shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
     let currentText = textField.text ?? ""
+    let allowedCharacters = CharacterSet.decimalDigits
+    let characterSet = CharacterSet(charactersIn: string)
+    
     guard let stringRange = Range(range, in: currentText) else { return false }
     let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
-    return updatedText.count <= 2
+    return updatedText.count <= 2 && allowedCharacters.isSuperset(of: characterSet)
   }
   
   func birthdayDayTextField(_ textField: UITextField,
                             shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    let allowedCharacters = CharacterSet.decimalDigits
+    let characterSet = CharacterSet(charactersIn: string)
+    
     let currentText = textField.text ?? ""
     guard let stringRange = Range(range, in: currentText) else { return false }
     let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
-    return updatedText.count <= 2
+    return updatedText.count <= 2 && allowedCharacters.isSuperset(of: characterSet)
   }
+  
   func addressDetailTextField(_ textField: UITextField,
                               shouldChangeCharactersIn range: NSRange,
                               replacementString string: String) -> Bool {

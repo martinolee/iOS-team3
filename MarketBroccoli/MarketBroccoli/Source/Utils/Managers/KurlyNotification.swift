@@ -11,6 +11,7 @@ import SnapKit
 
 class KurlyNotification {
   static let shared = KurlyNotification()
+  
   private let warningView = UILabel().then {
     $0.backgroundColor = .systemPink
     $0.textColor = .white
@@ -21,7 +22,6 @@ class KurlyNotification {
   }
   
   private var activityIndicatorView = UIActivityIndicatorView()
-  private init() { }
   
   func notification(text: String) {
     guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
@@ -36,12 +36,14 @@ class KurlyNotification {
       $0.width.equalToSuperview().multipliedBy(0.88)
       $0.height.equalTo(54)
     }
+    
     activityIndicatorView.isHidden = false
     activityIndicatorView.startAnimating()
     
     UIView.animate(withDuration: 0.4) {
       self.warningView.transform = .init(translationX: 0, y: 100)
     }
+    
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
       UIView.animateKeyframes(withDuration: 0.4, delay: 0, animations: {
         self.warningView.transform = .identity
@@ -50,4 +52,5 @@ class KurlyNotification {
       })
     }
   }
+  private init() { }
 }
