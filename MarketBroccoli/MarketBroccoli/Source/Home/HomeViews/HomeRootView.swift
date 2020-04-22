@@ -157,7 +157,7 @@ extension HomeRootView {
         }
         categoryArray.append(product)
       case categoryCnt - 1:
-        categoryArray.append(UIView())
+        categoryArray.append(EventView())
       default:
         fatalError("out of range")
       }

@@ -8,5 +8,22 @@
 
 import UIKit
 
-class EventView: UIView {
+class EventView: UITableView {
+  override init(frame: CGRect, style: UITableView.Style) {
+    super.init(frame: frame, style: style)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+}
+
+extension EventView {
+  private func setupAttr() {
+    self.backgroundColor = .white
+//    self.register(cell: <#T##Cell.Type#>)
+  }
+  private func setupUI() {
+    
+  }
 }
