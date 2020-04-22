@@ -15,7 +15,6 @@ class AddProductCartViewController: UIViewController {
     $0.dataSource = self
     $0.delegate = self
   }
-  //  http://15.164.49.32/kurly/product/\(id)/option/
   
   private lazy var dummy: ProductCategory? = ProductCategory(
     headID: 0,
