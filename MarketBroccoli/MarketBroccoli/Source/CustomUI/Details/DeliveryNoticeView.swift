@@ -15,6 +15,7 @@ class DeliveryNoticeView: UIView {
   }
   private let deliveryStackView = UIStackView().then {
     $0.axis = .vertical
+    $0.distribution = .fillProportionally
     $0.spacing = 8
   }
   private let deliveryTypeArray = [" 샛별배송 ", " 택배배송 ", " 배송휴무 "]
@@ -76,6 +77,7 @@ extension DeliveryNoticeView {
     
     deliveryStackView.snp.makeConstraints {
       $0.top.equalTo(deliveryNoticeLabel.snp.bottom).offset(20)
+      $0.leading.trailing.equalToSuperview()
       $0.bottom.equalToSuperview().inset(20)
       $0.centerX.equalToSuperview()
     }

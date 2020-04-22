@@ -29,7 +29,7 @@ class CategoryViewController: UIViewController {
     self.setupBroccoliNavigationBar(title: "카테고리")
   }
   private func setupUI() {
-//    view.backgroundColor = .white
+
     tableView.dataSource = self
     tableView.delegate = self
     tableView.tableHeaderView =

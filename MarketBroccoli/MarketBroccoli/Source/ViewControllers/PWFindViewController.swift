@@ -16,6 +16,7 @@ class PWFindViewController: UIViewController {
     setupNavigation()
     setupUI()
   }
+  
   func setupUI() {
     view.addSubview(PWFView)
     let guide = view.safeAreaLayoutGuide
@@ -24,6 +25,7 @@ class PWFindViewController: UIViewController {
       $0.bottom.equalToSuperview()
     }
   }
+  
   private func setupNavigation() {
     self.navigationController?.navigationBar.barTintColor = .white
     self.navigationItem.title = "비밀번호 찾기"

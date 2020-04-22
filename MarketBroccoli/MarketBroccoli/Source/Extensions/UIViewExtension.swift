@@ -9,26 +9,12 @@
 import UIKit
 
 extension UIView {
-  var parentVC: UIViewController? {
-    var parent: UIResponder? = self
-    while parent != nil {
-      parent = parent?.next
-      if let viewController = parent as? UIViewController {
-        return viewController
-      }
-    }
-    return nil
-  }
   var viewController: UIViewController? {
-    print("call")
     if let vc = self.next as? UIViewController {
-      print(1)
       return vc
     } else if let superView = self.superview {
-      print(2)
       return superView.viewController
     } else {
-      print(3)
       return nil
     }
   }
