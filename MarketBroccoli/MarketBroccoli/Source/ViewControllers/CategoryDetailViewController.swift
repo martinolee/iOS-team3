@@ -8,18 +8,32 @@
 
 import UIKit
 import SnapKit
+import Alamofire
 
 class CategoryDetailViewController: UIViewController {
   // MARK: - Properties
+  private var customMenuBar = CategoryDetailHeaderView()
+  let customMenuBarheigt: CGFloat = 50
   private lazy var collectionViewFlowLayout = UICollectionViewFlowLayout()
   private lazy var collectionView = UICollectionView(
-    frame: .init(x: 0, y: 0, width: 300, height: 800), // .zero로 했을 때 안나오는 문제 해결 할 것
+    frame: .init(
+      x: 0, y: customMenuBarheigt,
+      width: view.frame.width,
+      height: view.frame.height - customMenuBarheigt), // .zero로 했을 때 안나오는 문제 해결 할 것
     collectionViewLayout: collectionViewFlowLayout)
     .then {
-      $0.backgroundColor = .systemBlue
+      $0.isPagingEnabled = true
       $0.register(cell: UICollectionViewCell.self, forCellReuseIdentifier: "cell")
+      $0.register(cell: CategoryDetailCollectionViewCell.self)
   }
   var categoryDetailNavigationTitle = ""
+  var categoryDetatilMenuBarTitle = ""
+  var categoryId: Int? {
+    didSet {
+      print("didSet categoryID")
+    }
+  }
+  
   // MARK: - Life Cycle
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -27,12 +41,13 @@ class CategoryDetailViewController: UIViewController {
     setupLayout()
     setupNavigtion()
   }
-//  override func viewWillLayoutSubviews() {
-//    setupFlowLayout()
-//  }
-  override func viewWillAppear(_ animated: Bool) {
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews() // 타이밍이 컬렉션뷰 레이아웃이 잡히고
+    // 그 다음에 플로우레이아웃이 잡혀야
     setupFlowLayout()
   }
+  
   override func viewWillDisappear(_ animated: Bool) {
     self.setupBroccoliNavigationBar(title: "카테고리")
     self.addNavigationBarCartButton()
@@ -42,16 +57,21 @@ class CategoryDetailViewController: UIViewController {
     view.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9529411765, alpha: 1)
     collectionView.dataSource = self
 //    collectionView.delegate = self
-    [collectionView] .forEach {
+    customMenuBar.title(name: "채소야 나와라 이렇게 길게 텍스트가 길어진다면 어떻게 나올지 너무 궁금한데 스크롤 뷰가 되는지 안되는지 말이야")
+    [collectionView, customMenuBar] .forEach {
       view.addSubview($0)
     }
   }
   private func setupLayout() {
     let guide = view.safeAreaLayoutGuide
     collectionView.snp.makeConstraints {
-      $0.edges.equalTo(guide.snp.edges)
-      $0.width.equalTo(guide.snp.width)
-      $0.height.equalTo(guide.snp.height)
+      $0.leading.trailing.equalToSuperview()
+      $0.bottom.equalTo(guide.snp.bottom)
+    }
+    customMenuBar.snp.makeConstraints {
+      $0.top.leading.trailing.equalTo(guide)
+      $0.height.equalTo(customMenuBarheigt)
+      $0.bottom.equalTo(collectionView.snp.top)
     }
   }
   private func setupNavigtion() {
@@ -59,33 +79,30 @@ class CategoryDetailViewController: UIViewController {
     self.setupSubNavigationBar(title: categoryDetailNavigationTitle)
   }
   private func setupFlowLayout() {
-     let minimumLineSpacing: CGFloat = 10.0
-     let minimumInteritemSpacing: CGFloat = 10.0
-     let insets = UIEdgeInsets(top: 0, left: 16, bottom: 16, right: 16)
-     let itemsForLine: CGFloat = 2
-     let itemSizeWidth = (
-       (
-         collectionView.frame.width - (
-           insets.left + insets.right + minimumInteritemSpacing * (itemsForLine - 1))
-         ) / itemsForLine
-       ).rounded(.down)
-     let itemSize = CGSize(width: itemSizeWidth, height: itemSizeWidth - 8)
-     collectionViewFlowLayout.sectionInset = insets
-     collectionViewFlowLayout.minimumLineSpacing = minimumLineSpacing
-     collectionViewFlowLayout.minimumInteritemSpacing = minimumInteritemSpacing
-     collectionViewFlowLayout.itemSize = itemSize
-     collectionViewFlowLayout.scrollDirection = .vertical
-   }
+    let insets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    collectionViewFlowLayout.sectionInset = insets
+    collectionViewFlowLayout.minimumLineSpacing = 0
+    collectionViewFlowLayout.minimumInteritemSpacing = 0
+    collectionViewFlowLayout.itemSize = CGSize(
+      width: collectionView.frame.width,
+      height: collectionView.frame.height
+    )
+    collectionViewFlowLayout.scrollDirection = .horizontal
+  }
 }
 
 // MARK: - UICollectionViewDataSource
 extension CategoryDetailViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//    return categoryDetatilMenuBarTitle.count
     return 8
   }
+  
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-    cell.backgroundColor = .systemPink
+    guard let categoryId = categoryId else { return UICollectionViewCell() }
+    let cell = collectionView.dequeue(CategoryDetailCollectionViewCell.self, indexPath: indexPath)
+    print(categoryDetatilMenuBarTitle)
+    cell.configure(id: categoryId)
     return cell
   }
 }

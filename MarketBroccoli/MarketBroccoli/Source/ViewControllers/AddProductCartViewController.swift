@@ -21,7 +21,7 @@ class AddProductCartViewController: UIViewController {
   }
   
   private lazy var addProductCartView = AddProductCartView().then {
-    $0.dataSource = self
+//    $0.dataSource = self
     $0.delegate = self
   }
 
