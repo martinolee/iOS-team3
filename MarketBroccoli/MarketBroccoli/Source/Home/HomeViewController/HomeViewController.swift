@@ -72,22 +72,61 @@ extension HomeViewController {
 
 extension HomeViewController: UITabBarControllerDelegate {
   func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-    if tabBarController.selectedIndex == 0 {
-      guard let navi = viewController as? UINavigationController,
-        let VC = navi.viewControllers[0] as? HomeViewController else { return }
-      
-      let scrollView = VC.rootView.scrollView
-      
-      if scrollView.contentOffset.x != 0 {
-        scrollView.setContentOffset(.zero, animated: true)
-      } else {
-        guard let recommendationView = scrollView.subviews.first(
-          where: { $0 as? RecommendationView != nil }) as? RecommendationView
-          else { return }
-        if recommendationView.contentOffset.y != 0 {
-          recommendationView.setContentOffset(.zero, animated: true)
-        }
+    guard let navi = viewController as? UINavigationController,
+      let VC = navi.viewControllers[0] as? HomeViewController else { return }
+    var moved = false
+    let scrollView = VC.rootView.scrollView
+    switch VC.rootView.selectedPage {
+    case 0:
+      guard let recommendationView = scrollView.subviews.first(
+        where: { $0 as? RecommendationView != nil })
+        as? RecommendationView
+        else { return }
+      if recommendationView.contentOffset.y != 0 {
+        recommendationView.setContentOffset(.zero, animated: true)
+        moved = true
       }
+    case 1:
+      guard let productView = scrollView.subviews.first(
+        where: { ($0 as? NewProduct)?.collectionName == RequestHome.new })
+        as? NewProduct
+        else { return }
+      if productView.contentOffset.y != 0 {
+        productView.setContentOffset(.zero, animated: true)
+        moved = true
+      }
+    case 2:
+      guard let productView = scrollView.subviews.first(
+        where: { ($0 as? NewProduct)?.collectionName == RequestHome.best })
+        as? NewProduct
+        else { return }
+      if productView.contentOffset.y != 0 {
+        productView.setContentOffset(.zero, animated: true)
+        moved = true
+      }
+    case 3:
+      guard let productView = scrollView.subviews.first(
+        where: { ($0 as? NewProduct)?.collectionName == RequestHome.discount })
+        as? NewProduct
+        else { return }
+      if productView.contentOffset.y != 0 {
+        productView.setContentOffset(.zero, animated: true)
+        moved = true
+      }
+    case 4:
+      guard let eventView = scrollView.subviews.first(
+        where: { $0 as? EventView != nil })
+        as? EventView
+        else { return }
+      if eventView.contentOffset.y != 0 {
+        eventView.setContentOffset(.zero, animated: true)
+        moved = true
+      }
+    default:
+      print("pass")
+    }
+    if !moved && scrollView.contentOffset.x != 0 {
+      scrollView.setContentOffset(.zero, animated: true)
     }
   }
 }

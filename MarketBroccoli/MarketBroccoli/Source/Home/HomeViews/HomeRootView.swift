@@ -27,6 +27,7 @@ class HomeRootView: UIView {
     RequestHome.best: [MainItem](),
     RequestHome.discount: [MainItem]()
   ]
+  open var selectedPage = 0
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -69,10 +70,10 @@ extension HomeRootView {
   
   private func scrollMoved(_ currentPage: Int, scroll: Bool = false) {
     guard let label = stackView.arrangedSubviews[currentPage] as? UILabel else { return }
+    selectedPage = currentPage
     stackView.arrangedSubviews.forEach {
       ($0 as? UILabel)?.textColor = .gray
     }
-    
     selectedCategory.snp.remakeConstraints {
       $0.bottom.equalTo(label.snp.bottom)
       $0.centerX.equalTo(label.snp.centerX)
@@ -227,6 +228,7 @@ extension HomeRootView: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     guard let collectionView = collectionView as? NewProduct,
       let name = collectionView.collectionName else { return UICollectionViewCell() }
+    
     let cellItem = model[name] ?? [MainItem]()
     let cell = collectionView.dequeue(ProductCollectionCell.self, indexPath: indexPath)
     let item = cellItem[indexPath.item]
