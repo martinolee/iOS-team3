@@ -11,7 +11,7 @@ import Kingfisher
 
 class HomeRootView: UIView {
   private let selectedCategory = CategorySelected()
-  private let scrollView = UIScrollView().then {
+  let scrollView = UIScrollView().then {
     $0.isPagingEnabled = true
     $0.showsVerticalScrollIndicator = false
     $0.showsHorizontalScrollIndicator = false
@@ -22,20 +22,21 @@ class HomeRootView: UIView {
   
   private var categoryArray: [UIView] = []
   private let menuTextArray = Categories.HomeCategory
-  private var newModel: [MainItem] = []
-  private var bestModel: [MainItem] = []
-  private var discountModel: [MainItem] = []
   private var model = [
     RequestHome.new: [MainItem](),
     RequestHome.best: [MainItem](),
     RequestHome.discount: [MainItem]()
   ]
+  open var selectedPage = 0
   
   override init(frame: CGRect) {
     super.init(frame: frame)
-    dataRequest(type: .new)
-    dataRequest(type: .best)
-    dataRequest(type: .discount)
+    DispatchQueue.global().async { [weak self] in
+      guard let self = self else { return }
+      [RequestHome.new, RequestHome.best, RequestHome.discount].forEach { req in
+        self.dataRequest(type: req)
+      }
+    }
     setupUI()
   }
   
@@ -61,7 +62,7 @@ extension HomeRootView {
             name == endPoint else { return }
           category.reloadData()
         }
-      case .failure(let _):
+      case .failure:
         KurlyNotification.shared.notification(text: "잠시후 다시 시도해주십시오.")
       }
     }
@@ -69,10 +70,10 @@ extension HomeRootView {
   
   private func scrollMoved(_ currentPage: Int, scroll: Bool = false) {
     guard let label = stackView.arrangedSubviews[currentPage] as? UILabel else { return }
+    selectedPage = currentPage
     stackView.arrangedSubviews.forEach {
       ($0 as? UILabel)?.textColor = .gray
     }
-    
     selectedCategory.snp.remakeConstraints {
       $0.bottom.equalTo(label.snp.bottom)
       $0.centerX.equalTo(label.snp.centerX)
@@ -157,7 +158,7 @@ extension HomeRootView {
         }
         categoryArray.append(product)
       case categoryCnt - 1:
-        categoryArray.append(RecommendationView())
+        categoryArray.append(EventView())
       default:
         fatalError("out of range")
       }
@@ -227,6 +228,7 @@ extension HomeRootView: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     guard let collectionView = collectionView as? NewProduct,
       let name = collectionView.collectionName else { return UICollectionViewCell() }
+    
     let cellItem = model[name] ?? [MainItem]()
     let cell = collectionView.dequeue(ProductCollectionCell.self, indexPath: indexPath)
     let item = cellItem[indexPath.item]

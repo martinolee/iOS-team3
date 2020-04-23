@@ -7,64 +7,23 @@
 //
 
 import UIKit
+import Alamofire
 
 class AddProductCartViewController: UIViewController {
   // MARK: - Properties
+  
+  private let cartManager = CartManager.shared
+  
+  private var productList: ProductList? {
+    didSet {
+      addProductCartView.reloadProductTableViewData()
+    }
+  }
   
   private lazy var addProductCartView = AddProductCartView().then {
     $0.dataSource = self
     $0.delegate = self
   }
-  //  http://15.164.49.32/kurly/product/\(id)/option/
-  
-  private lazy var dummy: ProductCategory? = ProductCategory(
-    headID: 0,
-    id: 567,
-    name: "[유가원] 유기농 크런치 씨리얼 4종",
-    discountRate: 0.5,
-    wishProducts: [
-      WishProduct(
-        product: Product(
-          id: 378,
-          name: "[유가원] 유기농 크런치트로피칼후르츠 씨리얼 400g",
-          price: 12900,
-          imageURL: ""
-        ),
-        quantity: 0,
-        isChecked: true
-      ),
-      WishProduct(
-        product: Product(
-          id: 378,
-          name: "[유가원] 유기농 크런치애플시나몬 씨리얼 400g",
-          price: 12500,
-          imageURL: ""
-        ),
-        quantity: 0,
-        isChecked: true
-      ),
-      WishProduct(
-        product: Product(
-          id: 378,
-          name: "[유가원] 유기농 초코크런치 씨리얼 400g",
-          price: 12900,
-          imageURL: ""
-        ),
-        quantity: 0,
-        isChecked: true
-      ),
-      WishProduct(
-        product: Product(
-          id: 378,
-          name: "[유가원] 유기농 프로틴리치그래놀라 씨리얼 400g",
-          price: 12900,
-          imageURL: ""
-        ),
-        quantity: 0,
-        isChecked: true
-      )
-    ]
-  )
   
   // MARK: - Life Cycle
   
@@ -111,76 +70,168 @@ extension AddProductCartViewController: AddProductCartViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    guard let dummy = dummy else { return 0 }
+    guard let productList = productList else { return 0 }
     
-    return dummy.wishProducts.count
+    return productList.productOptions.count == 0 ? 1 : productList.productOptions.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-      guard let dummy = dummy else { return UITableViewCell() }
-      let product = dummy.wishProducts[indexPath.row]
-      let cell = tableView.dequeue(SelectingProductCell.self).then {
-        $0.delegate = self
+    guard let productList = productList else { return UITableViewCell() }
+    let product = productList.productOptions[indexPath.row]
+    
+    let cell = tableView.dequeue(SelectingProductCell.self).then {
+      $0.delegate = self
+      
+      $0.configure(
+        name: product.product.name,
+        price: product.product.price,
+        discount: productList.discountRate,
+        quantity: product.quantity,
+        productIndexPath: indexPath
+      )
+    }
+    
+    return cell
+  }
+}
+
+// MARK: - Action Handler
+
+extension AddProductCartViewController: AddProductCartViewDelegate {
+  func addProductInCartButtonTouched(_ button: UIButton) {
+    guard let productList = productList else { return }
+    let selectedProducts = productList.productOptions.filter({ $0.quantity > 0 })
+    
+    guard !selectedProducts.isEmpty else {
+      KurlyNotification.shared.notification(text: "수량을 선택해주세요.")
+      
+      return
+    }
+    
+    if productList.id != nil {
+      for selectedProduct in selectedProducts {
+        guard let productID = productList.id else { return }
+        let optionID = selectedProduct.product.id
+        let quantity = selectedProduct.quantity
+        let selectedProduct = UpdatedProduct(product: productID, option: optionID, quantity: quantity)
         
-        $0.configure(
-          name: product.product.name,
-          price: product.product.price,
-          discount: dummy.discountRate,
-          quantity: product.quantity,
-          productIndexPath: indexPath
-        )
+        cartManager.addProductIntoCart(selectedProduct) { response in
+          switch response {
+          case .success(let data):
+            print(data)
+          case .failure(let error):
+            print(error.localizedDescription)
+          }
+        }
       }
+    } else {
+      guard let selectedProduct = selectedProducts.first else { return }
       
-      return cell
+      let productID = selectedProduct.product.id
+      let quantity = selectedProduct.quantity
+      let product = UpdatedProduct(product: productID, option: nil, quantity: quantity)
+      
+      cartManager.addProductIntoCart(product) { response in
+        switch response {
+        case .success(let data):
+          print(data)
+        case .failure(let error):
+          print(error.localizedDescription)
+        }
+      }
+    }
+    
+    dismiss(animated: true)
+  }
+  
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    guard let productList = productList, productList.productOptions.count != 1 else { return nil }
+    
+    return tableView.dequeue(ProductCategoryHeader.self).then {
+      $0.configure(productCategoryName: productList.name)
     }
   }
   
-  // MARK: - Action Handler
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    guard let productList = productList, productList.productOptions.count != 1 else { return 0 }
+    
+    return 38
+  }
   
-  extension AddProductCartViewController: AddProductCartViewDelegate {
-    func addProductInCartButtonTouched(_ button: UIButton) {
-      print("addProductInCartButtonTouched(_ button: UIButton)")
+  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    guard let productList = productList else { return nil }
+    var totalPrice = 0
+    
+    for product in productList.productOptions {
+      totalPrice += product.product.price * product.quantity
     }
     
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-      guard let dummy = dummy, !dummy.wishProducts.isEmpty, let name = dummy.name else { return nil }
-      
-      return tableView.dequeue(ProductCategoryHeader.self).then {
-        $0.configure(productCategoryName: name)
-      }
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-      guard let dummy = dummy, !dummy.wishProducts.isEmpty, dummy.name != nil else { return 0 }
-      
-      return 38
-    }
-    
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-      guard let dummy = dummy else { return nil }
-      var totalPrice = 0
-      
-      for product in dummy.wishProducts {
-        totalPrice += product.product.price * product.quantity
-      }
-      
-      return tableView.dequeue(SelectingProductFooter.self).then {
-        $0.configure(totalPrice: totalPrice)
-      }
-    }
-    
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-      guard let dummy = dummy, !dummy.wishProducts.isEmpty, dummy.name != nil else { return 0 }
-      
-      return 38
+    return tableView.dequeue(SelectingProductFooter.self).then {
+      $0.configure(totalPrice: totalPrice)
     }
   }
   
-  extension AddProductCartViewController: SelectingProductCellDelegate {
-    func productQuantityStepperValueChanged(_ value: Int, _ productIndexPath: IndexPath) {
-      print("productQuantityStepperValueChanged")
-      dummy?.wishProducts[productIndexPath.row].quantity = value
-      
-      addProductCartView.reloadProductTableViewData()
+  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    38
+  }
+}
+
+extension AddProductCartViewController: SelectingProductCellDelegate {
+  func productQuantityStepperValueChanged(_ value: Int, _ productIndexPath: IndexPath) {
+    guard var productList = productList else { return }
+    productList.productOptions[productIndexPath.row].quantity = value
+    
+    self.productList = productList
+  }
+}
+
+extension AddProductCartViewController {
+  func deliver(id: Int, name: String, price: Int, discountRate: Double) {
+    fetchOptions(id) { result in
+      switch result {
+      case .success(let beOptions):
+        let options = beOptions.options
+        var productList: ProductList
+        
+        if !options.isEmpty {
+          productList = ProductList(id: id, name: name, discountRate: discountRate, productOptions: [])
+          
+          for option in options {
+            productList.productOptions.append(
+              SelectableProduct(
+                product: ProductOption(id: option.id, name: option.name, price: option.price),
+                quantity: 0
+              )
+            )
+          }
+        } else {
+          productList = ProductList(id: nil, name: nil, discountRate: discountRate, productOptions: [
+            SelectableProduct(product: ProductOption(id: id, name: name, price: price), quantity: 1)
+          ])
+        }
+        
+        self.productList = productList
+        self.addProductCartView.removeDimView()
+      case .failure(let error):
+        print(error.localizedDescription)
+      }
     }
+  }
+}
+
+extension AddProductCartViewController {
+  private func fetchOptions(_ id: Int, completionHandler: @escaping (Result<BEOptions, Error>) -> Void) {
+    AF.request(
+      "http://15.164.49.32/kurly/product/\(id)/option/"
+    )
+      .validate()
+      .responseDecodable(of: BEOptions.self) { response in
+        switch response.result {
+        case .success(let data):
+          completionHandler(.success(data))
+        case .failure(let error):
+          completionHandler(.failure(error))
+        }
+    }
+  }
 }

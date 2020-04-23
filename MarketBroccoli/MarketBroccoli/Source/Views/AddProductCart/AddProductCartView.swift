@@ -35,6 +35,16 @@ class AddProductCartView: UIView {
   
   weak var delegate: AddProductCartViewDelegate?
   
+  private lazy var activityIndicator = UIActivityIndicatorView(style: .large).then {
+    $0.hidesWhenStopped = true
+    $0.startAnimating()
+    $0.color = .white
+  }
+  
+  private lazy var dimView = UIView().then {
+    $0.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+  }
+  
   private lazy var productTableView = UITableView(frame: .zero, style: .grouped).then {
     $0.separatorStyle = .none
     $0.backgroundColor = .kurlyGray3
@@ -80,12 +90,23 @@ class AddProductCartView: UIView {
   
   private func addAllViews() {
     self.addSubviews([
+      dimView,
       productTableView,
       addProductInCartButton
     ])
+    
+    dimView.addSubview(activityIndicator)
   }
   
   private func setupAutoLayout() {
+    dimView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
+    
+    activityIndicator.snp.makeConstraints {
+      $0.centerX.centerY.equalToSuperview()
+    }
+    
     productTableView.snp.makeConstraints {
       $0.top.leading.trailing.equalTo(safeAreaLayoutGuide)
       $0.bottom.equalTo(addProductInCartButton.snp.top)
@@ -95,6 +116,8 @@ class AddProductCartView: UIView {
       $0.leading.bottom.trailing.equalTo(safeAreaLayoutGuide)
       $0.height.equalTo(60)
     }
+    
+    self.bringSubviewToFront(dimView)
   }
 }
 
@@ -142,6 +165,13 @@ extension AddProductCartView: UITableViewDelegate {
 // MARK: - Element Control
 
 extension AddProductCartView {
+  func removeDimView() {
+    activityIndicator.stopAnimating()
+    activityIndicator.removeFromSuperview()
+    
+    dimView.removeFromSuperview()
+  }
+  
   func reloadProductTableViewData() {
     productTableView.reloadData()
   }

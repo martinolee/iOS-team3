@@ -32,10 +32,19 @@ class HomeBannerTableCell: UITableViewCell {
     }
   }
   private var currentPage = 1
+  private var scrollingTimer = Timer()
+  private var imageCounter = 0
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     setupUI()
+    DispatchQueue.main.async {
+      self.scrollingTimer = Timer.scheduledTimer(
+      timeInterval: 3.0,
+      target: self,
+      selector: #selector(self.startTimer(_:)),
+      userInfo: nil, repeats: true)
+    }
   }
   
   override func layoutSubviews() {
@@ -51,6 +60,22 @@ class HomeBannerTableCell: UITableViewCell {
 extension HomeBannerTableCell {
   func configure(items: [String]) {
     dummyData = items
+  }
+}
+
+// MARK: - ACTIONS
+extension HomeBannerTableCell {
+  @objc private func startTimer(_ timer: Timer) {
+    guard let bannerCnt = dummyData?.count else { return }
+    if imageCounter < bannerCnt {
+      let index = IndexPath(item: imageCounter, section: 0)
+      self.bannerCollectionView.scrollToItem(at: index, at: .centeredHorizontally, animated: true)
+      imageCounter += 1
+    } else {
+      imageCounter = 0
+      let index = IndexPath(item: imageCounter, section: 0)
+      self.bannerCollectionView.scrollToItem(at: index, at: .centeredHorizontally, animated: false)
+    }
   }
 }
 
@@ -93,21 +118,23 @@ extension HomeBannerTableCell: UICollectionViewDataSource {
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    switch indexPath.section {
-    case 0:
-      guard let model = dummyData else { return UICollectionViewCell() }
-      let cell = collectionView.dequeue(BannerCollectionCell.self, indexPath: indexPath)
-      cell.configure(image: model[indexPath.item])
-      return cell
-    default:
-      return UICollectionViewCell()
+    guard let model = dummyData else { return UICollectionViewCell() }
+    let cell = collectionView.dequeue(BannerCollectionCell.self, indexPath: indexPath)
+    cell.configure(image: model[indexPath.item])
+    let numberOfRecord: Int = model.count - 1
+    var row = indexPath.row
+    if row < numberOfRecord {
+      row += 1
+    } else {
+      row = 0
     }
+    return cell
   }
 }
 
 // MARK: - CollectionView Delegate
 extension HomeBannerTableCell: UICollectionViewDelegate {
-  func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
     let bannerWidth = bannerCollectionView.frame.size.width
     currentPage = Int(bannerCollectionView.contentOffset.x / bannerWidth) + 1
     DispatchQueue.main.async {
