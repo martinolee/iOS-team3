@@ -25,6 +25,10 @@ class CartProductTableViewCell: UITableViewCell {
   
   private var shoppingItemIndexPath: IndexPath!
   
+  private let topSeperator = UIView().then {
+    $0.backgroundColor = .kurlyGray3
+  }
+  
   private let containerView = UIView().then {
     $0.backgroundColor = .white
   }
@@ -81,11 +85,16 @@ class CartProductTableViewCell: UITableViewCell {
     $0.text = "원"
   }
   
+  private let bottomSeperator = UIView().then {
+    $0.backgroundColor = .kurlyGray3
+  }
+  
   // MARK: - Life Cycle
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
+    setupAttribute()
     addAllView()
     setupAutoLayout()
     setupSelectedBackgroundView()
@@ -98,10 +107,15 @@ class CartProductTableViewCell: UITableViewCell {
   
   // MARK: - Setup UI
   
+  private func setupAttribute() {
+    self.clipsToBounds = false
+  }
+  
   private func addAllView() {
     contentView.addSubview(containerView)
     
     containerView.addSubviews([
+      topSeperator,
       checkBox,
       nameLabel,
       productRemoveButton,
@@ -111,7 +125,8 @@ class CartProductTableViewCell: UITableViewCell {
       productQuantityStepper,
       staticTotalPriceLabel,
       totalProductPriceLabel,
-      staticWonLabel
+      staticWonLabel,
+      bottomSeperator
     ])
   }
   
@@ -119,6 +134,13 @@ class CartProductTableViewCell: UITableViewCell {
     containerView.snp.makeConstraints {
       $0.top.bottom.equalToSuperview()
       $0.leading.trailing.equalToSuperview().inset(8)
+    }
+    
+    topSeperator.snp.makeConstraints {
+      $0.top.equalToSuperview().offset(-1)
+      $0.leading.equalTo(productImageView)
+      $0.trailing.equalTo(productQuantityStepper)
+      $0.height.equalTo(1)
     }
     
     checkBox.snp.makeConstraints {
@@ -178,6 +200,13 @@ class CartProductTableViewCell: UITableViewCell {
       $0.top.equalTo(productQuantityStepper.snp.bottom).offset(12)
       $0.trailing.equalTo(productQuantityStepper)
       $0.bottom.equalToSuperview().inset(10)
+    }
+    
+    bottomSeperator.snp.makeConstraints {
+      $0.leading.equalTo(productImageView)
+      $0.bottom.equalToSuperview().offset(1)
+      $0.trailing.equalTo(productQuantityStepper)
+      $0.height.equalTo(1)
     }
   }
   

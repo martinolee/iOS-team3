@@ -2,7 +2,7 @@
 //  HomeEventTableCell.swift
 //  MarketBroccoli
 //
-//  Created by Hongdonghyun on 2020/03/25.
+//  Created by Hongdonghyun on 2020/04/23.
 //  Copyright © 2020 Team3. All rights reserved.
 //
 
@@ -61,7 +61,7 @@ extension HomeEventTableCell {
         $0.top.equalTo(titleLabel.snp.bottom).offset(8)
         $0.leading.trailing.equalTo(titleLabel)
       }
-
+      
       eventStackView.addArrangedSubview(innerView)
     }
   }

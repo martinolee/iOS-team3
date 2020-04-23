@@ -21,6 +21,7 @@ class DetailViewController: UIViewController {
             self.model = data
             guard let detailImage = self.model?.images.first(where: { $0.name == "detail" }) else { return }
             self.rootView.detailImageView.detailImage = detailImage.image
+            self.navigationItem.title = self.model?.name
           case .failure(let error):
             print(error)
           }

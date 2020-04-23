@@ -68,6 +68,7 @@ class CartFooterView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
     
+    hideAllSubviews(true)
     setupAttribute()
     addAllView()
     setupStaticViewSize()
@@ -167,6 +168,8 @@ class CartFooterView: UIView {
   }
 }
 
+// MARK: - Element Control
+
 extension CartFooterView {
   func configure(totalProductPrice: Int, discountProductPrice: Int, shippingFee: Int, expectedAmountPayment: Int) {
     totalProductPriceLabel.attributedText = NSMutableAttributedString()
@@ -186,5 +189,21 @@ extension CartFooterView {
       .normal(" 원", fontSize: 17)
     
     updateLayout()
+  }
+  
+  func hideAllSubviews(_ hidden: Bool) {
+    [
+      staticTotalProductPriceLabel,
+      totalProductPriceLabel,
+      staticDiscountProductPriceLabel,
+      discountProductPriceLabel,
+      staticShippingFeeLabel,
+      shippingFeeLabel,
+      separator,
+      staticExpectedAmountPaymentLabel,
+      expectedAmountPaymentLabel
+      ].forEach {
+        $0.isHidden = hidden
+    }
   }
 }
