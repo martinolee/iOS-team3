@@ -90,7 +90,6 @@ class SignupView: UIView, UITextFieldDelegate {
   
   lazy var nameTextField = UITextField().then {
     $0.placeholder = "고객님의 이름을 입력해주세요"
-    $0.keyboardType = .default
     $0.autocapitalizationType = .none
     $0.delegate = self
     $0.signupStyle(round: .roundedRect, clearButton: .whileEditing)
@@ -515,7 +514,7 @@ class SignupView: UIView, UITextFieldDelegate {
      personalNotEssentialNeedLabel, personalNotEssentialSeeButton, freeShippingButton, freeShippingLabel,
      freeShippingCheckLabel, smsButton, smsLabel, emailCheckButton, emailCheckLabel,
      purchaseAdsView, ageCheckButton, ageLabel, ageEssentialLabel,
-     signupButton, lastExplainationLabel, idLimitExplanationLabel, checkingIdLabel].forEach {
+     signupButton, lastExplainationLabel, idLimitExplanationLabel, checkingIdLabel ].forEach {
       scrollView.addSubview($0)
     }
     
@@ -531,7 +530,6 @@ class SignupView: UIView, UITextFieldDelegate {
     [scrollView, addressWebViewContainer].forEach {
       self.addSubview($0)
     }
-    
     setupAddressWebView()
     
     if let addressWebView = addressWebView {
@@ -573,7 +571,7 @@ class SignupView: UIView, UITextFieldDelegate {
       $0.trailing.equalTo(idLimitExplanationLabel)
       $0.height.equalTo(0)
     }
-    
+
     secretNumberLabel.snp.makeConstraints {
       $0.top.equalTo(checkingIdLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(checkingIdLabel)
@@ -600,7 +598,7 @@ class SignupView: UIView, UITextFieldDelegate {
       $0.leading.trailing.equalTo(combinationLabel)
       $0.height.equalTo(0)
     }
-    
+
     checkSecretNumberLabel.snp.makeConstraints {
       $0.top.equalTo(notSameTheeNumberLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(notSameTheeNumberLabel)
@@ -610,7 +608,7 @@ class SignupView: UIView, UITextFieldDelegate {
       $0.top.equalTo(checkSecretNumberLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(checkSecretNumberLabel)
     }
-    
+
     sameSecretNumberLabel.snp.makeConstraints {
       $0.top.equalTo(checkSecretNumberTextField.snp.bottom).offset(4)
       $0.leading.trailing.equalTo(checkSecretNumberTextField)
@@ -621,404 +619,404 @@ class SignupView: UIView, UITextFieldDelegate {
       $0.top.equalTo(sameSecretNumberLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(checkSecretNumberTextField)
     }
-    
+
     nameTextField.snp.makeConstraints {
       $0.top.equalTo(nameLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(nameLabel)
     }
-    
+
     emailLabel.snp.makeConstraints {
       $0.top.equalTo(nameTextField.snp.bottom).offset(20)
       $0.leading.trailing.equalTo(nameTextField)
     }
-    
+
     emailTextFeild.snp.makeConstraints {
       $0.top.equalTo(emailLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(emailLabel)
     }
-    
+
     cellphoneLabel.snp.makeConstraints {
       $0.top.equalTo(emailTextFeild.snp.bottom).offset(20)
       $0.leading.trailing.equalTo(emailTextFeild)
     }
-    
+
     cellphoneTextField.snp.makeConstraints {
       $0.top.equalTo(cellphoneLabel.snp.bottom).offset(10)
       $0.leading.equalTo(cellphoneLabel)
       $0.width.equalTo(scrollView.snp.width).multipliedBy(0.5)
     }
-    
+
     getCodeButton.snp.makeConstraints {
       $0.top.equalTo(cellphoneTextField)
       $0.leading.equalTo(cellphoneTextField.snp.trailing).offset(10)
       $0.trailing.equalTo(cellphoneLabel)
     }
-    
+
     checkingCodeTexField.snp.makeConstraints {
       $0.top.equalTo(cellphoneTextField.snp.bottom).offset(10)
       $0.leading.equalTo(cellphoneTextField)
       $0.width.equalTo(scrollView.snp.width).multipliedBy(0.5)
     }
-    
+
     timerInTextField.snp.makeConstraints {
       $0.top.bottom.equalTo(checkingCodeTexField)
       $0.trailing.equalTo(checkingCodeTexField.snp.trailing).offset(-10)
     }
-    
+
     checkingCodeButton.snp.makeConstraints {
       $0.top.equalTo(getCodeButton.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(getCodeButton)
     }
-    
+
     checkingCodeCompleteLabel.snp.makeConstraints {
       $0.top.equalTo(checkingCodeTexField.snp.bottom).offset(10)
       $0.leading.equalTo(checkingCodeTexField)
       $0.height.equalTo(0)
     }
-    
+
     addressLabel.snp.makeConstraints {
       $0.top.equalTo(checkingCodeCompleteLabel.snp.bottom).offset(20)
       $0.leading.trailing.equalTo(cellphoneLabel)
     }
-    
+
     addressCheckingLabel.snp.makeConstraints {
       $0.top.equalTo(addressLabel.snp.bottom).offset(4)
       $0.leading.trailing.equalTo(addressLabel)
     }
-    
+
     searchingAddressButton.snp.makeConstraints {
       $0.top.equalTo(addressCheckingLabel.snp.bottom).offset(20)
       $0.leading.trailing.equalTo(addressCheckingLabel)
       $0.height.equalTo(40)
     }
-    
+
     addressTextField.snp.makeConstraints {
       $0.top.equalTo(searchingAddressButton.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(searchingAddressButton)
       $0.height.equalTo(0)
     }
-    
+
     showAddressLabel.snp.makeConstraints {
       $0.top.equalTo(addressTextField.snp.bottom).offset(4)
       $0.leading.trailing.equalTo(addressTextField)
       $0.height.equalTo(0)
     }
-    
+
     addressDetailTextField.snp.makeConstraints {
       $0.top.equalTo(showAddressLabel.snp.bottom).offset(4)
       $0.leading.trailing.equalTo(showAddressLabel)
       $0.height.equalTo(0)
     }
-    
+
     limitAddressLabel.snp.makeConstraints {
       $0.top.equalTo(addressDetailTextField.snp.bottom).offset(4)
       $0.leading.trailing.equalTo(addressDetailTextField)
       $0.height.equalTo(0)
     }
-    
+
     birthdayLabel.snp.makeConstraints {
       $0.top.equalTo(limitAddressLabel.snp.bottom).offset(20)
       $0.leading.trailing.equalTo(searchingAddressButton)
     }
-    
+
     bunchBirthdayView.snp.makeConstraints {
       $0.top.equalTo(birthdayLabel.snp.bottom).offset(20)
       $0.leading.trailing.equalTo(birthdayLabel)
       $0.height.equalTo(checkingCodeTexField)
     }
-    
+
     birthdayYearTextField.snp.makeConstraints {
       $0.centerY.equalTo(bunchBirthdayView.snp.centerY)
       $0.leading.equalTo(bunchBirthdayView)
       $0.width.equalTo(scrollView.snp.width).dividedBy(3.2)
     }
-    
+
     firstSlashLabel.snp.makeConstraints {
       $0.centerY.equalTo(bunchBirthdayView.snp.centerY)
       $0.leading.equalTo(birthdayYearTextField.snp.trailing)
       $0.width.equalTo(8)
     }
-    
+
     birthdayMonthTextField.snp.makeConstraints {
       $0.centerY.equalTo(bunchBirthdayView.snp.centerY)
       $0.leading.equalTo(firstSlashLabel.snp.trailing)
       $0.width.equalTo(scrollView.snp.width).dividedBy(3.2)
     }
-    
+
     secondSlashLabel.snp.makeConstraints {
       $0.centerY.equalTo(bunchBirthdayView.snp.centerY)
       $0.leading.equalTo(birthdayMonthTextField.snp.trailing)
       $0.width.equalTo(8)
     }
-    
+
     birthdayDayTextField.snp.makeConstraints {
       $0.centerY.equalTo(bunchBirthdayView.snp.centerY)
       $0.leading.equalTo(secondSlashLabel.snp.trailing)
       $0.width.equalTo(scrollView.snp.width).dividedBy(3.2)
     }
-    
+
     genderLabel.snp.makeConstraints {
       $0.top.equalTo(bunchBirthdayView.snp.bottom).offset(30)
       $0.leading.trailing.equalTo(searchingAddressButton)
     }
-    
+
     maleRoundButton.snp.makeConstraints {
       $0.top.equalTo(genderLabel.snp.bottom).offset(30)
       $0.leading.equalTo(genderLabel).offset(4)
       $0.width.height.equalTo(20)
     }
-    
+
     maleLabel.snp.makeConstraints {
       $0.top.equalTo(genderLabel.snp.bottom).offset(30)
       $0.leading.equalTo(scrollView.snp.leading).offset(44)
       $0.trailing.equalTo(genderLabel)
     }
-    
+
     maleUnderline.snp.makeConstraints {
       $0.top.equalTo(maleRoundButton.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(genderLabel)
       $0.height.equalTo(1)
     }
-    
+
     femaleRoundButton.snp.makeConstraints {
       $0.top.equalTo(maleUnderline.snp.bottom).offset(10)
       $0.leading.equalTo(maleRoundButton)
       $0.width.height.equalTo(20)
     }
-    
+
     femaleLabel.snp.makeConstraints {
       $0.top.equalTo(femaleRoundButton)
       $0.leading.trailing.equalTo(maleLabel)
     }
-    
+
     femaleUnderline.snp.makeConstraints {
       $0.top.equalTo(femaleRoundButton.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(maleUnderline)
       $0.height.equalTo(1)
     }
-    
+
     noChoiceRoundButton.snp.makeConstraints {
       $0.top.equalTo(femaleUnderline.snp.bottom).offset(10)
       $0.leading.equalTo(femaleRoundButton)
       $0.width.height.equalTo(20)
     }
-    
+
     noChoiceLabel.snp.makeConstraints {
       $0.top.equalTo(noChoiceRoundButton)
       $0.leading.trailing.equalTo(femaleLabel)
     }
-    
+
     noChoiceUnderline.snp.makeConstraints {
       $0.top.equalTo(noChoiceRoundButton.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(femaleUnderline)
       $0.height.equalTo(1)
     }
-    
+
     additionalConditionLabel.snp.makeConstraints {
       $0.top.equalTo(noChoiceUnderline.snp.bottom).offset(20)
       $0.leading.trailing.equalTo(genderLabel)
     }
-    
+
     additionalExplanationLabel.snp.makeConstraints {
       $0.top.equalTo(additionalConditionLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(additionalConditionLabel)
     }
-    
+
     recoRoundButton.snp.makeConstraints {
       $0.top.equalTo(additionalExplanationLabel.snp.bottom).offset(30)
       $0.leading.equalTo(noChoiceRoundButton)
       $0.width.height.equalTo(20)
     }
-    
+
     recoIDLabel.snp.makeConstraints {
       $0.top.equalTo(additionalExplanationLabel.snp.bottom).offset(30)
       $0.leading.equalTo(scrollView.snp.leading).offset(50)
       $0.trailing.equalTo(additionalExplanationLabel)
     }
-    
+
     recoUnderline.snp.makeConstraints {
       $0.top.equalTo(recoIDLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(additionalExplanationLabel)
       $0.height.equalTo(1)
     }
-    
+
     eventNameRoundButton.snp.makeConstraints {
       $0.top.equalTo(recoUnderline.snp.bottom).offset(20)
       $0.leading.equalTo(recoRoundButton)
       $0.width.height.equalTo(20)
     }
-    
+
     eventName.snp.makeConstraints {
       $0.top.equalTo(eventNameRoundButton)
       $0.leading.trailing.equalTo(recoIDLabel)
     }
-    
+
     eventNameUnderline.snp.makeConstraints {
       $0.top.equalTo(eventName.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(recoUnderline)
       $0.height.equalTo(1)
     }
-    
+
     grayView.snp.makeConstraints {
       $0.top.equalTo(eventNameUnderline.snp.bottom).offset(20)
       $0.leading.trailing.equalToSuperview()
       $0.width.equalToSuperview()
       $0.height.equalTo(10)
     }
-    
+
     usingAgreement.snp.makeConstraints {
       $0.top.equalTo(grayView.snp.bottom).offset(20)
       $0.leading.equalTo(scrollView.snp.leading).offset(10)
       $0.trailing.equalTo(scrollView.snp.trailing).offset(10)
     }
-    
+
     totalAgreeButton.snp.makeConstraints {
       $0.top.equalTo(usingAgreement.snp.bottom).offset(20)
       $0.leading.equalTo(usingAgreement)
       $0.width.height.equalTo(20)
     }
-    
+
     totalAgreeLabel.snp.makeConstraints {
       $0.top.equalTo(totalAgreeButton)
       $0.leading.equalTo(totalAgreeButton.snp.trailing).offset(10)
     }
-    
+
     usingLawButton.snp.makeConstraints {
       $0.top.equalTo(totalAgreeLabel.snp.bottom).offset(10)
       $0.leading.equalTo(totalAgreeLabel)
       $0.width.height.equalTo(20)
     }
-    
+
     usingLawLabel.snp.makeConstraints {
       $0.top.bottom.equalTo(usingLawButton)
       $0.leading.equalTo(usingLawButton.snp.trailing).offset(10)
     }
-    
+
     usingLawEssentialLabel.snp.makeConstraints {
       $0.top.bottom.equalTo(usingLawLabel)
       $0.leading.equalTo(usingLawLabel.snp.trailing).offset(10)
     }
-    
+
     usingLawSeeButton.snp.makeConstraints {
       $0.top.bottom.equalTo(usingLawEssentialLabel)
       $0.trailing.equalToSuperview().offset(-20)
     }
-    
+
     personalEssentialButton.snp.makeConstraints {
       $0.top.equalTo(usingLawButton.snp.bottom).offset(10)
       $0.leading.equalTo(usingLawButton)
       $0.width.height.equalTo(20)
     }
-    
+
     personalEssentialLabel.snp.makeConstraints {
       $0.top.bottom.equalTo(personalEssentialButton)
       $0.leading.equalTo(personalEssentialButton.snp.trailing).offset(10)
     }
-    
+
     personalEssentialNeedLabel.snp.makeConstraints {
       $0.top.bottom.equalTo(personalEssentialLabel)
       $0.leading.equalTo(personalEssentialLabel.snp.trailing).offset(10)
     }
-    
+
     personalEssentialSeeButton.snp.makeConstraints {
       $0.top.bottom.equalTo(personalEssentialNeedLabel)
       $0.trailing.equalToSuperview().offset(-20)
     }
-    
+
     personalNotEssentialButton.snp.makeConstraints {
       $0.top.equalTo(personalEssentialButton.snp.bottom).offset(10)
       $0.leading.equalTo(personalEssentialButton)
       $0.width.height.equalTo(20)
     }
-    
+
     personalNotEssentialLabel.snp.makeConstraints {
       $0.top.bottom.equalTo(personalNotEssentialButton)
       $0.leading.equalTo(personalNotEssentialButton.snp.trailing).offset(10)
     }
-    
+
     personalNotEssentialNeedLabel.snp.makeConstraints {
       $0.top.bottom.equalTo(personalNotEssentialLabel)
       $0.leading.equalTo(personalNotEssentialLabel.snp.trailing).offset(10)
     }
-    
+
     personalNotEssentialSeeButton.snp.makeConstraints {
       $0.top.bottom.equalTo(personalNotEssentialLabel)
       $0.trailing.equalToSuperview().offset(-20)
     }
-    
+
     freeShippingButton.snp.makeConstraints {
       $0.top.equalTo(personalNotEssentialButton.snp.bottom).offset(10)
       $0.leading.equalTo(personalNotEssentialButton)
       $0.width.height.equalTo(20)
     }
-    
+
     freeShippingLabel.snp.makeConstraints {
       $0.top.bottom.equalTo(freeShippingButton)
       $0.leading.equalTo(freeShippingButton.snp.trailing).offset(10)
     }
-    
+
     freeShippingCheckLabel.snp.makeConstraints {
       $0.top.bottom.equalTo(freeShippingLabel)
       $0.leading.equalTo(freeShippingLabel.snp.trailing).offset(10)
     }
-    
+
     smsButton.snp.makeConstraints {
       $0.top.equalTo(freeShippingLabel.snp.bottom).offset(10)
       $0.leading.equalTo(freeShippingLabel)
       $0.width.height.equalTo(20)
     }
-    
+
     smsLabel.snp.makeConstraints {
       $0.top.bottom.equalTo(smsButton)
       $0.leading.equalTo(smsButton.snp.trailing).offset(10)
     }
-    
+
     emailCheckButton.snp.makeConstraints {
       $0.top.bottom.equalTo(smsLabel)
       $0.leading.equalTo(smsLabel.snp.trailing).offset(50)
       $0.width.height.equalTo(20)
     }
-    
+
     emailCheckLabel.snp.makeConstraints {
       $0.top.bottom.equalTo(emailCheckButton)
       $0.leading.equalTo(emailCheckButton.snp.trailing).offset(10)
     }
-    
+
     purchaseAdsView.snp.makeConstraints {
       $0.top.equalTo(emailCheckLabel.snp.bottom).offset(4)
       $0.leading.trailing.equalToSuperview()
       $0.height.equalTo(50)
     }
-    
+
     ageCheckButton.snp.makeConstraints {
       $0.top.equalTo(purchaseAdsView.snp.bottom).offset(10)
       $0.leading.equalTo(freeShippingButton)
       $0.width.height.equalTo(20)
     }
-    
+
     ageLabel.snp.makeConstraints {
       $0.top.bottom.equalTo(ageCheckButton)
       $0.leading.equalTo(ageCheckButton.snp.trailing).offset(10)
     }
-    
+
     ageEssentialLabel.snp.makeConstraints {
       $0.top.bottom.equalTo(ageLabel)
       $0.leading.equalTo(ageLabel.snp.trailing).offset(10)
     }
-    
+
     signupButton.snp.makeConstraints {
       $0.top.equalTo(ageEssentialLabel.snp.bottom).offset(30)
       $0.leading.equalTo(totalAgreeButton)
       $0.trailing.equalTo(personalNotEssentialSeeButton)
     }
-    
+
     lastExplainationLabel.snp.makeConstraints {
       $0.top.equalTo(signupButton.snp.bottom).offset(10)
       $0.leading.equalToSuperview().offset(20)
       $0.width.equalToSuperview().multipliedBy(0.92)
       $0.bottom.equalToSuperview()
     }
-    
+
     addressWebViewContainer.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }

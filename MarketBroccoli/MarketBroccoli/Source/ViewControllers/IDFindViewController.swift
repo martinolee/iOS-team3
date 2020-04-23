@@ -10,8 +10,12 @@ import UIKit
 import SnapKit
 
 class IDFindViewController: UIViewController {
-  private let IDFView = IDFindView()
-  
+  private lazy var IDFView = IDFindView().then {
+    $0.delegate = self
+  }
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    self.view.endEditing(true)
+  }
   override func viewDidLoad() {
     super.viewDidLoad()
     setNavigation()
@@ -31,5 +35,15 @@ class IDFindViewController: UIViewController {
   private func setNavigation() {
     self.navigationController?.navigationBar.barTintColor = .white
     self.navigationItem.title = "아이디 찾기"
+  }
+}
+extension IDFindViewController: IDFindViewDelegate {
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    if textField == IDFView.nameTextField {
+      IDFView.emailTextField.becomeFirstResponder()
+    } else {
+      IDFView.emailTextField.resignFirstResponder()
+    }
+    return true
   }
 }
