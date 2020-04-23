@@ -94,14 +94,14 @@ class CategoryDetailViewController: UIViewController {
 // MARK: - UICollectionViewDataSource
 extension CategoryDetailViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//    return categoryDetatilMenuBarTitle.count
-    return 8
+    guard let categoryId = categoryId else { return 0 }
+    return categoryData[categoryId - 1].row.count
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     guard let categoryId = categoryId else { return UICollectionViewCell() }
     let cell = collectionView.dequeue(CategoryDetailCollectionViewCell.self, indexPath: indexPath)
-    print(categoryDetatilMenuBarTitle)
+    print(selectedCellTitle)
     cell.configure(id: categoryId)
     return cell
   }
