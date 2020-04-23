@@ -11,6 +11,41 @@ import UIKit
 class CategoryDetailHeaderView: UIScrollView {
   static let identifier: String = "CategoryDetailHeaderView"
   
+  func categories(categories: [String]) {
+    let labels = categories.map { name -> UILabel in
+      let label = UILabel().then {
+        $0.textColor = .gray
+        $0.text = name
+        $0.isUserInteractionEnabled = true
+      }
+      return label
+    }
+    self.addSubviews(labels)
+    
+    for idx in 0..<labels.count {
+      if idx == 0 {
+        labels[idx].snp.makeConstraints {
+          $0.top.bottom.equalToSuperview()
+          $0.leading.equalToSuperview().offset(16)
+        }
+      } else if idx == labels.count - 1 {
+        labels[idx].snp.makeConstraints {
+          $0.top.bottom.equalToSuperview()
+          $0.leading.equalTo(labels[idx - 1].snp.trailing)
+          $0.trailing.equalToSuperview().offset(-16)
+        }
+      } else {
+        labels[idx].snp.makeConstraints {
+          $0.top.bottom.equalToSuperview()
+          $0.leading.equalTo(labels[idx - 1].snp.trailing).offset(10)
+        }
+      }
+      labels[idx].snp.makeConstraints {
+        $0.height.equalTo(self)
+      }
+    }
+  }
+  
   private let title = UIButton().then {
     $0.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .regular)
     $0.setTitleColor(UIColor.gray, for: .normal)
@@ -23,7 +58,7 @@ class CategoryDetailHeaderView: UIScrollView {
   override init(frame: CGRect) {
     super.init(frame: frame)
     setupUI()
-    setupLayout()
+//    setupTitle()
   }
   
   required init?(coder: NSCoder) {
@@ -34,20 +69,23 @@ class CategoryDetailHeaderView: UIScrollView {
     self.backgroundColor = .white
 //    self.contentSize = CGSize()
 //    self.isScrollEnabled = true
-    [title, bottomLine].forEach {
+    [bottomLine].forEach {
       self.addSubview($0)
     }
+    bottomLine.snp.makeConstraints {
+      $0.leading.trailing.bottom.equalToSuperview()
+      $0.height.equalTo(0.4)
+    }
   }
-  private func setupLayout() {
+  private func setupTitle() {
+    [title].forEach {
+      self.addSubview($0)
+    }
     title.snp.makeConstraints {
       $0.top.equalToSuperview().offset(10)
       $0.bottom.equalTo(bottomLine.snp.top).offset(-10)
       $0.leading.equalToSuperview().offset(16)
       $0.trailing.equalToSuperview().offset(-16)
-    }
-    bottomLine.snp.makeConstraints {
-      $0.leading.trailing.bottom.equalToSuperview()
-      $0.height.equalTo(0.4)
     }
   }
   func title(name: String) {
