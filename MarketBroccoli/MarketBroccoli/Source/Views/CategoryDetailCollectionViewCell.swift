@@ -24,6 +24,11 @@ class CategoryDetailCollectionViewCell: UICollectionViewCell {
       collectionView.reloadData()
     }
   }
+//  var itemSizeWidthTest: CGFloat = 0 {
+//    didSet {
+//     print("아이템 가로는 담겼을까", itemSizeWidthTest)
+//    }
+//  }
   
   // MARK: - Life Cycle
   override init(frame: CGRect) {
@@ -39,7 +44,7 @@ class CategoryDetailCollectionViewCell: UICollectionViewCell {
   }
   // MARK: - Setup Attribute
   private func setupUI() {
-    collectionView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.8470588235)
+    collectionView.backgroundColor = #colorLiteral(red: 0.9411764706, green: 0.9411764706, blue: 1, alpha: 1)
     collectionView.dataSource = self
     //    collectionView.delegate = self
     [collectionView] .forEach {
