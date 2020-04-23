@@ -244,8 +244,11 @@ extension CartProductTableViewCell: ProductQuantityStepperDelegate {
     price: Int, discount: Double,
     quantity: Int, isChecked: Bool, shoppingItemIndexPath: IndexPath
   ) {
+    originalPriceLabel.isHidden = true
     if discount != 0 {
       let originalPrice = moneyFormatter(won: Int(Double(price) / (1 - discount)), hasUnit: true)
+      
+      originalPriceLabel.isHidden = false
       originalPriceLabel.attributedText = NSMutableAttributedString()
         .strikethrough(originalPrice, textColor: .kurlyGray1)
     }
