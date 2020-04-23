@@ -103,7 +103,7 @@ class ProductCollectionCell: UICollectionViewCell {
   override func layoutSubviews() {
     makeCircle(cartOrAlarmButton)
   }
-  
+
   // MARK: - Setup UI
   
   private func makeCircle(_ view: UIView) {
