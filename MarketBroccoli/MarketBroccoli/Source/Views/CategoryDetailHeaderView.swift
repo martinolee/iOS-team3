@@ -31,7 +31,7 @@ class CategoryDetailHeaderView: UIScrollView {
       } else if idx == labels.count - 1 {
         labels[idx].snp.makeConstraints {
           $0.top.bottom.equalToSuperview()
-          $0.leading.equalTo(labels[idx - 1].snp.trailing)
+          $0.leading.equalTo(labels[idx - 1].snp.trailing).offset(10)
           $0.trailing.equalToSuperview().offset(-16)
         }
       } else {
