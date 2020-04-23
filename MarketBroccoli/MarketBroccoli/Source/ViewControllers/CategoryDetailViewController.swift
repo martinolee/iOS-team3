@@ -27,9 +27,10 @@ class CategoryDetailViewController: UIViewController {
       $0.register(cell: CategoryDetailCollectionViewCell.self)
   }
   var categoryDetailNavigationTitle = ""
-  var categoryDetatilMenuBarTitle = ""
+  var selectedCellTitle = ""
   var categoryId: Int? {
     didSet {
+      // categoryData[section].count
       print("didSet categoryID")
     }
   }
@@ -57,7 +58,7 @@ class CategoryDetailViewController: UIViewController {
     view.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9529411765, alpha: 1)
     collectionView.dataSource = self
 //    collectionView.delegate = self
-    customMenuBar.title(name: "채소야 나와라 이렇게 길게 텍스트가 길어진다면 어떻게 나올지 너무 궁금한데 스크롤 뷰가 되는지 안되는지 말이야")
+    customMenuBar.title(name: selectedCellTitle)
     [collectionView, customMenuBar] .forEach {
       view.addSubview($0)
     }

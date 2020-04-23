@@ -22,7 +22,6 @@ class CategoryDetailCollectionViewCell: UICollectionViewCell {
     didSet {
       setupFlowLayout()
       collectionView.reloadData()
-      print("didSet: 컬렉션 뷰 Width ", collectionView.frame.width)
     }
   }
   
