@@ -58,7 +58,9 @@ class CategoryDetailViewController: UIViewController {
     view.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9529411765, alpha: 1)
     collectionView.dataSource = self
 //    collectionView.delegate = self
-    customMenuBar.title(name: selectedCellTitle)
+    guard let categoryId = categoryId else { return }
+//    customMenuBar.title(name: categoryData[categoryId - 1].row[1])
+    customMenuBar.categories(categories: categoryData[categoryId - 1].row)
     [collectionView, customMenuBar] .forEach {
       view.addSubview($0)
     }
