@@ -13,16 +13,16 @@ class CategoryDetailCollectionViewCell: UICollectionViewCell {
   // MARK: - Properties
   private lazy var collectionViewFlowLayout = UICollectionViewFlowLayout()
   private lazy var collectionView = UICollectionView(
-    frame: .zero
-    ,
+    frame: .zero,
     collectionViewLayout: collectionViewFlowLayout)
     .then {
-//      $0.register(cell: UICollectionViewCell.self, forCellReuseIdentifier: "cell")
       $0.register(cell: ProductCollectionCell.self)
   }
   private var categoryProductList: CategoryProudcutList? {
     didSet {
+      setupFlowLayout()
       collectionView.reloadData()
+      print("didSet: 컬렉션 뷰 Width ", collectionView.frame.width)
     }
   }
   
@@ -32,7 +32,8 @@ class CategoryDetailCollectionViewCell: UICollectionViewCell {
     setupUI()
   }
   override func layoutSubviews() {
-    setupFlowLayout()
+//    setupUI()
+//    setupFlowLayout()
   }
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
@@ -43,7 +44,7 @@ class CategoryDetailCollectionViewCell: UICollectionViewCell {
     collectionView.dataSource = self
     //    collectionView.delegate = self
     [collectionView] .forEach {
-      contentView.addSubview($0)
+      self.addSubview($0)
     }
     
     collectionView.snp.makeConstraints {
@@ -61,7 +62,7 @@ class CategoryDetailCollectionViewCell: UICollectionViewCell {
           insets.left + insets.right + minimumInteritemSpacing * (itemsForLine - 1))
         ) / itemsForLine
       ).rounded(.down)
-    let itemSize = CGSize(width: itemSizeWidth, height: itemSizeWidth + 146)
+    let itemSize = CGSize(width: itemSizeWidth, height: itemSizeWidth * 1.8)
     collectionViewFlowLayout.sectionInset = insets
     collectionViewFlowLayout.minimumLineSpacing = minimumLineSpacing
     collectionViewFlowLayout.minimumInteritemSpacing = minimumInteritemSpacing
