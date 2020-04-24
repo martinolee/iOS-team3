@@ -23,15 +23,45 @@ class CategoryDetailViewController: UIViewController {
     collectionViewLayout: collectionViewFlowLayout)
     .then {
       $0.isPagingEnabled = true
-      $0.register(cell: UICollectionViewCell.self, forCellReuseIdentifier: "cell")
       $0.register(cell: CategoryDetailCollectionViewCell.self)
+      $0.backgroundColor = #colorLiteral(red: 0.9411764706, green: 0.9411764706, blue: 0.9411764706, alpha: 1)
   }
   var categoryDetailNavigationTitle = ""
-  var categoryDetatilMenuBarTitle = ""
+  var selectedCellTitle = ""
   var categoryId: Int? {
     didSet {
+      // categoryData[section].count
       print("didSet categoryID")
     }
+  }
+  private let selectedCategory = CategorySelected()
+  private var page: Int = 0 {
+    didSet {
+//      let width = self.collectionView
+//        .cellForItem(at: IndexPath(item: 0, section: 0))?
+//        .subviews
+//        .compactMap { $0 as? UICollectionView }
+//        .compactMap { $0.collectionViewLayout as? UICollectionViewFlowLayout }
+//        .first?
+//        .itemSize
+//        .width
+    }
+  }
+  var s캐스팅을위한연습: CGFloat = 0 {
+    didSet {
+      let cell = self.collectionView
+        .visibleCells.first
+//        .cellForItem(at: IndexPath(item: 0, section: 0))
+      let subviews = cell?.subviews
+      let cv = subviews?.filter { $0 is UICollectionView }.first as! UICollectionView
+      let flowLayout = cv.collectionViewLayout as? UICollectionViewFlowLayout
+      let width = flowLayout?.itemSize.width
+    }
+  }
+  
+  enum UI {
+    static let inset: CGFloat = 14
+    static let spacing: CGFloat = 14
   }
   
   // MARK: - Life Cycle
@@ -40,6 +70,23 @@ class CategoryDetailViewController: UIViewController {
     setupUI()
     setupLayout()
     setupNavigtion()
+  }
+  
+  
+  var itemWidth: CGFloat = 0
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    self.itemWidth = self.collectionView
+      .visibleCells.first?
+//      .cellForItem(at: IndexPath(item: 0, section: 0))?
+      .subviews
+      .compactMap { $0 as? UICollectionView }
+      .compactMap { $0.collectionViewLayout as? UICollectionViewFlowLayout }
+      .first?
+      .itemSize
+      .width ?? 0
+    print(itemWidth, "제발 나와줘")
   }
 
   override func viewDidLayoutSubviews() {
@@ -56,8 +103,9 @@ class CategoryDetailViewController: UIViewController {
   private func setupUI() {
     view.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9529411765, alpha: 1)
     collectionView.dataSource = self
-//    collectionView.delegate = self
-    customMenuBar.title(name: "채소야 나와라 이렇게 길게 텍스트가 길어진다면 어떻게 나올지 너무 궁금한데 스크롤 뷰가 되는지 안되는지 말이야")
+    collectionView.delegate = self
+    guard let categoryId = categoryId else { return }
+    customMenuBar.categories(categories: categoryData[categoryId - 1].row)
     [collectionView, customMenuBar] .forEach {
       view.addSubview($0)
     }
@@ -72,6 +120,17 @@ class CategoryDetailViewController: UIViewController {
       $0.top.leading.trailing.equalTo(guide)
       $0.height.equalTo(customMenuBarheigt)
       $0.bottom.equalTo(collectionView.snp.top)
+    }
+    [selectedCategory].forEach {
+      customMenuBar.addSubview($0)
+    }
+    if let item = customMenuBar.subviews.first as? UILabel {
+      item.textColor = .kurlyMainPurple
+      selectedCategory.snp.makeConstraints {
+        $0.top.equalTo(item.snp.bottom)
+        $0.leading.trailing.width.equalTo(item)
+        $0.height.equalTo(2)
+      }
     }
   }
   private func setupNavigtion() {
@@ -90,19 +149,71 @@ class CategoryDetailViewController: UIViewController {
     collectionViewFlowLayout.scrollDirection = .horizontal
   }
 }
+// MARK: - UIScrollViewDelegate
+//extension CategoryDetailViewController: UIScrollViewDelegate {
+//  func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+//    if scrollView == collectionView {
+//      let cellWidth = itemWidth * 2 + (UI.inset + UI.spacing * 2)
+//      var page = round(collectionView.contentOffset.x / cellWidth)
+//      var isRight = true
+//      if velocity.x > 0 {
+//        page += 1
+//        isRight = true
+//      }
+//      if velocity.x < 0 {
+//        page -= 1
+//        isRight = false
+//      }
+//      page = max(page, 0)
+//      print(page, "페이지는/")
+//      targetContentOffset.pointee.x = page * cellWidth
+////      categoryMoved(Int(page), direction: isRight)
+//    }
+//    print(collectionView.contentOffset.x)
+//  }
+//}
+extension CategoryDetailViewController: UICollectionViewDelegate {
+  func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+    if scrollView == collectionView {
+      let cellWidth = itemWidth * 2 + (UI.inset + UI.spacing * 2)
+      var page = round(collectionView.contentOffset.x / cellWidth)
+      var isRight = true
+      if velocity.x > 0 {
+        page += 1
+        isRight = true
+      }
+      if velocity.x < 0 {
+        page -= 1
+        isRight = false
+      }
+      page = max(page, 0)
+      print(page, "페이지는!!!!!!!")
+      print(itemWidth, "아이템 사이즌!!!!!!!!!")
+      targetContentOffset.pointee.x = page * cellWidth
+      //      categoryMoved(Int(page), direction: isRight)
+    }
+  }
+}
 
 // MARK: - UICollectionViewDataSource
 extension CategoryDetailViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//    return categoryDetatilMenuBarTitle.count
-    return 8
+    guard let categoryId = categoryId else { return 0 }
+    return categoryData[categoryId - 1].row.count
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     guard let categoryId = categoryId else { return UICollectionViewCell() }
     let cell = collectionView.dequeue(CategoryDetailCollectionViewCell.self, indexPath: indexPath)
-    print(categoryDetatilMenuBarTitle)
+    print("가로 - 몇 번째?", indexPath.section, indexPath.row)
     cell.configure(id: categoryId)
     return cell
   }
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+  }
+}
+
+// MARK: - ACTIONS
+extension CategoryDetailViewController {
+  
 }
