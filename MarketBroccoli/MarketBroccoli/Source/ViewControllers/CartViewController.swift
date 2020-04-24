@@ -41,12 +41,12 @@ class CartViewController: UIViewController {
     setupLeftBarButtonItem()
     setCorrectSelectAllProductCheckBoxStatus()
     
-    cartManager.fetchCart { [weak self] response in
+    cartManager.fetchCart() { [weak self] response in
       switch response {
-      case .success(let data):
+      case .success(let cart):
         guard let self = self else { return }
         
-        self.cart = convertCart(from: data)
+        self.cart = cart
         self.cartView.removeDimView()
         self.cartView.hideAllFooterSubviews(false)
       case .failure(let error):
@@ -177,15 +177,13 @@ extension CartViewController: CartProductTableViewCellDelegate {
       )
     }
     
-    cartManager.patchProductQuntity(
+    cartManager.updateProductQuntity(
       id: cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].product.cartID,
       product: product
     ) { response in
       switch response {
       case .success(let data):
-        guard let product = try? JSONDecoder().decode(BackendCartElement.self, from: data) else { return }
-        
-        print(product)
+        print(data)
       case .failure(let error):
         print(error.localizedDescription)
       }
@@ -242,6 +240,7 @@ extension CartViewController: CartViewDelegate {
       $0.addAction(UIAlertAction(title: "취소", style: .cancel))
       $0.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { [weak self] _ in
         guard let self = self else { return }
+        
         for index in cart.indices {
           for productCategory in cart[index].wishProducts where productCategory.isChecked {
             self.cartManager.removeProduct(id: productCategory.product.cartID) { response in
@@ -308,7 +307,7 @@ extension CartViewController {
         }
       }
     }
-    discountProductPrice = totalProductPrice - expectedAmountPayment
+    discountProductPrice = -(totalProductPrice - expectedAmountPayment)
     
     cartView.configureHeader(
       selectedProductCount: selectedProductCount,

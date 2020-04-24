@@ -42,8 +42,6 @@ extension UIViewController {
   }
   
   func addNavigationBarCartButton() {
-    self.navigationItem.rightBarButtonItem = nil
-    
     let cartButton = UIButton(type: .system).then { button in
       button.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
       button.imageView?.contentMode = .scaleAspectFit
@@ -56,33 +54,28 @@ extension UIViewController {
         return newImage
       }
       
-      CartManager.shared.fetchCart { result in
+      CartManager.shared.fetchCartCount { result in
         switch result {
-        case .success(let data):
-          let productCount = convertCart(from: data).size
-          let countImage = UIImage(systemName: "\(productCount).circle.fill")
+        case .success(let cartCount):
+          let countImage = UIImage(systemName: "\(cartCount).circle.fill")
           let cartImage = UIImage(systemName: "cart")
-          
-          guard productCount > 0 else {
-            button.setImage(cartImage, for: .normal)
-            
-            return
-          }
           
           let size = CGSize(width: 100, height: 100)
           UIGraphicsBeginImageContext(size)
           
-          let cartAreaSize = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+          let cartAreaSize = CGRect(x: 0, y: 0, width: size.width, height: size.height - 20)
           let cartSizeAreaSize = CGRect(
             x: size.width - size.width / 2.1, y: 0, width: size.width / 2, height: size.height / 2
           )
           cartImage?.draw(in: cartAreaSize, blendMode: .normal, alpha: 1)
-          countImage?.draw(in: cartSizeAreaSize, blendMode: .clear, alpha: 1)
-          countImage?.draw(in: cartSizeAreaSize, blendMode: .normal, alpha: 1)
-
+          if cartCount > 0 {
+            countImage?.draw(in: cartSizeAreaSize, blendMode: .clear, alpha: 1)
+            countImage?.draw(in: cartSizeAreaSize, blendMode: .normal, alpha: 1)
+          }
+          
           guard let cartWithSizeImage: UIImage = UIGraphicsGetImageFromCurrentImageContext() else { return }
           UIGraphicsEndImageContext()
-          let resizedImage = imageWithImage(image: cartWithSizeImage, scaledToSize: CGSize(width: 30, height: 30))
+          let resizedImage = imageWithImage(image: cartWithSizeImage, scaledToSize: CGSize(width: 36, height: 36))
           
           button.setImage(resizedImage, for: .normal)
         case .failure(let error):
@@ -95,6 +88,7 @@ extension UIViewController {
     }
     self.navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .plain, target: self, action: nil)
     
+    self.navigationItem.rightBarButtonItem = nil
     self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: cartButton)
   }
   

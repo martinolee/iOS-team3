@@ -22,20 +22,20 @@ extension Cart {
   }
 }
 
-struct ProductCategory {
+struct ProductCategory: Codable {
   let id: Int
   let name: String?
   let discountRate: Double
   var wishProducts: [WishProduct]
 }
 
-struct WishProduct {
+struct WishProduct: Codable {
   let product: Product
   var quantity: Int
   var isChecked: Bool
 }
 
-struct Product {
+struct Product: Codable {
   let cartID: Int
   let id: Int
   let name: String

@@ -8,10 +8,10 @@
 
 import Foundation
 
-struct UpdatedProduct: Encodable {
+struct UpdatedProduct: Codable {
   let product: Int
   let option: Int?
-  let quantity: Int
+  var quantity: Int
   
   private enum CodingKeys: String, CodingKey {
     case product, option, quantity
