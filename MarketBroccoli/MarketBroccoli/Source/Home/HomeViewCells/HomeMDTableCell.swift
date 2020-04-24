@@ -268,7 +268,7 @@ extension HomeMDTableCell {
     print(sender.titleLabel?.text)
   }
   
-  func configure(items: [MainItem]? = nil) {
+  func configure( items: [MainItem]? = nil) {
     collectionViewItems = items
   }
 }
