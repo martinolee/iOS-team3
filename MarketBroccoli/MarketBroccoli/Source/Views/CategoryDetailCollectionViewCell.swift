@@ -13,18 +13,22 @@ class CategoryDetailCollectionViewCell: UICollectionViewCell {
   // MARK: - Properties
   private lazy var collectionViewFlowLayout = UICollectionViewFlowLayout()
   private lazy var collectionView = UICollectionView(
-    frame: .zero
-    ,
+    frame: .zero,
     collectionViewLayout: collectionViewFlowLayout)
     .then {
-//      $0.register(cell: UICollectionViewCell.self, forCellReuseIdentifier: "cell")
       $0.register(cell: ProductCollectionCell.self)
   }
   private var categoryProductList: CategoryProudcutList? {
     didSet {
+      setupFlowLayout()
       collectionView.reloadData()
     }
   }
+//  var itemSizeWidthTest: CGFloat = 0 {
+//    didSet {
+//     print("아이템 가로는 담겼을까", itemSizeWidthTest)
+//    }
+//  }
   
   // MARK: - Life Cycle
   override init(frame: CGRect) {
@@ -32,18 +36,19 @@ class CategoryDetailCollectionViewCell: UICollectionViewCell {
     setupUI()
   }
   override func layoutSubviews() {
-    setupFlowLayout()
+//    setupUI()
+//    setupFlowLayout()
   }
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
   // MARK: - Setup Attribute
   private func setupUI() {
-    collectionView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.8470588235)
+    collectionView.backgroundColor = #colorLiteral(red: 0.9411764706, green: 0.9411764706, blue: 1, alpha: 1)
     collectionView.dataSource = self
     //    collectionView.delegate = self
     [collectionView] .forEach {
-      contentView.addSubview($0)
+      self.addSubview($0)
     }
     
     collectionView.snp.makeConstraints {
@@ -61,7 +66,7 @@ class CategoryDetailCollectionViewCell: UICollectionViewCell {
           insets.left + insets.right + minimumInteritemSpacing * (itemsForLine - 1))
         ) / itemsForLine
       ).rounded(.down)
-    let itemSize = CGSize(width: itemSizeWidth, height: itemSizeWidth + 146)
+    let itemSize = CGSize(width: itemSizeWidth, height: itemSizeWidth * 1.8)
     collectionViewFlowLayout.sectionInset = insets
     collectionViewFlowLayout.minimumLineSpacing = minimumLineSpacing
     collectionViewFlowLayout.minimumInteritemSpacing = minimumInteritemSpacing

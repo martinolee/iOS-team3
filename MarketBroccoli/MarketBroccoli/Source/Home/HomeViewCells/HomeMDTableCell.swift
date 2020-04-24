@@ -104,7 +104,7 @@ extension HomeMDTableCell: UICollectionViewDelegateFlowLayout {
 }
 
 extension HomeMDTableCell: UIScrollViewDelegate {
-  // 드래깅이 끝났을 때 호출
+  // 드래깅이 끝났을 때 호출 - 집중 -
   func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
     if scrollView == MDProductCollectionView {
       let cellWidth = itemWidth * 3 + (UI.inset + UI.spacing * 2)
@@ -119,6 +119,7 @@ extension HomeMDTableCell: UIScrollViewDelegate {
         isRight = false
       }
       page = max(page, 0)
+      print(page, "페이지는/")
       targetContentOffset.pointee.x = page * cellWidth
       categoryMoved(Int(page), direction: isRight)
     }
@@ -213,13 +214,13 @@ extension HomeMDTableCell {
   }
 }
 
-// MARK: - ACTIONS
+// MARK: - ACTIONS - 집중 -
 extension HomeMDTableCell {
   private func categoryMoved(_ currentPage: Int, direction: Bool) {
     guard categoryArray.count >= currentPage else { return }
     var MDTextWidth: CGFloat = 0
     let label = UILabel()
-    for idx in 0..<currentPage { // 카테고리 크기 구하는 함수
+    for idx in 0..<currentPage { // getWidth() 카테고리 크기 구하는 함수
       label.text = categoryArray[idx]
       MDTextWidth += (label.getWidth() ?? 0) + 10 // getWidth() 텍스트 크기 구하는 함수
     }

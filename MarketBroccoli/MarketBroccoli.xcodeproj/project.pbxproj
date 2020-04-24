@@ -339,11 +339,29 @@
 			path = Cart;
 			sourceTree = "<group>";
 		};
-		7200E4122446FD7A00FBA43F /* AddProductCart */ = {
+		7200E4122446FD7A00FBA43F /* AddProductCartView */ = {
 			isa = PBXGroup;
 			children = (
 				7200E4132446FD8900FBA43F /* AddProductCartView.swift */,
 				7200E41524470ACE00FBA43F /* SelectingProductCell.swift */,
+			);
+			path = AddProductCartView;
+			sourceTree = "<group>";
+		};
+		722A54CF2452C11A00C81F82 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				7298BF00242DE470005B0517 /* SearchViewController.swift */,
+				72EB58D12431D618001C4CCF /* SearchView */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		722A54D02452C23200C81F82 /* AddProductCart */ = {
+			isa = PBXGroup;
+			children = (
+				7200E4102446FD5600FBA43F /* AddProductCartViewController.swift */,
+				7200E4122446FD7A00FBA43F /* AddProductCartView */,
 			);
 			path = AddProductCart;
 			sourceTree = "<group>";
@@ -367,6 +385,15 @@
 				72851671244EC3C200D56809 /* SearchedProducts.swift */,
 			);
 			path = Search;
+			sourceTree = "<group>";
+		};
+		7288F90624529B5600EBD058 /* Cart */ = {
+			isa = PBXGroup;
+			children = (
+				7280786B2429CA2000101B7D /* CartViewController.swift */,
+				727F095F2428DCE700584A40 /* CartView */,
+			);
+			path = Cart;
 			sourceTree = "<group>";
 		};
 		72EB58D12431D618001C4CCF /* SearchView */ = {
@@ -439,6 +466,9 @@
 		7C65ECAD2424677C0075606A /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				722A54D02452C23200C81F82 /* AddProductCart */,
+				722A54CF2452C11A00C81F82 /* Search */,
+				7288F90624529B5600EBD058 /* Cart */,
 				7C16CEED2435D6F3007CD954 /* Details */,
 				7C16CEEB2435D641007CD954 /* Home */,
 				7C5A889224343AC4006361AC /* Protocols */,
@@ -482,9 +512,6 @@
 				7050F3112424BA3800B8E13B /* LoginViewController.swift */,
 				7050F315242876AC00B8E13B /* IDFindViewController.swift */,
 				7050F317242876B600B8E13B /* PWFindViewController.swift */,
-				7280786B2429CA2000101B7D /* CartViewController.swift */,
-				7298BF00242DE470005B0517 /* SearchViewController.swift */,
-				7200E4102446FD5600FBA43F /* AddProductCartViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -598,9 +625,6 @@
 		7C65ECC6242472F70075606A /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				7200E4122446FD7A00FBA43F /* AddProductCart */,
-				727F095F2428DCE700584A40 /* CartView */,
-				72EB58D12431D618001C4CCF /* SearchView */,
 				723851E024249C6400E8B206 /* UserInfoTableViewCell.swift */,
 				7050F31D242A3BB300B8E13B /* CategoryTableViewCell.swift */,
 				70E8178224360DF70010EB4C /* CategorySubTableViewCell.swift */,

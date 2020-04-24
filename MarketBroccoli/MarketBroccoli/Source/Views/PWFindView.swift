@@ -7,21 +7,28 @@
 //
 
 import UIKit
+protocol PWFindViewDeleate: class {
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool
+}
 
 class PWFindView: UIView {
-  private var nameTextField = UITextField().then {
+  weak var delegate: PWFindViewDeleate?
+  var nameTextField = UITextField().then {
     $0.placeholder = "이름을 입력해주세요."
     $0.textFieldStyle()
+    $0.addTarget(self, action: #selector(textFieldShouldReturn), for: .primaryActionTriggered)
   }
   
-  private var idTextField = UITextField().then {
+  var idTextField = UITextField().then {
     $0.placeholder = "아이디를 입력해주세요."
     $0.textFieldStyle()
+    $0.addTarget(self, action: #selector(textFieldShouldReturn), for: .primaryActionTriggered)
   }
   
-  private var emailTextField = UITextField().then {
+  var emailTextField = UITextField().then {
     $0.placeholder = "가입한 이메일을 입력해주세요."
     $0.textFieldStyle()
+    $0.addTarget(self, action: #selector(textFieldShouldReturn), for: .primaryActionTriggered)
   }
   
   private var submitButton = UIButton().then {
@@ -78,5 +85,11 @@ class PWFindView: UIView {
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+}
+extension PWFindView {
+  @objc func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    guard let delegate = delegate else { fatalError() }
+    return delegate.textFieldShouldReturn(textField)
   }
 }

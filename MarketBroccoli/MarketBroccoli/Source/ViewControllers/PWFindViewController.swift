@@ -9,8 +9,12 @@
 import UIKit
 
 class PWFindViewController: UIViewController {
-  private let PWFView = PWFindView()
-  
+  private lazy var PWFView = PWFindView().then {
+    $0.delegate = self
+  }
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    self.view.endEditing(true)
+  }
   override func viewDidLoad() {
     super.viewDidLoad()
     setupNavigation()
@@ -29,5 +33,17 @@ class PWFindViewController: UIViewController {
   private func setupNavigation() {
     self.navigationController?.navigationBar.barTintColor = .white
     self.navigationItem.title = "비밀번호 찾기"
+  }
+}
+extension PWFindViewController: PWFindViewDeleate {
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    if textField == PWFView.nameTextField {
+      PWFView.idTextField.becomeFirstResponder()
+    } else if textField == PWFView.idTextField {
+      PWFView.emailTextField.becomeFirstResponder()
+    } else {
+      PWFView.emailTextField.resignFirstResponder()
+    }
+    return true
   }
 }

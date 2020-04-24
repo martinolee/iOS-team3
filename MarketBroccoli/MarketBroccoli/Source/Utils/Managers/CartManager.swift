@@ -173,22 +173,10 @@ extension CartManager {
   private func addProductIntoLocalCart(wishProduct: UpdatedProduct) {
     guard
       let cartData = UserDefaultManager.shared.get(for: .cart) as? Data,
-      var cart = try? JSONDecoder().decode([UpdatedProduct].self, from: cartData)
+      var cart = try? JSONDecoder().decode(Cart.self, from: cartData)
     else { return }
     
-    for cartIndex in cart.indices {
-      if let optionID = cart[cartIndex].option, let newOptionID = wishProduct.option {
-        if cart[cartIndex].product == wishProduct.product && optionID == newOptionID {
-          cart[cartIndex].quantity += wishProduct.quantity
-        } else {
-          cart.append(wishProduct)
-        }
-      } else {
-        if cart[cartIndex].product == wishProduct.product {
-          cart.append(wishProduct)
-        }
-      }
-    }
+    
     
     UserDefaultManager.shared.set(cart, for: .cart)
   }
@@ -197,21 +185,19 @@ extension CartManager {
     addProductIntoLocalCart(wishProduct: wishProduct)
   }
   
-  private func removeLocalProduct(removedProductID: Int, removedOptionID: Int?) {
+  private func removeLocalProduct(cartID: Int) {
     guard
       let cartData = UserDefaultManager.shared.get(for: .cart) as? Data,
-      var cart = try? JSONDecoder().decode([UpdatedProduct].self, from: cartData)
-      else { return }
+      var cart = try? JSONDecoder().decode(Cart.self, from: cartData)
+    else { return }
     
     for cartIndex in cart.indices {
-      if let optionID = cart[cartIndex].option, let removedOptionID = removedOptionID {
-        if cart[cartIndex].product == removedProductID && optionID == removedOptionID {
-          cart.remove(at: cartIndex)
-        }
-      } else {
-        if cart[cartIndex].product == removedProductID {
-          cart.remove(at: cartIndex)
-        }
+      for productIndex in cart[cartIndex].wishProducts.indices
+        where cart[cartIndex].wishProducts[productIndex].product.cartID == cartID {
+          cart[cartIndex].wishProducts.remove(at: productIndex)
+          
+          cart = cart.filter { !$0.wishProducts.isEmpty }
+          break
       }
     }
     
