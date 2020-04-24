@@ -24,55 +24,6 @@ class AddProductCartViewController: UIViewController {
     $0.dataSource = self
     $0.delegate = self
   }
-
-  private lazy var dummy: ProductCategory? = ProductCategory(
-    headID: 0,
-    id: 567,
-    name: "[유가원] 유기농 크런치 씨리얼 4종",
-    discountRate: 0.5,
-    wishProducts: [
-      WishProduct(
-        product: Product(
-          id: 378,
-          name: "[유가원] 유기농 크런치트로피칼후르츠 씨리얼 400g",
-          price: 12900,
-          imageURL: ""
-        ),
-        quantity: 0,
-        isChecked: true
-      ),
-      WishProduct(
-        product: Product(
-          id: 378,
-          name: "[유가원] 유기농 크런치애플시나몬 씨리얼 400g",
-          price: 12500,
-          imageURL: ""
-        ),
-        quantity: 0,
-        isChecked: true
-      ),
-      WishProduct(
-        product: Product(
-          id: 378,
-          name: "[유가원] 유기농 초코크런치 씨리얼 400g",
-          price: 12900,
-          imageURL: ""
-        ),
-        quantity: 0,
-        isChecked: true
-      ),
-      WishProduct(
-        product: Product(
-          id: 378,
-          name: "[유가원] 유기농 프로틴리치그래놀라 씨리얼 400g",
-          price: 12900,
-          imageURL: ""
-        ),
-        quantity: 0,
-        isChecked: true
-      )
-    ]
-  )
   
   // MARK: - Life Cycle
   
@@ -157,9 +108,8 @@ extension AddProductCartViewController: AddProductCartViewDelegate {
       return
     }
     
-    if productList.id != nil {
+    if let productID = productList.id {
       for selectedProduct in selectedProducts {
-        guard let productID = productList.id else { return }
         let optionID = selectedProduct.product.id
         let quantity = selectedProduct.quantity
         let selectedProduct = UpdatedProduct(product: productID, option: optionID, quantity: quantity)
@@ -174,7 +124,7 @@ extension AddProductCartViewController: AddProductCartViewDelegate {
         }
       }
     } else {
-      guard let selectedProduct = selectedProducts.first else { return }
+      let selectedProduct = selectedProducts[0]
       
       let productID = selectedProduct.product.id
       let quantity = selectedProduct.quantity

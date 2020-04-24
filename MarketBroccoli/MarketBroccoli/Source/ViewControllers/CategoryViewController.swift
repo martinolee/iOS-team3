@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class CategoryViewController: UIViewController {
   // MARK: - Properties
@@ -157,7 +158,10 @@ extension CategoryViewController: UITableViewDelegate {
       case 1:
         let catogoryDetailVC = CategoryDetailViewController()
         let naviagationTitle = categoryData[indexPath.section - 1].title
+        let menuBarTitle = categoryData[indexPath.section - 1].row[indexPath.row - 1]
         catogoryDetailVC.categoryDetailNavigationTitle = naviagationTitle
+        catogoryDetailVC.categoryDetatilMenuBarTitle = menuBarTitle
+        catogoryDetailVC.categoryId = indexPath.section
         self.navigationController?.pushViewController(catogoryDetailVC, animated: true)
       default:
         print(indexPath.row)
