@@ -20,7 +20,7 @@ class UserDefaultManager {
     set(empty, for: key)
   }
   
-  func set<T>(_ value: T?, for key: Key) {
+  func set<T>(_ value: T, for key: Key) {
     UserDefaults.standard.set(value, forKey: key.rawValue)
     UserDefaults.standard.synchronize()
   }
