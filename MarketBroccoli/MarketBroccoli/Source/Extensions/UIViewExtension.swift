@@ -9,6 +9,7 @@
 import UIKit
 
 extension UIView {
+  // 뷰컨트롤러 찾아주는 익스텐션
   var viewController: UIViewController? {
     if let vc = self.next as? UIViewController {
       return vc
