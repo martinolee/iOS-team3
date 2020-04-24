@@ -43,9 +43,12 @@ class SearchViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    self.addNavigationBarCartButton()
     self.setupBroccoliNavigationBar(title: "검색")
     searchWordTableViewWillFollowKeyboard()
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    self.addNavigationBarCartButton()
   }
 }
 

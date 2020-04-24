@@ -9,12 +9,14 @@
 import Foundation
 
 enum RequestCart: RequestProtocol {
-  case cart, addProduct, updateProduct(Int), removeProduct(Int)
+  case cart, cartCount, addProduct, updateProduct(Int), removeProduct(Int)
   
   var endPoint: String {
     switch self {
     case .cart:
       return baseUrl + "/kurly/cart/"
+    case .cartCount:
+      return baseUrl + "/kurly/cart/count/"
     case .addProduct:
       return baseUrl + "/kurly/cart/"
     case .updateProduct(let id):

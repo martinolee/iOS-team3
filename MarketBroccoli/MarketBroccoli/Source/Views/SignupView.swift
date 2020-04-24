@@ -44,13 +44,13 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.required = true
   }
   
-  lazy var secretTextField = UITextField().then {
+  lazy var passwordTextField = UITextField().then {
     $0.signupStyle(round: .roundedRect, clearButton: .whileEditing)
     $0.placeholder = "비밀번호를 입력해주세요"
-    $0.isSecureTextEntry = true
+//    $0.isSecureTextEntry = true
     $0.autocapitalizationType = .none
     $0.delegate = self
-    $0.addTarget(self, action: #selector(secretTextFeildEditingChanged), for: .editingChanged)
+    $0.addTarget(self, action: #selector(passwordTextFieldEditingChanged(_:text:)), for: .editingChanged)
   }
   
   let tenSyllableLabel = SignupLabel(textColor: .lightGray, font: .systemFont(ofSize: 10)).then {
@@ -70,12 +70,12 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.required = true
   }
   
-  lazy var checkSecretNumberTextField = UITextField().then {
+  lazy var checkPasswordTextField = UITextField().then {
     $0.placeholder = "비밀번호를 한번 더 입력해주세요"
     $0.delegate = self
-    $0.isSecureTextEntry = true
+//    $0.isSecureTextEntry = true
     $0.autocapitalizationType = .none
-    $0.addTarget(self, action: #selector(checkSecretNumberTextFeildEditingChanged), for: .editingChanged)
+    $0.addTarget(self, action: #selector(checkPasswordTextFieldEditingChanged), for: .editingChanged)
     $0.signupStyle(round: .roundedRect, clearButton: .whileEditing)
   }
   
@@ -122,7 +122,7 @@ class SignupView: UIView, UITextFieldDelegate {
     $0.delegate = self
     $0.keyboardType = .phonePad
     $0.addTarget(self, action: #selector(cellphoneTextFieldEditingChanged), for: .editingChanged)
-    $0.signupStyle(round: .roundedRect, clearButton: .whileEditing)
+    $0.signupStyle(round: .roundedRect, clearButton: .never)
   }
   
   lazy var getCodeButton = SignupButton(
@@ -494,8 +494,8 @@ class SignupView: UIView, UITextFieldDelegate {
   
   private func setupUI() {
     [idLabel, idTextField, checkIDButton,
-     secretNumberLabel, secretTextField, checkSecretNumberLabel,
-     checkSecretNumberTextField, nameLabel, nameTextField,
+     secretNumberLabel, passwordTextField, checkSecretNumberLabel,
+     checkPasswordTextField, nameLabel, nameTextField,
      emailLabel, emailTextFeild, cellphoneLabel,
      cellphoneTextField, getCodeButton, checkingCodeCompleteLabel,
      checkingCodeTexField, timerInTextField, checkingCodeButton,
@@ -577,13 +577,13 @@ class SignupView: UIView, UITextFieldDelegate {
       $0.leading.trailing.equalTo(checkingIdLabel)
     }
     
-    secretTextField.snp.makeConstraints {
+    passwordTextField.snp.makeConstraints {
       $0.top.equalTo(secretNumberLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(secretNumberLabel)
     }
     
     tenSyllableLabel.snp.makeConstraints {
-      $0.top.equalTo(secretTextField.snp.bottom).offset(4)
+      $0.top.equalTo(passwordTextField.snp.bottom).offset(4)
       $0.leading.trailing.equalTo(secretNumberLabel)
       $0.height.equalTo(0)
     }
@@ -604,20 +604,20 @@ class SignupView: UIView, UITextFieldDelegate {
       $0.leading.trailing.equalTo(notSameTheeNumberLabel)
     }
     
-    checkSecretNumberTextField.snp.makeConstraints {
+    checkPasswordTextField.snp.makeConstraints {
       $0.top.equalTo(checkSecretNumberLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(checkSecretNumberLabel)
     }
 
     sameSecretNumberLabel.snp.makeConstraints {
-      $0.top.equalTo(checkSecretNumberTextField.snp.bottom).offset(4)
-      $0.leading.trailing.equalTo(checkSecretNumberTextField)
+      $0.top.equalTo(checkPasswordTextField.snp.bottom).offset(4)
+      $0.leading.trailing.equalTo(checkPasswordTextField)
       $0.height.equalTo(0)
     }
     
     nameLabel.snp.makeConstraints {
       $0.top.equalTo(sameSecretNumberLabel.snp.bottom).offset(10)
-      $0.leading.trailing.equalTo(checkSecretNumberTextField)
+      $0.leading.trailing.equalTo(checkPasswordTextField)
     }
 
     nameTextField.snp.makeConstraints {
@@ -1056,14 +1056,14 @@ extension SignupView {
     switch textField {
     case idTextField:
       return delegate.idTextField(textField, shouldChangeCharactersIn: range, replacementString: string)
-    case secretTextField:
-      return delegate.secretTextField(
+    case passwordTextField:
+      return delegate.passwordTextField(
         textField,
         shouldChangeCharactersIn: range,
         replacementString: string
       )
-    case checkSecretNumberTextField:
-      return delegate.checkSecretNumberTextField(
+    case checkPasswordTextField:
+      return delegate.checkPasswordTextField(
         textField,
         shouldChangeCharactersIn: range,
         replacementString: string
@@ -1125,10 +1125,10 @@ extension SignupView {
     switch textField {
     case idTextField:
       return delegate.idTextFieldDidBeginEditing(textField)
-    case secretTextField:
-      return delegate.secretTextFeildDidBeginEditing(textField)
-    case checkSecretNumberTextField:
-      return delegate.checkSecretNumberTextFeildDidBeginEditing(textField)
+    case passwordTextField:
+      return delegate.passwordTextFieldDidBeginEditing(textField)
+    case checkPasswordTextField:
+      return delegate.checkPasswordTextFieldDidBeginEditing(textField)
     default:
       return print("")
     }
@@ -1194,12 +1194,12 @@ extension SignupView {
     delegate?.checkIDButtonTouched(button)
   }
   
-  @objc func secretTextFeildEditingChanged(_ textField: UITextField, text: String) {
+  @objc func passwordTextFieldEditingChanged(_ textField: UITextField, text: String) {
     guard
       let delegate = delegate,
       let text = textField.text
       else { fatalError() }
-    delegate.secretTextFeildEditingChanged(textField, text: text)
+    delegate.passwordTextFieldEditingChanged(textField, text: text)
   }
   
   @objc func checkName(_ textField: UITextField, text: String) {
@@ -1210,12 +1210,12 @@ extension SignupView {
     delegate.checkName(textField, text: text)
   }
   
-  @objc func checkSecretNumberTextFeildEditingChanged(_ textField: UITextField, text: String) {
+  @objc func checkPasswordTextFieldEditingChanged(_ textField: UITextField, text: String) {
     guard
       let delegate = delegate,
       let text = textField.text
       else { fatalError() }
-    delegate.checkSecretNumberTextFeildEditingChanged(textField, text: text)
+    delegate.checkPasswordTextFieldEditingChanged(textField, text: text)
   }
   
   @objc func cellphoneTextFieldEditingChanged(_ textField: UITextField, text: String) {
