@@ -14,10 +14,44 @@ class CartManager {
   
   private init() { }
   
+  func fetchProductDetail(id: Int, completionHandler: @escaping (Result<ProductDetail, Error>) -> Void) {
+    AF.request(
+      RequestCart.productDetail(id).endPoint,
+      method: .get
+    )
+      .validate()
+      .responseDecodable(of: ProductDetail.self) { response in
+        switch response.result {
+        case .success(let productDetail):
+          completionHandler(.success(productDetail))
+        case .failure(let error):
+          completionHandler(.failure(error))
+        }
+    }
+  }
+  
+  func fetchProductDetailWithOption(id: Int, option: Int,
+                                    completionHandler: @escaping (Result<ProductDetailWithOption, Error>) -> Void) {
+    AF.request(
+      RequestCart.productDetailWithOption(id, option).endPoint,
+      method: .get
+    )
+      .validate()
+      .responseDecodable(of: ProductDetailWithOption.self) { response in
+        switch response.result {
+        case .success(let productDetail):
+          completionHandler(.success(productDetail))
+        case .failure(let error):
+          completionHandler(.failure(error))
+        }
+    }
+  }
+  
   func fetchCart(completionHandler: @escaping (Result<Cart, Error>) -> Void) {
     guard let token = UserDefaultManager.shared.get(for: .token) as? String else {
-      let cart = fetchLocalCart()
-      completionHandler(.success(cart))
+      fetchLocalCart { cart in
+        completionHandler(.success(cart))
+      }
       
       return
     }
@@ -65,7 +99,11 @@ class CartManager {
   
   func addProductIntoCart(_ product: UpdatedProduct,
                           completionHandler: @escaping (Result<BackendCartElement, Error>) -> Void) {
-    guard let token = UserDefaultManager.shared.get(for: .token) as? String else { return }
+    guard let token = UserDefaultManager.shared.get(for: .token) as? String else {
+      addProductIntoLocalCart(wishProduct: product)
+      
+      return
+    }
     
     AF.request(
       RequestCart.cart.endPoint,
@@ -92,7 +130,11 @@ class CartManager {
     id: Int, product: UpdatedProduct,
     completionHandler: @escaping (Result<BackendCartElement, Error>) -> Void
   ) {
-    guard let token = UserDefaultManager.shared.get(for: .token) as? String else { return }
+    guard let token = UserDefaultManager.shared.get(for: .token) as? String else {
+      updateLocalProductQuntity(wishProduct: product)
+      
+      return
+    }
     
     AF.request(
       RequestCart.updateProduct(id).endPoint,
@@ -115,11 +157,16 @@ class CartManager {
     }
   }
   
-  func removeProduct(id: Int, completionHandler: @escaping (Result<Data, Error>) -> Void) {
-    guard let token = UserDefaultManager.shared.get(for: .token) as? String else { return }
+  func removeProduct(cartID: Int, productID: Int, optionID: Int?,
+                     completionHandler: @escaping (Result<Data, Error>) -> Void) {
+    guard let token = UserDefaultManager.shared.get(for: .token) as? String else {
+      removeLocalProduct(productID: productID, optionID: optionID)
+      
+      return
+    }
     
     AF.request(
-      RequestCart.removeProduct(id).endPoint,
+      RequestCart.removeProduct(cartID).endPoint,
       method: .delete,
       headers: ["Authorization": "Token \(token)"]
     )
@@ -135,11 +182,14 @@ class CartManager {
   }
 }
 
+// MARK: - Local Cart
+
 extension CartManager {
-  private func fetchLocalCart() -> Cart {
+  private func fetchLocalCart(completionHandler: @escaping (Cart) -> Void) {
     guard
       let cartData = UserDefaultManager.shared.get(for: .cart) as? Data,
-      let cart = try? JSONDecoder().decode(Cart.self, from: cartData)
+      let localCart = try? JSONDecoder().decode([UpdatedProduct].self, from: cartData),
+      !localCart.isEmpty
     else {
       let cart = Cart()
       
@@ -147,18 +197,111 @@ extension CartManager {
         UserDefaultManager.shared.set(encodedCart, for: .cart)
       }
       
-      return cart
+      completionHandler(cart)
+      return
     }
     
-    return cart
+    var cart = Cart()
+    
+    for localCartIndex in localCart.indices {
+      let localProduct = localCart[localCartIndex]
+      
+      if let option = localProduct.option {
+        fetchProductDetailWithOption(id: localProduct.product, option: option) { result in
+          switch result {
+          case .success(let productDetail):
+            var hasSameCategory = false
+            
+            for cartIndex in cart.indices where cart[cartIndex].id == productDetail.product.productID {
+              cart[cartIndex].wishProducts.append(
+                WishProduct(
+                  product: Product(
+                    cartID: localCartIndex,
+                    id: productDetail.optionID,
+                    name: productDetail.name,
+                    price: productDetail.price,
+                    imageURL: productDetail.product.imageURL
+                  ),
+                  quantity: localProduct.quantity,
+                  isChecked: true
+                )
+              )
+              hasSameCategory = true
+              break
+            }
+            
+            if !hasSameCategory {
+              cart.append(
+                ProductCategory(
+                  id: productDetail.product.productID,
+                  name: productDetail.product.name,
+                  discountRate: productDetail.product.discountRate,
+                  wishProducts: [
+                    WishProduct(
+                      product: Product(
+                        cartID: localCartIndex,
+                        id: productDetail.optionID,
+                        name: productDetail.name,
+                        price: productDetail.price,
+                        imageURL: productDetail.product.imageURL
+                      ),
+                      quantity: localProduct.quantity,
+                      isChecked: true
+                    )
+                  ]
+                )
+              )
+            }
+            
+            if cart.size == localCart.count {
+              completionHandler(cart)
+            }
+          case .failure(let error):
+            print(error.localizedDescription)
+          }
+        }
+      } else {
+        fetchProductDetail(id: localProduct.product) { result in
+          switch result {
+          case .success(let productDetail):
+            cart.append(
+              ProductCategory(
+                id: nil,
+                name: nil,
+                discountRate: productDetail.discountRate,
+                wishProducts: [
+                  WishProduct(
+                    product: Product(
+                      cartID: localCartIndex,
+                      id: productDetail.productID,
+                      name: productDetail.name,
+                      price: productDetail.price,
+                      imageURL: productDetail.imageURL
+                    ),
+                    quantity: localProduct.quantity,
+                    isChecked: true
+                  )
+                ]
+              )
+            )
+            
+            if cart.size == localCart.count {
+              completionHandler(cart)
+            }
+          case .failure(let error):
+            print(error.localizedDescription)
+          }
+        }
+      }
+    }
   }
   
   private func fetchLocalCartCount() -> Int {
     guard
       let cartData = UserDefaultManager.shared.get(for: .cart) as? Data,
-      let cart = try? JSONDecoder().decode(Cart.self, from: cartData)
+      let cart = try? JSONDecoder().decode([UpdatedProduct].self, from: cartData)
     else {
-      let cart = Cart()
+      let cart = [UpdatedProduct]()
       
       if let encodedCart = try? JSONEncoder().encode(cart) {
         UserDefaultManager.shared.set(encodedCart, for: .cart)
@@ -171,36 +314,52 @@ extension CartManager {
   }
   
   private func addProductIntoLocalCart(wishProduct: UpdatedProduct) {
-    guard
-      let cartData = UserDefaultManager.shared.get(for: .cart) as? Data,
-      var cart = try? JSONDecoder().decode(Cart.self, from: cartData)
-    else { return }
-    
-    
-    
-    UserDefaultManager.shared.set(cart, for: .cart)
+    changeProduct(wishProduct: wishProduct, forUpdate: false)
   }
   
   private func updateLocalProductQuntity(wishProduct: UpdatedProduct) {
-    addProductIntoLocalCart(wishProduct: wishProduct)
+    changeProduct(wishProduct: wishProduct, forUpdate: true)
   }
   
-  private func removeLocalProduct(cartID: Int) {
+  private func changeProduct(wishProduct: UpdatedProduct, forUpdate: Bool) {
     guard
       let cartData = UserDefaultManager.shared.get(for: .cart) as? Data,
-      var cart = try? JSONDecoder().decode(Cart.self, from: cartData)
+      var cart = try? JSONDecoder().decode([UpdatedProduct].self, from: cartData)
     else { return }
+    var hasSameProductInCart = false
     
-    for cartIndex in cart.indices {
-      for productIndex in cart[cartIndex].wishProducts.indices
-        where cart[cartIndex].wishProducts[productIndex].product.cartID == cartID {
-          cart[cartIndex].wishProducts.remove(at: productIndex)
-          
-          cart = cart.filter { !$0.wishProducts.isEmpty }
-          break
-      }
+    for cartIndex in cart.indices
+      where cart[cartIndex].product == wishProduct.product && cart[cartIndex].option == wishProduct.option {
+        hasSameProductInCart = true
+        forUpdate
+          ? (cart[cartIndex].quantity = wishProduct.quantity)
+          : (cart[cartIndex].quantity += wishProduct.quantity)
+        break
     }
     
-    UserDefaultManager.shared.set(cart, for: .cart)
+    if !hasSameProductInCart {
+      cart.append(wishProduct)
+    }
+    
+    if let encodedCart = try? JSONEncoder().encode(cart) {
+      UserDefaultManager.shared.set(encodedCart, for: .cart)
+    }
+  }
+  
+  private func removeLocalProduct(productID: Int, optionID: Int?) {
+    guard
+      let cartData = UserDefaultManager.shared.get(for: .cart) as? Data,
+      var cart = try? JSONDecoder().decode([UpdatedProduct].self, from: cartData)
+    else { return }
+    
+    for cartIndex in cart.indices
+      where cart[cartIndex].product == productID && cart[cartIndex].option == optionID {
+        cart.remove(at: cartIndex)
+        break
+    }
+    
+    if let encodedCart = try? JSONEncoder().encode(cart) {
+      UserDefaultManager.shared.set(encodedCart, for: .cart)
+    }
   }
 }
