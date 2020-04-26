@@ -155,14 +155,23 @@ extension CategoryViewController: UITableViewDelegate {
         }
         tableView.reloadSections(sections, with: .none)
       case 1:
-        let catogoryDetailVC = CategoryDetailViewController()
+        let categoryDetailVC = CategoryDetailViewController()
         let naviagationTitle = categoryData[indexPath.section - 1].title
         let selectedCellTitle = categoryData[indexPath.section - 1].row[indexPath.row - 1]
-        catogoryDetailVC.categoryDetailNavigationTitle = naviagationTitle
-        catogoryDetailVC.selectedCellTitle = selectedCellTitle
-        catogoryDetailVC.categoryId = indexPath.section
-        self.navigationController?.pushViewController(catogoryDetailVC, animated: true)
+        categoryDetailVC.categoryDetailNavigationTitle = naviagationTitle
+        categoryDetailVC.selectedCellTitle = selectedCellTitle
+        categoryDetailVC.categoryId = indexPath.section
+        categoryDetailVC.subCategoryId = 0
+        self.navigationController?.pushViewController(categoryDetailVC, animated: true)
       default:
+        let categoryDetailVC = CategoryDetailViewController()
+        let naviagationTitle = categoryData[indexPath.section - 1].title
+        let selectedCellTitle = categoryData[indexPath.section - 1].row[indexPath.row - 1]
+        categoryDetailVC.categoryDetailNavigationTitle = naviagationTitle
+        categoryDetailVC.selectedCellTitle = selectedCellTitle
+        categoryDetailVC.categoryId = indexPath.section
+        categoryDetailVC.subCategoryId = indexPath.row
+        self.navigationController?.pushViewController(categoryDetailVC, animated: true)
         print(indexPath.row)
       }
     }
