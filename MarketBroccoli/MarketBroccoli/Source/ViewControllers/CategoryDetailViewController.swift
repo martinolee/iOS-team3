@@ -192,6 +192,7 @@ extension CategoryDetailViewController: UICollectionViewDataSource {
     case 0:
       let cell = collectionView.dequeue(CategoryDetailCollectionViewCell.self, indexPath: indexPath)
       print("가로 - 몇 번째?", indexPath.section, indexPath.row)
+      print("didSet categoryID", categoryId)
       cell.configure(id: categoryId)
       return cell
     default:

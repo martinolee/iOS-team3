@@ -85,6 +85,9 @@ extension CategoryDetailCollectionViewCell: UICollectionViewDataSource {
     guard let categoryProductList = categoryProductList else { return UICollectionViewCell() }
     let cell = collectionView.dequeue(ProductCollectionCell.self, indexPath: indexPath)
     let categoryProduct = categoryProductList[indexPath.row]
+    
+    cell.delegate = self
+    
     cell.configure(
       productId: categoryProduct.id,
       productName: categoryProduct.name,
@@ -165,6 +168,28 @@ extension CategoryDetailCollectionViewCell {
       case .failure(let error):
         print(error)
         print(error.localizedDescription)
+      }
+    }
+  }
+}
+
+extension CategoryDetailCollectionViewCell: ProductCollectionCellDelegate {
+  func cartOrAlarmButtonTouched(_ button: UIButton, _ productIndexPath: IndexPath) {
+    guard let categoryProductList = categoryProductList else { return }
+       let categoryProduct = categoryProductList[productIndexPath.row]
+    
+    let navigationController = UINavigationController(rootViewController: AddProductCartViewController())
+    
+    (self.viewController as? CategoryDetailViewController)?.present(navigationController, animated: true) {
+      navigationController.do {
+        guard let firstViewController = $0.viewControllers.first as? AddProductCartViewController else { return }
+        
+        firstViewController.deliver(
+          id: categoryProduct.id,
+          name: categoryProduct.name,
+          price: categoryProduct.price,
+          discountRate: categoryProduct.discount
+        )
       }
     }
   }
