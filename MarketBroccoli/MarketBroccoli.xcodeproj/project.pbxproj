@@ -525,6 +525,7 @@
 		7C65ECB4242470B60075606A /* CustomUI */ = {
 			isa = PBXGroup;
 			children = (
+				728649A82449D4F000BE6A57 /* SelectingProductFooter.swift */,
 				7CEB86E9243C51DA0044ED55 /* Details */,
 				7C65ECB9242471380075606A /* EventMark.swift */,
 				728078672429A8A500101B7D /* ProductQuantityStepper.swift */,
@@ -548,7 +549,6 @@
 				7C8C4A2B242B381F00FA912B /* UIViewExtension.swift */,
 				727F093424287C4F00584A40 /* UITableViewExtension.swift */,
 				727F093224287C2E00584A40 /* UITableViewCellExtension.swift */,
-				728649A82449D4F000BE6A57 /* SelectingProductFooter.swift */,
 				7CCD64972428DB1D00FC671B /* UICollectionViewCellExtension.swift */,
 				7CCD64992428DB2C00FC671B /* UICollectionViewExtension.swift */,
 				7C15D0B7242A2C3500ACB4C9 /* UILabelExtension.swift */,

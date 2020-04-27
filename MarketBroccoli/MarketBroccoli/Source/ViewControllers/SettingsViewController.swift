@@ -43,19 +43,23 @@ class SettingsViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUI()
-    self.addNavigationBarCartButton()
     self.setupBroccoliNavigationBar(title: "마이컬리")
     autoLogin()
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    
+    self.addNavigationBarCartButton()
   }
 }
 
 // MARK: - UI
 extension SettingsViewController {
   private func autoLogin() {
-    if UserDefaultManager.shared.get(for: .token) != nil {
-      isLogin = true
-    }
+    isLogin = UserDefaultManager.shared.isLogin()
   }
+  
   private func setupUI() {
     view.addSubviews([myCurlyTableView])
     myCurlyTableView.snp.makeConstraints {
@@ -127,6 +131,7 @@ extension SettingsViewController: UITableViewDelegate {
       isLogin = false
       UserDefaultManager.shared.remove(for: .token)
       UserDefaultManager.shared.remove(for: .userName)
+      self.addNavigationBarCartButton()
     }
   }
 }
