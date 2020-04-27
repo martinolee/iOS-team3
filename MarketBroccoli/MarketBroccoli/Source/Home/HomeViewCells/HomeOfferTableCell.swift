@@ -10,7 +10,7 @@ import UIKit
 
 class HomeOfferTableCell: UITableViewCell {
   private lazy var cellTitleLabel = UILabel().then {
-    $0.font = .boldSystemFont(ofSize: 20)
+    $0.font = .boldSystemFont(ofSize: 18)
     $0.text = "dummyTitle"
     $0.isUserInteractionEnabled = true
     let tap = UITapGestureRecognizer(target: self, action: #selector(titleTouched(_:)))
@@ -111,7 +111,7 @@ extension HomeOfferTableCell {
     self.contentView.addSubviews([cellTitleLabel, cellSubtitleLabel, offerCollectionView])
     
     cellTitleLabel.snp.makeConstraints {
-      $0.top.equalTo(self.contentView)
+      $0.top.equalTo(self.contentView).offset(60)
       $0.leading.equalToSuperview().inset(10)
     }
     
@@ -121,7 +121,7 @@ extension HomeOfferTableCell {
     }
     
     offerCollectionView.snp.makeConstraints {
-      $0.top.equalTo(cellSubtitleLabel.snp.bottom)
+      $0.top.equalTo(cellSubtitleLabel.snp.bottom).offset(10)
       $0.leading.bottom.trailing.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0))
       $0.height.equalTo(300)
     }

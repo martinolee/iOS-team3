@@ -37,6 +37,7 @@ extension CategoryScrollView {
   private func setupUI(categories: [String]) {
     let labels = categories.map { name -> UILabel in
       let label = UILabel().then {
+        $0.font = .systemFont(ofSize: 15)
         $0.textColor = .gray
         $0.text = name
         $0.isUserInteractionEnabled = true

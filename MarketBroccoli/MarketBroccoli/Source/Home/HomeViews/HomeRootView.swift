@@ -73,6 +73,7 @@ extension HomeRootView {
     selectedPage = currentPage
     stackView.arrangedSubviews.forEach {
       ($0 as? UILabel)?.textColor = .gray
+      ($0 as? UILabel)?.font = .systemFont(ofSize: 16)
     }
     selectedCategory.snp.remakeConstraints {
       $0.bottom.equalTo(label.snp.bottom)
@@ -83,6 +84,7 @@ extension HomeRootView {
     
     UIView.animate(withDuration: 0.3) {
       label.textColor = .kurlyMainPurple
+      label.font = .boldSystemFont(ofSize: 16)
       if scroll {
         let movePoint = CGPoint(x: self.frame.size.width * CGFloat(currentPage), y: 0)
         self.scrollView.setContentOffset(movePoint, animated: false)
@@ -119,6 +121,7 @@ extension HomeRootView {
     let safeArea = self.safeAreaLayoutGuide
     guard let firstStackViewItem = stackView.arrangedSubviews.first as? UILabel else { return }
     firstStackViewItem.textColor = .kurlyMainPurple
+    firstStackViewItem.font = .boldSystemFont(ofSize: 16)
     self.addSubviews([scrollView, stackView])
     stackView.addSubview(selectedCategory)
     
