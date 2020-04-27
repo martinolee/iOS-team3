@@ -58,7 +58,7 @@ class CategoryDetailCollectionViewCell: UICollectionViewCell {
   private func setupFlowLayout() {
     let minimumLineSpacing: CGFloat = 20.0
     let minimumInteritemSpacing: CGFloat = 14.0
-    let insets = UIEdgeInsets(top: 60, left: 14, bottom: 20, right: 14)
+    let insets = UIEdgeInsets(top: 20, left: 14, bottom: 20, right: 14)
     let itemsForLine: CGFloat = 2
     let itemSizeWidth = (
       (
