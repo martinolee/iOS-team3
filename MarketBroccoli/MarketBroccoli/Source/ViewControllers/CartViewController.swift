@@ -41,7 +41,7 @@ class CartViewController: UIViewController {
     setupLeftBarButtonItem()
     setCorrectSelectAllProductCheckBoxStatus()
     
-    cartManager.fetchCart() { [weak self] response in
+    cartManager.fetchCart { [weak self] response in
       switch response {
       case .success(let cart):
         guard let self = self else { return }
