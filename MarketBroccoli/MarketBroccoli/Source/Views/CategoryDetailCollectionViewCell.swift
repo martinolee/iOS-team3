@@ -46,7 +46,7 @@ class CategoryDetailCollectionViewCell: UICollectionViewCell {
   private func setupUI() {
     collectionView.backgroundColor = #colorLiteral(red: 0.9411764706, green: 0.9411764706, blue: 1, alpha: 1)
     collectionView.dataSource = self
-    //    collectionView.delegate = self
+    collectionView.delegate = self
     [collectionView] .forEach {
       self.addSubview($0)
     }
@@ -99,6 +99,18 @@ extension CategoryDetailCollectionViewCell: UICollectionViewDataSource {
     return cell
   }
 }
+// MARK: - UICollectionViewDelegate
+extension CategoryDetailCollectionViewCell: UICollectionViewDelegate {
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    print(indexPath.row, "이 셀을 눌렀어요")
+    let detailVC = DetailViewController()
+    guard let categoryProductList = categoryProductList else { return }
+    let productId = categoryProductList[indexPath.row].id
+    detailVC.configure(productId: productId)
+    (self.viewController as? CategoryDetailViewController)?.navigationController?.pushViewController(detailVC, animated: true)
+  }
+}
+
 // MARK: - Alamofire
 extension CategoryDetailCollectionViewCell {
   func fetchCategory(id: Int, completionHandler: @escaping (Result<Data, Error>) -> Void) {

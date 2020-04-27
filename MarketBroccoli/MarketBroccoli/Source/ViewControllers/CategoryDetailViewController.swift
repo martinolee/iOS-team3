@@ -72,7 +72,6 @@ class CategoryDetailViewController: UIViewController {
     setupNavigtion()
   }
   
-  
   var itemWidth: CGFloat = 0
   
   override func viewDidAppear(_ animated: Bool) {
@@ -149,29 +148,7 @@ class CategoryDetailViewController: UIViewController {
     collectionViewFlowLayout.scrollDirection = .horizontal
   }
 }
-// MARK: - UIScrollViewDelegate
-//extension CategoryDetailViewController: UIScrollViewDelegate {
-//  func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-//    if scrollView == collectionView {
-//      let cellWidth = itemWidth * 2 + (UI.inset + UI.spacing * 2)
-//      var page = round(collectionView.contentOffset.x / cellWidth)
-//      var isRight = true
-//      if velocity.x > 0 {
-//        page += 1
-//        isRight = true
-//      }
-//      if velocity.x < 0 {
-//        page -= 1
-//        isRight = false
-//      }
-//      page = max(page, 0)
-//      print(page, "페이지는/")
-//      targetContentOffset.pointee.x = page * cellWidth
-////      categoryMoved(Int(page), direction: isRight)
-//    }
-//    print(collectionView.contentOffset.x)
-//  }
-//}
+// MARK: - UICollectionViewDelegate
 extension CategoryDetailViewController: UICollectionViewDelegate {
   func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
     if scrollView == collectionView {
@@ -187,8 +164,8 @@ extension CategoryDetailViewController: UICollectionViewDelegate {
         isRight = false
       }
       page = max(page, 0)
-      print(page, "페이지는!!!!!!!")
-      print(itemWidth, "아이템 사이즌!!!!!!!!!")
+//      print(page, "페이지는!!!!!!!")
+//      print(itemWidth, "아이템 사이즌!!!!!!!!!")
       targetContentOffset.pointee.x = page * cellWidth
       //      categoryMoved(Int(page), direction: isRight)
     }
@@ -208,8 +185,6 @@ extension CategoryDetailViewController: UICollectionViewDataSource {
     print("가로 - 몇 번째?", indexPath.section, indexPath.row)
     cell.configure(id: categoryId)
     return cell
-  }
-  func scrollViewDidScroll(_ scrollView: UIScrollView) {
   }
 }
 
