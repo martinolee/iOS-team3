@@ -108,9 +108,8 @@ extension AddProductCartViewController: AddProductCartViewDelegate {
       return
     }
     
-    if productList.id != nil {
+    if let productID = productList.id {
       for selectedProduct in selectedProducts {
-        guard let productID = productList.id else { return }
         let optionID = selectedProduct.product.id
         let quantity = selectedProduct.quantity
         let selectedProduct = UpdatedProduct(product: productID, option: optionID, quantity: quantity)
@@ -125,7 +124,7 @@ extension AddProductCartViewController: AddProductCartViewDelegate {
         }
       }
     } else {
-      guard let selectedProduct = selectedProducts.first else { return }
+      let selectedProduct = selectedProducts[0]
       
       let productID = selectedProduct.product.id
       let quantity = selectedProduct.quantity
@@ -141,7 +140,13 @@ extension AddProductCartViewController: AddProductCartViewDelegate {
       }
     }
     
-    dismiss(animated: true)
+    dismiss(animated: true) {
+      KurlyNotification.shared.notification(
+        text: "장바구니에 상품이 담겼습니다.",
+        textColor: .kurlyMainPurple,
+        backgroundColor: .white
+      )
+    }
   }
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
