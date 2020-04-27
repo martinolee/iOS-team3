@@ -15,9 +15,7 @@ class UserDefaultManager {
   static let shared = UserDefaultManager()
   
   func remove(for key: Key) {
-    let empty: Any? = nil
-    
-    set(empty, for: key)
+    UserDefaults.standard.removeObject(forKey: key.rawValue)
   }
   
   func set<T>(_ value: T, for key: Key) {
