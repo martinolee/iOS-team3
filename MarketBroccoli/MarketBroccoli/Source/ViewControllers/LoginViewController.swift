@@ -74,7 +74,6 @@ extension LoginViewController: LoginViewDelegate {
                 ) else { return }
               
               UserDefaultManager.shared.set(decodedData.token, for: .token)
-              UserDefaultManager.shared.set(decodedData.user.userName, for: .userName)
               print(decodedData)
               
               guard
