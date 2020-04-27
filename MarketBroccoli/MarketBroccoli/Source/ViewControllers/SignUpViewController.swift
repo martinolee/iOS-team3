@@ -116,7 +116,6 @@ extension SignUpViewController: SignupViewDelegate {
     }
   }
   
-  
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     switch textField {
     case signupView.idTextField:
@@ -558,17 +557,6 @@ extension SignUpViewController: SignupViewDelegate {
       signupView.sameSecretNumberLabel.textColor = .orange
       essentialInfo[.passwordCheck] = false
     }
-//    if let lastText = text.last {
-//      password.append(String(lastText))
-//    }
-//    var textFieldText = ""
-//
-//    password.forEach { _ in
-//      textFieldText += "●"
-//    }
-//
-//    textField.text = textFieldText
-//    print(password)
   }
 
   func checkWidth(_ text: String) -> Bool {
@@ -696,6 +684,7 @@ extension SignUpViewController: SignupViewDelegate {
 
   func passwordTextField(_ textField: UITextField,
                        shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    textField.isSecureTextEntry = true
     let currentText = textField.text ?? ""
     guard let stringRange = Range(range, in: currentText) else { return false }
     let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
@@ -704,6 +693,7 @@ extension SignUpViewController: SignupViewDelegate {
 
   func checkPasswordTextField(_ textField: UITextField,
                                   shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    textField.isSecureTextEntry = true
     let currentText = textField.text ?? ""
     guard let stringRange = Range(range, in: currentText) else { return false }
     let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
