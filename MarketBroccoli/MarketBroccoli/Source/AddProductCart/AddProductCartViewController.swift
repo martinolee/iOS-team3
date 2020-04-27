@@ -140,7 +140,13 @@ extension AddProductCartViewController: AddProductCartViewDelegate {
       }
     }
     
-    dismiss(animated: true)
+    dismiss(animated: true) {
+      KurlyNotification.shared.notification(
+        text: "장바구니에 상품이 담겼습니다.",
+        textColor: .kurlyMainPurple,
+        backgroundColor: .white
+      )
+    }
   }
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

@@ -52,6 +52,9 @@ class DetailViewController: UIViewController {
     super.viewWillAppear(animated)
     ObserverManager.shared.registerObserver(
       target: self, selector: #selector(receiveNotification(_:)), observerName: .imageTouched, object: nil)
+    
+    ObserverManager.shared.registerObserver(
+        target: self, selector: #selector(purchaseBtnTouched(_:)), observerName: .purchaseBtnTouched, object: nil)
   }
   
   override func viewDidDisappear(_ animated: Bool) {
@@ -60,6 +63,8 @@ class DetailViewController: UIViewController {
       target: self,
       observerName: .imageTouched,
       object: nil)
+    
+    ObserverManager.shared.resignObserver(target: self, observerName: .purchaseBtnTouched, object: nil)
   }
 }
 
@@ -75,6 +80,27 @@ extension DetailViewController {
     popupImageVC.modalPresentationStyle = .fullScreen
     popupImageVC.configure(image: image.image)
     self.present(popupImageVC, animated: true)
+  }
+  
+  @objc private func purchaseBtnTouched(_ button: UIButton) {
+    let navigationController = UINavigationController(rootViewController: AddProductCartViewController())
+    
+    present(navigationController, animated: true) {
+      navigationController.do {
+        guard
+          let firstViewController = $0.viewControllers.first as? AddProductCartViewController,
+          let id = self.productId,
+          let product = self.model
+        else { return }
+        
+        firstViewController.deliver(
+          id: id,
+          name: product.name,
+          price: product.price,
+          discountRate: product.discountRate
+        )
+      }
+    }
   }
 }
 
