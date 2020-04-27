@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class CategoryViewController: UIViewController {
   // MARK: - Properties
@@ -28,7 +29,6 @@ class CategoryViewController: UIViewController {
     self.setupBroccoliNavigationBar(title: "카테고리")
   }
   private func setupUI() {
-
     tableView.dataSource = self
     tableView.delegate = self
     tableView.tableHeaderView =
@@ -157,7 +157,10 @@ extension CategoryViewController: UITableViewDelegate {
       case 1:
         let catogoryDetailVC = CategoryDetailViewController()
         let naviagationTitle = categoryData[indexPath.section - 1].title
+        let selectedCellTitle = categoryData[indexPath.section - 1].row[indexPath.row - 1]
         catogoryDetailVC.categoryDetailNavigationTitle = naviagationTitle
+        catogoryDetailVC.selectedCellTitle = selectedCellTitle
+        catogoryDetailVC.categoryId = indexPath.section
         self.navigationController?.pushViewController(catogoryDetailVC, animated: true)
       default:
         print(indexPath.row)

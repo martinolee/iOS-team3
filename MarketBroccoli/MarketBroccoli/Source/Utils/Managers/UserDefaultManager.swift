@@ -14,7 +14,11 @@ class UserDefaultManager {
   
   static let shared = UserDefaultManager()
   
-  func set<T>(_ value: T?, for key: Key) {
+  func remove(for key: Key) {
+    UserDefaults.standard.removeObject(forKey: key.rawValue)
+  }
+  
+  func set<T>(_ value: T, for key: Key) {
     UserDefaults.standard.set(value, forKey: key.rawValue)
     UserDefaults.standard.synchronize()
   }

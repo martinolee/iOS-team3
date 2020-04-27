@@ -68,8 +68,9 @@ class CartFooterView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
     
+    hideAllSubviews(true)
     setupAttribute()
-    addAllView()
+    addAllSubviews()
     setupStaticViewSize()
     configure(totalProductPrice: 0, discountProductPrice: 0, shippingFee: 0, expectedAmountPayment: 0)
   }
@@ -78,13 +79,17 @@ class CartFooterView: UIView {
     fatalError("init(coder:) has not been implemented")
   }
   
+  override func layoutSubviews() {
+    updateLayout()
+  }
+  
   // MARK: - Setup UI
   
   private func setupAttribute() {
     self.backgroundColor = .white
   }
   
-  private func addAllView() {
+  private func addAllSubviews() {
     self.addSubviews([
       staticTotalProductPriceLabel,
       totalProductPriceLabel,
@@ -167,6 +172,8 @@ class CartFooterView: UIView {
   }
 }
 
+// MARK: - Element Control
+
 extension CartFooterView {
   func configure(totalProductPrice: Int, discountProductPrice: Int, shippingFee: Int, expectedAmountPayment: Int) {
     totalProductPriceLabel.attributedText = NSMutableAttributedString()
@@ -184,7 +191,21 @@ extension CartFooterView {
     expectedAmountPaymentLabel.attributedText = NSMutableAttributedString()
       .bold("\(moneyFormatter(won: expectedAmountPayment, hasUnit: false))", fontSize: 24)
       .normal(" 원", fontSize: 17)
-    
-    updateLayout()
+  }
+  
+  func hideAllSubviews(_ hidden: Bool) {
+    [
+      staticTotalProductPriceLabel,
+      totalProductPriceLabel,
+      staticDiscountProductPriceLabel,
+      discountProductPriceLabel,
+      staticShippingFeeLabel,
+      shippingFeeLabel,
+      separator,
+      staticExpectedAmountPaymentLabel,
+      expectedAmountPaymentLabel
+      ].forEach {
+        $0.isHidden = hidden
+    }
   }
 }

@@ -6,8 +6,9 @@
 //  Copyright © 2020 Team3. All rights reserved.
 //
 
-import Kingfisher
 import UIKit
+import Alamofire
+import Kingfisher
 
 class SearchViewController: UIViewController {
   // MARK: - Properties
@@ -19,6 +20,12 @@ class SearchViewController: UIViewController {
   private var recentSearchWords = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"] {
     didSet {
       if recentSearchWords.count > 10 { recentSearchWords.removeLast() }
+    }
+  }
+  
+  private var searchedProducts: SearchedProducts? {
+    didSet {
+      searchView.reloadSearchResultCollectionViewData()
     }
   }
   
@@ -36,18 +43,12 @@ class SearchViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    self.addNavigationBarCartButton()
     self.setupBroccoliNavigationBar(title: "검색")
     searchWordTableViewWillFollowKeyboard()
-    
-    productDummy.append(DummyProduct(
-      name: "[선물세트] 박찬회화과자 명장 양갱 종합 25구",
-      imageURL: "https://img-cf.kurly.com/shop/data/goods/1577172106761y0.jpg",
-      price: 70_000,
-      discount: 0,
-      additionalInfo: ["Kurly Only"],
-      isSoldOut: true
-    ))
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    self.addNavigationBarCartButton()
   }
 }
 
@@ -64,8 +65,9 @@ extension SearchViewController: SearchViewDataSource {
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let text = isShowingPopularSearchWords ? popularSearchWords[indexPath.row] : recentSearchWords[indexPath.row]
-    let cell = isShowingPopularSearchWords ?
-      tableView.dequeue(PopularSearchWordCell.self) : tableView.dequeue(RecentSearchWordCell.self)
+    let cell = isShowingPopularSearchWords
+      ? tableView.dequeue(PopularSearchWordCell.self)
+      : tableView.dequeue(RecentSearchWordCell.self)
     
     cell.do {
       $0.textLabel?.text = text
@@ -89,21 +91,26 @@ extension SearchViewController: SearchViewDataSource {
   }
   
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    productDummy.count
+    guard let searchedProducts = searchedProducts else { return 0 }
+    
+    return searchedProducts.count
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let product = productDummy[indexPath.row]
-    let cell = collectionView.dequeue(ProductCollectionCell.self, indexPath: indexPath).then {
+    let cell = collectionView.dequeue(ProductCollectionCell.self, indexPath: indexPath)
+    guard let searchedProducts = searchedProducts else { return cell }
+    let product = searchedProducts[indexPath.row]
+    
+    cell.do {
       $0.delegate = self
       $0.configure(
-        productId: 1,
+        productId: product.id,
         productName: product.name,
         productImage: product.imageURL,
         price: product.price,
-        discount: product.discount,
-        additionalInfo: product.additionalInfo,
-        isSoldOut: product.isSoldOut,
+        discount: product.discountRate,
+        additionalInfo: ["Kurly Only"],
+        isSoldOut: false,
         productIndexPath: indexPath
       )
     }
@@ -116,9 +123,23 @@ extension SearchViewController: SearchViewDataSource {
 
 extension SearchViewController: SearchViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let text = isShowingPopularSearchWords ? popularSearchWords[indexPath.row] : recentSearchWords[indexPath.row]
+    let searchWord = isShowingPopularSearchWords ? popularSearchWords[indexPath.row] : recentSearchWords[indexPath.row]
     
-    searchView.setSearchProductTextField(text: text)
+    fetchSearchResult(searchWord: searchWord) { [weak self] result in
+      switch result {
+      case .success(let data):
+        guard
+          let self = self,
+          let searchResult = try? JSONDecoder().decode(SearchedProducts.self, from: data)
+        else { return }
+        
+        self.searchedProducts = searchResult
+      case .failure(let error):
+        print(error.localizedDescription)
+      }
+    }
+    
+    searchView.setSearchProductTextField(text: searchWord)
     searchView.resignSearchProductTextFieldFirstResponder()
     searchView.hideSearchResultCollectionView(false)
     searchView.hideSearchWordTableView(true)
@@ -128,6 +149,12 @@ extension SearchViewController: SearchViewDelegate {
   }
   
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    guard let navigationController = navigationController, let searchedProducts = searchedProducts else { return }
+    let productDetailViewController = DetailViewController().then {
+      $0.configure(productId: searchedProducts[indexPath.row].id)
+    }
+    
+    navigationController.pushViewController(productDetailViewController, animated: true)
   }
   
   func searchProductTextFieldEditingDidBegin(_ textField: UITextField, _ button: UIButton) {
@@ -192,9 +219,42 @@ extension SearchViewController: SearchViewDelegate {
 
 extension SearchViewController: ProductCollectionCellDelegate {
   func cartOrAlarmButtonTouched(_ button: UIButton, _ productIndexPath: IndexPath) {
-    print("cartOrAlarmButtonTouched(_ button: \(button), _ productIndexPath: \(productIndexPath)")
+    guard let searchedProducts = searchedProducts else { return }
+    let isSoldOut = false
     
-    let addProductCartViewController = UINavigationController(rootViewController: AddProductCartViewController())
-    present(addProductCartViewController, animated: true)
+    if !isSoldOut {
+      let navigationController = UINavigationController(rootViewController: AddProductCartViewController())
+      
+      present(navigationController, animated: true) {
+        navigationController.do {
+          guard let firstViewController = $0.viewControllers.first as? AddProductCartViewController else { return }
+          
+          firstViewController.deliver(
+            id: searchedProducts[productIndexPath.row].id,
+            name: searchedProducts[productIndexPath.row].name,
+            price: searchedProducts[productIndexPath.row].price,
+            discountRate: searchedProducts[productIndexPath.row].discountRate
+          )
+        }
+      }
+    }
+  }
+}
+
+extension SearchViewController {
+  private func fetchSearchResult(searchWord: String, completionHandler: @escaping (Result<Data, Error>) -> Void) {
+    AF.request(
+      "http://15.164.49.32/kurly/best/",
+      method: .get
+    )
+      .validate()
+      .responseData { response in
+        switch response.result {
+        case .success(let data):
+          completionHandler(.success(data))
+        case .failure(let error):
+          completionHandler(.failure(error))
+        }
+    }
   }
 }

@@ -13,10 +13,13 @@ import UIKit
 class CartViewController: UIViewController {
   // MARK: - Properties
   
+  private let cartManager = CartManager.shared
+  
   private var cart: Cart? {
     didSet {
       cartView.reloadCartTableViewData()
       updateHeaderFooter()
+      setCorrectSelectAllProductCheckBoxStatus()
     }
   }
   
@@ -38,11 +41,14 @@ class CartViewController: UIViewController {
     setupLeftBarButtonItem()
     setCorrectSelectAllProductCheckBoxStatus()
     
-    fetchCart("http://15.164.49.32/kurly/cart/") { [weak self] response in
+    cartManager.fetchCart { [weak self] response in
       switch response {
-      case .success(let data):
-        guard let self = self, let backendCart = try? JSONDecoder().decode(BackendCart.self, from: data) else { return }
-        self.cart = convertToCart(from: backendCart)
+      case .success(let cart):
+        guard let self = self else { return }
+        
+        self.cart = cart
+        self.cartView.removeDimView()
+        self.cartView.hideAllFooterSubviews(false)
       case .failure(let error):
         print(error.localizedDescription)
       }
@@ -55,9 +61,9 @@ class CartViewController: UIViewController {
     title = "장바구니"
     
     navigationController?.do({
-      $0.navigationBar.barTintColor = .white
       $0.navigationBar.isTranslucent = false
-      $0.navigationBar.barStyle = .black
+      $0.navigationBar.tintColor = .black
+      $0.navigationBar.barTintColor = .white
       $0.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
     })
   }
@@ -131,10 +137,17 @@ extension CartViewController: CartProductTableViewCellDelegate {
       $0.addAction(UIAlertAction(title: "취소", style: .cancel))
       $0.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { [weak self] _ in
         guard let self = self, var cart = self.cart else { return }
-        
+        let cartID = cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].product.cartID
         cart[shoppingItemIndexPath.section].wishProducts.remove(at: shoppingItemIndexPath.row)
         
-        self.removeProduct(id: cart[shoppingItemIndexPath.section].headID)
+        self.cartManager.removeProduct(id: cartID) { response in
+          switch response {
+          case .success(let data):
+            print(data)
+          case .failure(let error):
+            print(error.localizedDescription)
+          }
+        }
         
         if cart[shoppingItemIndexPath.section].wishProducts.isEmpty { cart.remove(at: shoppingItemIndexPath.section) }
         
@@ -158,21 +171,19 @@ extension CartViewController: CartProductTableViewCellDelegate {
       )
     } else {
       product = UpdatedProduct(
-        product: cart[shoppingItemIndexPath.section].headID,
+        product: cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].product.cartID,
         option: nil,
         quantity: cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].quantity
       )
     }
     
-    patchProductQuntity(
-      id: cart[shoppingItemIndexPath.section].headID,
+    cartManager.updateProductQuntity(
+      id: cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].product.cartID,
       product: product
     ) { response in
       switch response {
       case .success(let data):
-        guard let product = try? JSONDecoder().decode(BackendCartElement.self, from: data) else { return }
-        
-        print(product)
+        print(data)
       case .failure(let error):
         print(error.localizedDescription)
       }
@@ -218,14 +229,28 @@ extension CartViewController: CartViewDelegate {
   }
   
   func removeSelectedProductButton(_ button: UIButton) {
+    guard
+      var cart = cart,
+      !cart.isEmpty,
+      cart.contains(where: { $0.wishProducts.contains(where: { $0.isChecked }) })
+    else { return }
+    
     let message = "선택된 상품을 삭제하시겠습니까?"
     let removeShoppingItemAlert = UIAlertController(title: nil, message: message, preferredStyle: .alert).then {
       $0.addAction(UIAlertAction(title: "취소", style: .cancel))
       $0.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { [weak self] _ in
-        guard let self = self, var cart = self.cart else { return }
+        guard let self = self else { return }
+        
         for index in cart.indices {
-          for product in cart[index].wishProducts where product.isChecked {
-            self.removeProduct(id: cart[index].headID)
+          for productCategory in cart[index].wishProducts where productCategory.isChecked {
+            self.cartManager.removeProduct(id: productCategory.product.cartID) { response in
+              switch response {
+              case .success(let data):
+                print(data)
+              case .failure(let error):
+                print(error.localizedDescription)
+              }
+            }
           }
           
           cart[index].wishProducts = cart[index].wishProducts.filter { !$0.isChecked }
@@ -243,6 +268,7 @@ extension CartViewController: CartViewDelegate {
 extension CartViewController {
   private var isAllShoppingItemsChecked: Bool {
     guard let cart = cart else { return true }
+    guard !cart.isEmpty else { return false }
     
     for cart in cart {
       for product in cart.wishProducts where !product.isChecked {
@@ -261,47 +287,6 @@ extension CartViewController {
 }
 
 extension CartViewController {
-  private func fetchCart(_ url: String, completionHandler: @escaping (Result<Data, Error>) -> Void) {
-    AF.request(url)
-      .validate()
-      .responseData { response in
-        switch response.result {
-        case .success(let data):
-          completionHandler(.success(data))
-        case .failure(let error):
-          completionHandler(.failure(error))
-        }
-    }
-  }
-  
-  private func patchProductQuntity(id: Int, product: UpdatedProduct,
-                                   completionHandler: @escaping (Result<Data, Error>) -> Void) {
-    AF.request(
-      "http://15.164.49.32/kurly/cart/\(id)/",
-      method: .patch,
-      parameters: product,
-      encoder: JSONParameterEncoder.default,
-      headers: ["Content-Type": "application/json"]
-      )
-      .validate()
-      .responseData { response in
-        switch response.result {
-        case .success(let data):
-          completionHandler(.success(data))
-        case .failure(let error):
-          completionHandler(.failure(error))
-        }
-    }
-  }
-  
-  private func removeProduct(id: Int) {
-    print("remove http://15.164.49.32/kurly/cart/\(id)/")
-//    AF.request(
-//      "http://15.164.49.32/kurly/cart/\(id)/",
-//      method: .delete
-//    )
-  }
-  
   private func updateHeaderFooter() {
     guard let cart = cart else { return }
     
@@ -322,7 +307,7 @@ extension CartViewController {
         }
       }
     }
-    discountProductPrice = totalProductPrice - expectedAmountPayment
+    discountProductPrice = -(totalProductPrice - expectedAmountPayment)
     
     cartView.configureHeader(
       selectedProductCount: selectedProductCount,

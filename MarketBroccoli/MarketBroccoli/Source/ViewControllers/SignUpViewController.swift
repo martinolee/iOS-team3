@@ -47,8 +47,6 @@ class SignUpViewController: UIViewController {
     
     signupView.backgroundColor = .white
     self.view.backgroundColor = .white
-    //    let guide = self.view.safeAreaLayoutGuide
-    
     signupView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
@@ -115,7 +113,7 @@ extension SignUpViewController: SignupViewDelegate {
     default:
       break
     }
-    return true
+    return false
   }
   
   func signupButtonTouched(button: UIButton) {
@@ -487,6 +485,7 @@ extension SignUpViewController: SignupViewDelegate {
     print("checkSecretNumberTextFeildEditingChanged")
     if text == (signupView.secretTextField.text ?? "") {
       signupView.sameSecretNumberLabel.textColor = .green
+      print("true")
       essentialInfo[.passwordCheck] = true
     } else {
       signupView.sameSecretNumberLabel.textColor = .orange
@@ -524,9 +523,11 @@ extension SignUpViewController: SignupViewDelegate {
     }
     if text == signupView.checkSecretNumberTextField.text ?? "" {
       signupView.sameSecretNumberLabel.textColor = .green
+      essentialInfo[.passwordCheck] = true
     } else {
       print(signupView.checkingCodeTexField.text ?? "")
       signupView.sameSecretNumberLabel.textColor = .orange
+      essentialInfo[.passwordCheck] = false
     }
   }
   
@@ -748,3 +749,11 @@ extension SignUpViewController: SignupViewDelegate {
     return (updatedText.count + addressTextFieldText.count) <= 85
   }
 }
+
+//typealias UITextField = MyTextField
+//class MyTextField: UIKit.UITextField {
+//  override func resignFirstResponder() -> Bool {
+//    print(#function)
+//    return super.resignFirstResponder()
+//  }
+//}

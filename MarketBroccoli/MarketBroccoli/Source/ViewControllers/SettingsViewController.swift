@@ -125,8 +125,8 @@ extension SettingsViewController: UITableViewDelegate {
     tableView.deselectRow(at: indexPath, animated: true)
     if indexPath.section == 5 && indexPath.row == 0 {
       isLogin = false
-      let emptyString: String? = nil
-      UserDefaultManager.shared.set(emptyString, for: .token)
+      UserDefaultManager.shared.remove(for: .token)
+      UserDefaultManager.shared.remove(for: .userName)
     }
   }
 }

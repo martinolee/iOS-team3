@@ -104,6 +104,7 @@ extension HomeMDTableCell: UICollectionViewDelegateFlowLayout {
 }
 
 extension HomeMDTableCell: UIScrollViewDelegate {
+  // 드래깅이 끝났을 때 호출 - 집중 -
   func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
     if scrollView == MDProductCollectionView {
       let cellWidth = itemWidth * 3 + (UI.inset + UI.spacing * 2)
@@ -118,6 +119,7 @@ extension HomeMDTableCell: UIScrollViewDelegate {
         isRight = false
       }
       page = max(page, 0)
+      print(page, "페이지는/")
       targetContentOffset.pointee.x = page * cellWidth
       categoryMoved(Int(page), direction: isRight)
     }
@@ -212,15 +214,15 @@ extension HomeMDTableCell {
   }
 }
 
-// MARK: - ACTIONS
+// MARK: - ACTIONS - 집중 -
 extension HomeMDTableCell {
   private func categoryMoved(_ currentPage: Int, direction: Bool) {
     guard categoryArray.count >= currentPage else { return }
     var MDTextWidth: CGFloat = 0
     let label = UILabel()
-    for idx in 0..<currentPage {
+    for idx in 0..<currentPage { // getWidth() 카테고리 크기 구하는 함수
       label.text = categoryArray[idx]
-      MDTextWidth += (label.getWidth() ?? 0) + 10
+      MDTextWidth += (label.getWidth() ?? 0) + 10 // getWidth() 텍스트 크기 구하는 함수
     }
     let textWidth = (label.getWidth() ?? 0)
     let correction = (self.frame.width / 2) - textWidth + (textWidth / 2) - 10
@@ -229,11 +231,12 @@ extension HomeMDTableCell {
   }
   
   private func updateAnimation(movePoint: CGFloat, page: Int, direction isRight: Bool) {
+    // 움직일 다음 대상 카테고리 텍스트를 태그로 찾는 과정
     guard let item = MDCategoryScrollView.viewWithTag(9999 - page) as? UILabel else { return }
     MDCategoryScrollView.subviews.forEach {
       ($0 as? UILabel)?.textColor = .gray
     }
-    
+    // 보라색 라인을 다음 아이템에 오토레이아웃 새로 잡을 예정인..
     selectedCategory.snp.remakeConstraints {
       $0.top.equalTo(item.snp.bottom)
       $0.leading.trailing.width.equalTo(item)
@@ -241,14 +244,15 @@ extension HomeMDTableCell {
     }
     UIView.animate(withDuration: 0.5, animations: {
       item.textColor = .kurlyMainPurple
-      if 2...11 ~= page {
+      if 2...11 ~= page { // 중간 카테고리
         self.MDCategoryScrollView.setContentOffset(CGPoint(x: movePoint, y: 0), animated: false)
-      } else if 0...1 ~= page {
+      } else if 0...1 ~= page { // 카테고리 first를 확인해서 움직이지 않게
         self.MDcategoryCollectionView.setContentOffset(CGPoint(x: -10, y: 0), animated: false)
-      } else {
+      } else { // 카테고리 last를 확인해서 움직이지 않게 그래서 max
         self.MDCategoryScrollView.setContentOffset(CGPoint(x: self.MDCategoryScrollView.maxContentOffset.x, y: 0), animated: false)
       }
-      self.layoutIfNeeded()
+      self.layoutIfNeeded() // 레이아웃을 바로 그리도록 호출하는 기능
+      // 메인 쓰레드 즉시 호출
     }) { _ in
       self.categoryShowBtn.setTitle((item.text ?? "") + "전체 보기 >", for: .normal)
     }
