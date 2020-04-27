@@ -52,5 +52,44 @@ class KurlyNotification {
       })
     }
   }
+  
+  func notification(text: String, textColor: UIColor, backgroundColor: UIColor) {
+    guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+    guard let window = appDelegate.window else { return }
+    
+    warningView.text = text
+    warningView.backgroundColor = backgroundColor
+    warningView.textColor = textColor
+    warningView.layer.shadowColor = UIColor.black.cgColor
+    warningView.layer.shadowOpacity = 0.6
+    warningView.layer.shadowOffset = .zero
+    warningView.layer.shadowRadius = 3
+    warningView.layer.shadowOffset = CGSize(width: 0, height: 4)
+    warningView.layer.masksToBounds = false
+    
+    window.addSubview(warningView)
+    
+    warningView.snp.makeConstraints {
+      $0.bottom.equalTo(window.snp.top)
+      $0.centerX.equalToSuperview()
+      $0.width.equalToSuperview().multipliedBy(0.88)
+      $0.height.equalTo(54)
+    }
+    
+    activityIndicatorView.isHidden = false
+    activityIndicatorView.startAnimating()
+    
+    UIView.animate(withDuration: 0.4) {
+      self.warningView.transform = .init(translationX: 0, y: 100)
+    }
+    
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+      UIView.animateKeyframes(withDuration: 0.4, delay: 0, animations: {
+        self.warningView.transform = .identity
+      }, completion: { _ in
+        self.warningView.removeFromSuperview()
+      })
+    }
+  }
   private init() { }
 }

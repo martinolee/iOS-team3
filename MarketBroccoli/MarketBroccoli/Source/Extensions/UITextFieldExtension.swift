@@ -9,10 +9,10 @@
 import UIKit
 
 extension UITextField {
-    func textFieldStyle() {
-        self.borderStyle = .roundedRect
-        self.clearButtonMode = .whileEditing
-    }
+  func textFieldStyle() {
+    self.borderStyle = .roundedRect
+    self.clearButtonMode = .whileEditing
+  }
   func signupStyle(round: UITextField.BorderStyle, clearButton: UITextField.ViewMode) {
     self.borderStyle = round
     self.clearButtonMode = clearButton

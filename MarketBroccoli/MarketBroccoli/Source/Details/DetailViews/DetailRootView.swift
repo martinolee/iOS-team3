@@ -11,13 +11,14 @@ import UIKit
 class DetailRootView: UIView {
   private let selectedCategory = CategorySelected()
   private let stackView = CategoryStackView(categories: Categories.DetailCategory, distribution: .fillProportionally)
-  private let purchaseBtn = UIButton().then {
+  private lazy var purchaseBtn = UIButton(type: .system).then {
     $0.setTitle("구매하기", for: .normal)
     $0.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
     $0.contentEdgeInsets = UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0)
     $0.setTitleColor(.white, for: .normal)
     $0.backgroundColor = .kurlyMainPurple
     $0.contentVerticalAlignment = .top
+    $0.addTarget(self, action: #selector(purchaseBtnTouched(_:)), for: .touchUpInside)
   }
   let scrollView = UIScrollView().then {
     $0.isPagingEnabled = true
@@ -78,6 +79,10 @@ extension DetailRootView {
       else { return }
     scrollMoved(labelIdx, scroll: true)
   }
+  
+  @objc private func purchaseBtnTouched(_ button: UIButton) {
+    ObserverManager.shared.post(observerName: .purchaseBtnTouched, object: nil)
+  }
 }
 
 // MARK: - UI
@@ -122,7 +127,7 @@ extension DetailRootView {
       $0.top.equalTo(scrollView.snp.bottom)
       $0.leading.trailing.equalTo(safeArea)
       $0.bottom.equalToSuperview()
-      $0.height.equalTo(self).multipliedBy(0.12)
+      $0.height.equalTo(self).dividedBy(8)
     }
     
     var categoryArray: [UIView] = []

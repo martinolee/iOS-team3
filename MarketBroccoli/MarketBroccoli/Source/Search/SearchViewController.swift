@@ -43,9 +43,12 @@ class SearchViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    self.addNavigationBarCartButton()
     self.setupBroccoliNavigationBar(title: "검색")
     searchWordTableViewWillFollowKeyboard()
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    self.addNavigationBarCartButton()
   }
 }
 
@@ -149,6 +152,7 @@ extension SearchViewController: SearchViewDelegate {
     guard let navigationController = navigationController, let searchedProducts = searchedProducts else { return }
     let productDetailViewController = DetailViewController().then {
       $0.configure(productId: searchedProducts[indexPath.row].id)
+      $0.hidesBottomBarWhenPushed = true
     }
     
     navigationController.pushViewController(productDetailViewController, animated: true)

@@ -43,10 +43,10 @@ class CartViewController: UIViewController {
     
     cartManager.fetchCart { [weak self] response in
       switch response {
-      case .success(let data):
+      case .success(let cart):
         guard let self = self else { return }
         
-        self.cart = convertCart(from: data)
+        self.cart = cart
         self.cartView.removeDimView()
         self.cartView.hideAllFooterSubviews(false)
       case .failure(let error):
@@ -137,10 +137,21 @@ extension CartViewController: CartProductTableViewCellDelegate {
       $0.addAction(UIAlertAction(title: "취소", style: .cancel))
       $0.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { [weak self] _ in
         guard let self = self, var cart = self.cart else { return }
-        let cartID = cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].product.cartID
-        cart[shoppingItemIndexPath.section].wishProducts.remove(at: shoppingItemIndexPath.row)
         
-        self.cartManager.removeProduct(id: cartID) { response in
+        let product = cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].product
+        cart[shoppingItemIndexPath.section].wishProducts.remove(at: shoppingItemIndexPath.row)
+        let productID: Int
+        let optionID: Int?
+        
+        if let tempProductID = cart[shoppingItemIndexPath.section].id {
+          productID = tempProductID
+          optionID = product.id
+        } else {
+          productID = product.id
+          optionID = nil
+        }
+        
+        self.cartManager.removeProduct(cartID: product.cartID, productID: productID, optionID: optionID) { response in
           switch response {
           case .success(let data):
             print(data)
@@ -163,29 +174,27 @@ extension CartViewController: CartProductTableViewCellDelegate {
     let product: UpdatedProduct
     cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].quantity = value
     
-    if cart[shoppingItemIndexPath.section].name != nil {
+    if let productID = cart[shoppingItemIndexPath.section].id {
       product = UpdatedProduct(
-        product: cart[shoppingItemIndexPath.section].id,
+        product: productID,
         option: cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].product.id,
         quantity: cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].quantity
       )
     } else {
       product = UpdatedProduct(
-        product: cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].product.cartID,
+        product: cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].product.id,
         option: nil,
         quantity: cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].quantity
       )
     }
     
-    cartManager.patchProductQuntity(
+    cartManager.updateProductQuntity(
       id: cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].product.cartID,
       product: product
     ) { response in
       switch response {
       case .success(let data):
-        guard let product = try? JSONDecoder().decode(BackendCartElement.self, from: data) else { return }
-        
-        print(product)
+        print(data)
       case .failure(let error):
         print(error.localizedDescription)
       }
@@ -242,9 +251,22 @@ extension CartViewController: CartViewDelegate {
       $0.addAction(UIAlertAction(title: "취소", style: .cancel))
       $0.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { [weak self] _ in
         guard let self = self else { return }
+        
         for index in cart.indices {
-          for productCategory in cart[index].wishProducts where productCategory.isChecked {
-            self.cartManager.removeProduct(id: productCategory.product.cartID) { response in
+          for wishProduct in cart[index].wishProducts where wishProduct.isChecked {
+            let productID: Int
+            let optionID: Int?
+            
+            if let tempProductID = cart[index].id {
+              productID = tempProductID
+              optionID = wishProduct.product.id
+            } else {
+              productID = wishProduct.product.id
+              optionID = nil
+            }
+            
+            self.cartManager.removeProduct(
+            cartID: wishProduct.product.cartID, productID: productID, optionID: optionID) { response in
               switch response {
               case .success(let data):
                 print(data)
@@ -308,7 +330,7 @@ extension CartViewController {
         }
       }
     }
-    discountProductPrice = totalProductPrice - expectedAmountPayment
+    discountProductPrice = -(totalProductPrice - expectedAmountPayment)
     
     cartView.configureHeader(
       selectedProductCount: selectedProductCount,
