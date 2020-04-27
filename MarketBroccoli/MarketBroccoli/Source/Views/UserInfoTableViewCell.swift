@@ -74,11 +74,7 @@ final class UserInfoTableViewCell: UITableViewCell {
     
     configureCell()
     addAllView()
-    setupUserProfileImageViewAutoLayout()
-    setupUserNameLabelAutoLayout()
-    setupExtraInfoLabelAutoLayout()
-    setupLeftButtonAutoLayout()
-    setupRightButtonAutoLayout()
+    setupAutoLayout()
   }
   
   required init?(coder: NSCoder) {
@@ -104,43 +100,35 @@ final class UserInfoTableViewCell: UITableViewCell {
     userProfileImageView.addSubview(welcomeLabel)
   }
   
-  private func setupUserProfileImageViewAutoLayout() {
+  private func setupAutoLayout() {
     userProfileImageView.snp.makeConstraints {
-      $0.top.leading.equalTo(contentView).inset(16)
+      $0.top.leading.equalToSuperview().inset(16)
       $0.size.equalTo(50)
     }
+    
     welcomeLabel.snp.makeConstraints {
       $0.centerX.centerY.equalToSuperview()
     }
-  }
-  
-  private func setupUserNameLabelAutoLayout() {
+    
     userNameLabel.snp.makeConstraints {
       $0.top.equalTo(userProfileImageView)
       $0.leading.equalTo(userProfileImageView.snp.trailing).offset(16)
       $0.bottom.equalTo(userProfileImageView.snp.centerY)
-      $0.trailing.equalTo(contentView).inset(16)
+      $0.trailing.equalToSuperview().inset(16)
     }
-  }
-  
-  private func setupExtraInfoLabelAutoLayout() {
+    
     extraInfoLabel.snp.makeConstraints {
       $0.leading.trailing.equalTo(userNameLabel)
       $0.bottom.equalTo(userProfileImageView)
     }
-  }
-  
-  private func setupLeftButtonAutoLayout() {
+    
     leftButton.snp.makeConstraints {
-      $0.top.equalTo(userProfileImageView.snp.bottom).offset(40)
+      $0.top.equalTo(userProfileImageView.snp.bottom).offset(16)
       $0.leading.equalTo(userProfileImageView)
-      $0.bottom.equalTo(contentView).inset(16)
-      $0.height.equalTo(32)
-      $0.width.equalTo(contentView).multipliedBy(0.44)
+      $0.bottom.equalToSuperview().inset(16)
+      $0.width.equalToSuperview().multipliedBy(0.44)
     }
-  }
-  
-  private func setupRightButtonAutoLayout() {
+    
     rightButton.snp.makeConstraints {
       $0.top.bottom.equalTo(leftButton)
       $0.trailing.equalTo(extraInfoLabel)

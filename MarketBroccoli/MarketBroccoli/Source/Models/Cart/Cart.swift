@@ -23,7 +23,7 @@ extension Cart {
 }
 
 struct ProductCategory: Codable {
-  let id: Int
+  let id: Int?
   let name: String?
   let discountRate: Double
   var wishProducts: [WishProduct]
@@ -75,27 +75,28 @@ struct BackendOption: Codable {
 func convertCart(from backendCart: BackendCart) -> Cart {
   var cart = Cart()
   
-  for backendProductCategory in backendCart {
-    if let option = backendProductCategory.option {
+  for backendCartElement in backendCart {
+    if let option = backendCartElement.option {
       var hasSameCategory = false
       
       for index in cart.indices {
         if cart[index].id == option.product {
+          hasSameCategory = true
+          
           cart[index].wishProducts.append(
             WishProduct(
               product: Product(
-                cartID: backendProductCategory.id,
+                cartID: backendCartElement.id,
                 id: option.pk,
                 name: option.name,
                 price: option.price,
-                imageURL: backendProductCategory.product.imageURL
+                imageURL: backendCartElement.product.imageURL
               ),
-              quantity: backendProductCategory.quantity,
+              quantity: backendCartElement.quantity,
               isChecked: true
             )
           )
           
-          hasSameCategory = true
           break
         }
       }
@@ -103,41 +104,41 @@ func convertCart(from backendCart: BackendCart) -> Cart {
       if !hasSameCategory {
         cart.append(
           ProductCategory(
-            id: backendProductCategory.product.pk,
-            name: backendProductCategory.product.name,
-            discountRate: backendProductCategory.product.discountRate,
+            id: backendCartElement.product.pk,
+            name: backendCartElement.product.name,
+            discountRate: backendCartElement.product.discountRate,
             wishProducts: [
               WishProduct(
                 product: Product(
-                  cartID: backendProductCategory.id,
+                  cartID: backendCartElement.id,
                   id: option.pk,
                   name: option.name,
                   price: option.price,
-                  imageURL: backendProductCategory.product.imageURL
+                  imageURL: backendCartElement.product.imageURL
                 ),
-                quantity: backendProductCategory.quantity,
+                quantity: backendCartElement.quantity,
                 isChecked: true
               )
           ])
         )
       }
     } else {
-      if let price = backendProductCategory.product.price {
+      if let price = backendCartElement.product.price {
         cart.append(
           ProductCategory(
-            id: backendProductCategory.product.pk,
+            id: nil,
             name: nil,
-            discountRate: backendProductCategory.product.discountRate,
+            discountRate: backendCartElement.product.discountRate,
             wishProducts: [
               WishProduct(
                 product: Product(
-                  cartID: backendProductCategory.id,
-                  id: backendProductCategory.product.pk,
-                  name: backendProductCategory.product.name,
+                  cartID: backendCartElement.id,
+                  id: backendCartElement.product.pk,
+                  name: backendCartElement.product.name,
                   price: price,
-                  imageURL: backendProductCategory.product.imageURL
+                  imageURL: backendCartElement.product.imageURL
                 ),
-                quantity: backendProductCategory.quantity,
+                quantity: backendCartElement.quantity,
                 isChecked: true
               )
           ])
@@ -153,13 +154,13 @@ func convertBackendCart(from cart: Cart) -> BackendCart {
   var backendCart = BackendCart()
   
   for productCategory in cart {
-    if let categoryName = productCategory.name {
+    if let categoryName = productCategory.name, let productCategoryID = productCategory.id {
       for wishProduct in productCategory.wishProducts {
         backendCart.append(
           BackendCartElement(
             id: wishProduct.product.cartID,
             product: BackendProduct(
-              pk: productCategory.id,
+              pk: productCategoryID,
               name: categoryName,
               discountRate: productCategory.discountRate,
               price: nil,
@@ -169,7 +170,7 @@ func convertBackendCart(from cart: Cart) -> BackendCart {
               pk: wishProduct.product.id,
               name: wishProduct.product.name,
               price: wishProduct.product.price,
-              product: productCategory.id
+              product: productCategoryID
             ),
             quantity: wishProduct.quantity
           )
@@ -180,7 +181,7 @@ func convertBackendCart(from cart: Cart) -> BackendCart {
          BackendCartElement(
           id: productCategory.wishProducts[0].product.cartID,
           product: BackendProduct(
-            pk: productCategory.id,
+            pk: productCategory.wishProducts[0].product.id,
             name: productCategory.wishProducts[0].product.name,
             discountRate: productCategory.discountRate,
             price: productCategory.wishProducts[0].product.price,

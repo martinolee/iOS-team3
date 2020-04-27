@@ -27,7 +27,8 @@ class EventTableViewCell: UITableViewCell {
 // MARK: - ACTIONS
 extension EventTableViewCell {
   func configure(imageUrl: String) {
-    ImageDownloader.default.downloadImage(with: URL(string: imageUrl)!) { res in
+    guard let url = URL(string: imageUrl) else { return }
+    ImageDownloader.default.downloadImage(with: url) { res in
       switch res {
       case .success(let image):
         let resizedImage = image.image.resized(to: CGSize(width: UIScreen.main.bounds.width, height: 200))
