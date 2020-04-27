@@ -16,6 +16,7 @@ class UserDefaultManager {
   
   func remove(for key: Key) {
     UserDefaults.standard.removeObject(forKey: key.rawValue)
+    UserDefaults.standard.synchronize()
   }
   
   func set<T>(_ value: T, for key: Key) {
