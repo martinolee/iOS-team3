@@ -43,9 +43,6 @@ extension UIViewController {
   
   func addNavigationBarCartButton() {
     let cartButton = UIButton(type: .system).then { button in
-      button.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
-      button.imageView?.contentMode = .scaleAspectFit
-      
       func imageWithImage(image: UIImage, scaledToSize newSize: CGSize) -> UIImage {
         UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0)
         image.draw(in: CGRect(origin: CGPoint.zero, size: CGSize(width: newSize.width, height: newSize.height)))
@@ -75,11 +72,17 @@ extension UIViewController {
           
           guard let cartWithSizeImage: UIImage = UIGraphicsGetImageFromCurrentImageContext() else { return }
           UIGraphicsEndImageContext()
-          let resizedImage = imageWithImage(image: cartWithSizeImage, scaledToSize: CGSize(width: 36, height: 36))
+          let resizedImage = imageWithImage(image: cartWithSizeImage, scaledToSize: CGSize(width: 40, height: 40))
           
           button.setImage(resizedImage, for: .normal)
+
+          button.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
+          button.imageView?.contentMode = .scaleAspectFit
         case .failure(let error):
-          button.setImage(UIImage(systemName: "cart"), for: .normal)
+          let cartImage = UIImage(systemName: "cart")
+          let resizedImage = imageWithImage(image: cartImage ?? UIImage(), scaledToSize: CGSize(width: 40, height: 40))
+          
+          button.setImage(resizedImage, for: .normal)
           print(error.localizedDescription)
         }
       }

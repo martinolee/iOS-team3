@@ -233,6 +233,8 @@ extension HomeRootView: UICollectionViewDataSource {
     let cell = collectionView.dequeue(ProductCollectionCell.self, indexPath: indexPath)
     let item = cellItem[indexPath.item]
     
+    cell.delegate = self
+    
     cell.configure(
       productId: item.id,
       productName: item.name,
@@ -244,5 +246,28 @@ extension HomeRootView: UICollectionViewDataSource {
       productIndexPath: indexPath
     )
     return cell
+  }
+}
+
+extension HomeRootView: ProductCollectionCellDelegate {
+  func cartOrAlarmButtonTouched(_ collectionView: UICollectionView, _ button: UIButton, _ productIndexPath: IndexPath) {
+    guard
+      let collectionView = collectionView as? NewProduct,
+      let name = collectionView.collectionName
+    else { return }
+    
+    let cellItem = model[name] ?? [MainItem]()
+    let item = cellItem[productIndexPath.item]
+    
+    let product = MainItem(
+      id: item.id,
+      thumbImage: item.thumbImage,
+      name: item.name,
+      price: item.price,
+      discountRate: item.discountRate,
+      summary: item.summary
+    )
+    
+    ObserverManager.shared.post(observerName: .cartOrAlarmBtnTouched, object: nil, userInfo: ["product": product])
   }
 }

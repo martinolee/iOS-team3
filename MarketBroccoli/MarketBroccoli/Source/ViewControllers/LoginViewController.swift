@@ -85,6 +85,7 @@ extension LoginViewController: LoginViewDelegate {
               else { return }
               
               settingViewController.isLogin = true
+              CartManager.shared.synchronizeCart()
               self.dismiss(animated: true)
     
             case .failure(let error):

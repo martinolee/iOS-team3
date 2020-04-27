@@ -329,4 +329,8 @@ extension SearchView {
   func activateCancelSearchButton(_ enable: Bool) {
     cancelSearchButton.isEnabled = enable
   }
+  
+  func setSearchResultCollectionViewContentOffset(_ point: CGPoint) {
+    searchResultCollectionView.setContentOffset(point, animated: true)
+  }
 }

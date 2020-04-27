@@ -108,34 +108,44 @@ extension AddProductCartViewController: AddProductCartViewDelegate {
       return
     }
     
-    if let productID = productList.id {
-      for selectedProduct in selectedProducts {
-        let optionID = selectedProduct.product.id
-        let quantity = selectedProduct.quantity
-        let selectedProduct = UpdatedProduct(product: productID, option: optionID, quantity: quantity)
-        
-        cartManager.addProductIntoCart(selectedProduct) { response in
-          switch response {
-          case .success(let data):
-            print(data)
-          case .failure(let error):
-            print(error.localizedDescription)
-          }
-        }
-      }
-    } else {
-      let selectedProduct = selectedProducts[0]
-      
-      let productID = selectedProduct.product.id
+    var orderProducts = [UpdatedProduct]()
+    
+    for selectedProduct in selectedProducts {
+      let optionID = selectedProduct.product.id
       let quantity = selectedProduct.quantity
-      let product = UpdatedProduct(product: productID, option: nil, quantity: quantity)
+      let orderProduct: UpdatedProduct
       
-      cartManager.addProductIntoCart(product) { response in
-        switch response {
+      if let productIDForHasOption = productList.id {
+        orderProduct = UpdatedProduct(product: productIDForHasOption, option: optionID, quantity: quantity)
+      } else {
+        orderProduct = UpdatedProduct(product: selectedProduct.product.id, option: nil, quantity: quantity)
+      }
+      
+      orderProducts.append(orderProduct)
+    }
+    
+    orderProducts.forEach {
+      cartManager.addProductIntoCart($0) { [weak self] result in
+        guard let self = self else { return }
+        switch result {
         case .success(let data):
           print(data)
         case .failure(let error):
           print(error.localizedDescription)
+        }
+        
+        guard
+          let broccoliTabBarController = self.presentingViewController as? MartketBroccoliTabBarController,
+          let viewControllers = broccoliTabBarController.viewControllers
+        else { return }
+        
+        viewControllers.forEach {
+          guard
+            let navigationController = $0 as? UINavigationController,
+            let viewController = navigationController.viewControllers.first
+          else { return }
+          
+          viewController.addNavigationBarCartButton()
         }
       }
     }
