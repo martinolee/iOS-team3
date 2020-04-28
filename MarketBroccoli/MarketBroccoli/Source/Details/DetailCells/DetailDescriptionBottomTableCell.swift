@@ -16,15 +16,17 @@ class DetailDescriptionBottomTableCell: UITableViewCell {
   }
   
   private let summaryLabel = UILabel().then {
-    $0.text = "무엇 하나 빠지지 않는 스피커"
-    $0.font = .systemFont(ofSize: 22, weight: .semibold)
+    $0.text = ""
+    $0.font = .systemFont(ofSize: 28, weight: .semibold)
     $0.textColor = .darkGray
     $0.textAlignment = .center
     $0.adjustsFontSizeToFitWidth = true
     $0.minimumScaleFactor = 0.6
+    $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
+    $0.numberOfLines = 2
   }
   private let nameLabel = UILabel().then {
-    $0.text = "[하만카돈]\n오닉스 스튜디오5\n블루투스 스피커 2종"
+    $0.text = ""
     $0.font = .systemFont(ofSize: 28, weight: .semibold)
     $0.textColor = .darkGray
     $0.numberOfLines = 0
@@ -69,7 +71,6 @@ class DetailDescriptionBottomTableCell: UITableViewCell {
 // MARK: - ACTIONS
 extension DetailDescriptionBottomTableCell {
   func configure(detail model: ProductModel, images: [String: UIImage]) {
-    print(#function)
     summaryLabel.text = model.summary
     nameLabel.text = model.name
     descriptionLabel.text = model.productModelDescription
@@ -98,7 +99,7 @@ extension DetailDescriptionBottomTableCell {
     ObserverManager.shared.post(
       observerName: .imageTouched,
       object: nil,
-      userInfo: ["image": detailImageView.image]
+      userInfo: ["image": detailImageView.image ?? UIImage()]
     )
   }
 }
@@ -123,11 +124,13 @@ extension DetailDescriptionBottomTableCell {
     summaryLabel.snp.makeConstraints {
       $0.top.equalTo(descriptionImageView.snp.bottom).offset(40)
       $0.leading.trailing.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
+      $0.height.equalTo(40)
     }
     
     nameLabel.snp.makeConstraints {
       $0.top.equalTo(summaryLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
+      $0.height.equalTo(40)
     }
     
     summaryLabel.setContentHuggingPriority(UILayoutPriority(rawValue: 999), for: .vertical)
@@ -153,6 +156,7 @@ extension DetailDescriptionBottomTableCell {
     detailImageView.snp.makeConstraints {
       $0.top.equalTo(checkPointImageView.snp.bottom)
       $0.leading.trailing.equalToSuperview()
+      $0.width.equalToSuperview()
       $0.height.equalTo(0)
     }
     detailImageView.setContentHuggingPriority(UILayoutPriority(rawValue: 999), for: .vertical)

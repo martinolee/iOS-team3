@@ -27,6 +27,7 @@ class SignupView: UIView {
     borderWidth: nil,
     borderColor: nil
   ).then {
+    $0.layer.cornerRadius = 5
     $0.setTitle("중복확인", for: .normal)
     $0.addTarget(self, action: #selector(checkIDButtonTouched), for: .touchUpInside)
   }
@@ -78,7 +79,6 @@ class SignupView: UIView {
     $0.signupStyle(round: .roundedRect, clearButton: .whileEditing)
   }
   
-  
   let sameSecretNumberLabel = SignupLabel(textColor: .orange, font: .systemFont(ofSize: 10)).then {
     $0.text = "동일한 비밀번호를 입력해주세요"
   }
@@ -127,10 +127,11 @@ class SignupView: UIView {
   
   lazy var getCodeButton = SignupButton(
     setTitleColor: .white,
-    backgroundColor: .gray,
+    backgroundColor: .kurlyGray3,
     borderWidth: nil,
     borderColor: nil
   ).then {
+    $0.layer.cornerRadius = 5
     $0.setTitle("인증번호 받기", for: .normal)
     $0.addTarget(self, action: #selector(getCodeButtonTouched), for: .touchUpInside)
   }
@@ -146,11 +147,12 @@ class SignupView: UIView {
   }
   
   let checkingCodeButton = SignupButton(
-    setTitleColor: .gray,
+    setTitleColor: .kurlyGray3,
     backgroundColor: .white,
     borderWidth: 1,
-    borderColor: UIColor.lightGray.cgColor
+    borderColor: UIColor.kurlyGray3.cgColor
   ).then {
+    $0.layer.cornerRadius = 5
     $0.setTitle("인증번호 확인", for: .normal)
     $0.addTarget(self, action: #selector(checkingCodeButtonTouched), for: .touchUpInside)
   }
@@ -171,6 +173,7 @@ class SignupView: UIView {
     borderWidth: nil,
     borderColor: nil
   ).then {
+    $0.layer.cornerRadius = 5
     $0.setTitle("주소 검색", for: .normal)
     $0.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
     $0.tintColor = .white
@@ -219,6 +222,7 @@ class SignupView: UIView {
   private let bunchBirthdayView = UIView().then {
     $0.layer.borderWidth = 1
     $0.layer.borderColor = UIColor.lightGray.cgColor
+    $0.layer.cornerRadius = 5
   }
   
   lazy var birthdayYearTextField = UITextField().then {
@@ -470,6 +474,7 @@ class SignupView: UIView {
     $0.setTitle("가입하기", for: .normal)
     $0.setTitleColor(.white, for: .normal)
     $0.backgroundColor = .kurlyMainPurple
+    $0.layer.cornerRadius = 5
     $0.addTarget(self, action: #selector(signupButtonTouched(button:)), for: .touchUpInside)
   }
   
@@ -1019,6 +1024,7 @@ class SignupView: UIView {
       $0.top.equalTo(ageEssentialLabel.snp.bottom).offset(30)
       $0.leading.equalTo(totalAgreeButton)
       $0.trailing.equalTo(personalNotEssentialSeeButton)
+      $0.height.equalTo(50)
     }
 
     lastExplainationLabel.snp.makeConstraints {
