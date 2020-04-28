@@ -58,7 +58,7 @@ class CategoryDetailCollectionViewCell: UICollectionViewCell {
   private func setupFlowLayout() {
     let minimumLineSpacing: CGFloat = 20.0
     let minimumInteritemSpacing: CGFloat = 14.0
-    let insets = UIEdgeInsets(top: 60, left: 14, bottom: 20, right: 14)
+    let insets = UIEdgeInsets(top: 20, left: 14, bottom: 20, right: 14)
     let itemsForLine: CGFloat = 2
     let itemSizeWidth = (
       (
@@ -85,6 +85,9 @@ extension CategoryDetailCollectionViewCell: UICollectionViewDataSource {
     guard let categoryProductList = categoryProductList else { return UICollectionViewCell() }
     let cell = collectionView.dequeue(ProductCollectionCell.self, indexPath: indexPath)
     let categoryProduct = categoryProductList[indexPath.row]
+    
+    cell.delegate = self
+    
     cell.configure(
       productId: categoryProduct.id,
       productName: categoryProduct.name,
@@ -114,7 +117,7 @@ extension CategoryDetailCollectionViewCell: UICollectionViewDelegate {
 // MARK: - Alamofire
 extension CategoryDetailCollectionViewCell {
   func fetchCategory(id: Int, completionHandler: @escaping (Result<Data, Error>) -> Void) {
-    AF.request("http://15.164.49.32/kurly/category/\(id)/").responseData { (response) in
+    AF.request("http://15.164.49.32/kurly/category/\(id)/all").responseData { (response) in
       switch response.result {
       case .success(let data):
         completionHandler(.success(data))
@@ -138,6 +141,55 @@ extension CategoryDetailCollectionViewCell {
       case .failure(let error):
         print(error)
         print(error.localizedDescription)
+      }
+    }
+  }
+  
+  func fetchSubCategory(subId: Int, completionHandler: @escaping (Result<Data, Error>) -> Void) {
+    AF.request("http://15.164.49.32/kurly/subcategory/\(subId)/").responseData { (response) in
+      switch response.result {
+      case .success(let data):
+        completionHandler(.success(data))
+      case .failure(let error):
+        completionHandler(.failure(error))
+      }
+    }
+  }
+  func subConfigure(subID: Int) {
+    fetchSubCategory(subId: subID) { [weak self] (result) in
+      switch result {
+      case .success(let data):
+        guard
+          let self = self, // self가 옵셔널인지 체크
+          let list = try? JSONDecoder().decode(CategoryProudcutList.self, from: data)
+          // 디코딩이 잘되는 지 체크
+          else { return }
+        self.categoryProductList = list
+      case .failure(let error):
+        print(error)
+        print(error.localizedDescription)
+      }
+    }
+  }
+}
+
+extension CategoryDetailCollectionViewCell: ProductCollectionCellDelegate {
+  func cartOrAlarmButtonTouched(_ collectionView: UICollectionView, _ button: UIButton, _ productIndexPath: IndexPath) {
+    guard let categoryProductList = categoryProductList else { return }
+       let categoryProduct = categoryProductList[productIndexPath.row]
+    
+    let navigationController = UINavigationController(rootViewController: AddProductCartViewController())
+    
+    (self.viewController as? CategoryDetailViewController)?.present(navigationController, animated: true) {
+      navigationController.do {
+        guard let firstViewController = $0.viewControllers.first as? AddProductCartViewController else { return }
+        
+        firstViewController.deliver(
+          id: categoryProduct.id,
+          name: categoryProduct.name,
+          price: categoryProduct.price,
+          discountRate: categoryProduct.discount
+        )
       }
     }
   }

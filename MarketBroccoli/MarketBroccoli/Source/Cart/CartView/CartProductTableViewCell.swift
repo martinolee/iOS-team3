@@ -16,6 +16,10 @@ protocol CartProductTableViewCellDelegate: class {
   func productRemoveButtonTouched(_ button: UIButton, _ shoppingItemIndexPath: IndexPath)
   
   func productQuantityStepperValueChanged(_ value: Int, _ shoppingItemIndexPath: IndexPath)
+  
+  func productNameLabelTouched(_ label: UILabel, _ shoppingItemIndexPath: IndexPath)
+  
+  func productImageViewTouched(_ imageView: UIImageView, _ shoppingItemIndexPath: IndexPath)
 }
 
 class CartProductTableViewCell: UITableViewCell {
@@ -37,9 +41,16 @@ class CartProductTableViewCell: UITableViewCell {
     $0.delegate = self
   }
   
-  private lazy var nameLabel = UILabel().then {
+  private lazy var productNameLabel = UILabel().then {
+    $0.isUserInteractionEnabled = true
     $0.textAlignment = .left
     $0.numberOfLines = 0
+    
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(productNameLabelTouched(_:)))
+    tapGesture.delegate = self
+    tapGesture.numberOfTapsRequired = 1
+    
+    $0.addGestureRecognizer(tapGesture)
   }
   
   private lazy var productRemoveButton = UIButton(type: .system).then {
@@ -50,8 +61,15 @@ class CartProductTableViewCell: UITableViewCell {
     $0.addTarget(self, action: #selector(productRemoveButtonTouched(_:)), for: .touchUpInside)
   }
   
-  private let productImageView = UIImageView().then {
+  private lazy var productImageView = UIImageView().then {
+    $0.isUserInteractionEnabled = true
     $0.contentMode = .scaleToFill
+    
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(productImageViewTouched(_:)))
+    tapGesture.delegate = self
+    tapGesture.numberOfTapsRequired = 1
+    
+    $0.addGestureRecognizer(tapGesture)
   }
   
   private let originalPriceLabel = UILabel().then {
@@ -117,7 +135,7 @@ class CartProductTableViewCell: UITableViewCell {
     containerView.addSubviews([
       topSeperator,
       checkBox,
-      nameLabel,
+      productNameLabel,
       productRemoveButton,
       productImageView,
       originalPriceLabel,
@@ -148,7 +166,7 @@ class CartProductTableViewCell: UITableViewCell {
       $0.leading.equalToSuperview().inset(10)
     }
     
-    nameLabel.snp.makeConstraints {
+    productNameLabel.snp.makeConstraints {
       $0.top.equalTo(checkBox)
       $0.leading.equalTo(checkBox.snp.trailing).offset(16)
       $0.trailing.equalTo(productRemoveButton.snp.leading).offset(-32)
@@ -161,8 +179,8 @@ class CartProductTableViewCell: UITableViewCell {
     }
     
     productImageView.snp.makeConstraints {
-      $0.top.equalTo(nameLabel.snp.bottom).offset(12)
-      $0.leading.equalTo(nameLabel)
+      $0.top.equalTo(productNameLabel.snp.bottom).offset(12)
+      $0.leading.equalTo(productNameLabel)
       $0.width.equalTo(50)
       $0.height.equalTo(productImageView.snp.width).multipliedBy(1.2)
     }
@@ -230,6 +248,16 @@ extension CartProductTableViewCell: CheckBoxDelegate {
   private func productRemoveButtonTouched(_ button: UIButton) {
     deleagte?.productRemoveButtonTouched(button, shoppingItemIndexPath)
   }
+  
+  @objc
+  private func productNameLabelTouched(_ sender: UITapGestureRecognizer) {
+    deleagte?.productNameLabelTouched(productNameLabel, shoppingItemIndexPath)
+  }
+  
+  @objc
+  private func productImageViewTouched(_ sender: UITapGestureRecognizer) {
+    deleagte?.productImageViewTouched(productImageView, shoppingItemIndexPath)
+  }
 }
 
 extension CartProductTableViewCell: ProductQuantityStepperDelegate {
@@ -256,7 +284,7 @@ extension CartProductTableViewCell: ProductQuantityStepperDelegate {
     let totalPrice = moneyFormatter(won: price * quantity, hasUnit: false)
     let currentPrice = moneyFormatter(won: price, hasUnit: true)
 
-    nameLabel.text = name
+    productNameLabel.text = name
     productImageView.setImage(urlString: imageURL)
     currentPriceLabel.text = currentPrice
     totalProductPriceLabel.text = totalPrice

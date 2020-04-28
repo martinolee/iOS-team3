@@ -40,19 +40,12 @@ class CartViewController: UIViewController {
     setupAttribute()
     setupLeftBarButtonItem()
     setCorrectSelectAllProductCheckBoxStatus()
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
     
-    cartManager.fetchCart { [weak self] response in
-      switch response {
-      case .success(let cart):
-        guard let self = self else { return }
-        
-        self.cart = cart
-        self.cartView.removeDimView()
-        self.cartView.hideAllFooterSubviews(false)
-      case .failure(let error):
-        print(error.localizedDescription)
-      }
-    }
+   fetchCart()
   }
   
   // MARK: - Setup Attribute
@@ -122,7 +115,21 @@ extension CartViewController: CartViewDataSource {
 
 // MARK: - Action Handler
 
-extension CartViewController: CartProductTableViewCellDelegate {  
+extension CartViewController: CartProductTableViewCellDelegate {
+  func productNameLabelTouched(_ label: UILabel, _ shoppingItemIndexPath: IndexPath) {
+    guard let cart = cart else { return }
+    let id = cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].product.id
+    
+    pushDetailViewController(id: id)
+  }
+  
+  func productImageViewTouched(_ imageView: UIImageView, _ shoppingItemIndexPath: IndexPath) {
+    guard let cart = cart else { return }
+    let id = cart[shoppingItemIndexPath.section].wishProducts[shoppingItemIndexPath.row].product.id
+    
+    pushDetailViewController(id: id)
+  }
+  
   func checkBoxTouched(_ checkBox: CheckBox, _ isChecked: Bool, _ shoppingItemIndexPath: IndexPath) {
     guard var cart = cart else { return }
     
@@ -307,6 +314,21 @@ extension CartViewController {
       ? cartView.setSelectAllProductCheckBoxStatus(true)
       : cartView.setSelectAllProductCheckBoxStatus(false)
   }
+  
+  private func fetchCart() {
+    cartManager.fetchCart { [weak self] response in
+      switch response {
+      case .success(let cart):
+        guard let self = self else { return }
+        
+        self.cart = cart
+        self.cartView.removeDimView()
+        self.cartView.hideAllFooterSubviews(false)
+      case .failure(let error):
+        print(error.localizedDescription)
+      }
+    }
+  }
 }
 
 extension CartViewController {
@@ -345,5 +367,40 @@ extension CartViewController {
     )
     
     cartView.setOrderButtonText(totalPrice: expectedAmountPayment)
+  }
+  
+  private func pushDetailViewController(id: Int) {
+    let productDetailViewController = DetailViewController().then {
+      $0.configure(productId: id)
+    }
+    
+    let navigationController = UINavigationController(rootViewController: productDetailViewController).then {
+      $0.modalPresentationStyle = .fullScreen
+      $0.navigationBar.setBackgroundImage(UIImage(), for: .default)
+      $0.navigationBar.shadowImage = UIImage()
+    }
+    
+    present(navigationController, animated: true) { [weak self] in
+      guard
+        let self = self,
+        let navigationController = self.presentedViewController as? UINavigationController,
+        let detailViewController = navigationController.viewControllers.first
+      else { return }
+      
+      let closeDetailbutton = UIButton(type: .system).then {
+        $0.tintColor = .black
+        $0.setImage(UIImage(systemName: "xmark"), for: .normal)
+        
+        $0.addTarget(self, action: #selector(self.dismissPresentedViewController), for: .touchUpInside)
+      }
+      detailViewController.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: closeDetailbutton)
+    }
+  }
+  
+  @objc
+  private func dismissPresentedViewController() {
+    guard let presentedViewController = self.presentedViewController else { return }
+    
+    presentedViewController.dismiss(animated: true)
   }
 }
