@@ -26,5 +26,5 @@ struct MainItem: Decodable {
   }
 }
 typealias HomeImages = [String]
-typealias MDItems = [[MainItem]]
+typealias MDItems = [MainItem]
 typealias HomeItems = [MainItem]

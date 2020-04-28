@@ -10,7 +10,7 @@ import Kingfisher
 import UIKit
 
 protocol ProductCollectionCellDelegate: class {
-  func cartOrAlarmButtonTouched(_ button: UIButton, _ productIndexPath: IndexPath)
+  func cartOrAlarmButtonTouched(_ collectionView: UICollectionView, _ button: UIButton, _ productIndexPath: IndexPath)
 }
 
 class ProductCollectionCell: UICollectionViewCell {
@@ -193,7 +193,19 @@ class ProductCollectionCell: UICollectionViewCell {
 extension ProductCollectionCell {
   @objc
   private func cartOrAlarmButtonTouched(_ button: UIButton) {
-    delegate?.cartOrAlarmButtonTouched(button, productIndexPath)
+    var startPoint = self as UIView
+    var collectionView: UICollectionView!
+    
+    while let nextView = startPoint.superview {
+      startPoint = nextView
+      
+      if let collection = startPoint as? UICollectionView {
+        collectionView = collection
+        break
+      }
+    }
+    
+    delegate?.cartOrAlarmButtonTouched(collectionView, button, productIndexPath)
   }
 }
 

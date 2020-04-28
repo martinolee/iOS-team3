@@ -43,6 +43,7 @@ class SearchViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    self.tabBarController?.delegate = self
     self.setupBroccoliNavigationBar(title: "검색")
     searchWordTableViewWillFollowKeyboard()
   }
@@ -219,7 +220,7 @@ extension SearchViewController: SearchViewDelegate {
 }
 
 extension SearchViewController: ProductCollectionCellDelegate {
-  func cartOrAlarmButtonTouched(_ button: UIButton, _ productIndexPath: IndexPath) {
+  func cartOrAlarmButtonTouched(_ collectionView: UICollectionView, _ button: UIButton, _ productIndexPath: IndexPath) {
     guard let searchedProducts = searchedProducts else { return }
     let isSoldOut = false
     
@@ -257,5 +258,11 @@ extension SearchViewController {
           completionHandler(.failure(error))
         }
     }
+  }
+}
+
+extension SearchViewController: UITabBarControllerDelegate {
+  func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+    searchView.setSearchResultCollectionViewContentOffset(.zero)
   }
 }

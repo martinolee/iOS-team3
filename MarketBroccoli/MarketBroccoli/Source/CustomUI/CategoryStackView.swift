@@ -23,7 +23,7 @@ class CategoryStackView: UIStackView {
       let label = UILabel().then {
         $0.text = text
         $0.textColor = .gray
-        $0.font = .systemFont(ofSize: 18)
+        $0.font = .systemFont(ofSize: 16)
         $0.textAlignment = .center
         $0.isUserInteractionEnabled = true
         $0.tag = 9999 - idx

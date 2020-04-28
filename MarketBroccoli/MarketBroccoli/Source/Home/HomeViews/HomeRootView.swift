@@ -73,6 +73,7 @@ extension HomeRootView {
     selectedPage = currentPage
     stackView.arrangedSubviews.forEach {
       ($0 as? UILabel)?.textColor = .gray
+      ($0 as? UILabel)?.font = .systemFont(ofSize: 16)
     }
     selectedCategory.snp.remakeConstraints {
       $0.bottom.equalTo(label.snp.bottom)
@@ -83,6 +84,7 @@ extension HomeRootView {
     
     UIView.animate(withDuration: 0.3) {
       label.textColor = .kurlyMainPurple
+      label.font = .boldSystemFont(ofSize: 16)
       if scroll {
         let movePoint = CGPoint(x: self.frame.size.width * CGFloat(currentPage), y: 0)
         self.scrollView.setContentOffset(movePoint, animated: false)
@@ -119,6 +121,7 @@ extension HomeRootView {
     let safeArea = self.safeAreaLayoutGuide
     guard let firstStackViewItem = stackView.arrangedSubviews.first as? UILabel else { return }
     firstStackViewItem.textColor = .kurlyMainPurple
+    firstStackViewItem.font = .boldSystemFont(ofSize: 16)
     self.addSubviews([scrollView, stackView])
     stackView.addSubview(selectedCategory)
     
@@ -233,6 +236,8 @@ extension HomeRootView: UICollectionViewDataSource {
     let cell = collectionView.dequeue(ProductCollectionCell.self, indexPath: indexPath)
     let item = cellItem[indexPath.item]
     
+    cell.delegate = self
+    
     cell.configure(
       productId: item.id,
       productName: item.name,
@@ -244,5 +249,28 @@ extension HomeRootView: UICollectionViewDataSource {
       productIndexPath: indexPath
     )
     return cell
+  }
+}
+
+extension HomeRootView: ProductCollectionCellDelegate {
+  func cartOrAlarmButtonTouched(_ collectionView: UICollectionView, _ button: UIButton, _ productIndexPath: IndexPath) {
+    guard
+      let collectionView = collectionView as? NewProduct,
+      let name = collectionView.collectionName
+    else { return }
+    
+    let cellItem = model[name] ?? [MainItem]()
+    let item = cellItem[productIndexPath.item]
+    
+    let product = MainItem(
+      id: item.id,
+      thumbImage: item.thumbImage,
+      name: item.name,
+      price: item.price,
+      discountRate: item.discountRate,
+      summary: item.summary
+    )
+    
+    ObserverManager.shared.post(observerName: .cartOrAlarmBtnTouched, object: nil, userInfo: ["product": product])
   }
 }

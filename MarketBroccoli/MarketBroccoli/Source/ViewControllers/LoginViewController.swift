@@ -74,6 +74,7 @@ extension LoginViewController: LoginViewDelegate {
                 ) else { return }
               
               UserDefaultManager.shared.set(decodedData.token, for: .token)
+              UserDefaultManager.shared.set(decodedData.user.name, for: .userName)
               print(decodedData)
               
               guard
@@ -85,6 +86,7 @@ extension LoginViewController: LoginViewDelegate {
               else { return }
               
               settingViewController.isLogin = true
+              CartManager.shared.synchronizeCart()
               self.dismiss(animated: true)
     
             case .failure(let error):
