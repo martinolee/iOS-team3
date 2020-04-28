@@ -481,10 +481,10 @@
 				7CCD648C24287AB300FC671B /* Cells */,
 				7C65ECC6242472F70075606A /* Views */,
 				7C65ECB5242470C90075606A /* Extensions */,
+				7C65ECB3242470AB0075606A /* ViewControllers */,
 				7C65ECC3242472E20075606A /* Models */,
 				7C65ECB7242470E70075606A /* Utils */,
 				7C65ECB4242470B60075606A /* CustomUI */,
-				7C65ECB3242470AB0075606A /* ViewControllers */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -509,11 +509,11 @@
 		7C65ECB3242470AB0075606A /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				FAAFEB5E2424A74900452977 /* SettingsViewController.swift */,
 				7298BEFE242DDF2E005B0517 /* MarketBroccoliTabBarController.swift */,
 				7050F3192429CEBB00B8E13B /* CategoryViewController.swift */,
 				701C74C0244485B3009276FA /* CategoryDetailViewController.swift */,
 				70BB5437243B432F00BE81F4 /* BuyOftenViewController.swift */,
-				FAAFEB5E2424A74900452977 /* SettingsViewController.swift */,
 				FAAE2E562424E3C400ACC5D3 /* SignUpViewController.swift */,
 				7050F3112424BA3800B8E13B /* LoginViewController.swift */,
 				7050F315242876AC00B8E13B /* IDFindViewController.swift */,

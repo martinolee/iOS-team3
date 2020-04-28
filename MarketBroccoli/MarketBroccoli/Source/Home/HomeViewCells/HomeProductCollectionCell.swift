@@ -15,15 +15,15 @@ class HomeProductCollectionCell: UICollectionViewCell {
   private lazy var titleLabel = UILabel().then {
     $0.text = ""
     $0.numberOfLines = 2
-    $0.font = .systemFont(ofSize: 14)
+    $0.font = .systemFont(ofSize: 14, weight: .regular)
   }
   private let priceLabel = UILabel().then {
     $0.text = ""
-    $0.font = .systemFont(ofSize: 14, weight: .bold)
+    $0.font = .systemFont(ofSize: 14, weight: .semibold)
   }
   private let strikethroughPriceLabel = UILabel().then {
     $0.text = ""
-    $0.textColor = .kurlyGray1
+    $0.textColor = .kurlyGray3
     $0.font = .systemFont(ofSize: 12)
   }
   private let eventMark = EventMark()
@@ -33,7 +33,6 @@ class HomeProductCollectionCell: UICollectionViewCell {
     $0.addArrangedSubview(priceLabel)
     $0.addArrangedSubview(strikethroughPriceLabel)
     $0.axis = .vertical
-//    $0.alignment = .top
     $0.distribution = .fillProportionally
   }
  
@@ -53,7 +52,6 @@ extension HomeProductCollectionCell {
   func configure(item: MainItem, width: CGFloat) {
     productId = item.id
     imageView.setImage(urlString: item.thumbImage)
-    titleLabel.preferredMaxLayoutWidth = width
     titleLabel.text = item.name
     if item.discountRate > 0 {
       priceLabel.text = moneyFormatter(won: item.price, hasUnit: true)
@@ -74,9 +72,9 @@ extension HomeProductCollectionCell {
   
   func eventMarkResize(target: UIImageView, add view: UIView, discount: String, width: CGFloat) {
     let eventMarkAttributeString = NSMutableAttributedString()
-      .normal("SAVE\n", textColor: .white, fontSize: 12)
-      .bold(discount, fontSize: 16)
-      .normal("%", textColor: .white, fontSize: 12)
+      .normal("SAVE\n", textColor: .white, fontSize: 10)
+      .bold(discount, fontSize: 14)
+      .normal("%", textColor: .white, fontSize: 10)
     eventMark.textLabel.attributedText = eventMarkAttributeString
     if (width / 4) < ((eventMark.textLabel.getWidth() ?? 0) + 4) {
       DispatchQueue.main.async {
@@ -92,10 +90,10 @@ extension HomeProductCollectionCell {
 
 extension HomeProductCollectionCell {
   private func setupUI() {
-    self.contentView.addSubviews([imageView, descriptionView, eventMark])
+    self.contentView.addSubviews([imageView, eventMark, titleLabel, priceLabel, strikethroughPriceLabel])
     imageView.snp.makeConstraints {
       $0.top.leading.trailing.equalToSuperview()
-      $0.height.equalToSuperview().multipliedBy(0.65)
+      $0.height.equalToSuperview().multipliedBy(0.6)
     }
 
     eventMark.snp.makeConstraints {
@@ -104,10 +102,19 @@ extension HomeProductCollectionCell {
       $0.height.equalTo(eventMark.snp.width)
     }
     
-    descriptionView.snp.makeConstraints {
+    titleLabel.snp.makeConstraints {
       $0.top.equalTo(imageView.snp.bottom)
-      $0.leading.bottom.trailing.equalToSuperview()
-      $0.height.equalToSuperview().multipliedBy(0.35)
+      $0.leading.trailing.equalToSuperview()
+    }
+    
+    priceLabel.snp.makeConstraints {
+      $0.top.equalTo(titleLabel.snp.bottom).offset(4)
+      $0.leading.trailing.equalToSuperview()
+    }
+    
+    strikethroughPriceLabel.snp.makeConstraints {
+      $0.top.equalTo(priceLabel.snp.bottom).offset(4)
+      $0.leading.trailing.equalToSuperview()
     }
   }
 }
