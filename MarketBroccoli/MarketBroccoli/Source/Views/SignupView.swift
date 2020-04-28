@@ -5,7 +5,7 @@
 import UIKit
 import WebKit
 
-class SignupView: UIView, UITextFieldDelegate {
+class SignupView: UIView {
   // MARK: - 프로퍼티
   weak var delegate: SignupViewDelegate?
   private lazy var idLabel = SignupLabel().then {
@@ -73,11 +73,11 @@ class SignupView: UIView, UITextFieldDelegate {
   lazy var checkPasswordTextField = UITextField().then {
     $0.placeholder = "비밀번호를 한번 더 입력해주세요"
     $0.delegate = self
-//    $0.isSecureTextEntry = true
     $0.autocapitalizationType = .none
     $0.addTarget(self, action: #selector(checkPasswordTextFieldEditingChanged), for: .editingChanged)
     $0.signupStyle(round: .roundedRect, clearButton: .whileEditing)
   }
+  
   
   let sameSecretNumberLabel = SignupLabel(textColor: .orange, font: .systemFont(ofSize: 10)).then {
     $0.text = "동일한 비밀번호를 입력해주세요"
@@ -550,12 +550,14 @@ class SignupView: UIView, UITextFieldDelegate {
       $0.top.equalTo(scrollView.snp.top).offset(40)
       $0.leading.equalTo(idLabel)
       $0.width.equalTo(scrollView.snp.width).multipliedBy(0.7)
+      $0.height.equalTo(50)
     }
     
     checkIDButton.snp.makeConstraints {
       $0.top.equalTo(scrollView.snp.top).offset(40)
       $0.leading.equalTo(idTextField.snp.trailing).offset(10)
       $0.trailing.equalTo(idLabel)
+      $0.height.equalTo(50)
     }
     
     idLimitExplanationLabel.snp.makeConstraints {
@@ -580,6 +582,7 @@ class SignupView: UIView, UITextFieldDelegate {
     passwordTextField.snp.makeConstraints {
       $0.top.equalTo(secretNumberLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(secretNumberLabel)
+      $0.height.equalTo(50)
     }
     
     tenSyllableLabel.snp.makeConstraints {
@@ -607,6 +610,7 @@ class SignupView: UIView, UITextFieldDelegate {
     checkPasswordTextField.snp.makeConstraints {
       $0.top.equalTo(checkSecretNumberLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(checkSecretNumberLabel)
+      $0.height.equalTo(50)
     }
 
     sameSecretNumberLabel.snp.makeConstraints {
@@ -623,6 +627,7 @@ class SignupView: UIView, UITextFieldDelegate {
     nameTextField.snp.makeConstraints {
       $0.top.equalTo(nameLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(nameLabel)
+      $0.height.equalTo(50)
     }
 
     emailLabel.snp.makeConstraints {
@@ -633,6 +638,7 @@ class SignupView: UIView, UITextFieldDelegate {
     emailTextFeild.snp.makeConstraints {
       $0.top.equalTo(emailLabel.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(emailLabel)
+      $0.height.equalTo(50)
     }
 
     cellphoneLabel.snp.makeConstraints {
@@ -644,18 +650,21 @@ class SignupView: UIView, UITextFieldDelegate {
       $0.top.equalTo(cellphoneLabel.snp.bottom).offset(10)
       $0.leading.equalTo(cellphoneLabel)
       $0.width.equalTo(scrollView.snp.width).multipliedBy(0.5)
+      $0.height.equalTo(50)
     }
 
     getCodeButton.snp.makeConstraints {
       $0.top.equalTo(cellphoneTextField)
       $0.leading.equalTo(cellphoneTextField.snp.trailing).offset(10)
       $0.trailing.equalTo(cellphoneLabel)
+      $0.height.equalTo(50)
     }
 
     checkingCodeTexField.snp.makeConstraints {
       $0.top.equalTo(cellphoneTextField.snp.bottom).offset(10)
       $0.leading.equalTo(cellphoneTextField)
       $0.width.equalTo(scrollView.snp.width).multipliedBy(0.5)
+      $0.height.equalTo(50)
     }
 
     timerInTextField.snp.makeConstraints {
@@ -666,6 +675,7 @@ class SignupView: UIView, UITextFieldDelegate {
     checkingCodeButton.snp.makeConstraints {
       $0.top.equalTo(getCodeButton.snp.bottom).offset(10)
       $0.leading.trailing.equalTo(getCodeButton)
+      $0.height.equalTo(50)
     }
 
     checkingCodeCompleteLabel.snp.makeConstraints {
@@ -687,7 +697,7 @@ class SignupView: UIView, UITextFieldDelegate {
     searchingAddressButton.snp.makeConstraints {
       $0.top.equalTo(addressCheckingLabel.snp.bottom).offset(20)
       $0.leading.trailing.equalTo(addressCheckingLabel)
-      $0.height.equalTo(40)
+      $0.height.equalTo(50)
     }
 
     addressTextField.snp.makeConstraints {
@@ -723,6 +733,7 @@ class SignupView: UIView, UITextFieldDelegate {
       $0.top.equalTo(birthdayLabel.snp.bottom).offset(20)
       $0.leading.trailing.equalTo(birthdayLabel)
       $0.height.equalTo(checkingCodeTexField)
+      $0.height.equalTo(50)
     }
 
     birthdayYearTextField.snp.makeConstraints {
@@ -1258,13 +1269,13 @@ extension SignupView {
   
   func addressButtonTouchedOpenTextField() {
     addressTextField.snp.updateConstraints {
-      $0.height.equalTo(40)
+      $0.height.equalTo(50)
     }
     showAddressLabel.snp.updateConstraints {
       $0.height.equalTo(12)
     }
     addressDetailTextField.snp.updateConstraints {
-      $0.height.equalTo(40)
+      $0.height.equalTo(50)
     }
     limitAddressLabel.snp.updateConstraints {
       $0.height.equalTo(12)
@@ -1342,3 +1353,4 @@ extension SignupView: WKScriptMessageHandler {
 }
 
 extension SignupView: UIScrollViewDelegate {}
+extension SignupView: UITextFieldDelegate {}

@@ -151,11 +151,7 @@ extension AddProductCartViewController: AddProductCartViewDelegate {
     }
     
     dismiss(animated: true) {
-      KurlyNotification.shared.notification(
-        text: "장바구니에 상품이 담겼습니다.",
-        textColor: .kurlyMainPurple,
-        backgroundColor: .white
-      )
+      KurlyNotification.shared.notice(text: "장바구니에 상품이 담겼습니다.")
     }
   }
   
