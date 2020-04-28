@@ -98,8 +98,8 @@ extension RecommendationView {
       switch $0 {
       case .success(let data):
         self.homeImageModel = data
-      case .failure(let error):
-        print("Image error :", error.localizedDescription)
+      case .failure:
+        KurlyNotification.shared.notice(text: "잠시후 다시시도하세요.")
       }
     }
     success()

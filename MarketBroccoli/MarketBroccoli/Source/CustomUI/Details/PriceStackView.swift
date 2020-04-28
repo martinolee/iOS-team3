@@ -11,15 +11,17 @@ import UIKit
 class PriceStackView: UIStackView {
   private let descriptionLabel = UILabel().then {
     $0.text = "회원할인가"
+    $0.font = .systemFont(ofSize: 14)
   }
   private let priceLabel = UILabel().then {
     $0.attributedText = NSMutableAttributedString()
-      .bold("2,185", fontSize: 17)
-      .normal("원 ", fontSize: 13)
-      .normal("5%", textColor: .red, fontSize: 17)
+      .bold("2,185", fontSize: 22)
+      .normal("원 ", fontSize: 18)
+      .normal("5%", textColor: .orange, fontSize: 22)
   }
   private let beforePriceBtn = UIButton().then {
     $0.setAttributedTitle(NSMutableAttributedString().strikethrough("2300원", textColor: .kurlyGray1), for: .normal)
+    $0.titleLabel?.font = .systemFont(ofSize: 14)
     $0.tintColor = .kurlyGray1
     $0.setImage(UIImage(systemName: "questionmark.circle"), for: .normal)
     $0.semanticContentAttribute = .forceRightToLeft
@@ -32,7 +34,7 @@ class PriceStackView: UIStackView {
   private let welcomeBtn = UIButton().then {
     $0.setTitle(" 웰컴 5% ", for: .normal)
     $0.setTitleColor(.gray, for: .normal)
-    $0.titleLabel?.font = .systemFont(ofSize: 15)
+    $0.titleLabel?.font = .systemFont(ofSize: 12)
     $0.layer.borderWidth = 1
     $0.layer.borderColor = UIColor.kurlyGray1.cgColor
     $0.layer.cornerRadius = 12
@@ -40,8 +42,8 @@ class PriceStackView: UIStackView {
   }
   private let mileageLabel = UILabel().then {
     $0.attributedText = NSMutableAttributedString()
-      .normal("개당 ", fontSize: 15)
-      .bold("109원 적립", fontSize: 15)
+      .normal("개당 ", fontSize: 10)
+      .bold("109원 적립", fontSize: 10)
   }
   private let loginDescriptionLabel = UILabel().then {
     $0.textColor = .kurlyMainPurple
