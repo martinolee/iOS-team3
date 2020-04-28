@@ -102,6 +102,14 @@ class CartManager {
     guard let token = UserDefaultManager.shared.get(for: .token) as? String else {
       addProductIntoLocalCart(wishProduct: product)
       
+      let localSuccessReponse = BackendCartElement(
+        id: -1,
+        product: BackendProduct(pk: -1, name: "", discountRate: -1, price: nil, imageURL: ""),
+        option: nil,
+        quantity: -1
+      )
+      
+      completionHandler(.success(localSuccessReponse))
       return
     }
     
@@ -179,6 +187,26 @@ class CartManager {
           completionHandler(.failure(error))
         }
     }
+  }
+  
+  func synchronizeCart() {
+    guard
+      let cartData = UserDefaultManager.shared.get(for: .cart) as? Data,
+      let cart = try? JSONDecoder().decode([UpdatedProduct].self, from: cartData)
+    else { return }
+    
+    for cartIndex in cart.indices {
+      addProductIntoCart(cart[cartIndex]) { result in
+        switch result {
+        case .success(let product):
+          print(product)
+        case .failure(let error):
+          print(error.localizedDescription)
+        }
+      }
+    }
+    
+    UserDefaultManager.shared.remove(for: .cart)
   }
 }
 
