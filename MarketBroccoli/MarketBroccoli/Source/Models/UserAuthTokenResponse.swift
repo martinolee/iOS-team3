@@ -21,6 +21,7 @@ struct LoginUser: Decodable {
   let identification: Int
   let email: String
   let userName: String
+  let name: String
   let address: Address
   let mobile: UserMobileCodeResponse
   let birthday: String?
@@ -31,6 +32,7 @@ struct LoginUser: Decodable {
     case identification = "id"
     case email
     case userName = "username"
+    case name
     case address
     case mobile
     case birthday = "birth_date"
