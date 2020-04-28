@@ -15,7 +15,7 @@ class CategoryDetailViewController: UIViewController {
   private var customMenuBar = CategoryDetailHeaderView()
   private let customMenuBarSeperator = UIView().then {
     $0.backgroundColor = .darkGray
-    $0.alpha = 0.1
+    $0.alpha = 0.4
   }
   let customMenuBarheigt: CGFloat = 50
   private lazy var collectionViewFlowLayout = UICollectionViewFlowLayout()
