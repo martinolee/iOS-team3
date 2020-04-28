@@ -15,9 +15,11 @@ protocol MDCategoryTouchProtocol: class {
 class HomeMDTableCell: UITableViewCell {
   private let cellTitleLabel = UILabel().then {
     $0.text = "MD의 추천"
-    $0.font = .boldSystemFont(ofSize: 20)
+    $0.font = .boldSystemFont(ofSize: 18)
   }
-  private let seperatorTop = Seperator()
+  private let seperatorTop = Seperator().then {
+    $0.alpha = 0.2
+  }
   private let selectedCategory = CategorySelected()
   private let MDcategoryCollectionView = HomeProductCollectionView(
     frame: .zero,
@@ -26,15 +28,18 @@ class HomeMDTableCell: UITableViewCell {
   private lazy var MDCategoryScrollView = CategoryScrollView(categories: categoryArray).then {
     $0.customDelegate = self
   }
-  private let seperatorBottom = Seperator()
+  private let seperatorBottom = Seperator().then {
+    $0.alpha = 0.2
+  }
   private let MDProductCollectionView = HomeProductCollectionView(
     frame: .zero,
     collectionViewLayout: UICollectionViewFlowLayout()
   )
   private lazy var categoryShowBtn = UIButton().then {
     $0.setTitle("\(self.categoryArray.first ?? "")" + "전체 보기 >", for: .normal)
+    $0.titleLabel?.font = .systemFont(ofSize: 15)
     $0.setTitleColor(.black, for: .normal)
-    $0.backgroundColor = .kurlyGray3
+    $0.backgroundColor = .systemGray6
     $0.addTarget(self, action: #selector(categoryShowBtnTouched(_:)), for: .touchUpInside)
   }
   
@@ -170,6 +175,7 @@ extension HomeMDTableCell {
     
     if let item = MDCategoryScrollView.subviews.first as? UILabel {
       item.textColor = .kurlyMainPurple
+      item.font = .boldSystemFont(ofSize: 15)
       selectedCategory.snp.makeConstraints {
         $0.top.equalTo(item.snp.bottom)
         $0.leading.trailing.width.equalTo(item)
@@ -235,6 +241,7 @@ extension HomeMDTableCell {
     guard let item = MDCategoryScrollView.viewWithTag(9999 - page) as? UILabel else { return }
     MDCategoryScrollView.subviews.forEach {
       ($0 as? UILabel)?.textColor = .gray
+      ($0 as? UILabel)?.font = .systemFont(ofSize: 15)
     }
     // 보라색 라인을 다음 아이템에 오토레이아웃 새로 잡을 예정인..
     selectedCategory.snp.remakeConstraints {
@@ -244,6 +251,7 @@ extension HomeMDTableCell {
     }
     UIView.animate(withDuration: 0.5, animations: {
       item.textColor = .kurlyMainPurple
+      item.font = .boldSystemFont(ofSize: 15)
       if 2...11 ~= page { // 중간 카테고리
         self.MDCategoryScrollView.setContentOffset(CGPoint(x: movePoint, y: 0), animated: false)
       } else if 0...1 ~= page { // 카테고리 first를 확인해서 움직이지 않게
@@ -268,7 +276,7 @@ extension HomeMDTableCell {
     print(sender.titleLabel?.text)
   }
   
-  func configure(items: [MainItem]? = nil) {
+  func configure( items: [MainItem]? = nil) {
     collectionViewItems = items
   }
 }
