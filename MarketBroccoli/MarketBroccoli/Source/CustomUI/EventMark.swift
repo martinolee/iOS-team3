@@ -14,7 +14,7 @@ class EventMark: UIView {
   let textLabel = UILabel().then {
     $0.numberOfLines = 2
     $0.textColor = .white
-    $0.font = .systemFont(ofSize: 15, weight: .bold)
+    $0.font = .systemFont(ofSize: 10, weight: .bold)
     $0.textAlignment = .center
     $0.adjustsFontSizeToFitWidth = true
     $0.minimumScaleFactor = 0.2

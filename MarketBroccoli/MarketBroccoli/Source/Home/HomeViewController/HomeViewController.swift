@@ -18,7 +18,6 @@ class HomeViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.tabBarController?.delegate = self
-    self.addNavigationBarCartButton()
     self.setupBroccoliNavigationBar(title: "마켓브로콜리")
   }
   
@@ -28,6 +27,11 @@ class HomeViewController: UIViewController {
       target: self, selector: #selector(receiveNotification(_:)), observerName: .productTouched, object: nil)
     ObserverManager.shared.registerObserver(
       target: self, selector: #selector(receiveNotificationShowAll(_:)), observerName: .showAllBtnTouched, object: nil)
+    ObserverManager.shared.registerObserver(
+      target: self, selector: #selector(cartOrAlarmBtnTouched(_:)),
+      observerName: .cartOrAlarmBtnTouched, object: nil)
+    
+    self.addNavigationBarCartButton()
   }
   
   override func viewDidDisappear(_ animated: Bool) {
@@ -39,6 +43,10 @@ class HomeViewController: UIViewController {
     ObserverManager.shared.resignObserver(
       target: self,
       observerName: .showAllBtnTouched,
+      object: nil)
+    ObserverManager.shared.resignObserver(
+      target: self,
+      observerName: .cartOrAlarmBtnTouched,
       object: nil)
   }
 }
@@ -67,6 +75,31 @@ extension HomeViewController {
     showAllVC.hidesBottomBarWhenPushed = true
     showAllVC.configure(requestKey: requestKey)
     navigationController?.pushViewController(showAllVC, animated: true)
+  }
+  
+  @objc private func cartOrAlarmBtnTouched(_ notification: Notification) {
+    guard
+      let userInfo = notification.userInfo as? [String: Any],
+      let product = userInfo["product"] as? MainItem
+    else { return }
+    let isSoldOut = false
+    
+    if !isSoldOut {
+      let navigationController = UINavigationController(rootViewController: AddProductCartViewController())
+      
+      present(navigationController, animated: true) {
+        navigationController.do {
+          guard let firstViewController = $0.viewControllers.first as? AddProductCartViewController else { return }
+          
+          firstViewController.deliver(
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            discountRate: product.discountRate
+          )
+        }
+      }
+    }
   }
 }
 

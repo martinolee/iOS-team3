@@ -16,6 +16,7 @@ class CategoryViewController: UIViewController {
   private let oftenProduct = ["자주 사는 상품"]
   private var lastSelection: IndexPath?
   private var refreshControl = UIRefreshControl()
+  private var dummyData: CategoryModel2? = nil
 // MARK: - Life Cycle
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -23,6 +24,18 @@ class CategoryViewController: UIViewController {
     setupUI()
     setupLayout()    
   }
+  
+  private func dataRequest(categoryId: Int) {
+    RequestManager.shared.categoryRequest(url: .initial, method: .get, categoryId: categoryId) { result in
+      switch result {
+      case .success(let data):
+        print(data)
+      case .failure(let error):
+        print(error)
+      }
+    }
+  }
+  
   // MARK: - Setup Attribute
   private func setupNavigation() {
     self.addNavigationBarCartButton()
@@ -132,6 +145,7 @@ extension CategoryViewController: UITableViewDataSource {
 // MARK: - TableViewDelegate
 extension CategoryViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    print(indexPath)
     switch indexPath.section {
     case 0:
       let buyOftenViewController = BuyOftenViewController()

@@ -14,7 +14,8 @@ class HomeBannerTableCell: UITableViewCell {
   private lazy var bannerCountLabel = UILabel().then {
     $0.backgroundColor = UIColor.gray.withAlphaComponent(0.4)
     $0.textColor = .white
-    $0.layer.cornerRadius = 5
+    $0.font = .systemFont(ofSize: 12)
+    $0.layer.cornerRadius = 8
     $0.layer.masksToBounds = true
   }
   private let bannerCollectionView = UICollectionView(
@@ -85,7 +86,7 @@ extension HomeBannerTableCell {
     guard let layout = bannerCollectionView.collectionViewLayout as? CustomCollectionViewFlowLayout else { return }
     layout.minimumLineSpacing = 0
     layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-    layout.itemSize = CGSize(width: self.frame.width, height: 300)
+    layout.itemSize = CGSize(width: self.frame.width, height: 350)
   }
   
   private func setupAttr() {
@@ -100,7 +101,7 @@ extension HomeBannerTableCell {
     
     bannerCollectionView.snp.makeConstraints {
       $0.top.leading.bottom.trailing.equalTo(self.contentView)
-      $0.height.equalTo(300)
+      $0.height.equalTo(350)
     }
     
     bannerCountLabel.snp.makeConstraints {
@@ -134,6 +135,10 @@ extension HomeBannerTableCell: UICollectionViewDataSource {
 
 // MARK: - CollectionView Delegate
 extension HomeBannerTableCell: UICollectionViewDelegate {
+  func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+    guard let bannerCnt = dummyData?.count else { return }
+    imageCounter = imageCounter < bannerCnt ? imageCounter + 1 : 0
+  }
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     let bannerWidth = bannerCollectionView.frame.size.width
     currentPage = Int(bannerCollectionView.contentOffset.x / bannerWidth) + 1
