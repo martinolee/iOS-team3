@@ -76,6 +76,7 @@ class CategoryDetailViewController: UIViewController {
     setupUI()
     setupLayout()
     setupNavigtion()
+    self.collectionView.isHidden = true
   }
   
   var itemWidth: CGFloat = 0
@@ -92,6 +93,9 @@ class CategoryDetailViewController: UIViewController {
       .itemSize
       .width ?? 0
     print(itemWidth, "제발 나와줘")
+    let collectionViewSubCategoryId = (subCategoryId ?? 0) - 1
+    self.collectionView.scrollToItem(at: IndexPath(item: collectionViewSubCategoryId, section: 0), at: .right, animated: false)
+    self.collectionView.isHidden = false
   }
 
   override func viewDidLayoutSubviews() {
