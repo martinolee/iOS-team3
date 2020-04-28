@@ -13,6 +13,10 @@ import Alamofire
 class CategoryDetailViewController: UIViewController {
   // MARK: - Properties
   private var customMenuBar = CategoryDetailHeaderView()
+  private let customMenuBarSeperator = UIView().then {
+    $0.backgroundColor = .darkGray
+    $0.alpha = 0.1
+  }
   let customMenuBarheigt: CGFloat = 50
   private lazy var collectionViewFlowLayout = UICollectionViewFlowLayout()
   private lazy var collectionView = UICollectionView(
@@ -128,7 +132,15 @@ class CategoryDetailViewController: UIViewController {
     customMenuBar.snp.makeConstraints {
       $0.top.leading.trailing.equalTo(guide)
       $0.height.equalTo(customMenuBarheigt)
+    }
+    [customMenuBarSeperator].forEach {
+      view.addSubview($0)
+    }
+    customMenuBarSeperator.snp.makeConstraints {
+      $0.top.equalTo(customMenuBar.snp.bottom)
+      $0.leading.trailing.equalTo(guide)
       $0.bottom.equalTo(collectionView.snp.top)
+      $0.height.equalTo(0.4)
     }
     [selectedCategory].forEach {
       customMenuBar.addSubview($0)
