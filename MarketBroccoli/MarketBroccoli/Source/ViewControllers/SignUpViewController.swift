@@ -41,6 +41,7 @@ class SignUpViewController: UIViewController {
     super.viewDidLoad()
     setupUI()
     moveKeyboard()
+    setupNavigationBackButton()
   }
   private func setupUI() {
     [signupView].forEach {
@@ -92,6 +93,19 @@ class SignUpViewController: UIViewController {
 }
 // MARK: - Action
 extension SignUpViewController: SignupViewDelegate {
+  private func setupNavigationBackButton() {
+    let button = UIButton(type: .system).then {
+      $0.tintColor = .black
+      $0.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+      $0.addTarget(self, action: #selector(buttonTouched), for: .touchUpInside)
+    }
+    navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
+  }
+  
+  @objc private func buttonTouched() {
+    navigationController?.popViewController(animated: true)
+  }
+  
   private func moveKeyboard() {
     _ = NotificationCenter.default.addObserver(
       forName: UIResponder.keyboardDidShowNotification,
@@ -156,7 +170,7 @@ extension SignUpViewController: SignupViewDelegate {
           zipCode: "123456"),
         mobile: signupView.cellphoneTextField.text ?? ""
       )
-      UserDefaultManager.shared.set(signupView.nameTextField.text, for: .userName)
+      
       print(user)
       AF.request(
         "http://15.164.49.32/accounts/",
@@ -682,8 +696,10 @@ extension SignUpViewController: SignupViewDelegate {
     return updatedText.count <= 12
   }
 
-  func passwordTextField(_ textField: UITextField,
-                       shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+  func passwordTextField(
+    _ textField: UITextField,
+    shouldChangeCharactersIn range: NSRange,
+    replacementString string: String) -> Bool {
     textField.isSecureTextEntry = true
     let currentText = textField.text ?? ""
     guard let stringRange = Range(range, in: currentText) else { return false }
@@ -691,8 +707,10 @@ extension SignUpViewController: SignupViewDelegate {
     return updatedText.count <= 16
   }
 
-  func checkPasswordTextField(_ textField: UITextField,
-                                  shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+  func checkPasswordTextField(
+    _ textField: UITextField,
+    shouldChangeCharactersIn range: NSRange,
+    replacementString string: String) -> Bool {
     textField.isSecureTextEntry = true
     let currentText = textField.text ?? ""
     guard let stringRange = Range(range, in: currentText) else { return false }
@@ -779,5 +797,3 @@ extension SignUpViewController: SignupViewDelegate {
     return (updatedText.count + addressTextFieldText.count) <= 85
   }
 }
-
-
