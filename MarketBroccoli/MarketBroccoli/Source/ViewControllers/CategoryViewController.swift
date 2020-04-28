@@ -45,6 +45,7 @@ class CategoryViewController: UIViewController {
     self.setupBroccoliNavigationBar(title: "카테고리")
   }
   private func setupUI() {
+    self.tabBarController?.delegate = self
     tableView.dataSource = self
     tableView.delegate = self
     tableView.tableHeaderView =
@@ -238,4 +239,10 @@ extension CategoryViewController: UITableViewDelegate {
       return UITableView.automaticDimension
     }
    }
+}
+
+extension CategoryViewController: UITabBarControllerDelegate {
+  func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+    tableView.setContentOffset(.zero, animated: true)
+  }
 }
