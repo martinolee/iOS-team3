@@ -13,7 +13,7 @@ class DetailRootView: UIView {
   private let stackView = CategoryStackView(categories: Categories.DetailCategory, distribution: .fillProportionally)
   private lazy var purchaseBtn = UIButton(type: .system).then {
     $0.setTitle("구매하기", for: .normal)
-    $0.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
+    $0.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
     $0.contentEdgeInsets = UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0)
     $0.setTitleColor(.white, for: .normal)
     $0.backgroundColor = .kurlyMainPurple

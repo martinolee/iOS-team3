@@ -21,19 +21,22 @@ class EasterEggTableCell: UITableViewCell {
   ]
   private let customContentView = UIView()
   private let developersLabel = UILabel().then {
+    $0.font = .systemFont(ofSize: 14)
     $0.text = "개발자 소개"
     $0.textColor = .kurlyGray1
   }
   private let projectLabel = UILabel().then {
+    $0.font = .systemFont(ofSize: 14)
     $0.text = "프로젝트 소개"
     $0.textColor = .kurlyGray1
   }
   private let developPeriod = UILabel().then {
+    $0.font = .systemFont(ofSize: 14)
     $0.text = "개발 기간: 2020.03.20 ~ 2020.04.29"
     $0.textColor = .darkGray
   }
   private lazy var marketBroccoli = LinkLabel().then {
-    $0.attributedText = NSMutableAttributedString().underline("마켓브로콜리 Github", fontSize: 17)
+    $0.attributedText = NSMutableAttributedString().underline("마켓브로콜리 Github", fontSize: 14)
     $0.link = "https://github.com/iOS-WPS-Team3"
     $0.textColor = .link
 
@@ -76,6 +79,7 @@ extension EasterEggTableCell {
         $0.isUserInteractionEnabled = true
         $0.attributedText = NSMutableAttributedString().underline(dev.name, fontSize: 17)
         $0.link = dev.github
+        $0.font = .systemFont(ofSize: 14)
         $0.textColor = .darkGray
         $0.addGestureRecognizer(tap)
       }

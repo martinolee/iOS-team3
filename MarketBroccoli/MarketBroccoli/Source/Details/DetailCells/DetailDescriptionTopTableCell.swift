@@ -14,12 +14,13 @@ class DetailDescriptionTopTableCell: UITableViewCell {
     $0.contentMode = .scaleToFill
   }
   private let titleLabel = UILabel().then {
-    $0.text = "[앤블랭크] 노즈워크 토이 2종"
+    $0.font = .systemFont(ofSize: 17, weight: .semibold)
+    $0.text = ""
     $0.numberOfLines = 2
-    $0.font = .systemFont(ofSize: 20, weight: .semibold)
   }
   private let subtitleLabel = UILabel().then {
-    $0.text = "활용도가 다양한 올인원 장난감"
+    $0.font = .systemFont(ofSize: 14)
+    $0.text = ""
     $0.textColor = .kurlyGray1
     $0.numberOfLines = 2
   }
@@ -27,7 +28,7 @@ class DetailDescriptionTopTableCell: UITableViewCell {
 
   private let priceStackView = PriceStackView().then {
     $0.axis = .vertical
-    $0.spacing = 8
+    $0.spacing = 4
   }
   
   private let descriptionTopView = UIView()
@@ -103,7 +104,7 @@ extension DetailDescriptionTopTableCell {
     descriptionTopView.addSubviews([titleLabel, subtitleLabel])
     mainImageView.snp.makeConstraints {
       $0.top.leading.trailing.equalToSuperview()
-      $0.height.equalTo(400)
+      $0.height.equalTo(500)
     }
     
     descriptionTopView.snp.makeConstraints {
@@ -116,16 +117,18 @@ extension DetailDescriptionTopTableCell {
       $0.leading.trailing.equalToSuperview()
       $0.height.equalTo(40)
     }
+    titleLabel.setContentHuggingPriority(UILayoutPriority(rawValue: 999), for: .vertical)
     
     subtitleLabel.snp.makeConstraints {
       $0.top.equalTo(titleLabel.snp.bottom)
       $0.leading.bottom.trailing.equalToSuperview()
       $0.height.equalTo(20)
     }
+    subtitleLabel.setContentHuggingPriority(UILayoutPriority(rawValue: 999), for: .vertical)
     
     priceStackView.snp.makeConstraints {
-    $0.top.equalTo(descriptionTopView.snp.bottom)
-    $0.leading.trailing.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0))
+      $0.top.equalTo(descriptionTopView.snp.bottom).offset(16)
+      $0.leading.trailing.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0))
     }
     
     seperator.snp.makeConstraints {
