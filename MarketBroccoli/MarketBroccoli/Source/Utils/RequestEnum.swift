@@ -45,6 +45,20 @@ enum RequestDetail: RequestProtocol {
   }
 }
 
+enum RequestCategory: RequestProtocol {
+  case initial
+  case sub
+  
+  var endPoint: String {
+    switch self {
+    case .initial:
+      return baseUrl + "/kurly/category/"
+    case .sub:
+      return baseUrl + "kurly/subcategory/"
+    }
+  }
+}
+
 enum RequestSignup: RequestProtocol {
   case duplicate
   case MTokenCreate

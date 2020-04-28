@@ -11,14 +11,15 @@ import UIKit
 extension UIViewController {
   func setupBroccoliNavigationBar(title: String) {
     self.title = title
+    guard let navigationController = navigationController else { return }
     
-    navigationController?.do({
+    navigationController.do {
       $0.navigationBar.barTintColor = .kurlyMainPurple
       $0.navigationBar.tintColor = .white
       $0.navigationBar.barStyle = .black
       $0.navigationBar.isTranslucent = false
       $0.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-    })
+    }
   }
   
   func setupSubNavigationBar(title: String) {

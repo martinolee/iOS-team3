@@ -87,6 +87,21 @@
     }
   }
   
+  func categoryRequest(
+    url: RequestCategory,
+    method requestMethod: HTTPMethod,
+    categoryId: Int,
+    completion: @escaping (Result<CategoryModel2, AFError>) -> Void)
+    {
+      AF.request(
+        url.endPoint + "\(categoryId)/",
+        method: requestMethod)
+        .validate(statusCode: [200])
+        .responseDecodable(of: CategoryModel2.self) { res in
+          completion(res.result)
+      }
+  }
+  
   private init() {}
  }
  
