@@ -34,6 +34,12 @@ class CategoryDetailViewController: UIViewController {
       print("didSet categoryID")
     }
   }
+  var subCategoryId: Int? {
+    didSet {
+      //
+      print("didSet subCategoryID")
+    }
+  }
   private let selectedCategory = CategorySelected()
   private var page: Int = 0 {
     didSet {
@@ -176,19 +182,59 @@ extension CategoryDetailViewController: UICollectionViewDelegate {
 extension CategoryDetailViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     guard let categoryId = categoryId else { return 0 }
-    return categoryData[categoryId - 1].row.count
+      return categoryData[categoryId - 1].row.count
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     guard let categoryId = categoryId else { return UICollectionViewCell() }
-    let cell = collectionView.dequeue(CategoryDetailCollectionViewCell.self, indexPath: indexPath)
-    print("가로 - 몇 번째?", indexPath.section, indexPath.row)
-    cell.configure(id: categoryId)
-    return cell
+    let collectionViewSubCategoryId = (subCategoryId ?? 0) //+ indexPath.row
+    switch indexPath.row {
+    case 0:
+      let cell = collectionView.dequeue(CategoryDetailCollectionViewCell.self, indexPath: indexPath)
+      cell.configure(id: categoryId)
+      print("몇번 째를 눌렀나 indexPath.row[0]", collectionViewSubCategoryId - 1)
+      return cell
+    default:
+      let cell = collectionView.dequeue(CategoryDetailCollectionViewCell.self, indexPath: indexPath)
+      let subCategoryIncerease = categoryData[0..<categoryId - 1].reduce(0) { $0 + $1.row.count } - categoryId + 1
+      print("서브 카테고리의 카운트", categoryData[0..<categoryId - 1].reduce(0) { $0 + $1.row.count })
+      print("0번째 아님didSet subCategoryIncerease", subCategoryIncerease)
+      let subCategoryID = subCategoryIncerease + indexPath.row
+      print("indexPath.row[1~]", collectionViewSubCategoryId - 1)
+      print("0번째 아님didSet subCategoryID", subCategoryID)
+      cell.subConfigure(subID: subCategoryID)
+      return cell
+    }
+//    switch collectionViewSubCategoryId {
+//    case 0:
+//      let cell = collectionView.dequeue(CategoryDetailCollectionViewCell.self, indexPath: indexPath)
+//      print("0번째 didSet categoryID", categoryId)
+//      print("컬렉션뷰서브카테고리", collectionViewSubCategoryId)
+//      print("전체보기", indexPath.row)
+//      cell.configure(id: categoryId)
+//      return cell
+//    default:
+//      switch indexPath.row {
+//      case 0:
+//        let cell = collectionView.dequeue(CategoryDetailCollectionViewCell.self, indexPath: indexPath)
+//        cell.configure(id: categoryId)
+//        print("몇번 째를 눌렀나 indexPath.row[0]", collectionViewSubCategoryId - 1)
+//        return cell
+//      default:
+//        let cell = collectionView.dequeue(CategoryDetailCollectionViewCell.self, indexPath: indexPath)
+//        let subCategoryIncerease = categoryData[0..<categoryId - 1].reduce(0) { $0 + $1.row.count } - categoryId + 1
+//        print("서브 카테고리의 카운트", categoryData[0..<categoryId - 1].reduce(0) { $0 + $1.row.count })
+//        print("0번째 아님didSet subCategoryIncerease", subCategoryIncerease)
+//        let subCategoryID = subCategoryIncerease + indexPath.row
+//        print("indexPath.row[1~]", collectionViewSubCategoryId - 1)
+//        print("0번째 아님didSet subCategoryID", subCategoryID)
+//        cell.subConfigure(subID: subCategoryID)
+//        return cell
+//      }
+//    }
   }
 }
 
 // MARK: - ACTIONS
-extension CategoryDetailViewController {
-  
-}
+//  extension CategoryDetailViewController {
+//}
