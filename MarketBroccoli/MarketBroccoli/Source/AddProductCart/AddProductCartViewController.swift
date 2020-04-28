@@ -41,12 +41,14 @@ class AddProductCartViewController: UIViewController {
   
   private func setupNavigation() {
     title = "상품 선택"
-    navigationController?.do({
+    
+    guard let navigationController = self.navigationController else { return }
+    navigationController.do {
       $0.navigationBar.barTintColor = .white
       $0.navigationBar.isTranslucent = false
       $0.navigationBar.barStyle = .black
       $0.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
-    })
+    }
     
     let closeCartbutton = UIButton(type: .system).then {
       $0.tintColor = .black
@@ -151,11 +153,7 @@ extension AddProductCartViewController: AddProductCartViewDelegate {
     }
     
     dismiss(animated: true) {
-      KurlyNotification.shared.notification(
-        text: "장바구니에 상품이 담겼습니다.",
-        textColor: .kurlyMainPurple,
-        backgroundColor: .white
-      )
+      KurlyNotification.shared.notice(text: "장바구니에 상품이 담겼습니다.")
     }
   }
   

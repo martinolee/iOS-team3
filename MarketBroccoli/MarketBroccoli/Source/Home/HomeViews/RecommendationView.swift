@@ -91,7 +91,7 @@ extension RecommendationView {
       case .success(let data):
         self.MDModel = data
       case .failure(let error):
-        print("error :", error.localizedDescription)
+        print("MD error :", error.localizedDescription)
       }
     }
     RequestManager.shared.homeImageRequest {
@@ -99,7 +99,7 @@ extension RecommendationView {
       case .success(let data):
         self.homeImageModel = data
       case .failure(let error):
-        print("error :", error.localizedDescription)
+        print("Image error :", error.localizedDescription)
       }
     }
     success()
@@ -177,7 +177,7 @@ extension RecommendationView: UITableViewDataSource {
     case 1:
       guard let model = recommendModel else { return UITableViewCell() }
       let cell = tableView.dequeue(HomeOfferTableCell.self)
-      cell.configure(cellTitle: "이 상품 어때요?", items: model)
+      cell.configure(cellTitle: "이 상품 어때요? >", items: model)
       return cell
     case 2:
       return tableView.dequeue(HomeEventTableCell.self)
