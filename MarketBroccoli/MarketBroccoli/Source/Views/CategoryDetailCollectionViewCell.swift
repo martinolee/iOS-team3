@@ -174,7 +174,7 @@ extension CategoryDetailCollectionViewCell {
 }
 
 extension CategoryDetailCollectionViewCell: ProductCollectionCellDelegate {
-  func cartOrAlarmButtonTouched(_ button: UIButton, _ productIndexPath: IndexPath) {
+  func cartOrAlarmButtonTouched(_ collectionView: UICollectionView, _ button: UIButton, _ productIndexPath: IndexPath) {
     guard let categoryProductList = categoryProductList else { return }
        let categoryProduct = categoryProductList[productIndexPath.row]
     
